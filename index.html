@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DVN — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0906;
+  --bg2: #111009;
+  --bg3: #1a1710;
+  --bg4: #242018;
+  --gold: #d4a843;
+  --gold2: #f0c860;
+  --gold3: rgba(212,168,67,0.15);
+  --gold4: rgba(212,168,67,0.08);
+  --cream: #f0ead8;
+  --cream2: #c8bea8;
+  --cream3: #7a7060;
+  --red: #c84040;
+  --red2: rgba(200,64,64,0.12);
+  --green: #5a9a50;
+  --green2: rgba(90,154,80,0.12);
+  --amber: #c88030;
+  --blue: #4080c0;
+  --border: rgba(212,168,67,0.2);
+  --border2: rgba(212,168,67,0.08);
+  --nav-w: 220px;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Libre Baskerville', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { font-size: 14px; scroll-behavior: smooth; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--gold); }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--font-body);
+  display: grid;
+  grid-template-columns: var(--nav-w) 1fr;
+  min-height: 100vh;
+}
+
+/* ══ LOADING STATE ══ */
+#loading-overlay {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.4s;
+}
+
+.loading-inner { text-align: center; }
+
+.loading-name {
+  font-family: var(--font-display);
+  font-size: 48px; letter-spacing: 0.06em;
+  color: var(--gold);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.loading-sub {
+  font-family: var(--font-mono);
+  font-size: 8px; letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cream3);
+  margin-top: 10px;
+}
+
+@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+/* ══ SYNC BADGE ══ */
+#sync-badge {
+  position: fixed; bottom: 16px; right: 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 8px; letter-spacing: 0.12em;
+  color: var(--cream3);
+  z-index: 100;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+#sync-badge:hover { border-color: var(--gold); color: var(--gold); }
+
+.sync-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: blink 2s ease-in-out infinite;
+}
+
+.sync-dot.stale { background: var(--amber); animation: none; }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  height: 100vh; position: sticky; top: 0;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+
+.sid-hero {
+  padding: 28px 20px 20px;
+  background: linear-gradient(160deg, var(--bg3), var(--bg2));
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.sid-hero::after {
+  content: 'DVN';
+  position: absolute; right: -8px; bottom: -8px;
+  font-family: var(--font-display);
+  font-size: 56px; color: var(--gold);
+  opacity: 0.05; line-height: 1;
+  pointer-events: none;
+}
+
+.sid-initials {
+  font-family: var(--font-display);
+  font-size: 11px; letter-spacing: 0.3em;
+  color: var(--gold); opacity: 0.7;
+  margin-bottom: 8px;
+}
+
+.sid-name {
+  font-family: var(--font-display);
+  font-size: 30px; letter-spacing: 0.05em;
+  color: var(--cream); line-height: 1;
+}
+
+.sid-tagline {
+  font-family: var(--font-mono);
+  font-size: 7px; letter-spacing: 0.12em;
+  color: var(--cream3); line-height: 1.7;
+  margin-top: 6px;
+}
+
+.sid-pulse {
+  margin: 12px 16px;
+  padding: 10px 12px;
+  background: var(--gold3);
+  border-left: 3px solid var(--gold);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 10px;
+  color: var(--gold2);
+  line-height: 1.6;
+}
+
+.nav { padding: 8px 0; flex: 1; }
+
+.nav-group-label {
+  font-family: var(--font-mono);
+  font-size: 6px; letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cream3);
+  padding: 12px 20px 4px;
+  display: block;
+}
+
+.nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px;
+  color: var(--cream3);
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.04em;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+}
+
+.nav-link:hover { color: var(--gold2); background: var(--gold4); border-left-color: var(--gold); }
+.nav-link.active { color: var(--gold2); background: var(--gold3); border-left-color: var(--gold); }
+
+.nav-bullet { width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+/* Dynamic stats sidebar */
+.sid-stats {
+  border-top: 1px solid var(--border);
+  padding: 12px 16px 16px;
+}
+
+.stats-title {
+  font-family: var(--font-mono);
+  font-size: 6px; letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cream3);
+  margin-bottom: 10px; display: block;
+}
+
+.stat {
+  display: flex; justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--font-mono);
+}
+
+.stat-k { font-size: 8px; color: var(--cream3); }
+.stat-v { font-size: 9px; font-weight: 700; }
+.stat-v.ok { color: var(--green); }
+.stat-v.warn { color: var(--amber); }
+.stat-v.bad { color: var(--red); }
+.stat-v.gold { color: var(--gold); }
+
+/* ══ MAIN ══ */
+.main { overflow-x: hidden; }
+
+/* ══ HERO ══ */
+.page-hero {
+  min-height: 320px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  position: relative;
+}
+
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(212,168,67,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 50% at 10% 10%, rgba(212,168,67,0.05) 0%, transparent 60%);
+}
+
+.hero-left {
+  padding: 56px 48px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  position: relative;
+}
+
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 8px; letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold); opacity: 0.8;
+  margin-bottom: 14px;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 80px);
+  letter-spacing: 0.03em;
+  color: var(--cream);
+  line-height: 0.92;
+  margin-bottom: 18px;
+}
+
+.hero-title span { color: var(--gold); }
+
+.hero-mission {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--cream2);
+  line-height: 1.7;
+  border-left: 2px solid var(--gold);
+  padding-left: 16px;
+  max-width: 44ch;
+}
+
+.hero-right {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  border-left: 1px solid var(--border);
+}
+
+.hero-stat-block {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border2);
+  display: flex; flex-direction: column; justify-content: center;
+}
+
+.hero-stat-block:last-child { border-bottom: none; }
+
+.hsb-label {
+  font-family: var(--font-mono);
+  font-size: 7px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream3);
+  margin-bottom: 4px;
+}
+
+.hsb-val {
+  font-family: var(--font-display);
+  font-size: 32px; letter-spacing: 0.05em;
+  color: var(--gold); line-height: 1;
+}
+
+.hsb-sub { font-family: var(--font-mono); font-size: 8px; color: var(--cream3); margin-top: 4px; }
+
+/* ══ SECTION SHELL ══ */
+.section { border-bottom: 1px solid var(--border); }
+
+.section-header {
+  padding: 44px 48px 28px;
+}
+
+.sec-label {
+  font-family: var(--font-mono);
+  font-size: 7px; letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+  display: block; margin-bottom: 6px;
+}
+
+.sec-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 52px);
+  letter-spacing: 0.04em;
+  color: var(--cream);
+  line-height: 0.95;
+}
+
+.sec-title em { color: var(--gold); font-style: normal; }
+
+.section-body { padding: 0 48px 48px; }
+
+/* ══ LIVE DATA SECTIONS ══ */
+
+/* Weekly banner */
+.weekly-banner {
+  background: var(--bg3);
+  border: 1px solid var(--gold);
+  padding: 22px 28px;
+  margin-bottom: 28px;
+  display: flex; justify-content: space-between;
+  align-items: center; gap: 20px;
+  flex-wrap: wrap;
+}
+
+.wb-left {}
+
+.wb-week {
+  font-family: var(--font-mono);
+  font-size: 7px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.wb-theme {
+  font-family: var(--font-display);
+  font-size: 22px; letter-spacing: 0.04em;
+  color: var(--cream);
+}
+
+.wb-intentions { list-style: none; }
+
+.wb-intentions li {
+  font-size: 12px; color: var(--cream3);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border2);
+  display: flex; gap: 8px;
+}
+
+.wb-intentions li::before { content: '→'; color: var(--gold); opacity: 0.5; flex-shrink: 0; }
+
+/* Log entries */
+.log-entry {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--cream3);
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.log-entry.win { border-left-color: var(--green); }
+.log-entry.insight { border-left-color: var(--gold); }
+.log-entry.friction { border-left-color: var(--red); }
+.log-entry.intention { border-left-color: var(--blue); }
+
+.log-entry-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 8px;
+}
+
+.log-entry-type {
+  font-family: var(--font-mono);
+  font-size: 6.5px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.log-entry.win .log-entry-type { color: var(--green); }
+.log-entry.insight .log-entry-type { color: var(--gold); }
+.log-entry.friction .log-entry-type { color: var(--red); }
+.log-entry.intention .log-entry-type { color: var(--blue); }
+
+.log-entry-date { font-family: var(--font-mono); font-size: 7px; color: var(--cream3); }
+.log-entry-text { font-size: 12px; color: var(--cream2); line-height: 1.65; }
+
+/* Log composer */
+.log-composer {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.log-composer-title {
+  font-family: var(--font-mono);
+  font-size: 7px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+  margin-bottom: 12px; display: block;
+}
+
+.log-type-row {
+  display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;
+}
+
+.log-type-btn {
+  font-family: var(--font-mono);
+  font-size: 7px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--cream3);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.log-type-btn.selected { border-color: var(--gold); color: var(--gold); background: var(--gold3); }
+
+.log-textarea {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: 12px 14px;
+  min-height: 80px;
+  outline: none;
+  resize: vertical;
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+
+.log-textarea:focus { border-color: var(--gold); }
+.log-textarea::placeholder { color: var(--cream3); font-style: italic; }
+
+.log-submit-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
+.sync-note {
+  font-family: var(--font-mono);
+  font-size: 7px; color: var(--cream3);
+  font-style: italic;
+}
+
+.log-submit {
+  background: var(--gold);
+  border: none; color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 9px 20px; cursor: pointer;
+  transition: background 0.15s;
+}
+
+.log-submit:hover { background: var(--gold2); }
+
+/* push to github btn */
+.github-push-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--cream3);
+  font-family: var(--font-mono);
+  font-size: 8px; letter-spacing: 0.12em;
+  padding: 7px 14px; cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.github-push-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Priority list */
+.priority {
+  background: var(--bg2);
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border2);
+  display: grid; grid-template-columns: 44px 1fr;
+  gap: 14px; align-items: start;
+}
+
+.pri-n {
+  font-family: var(--font-display);
+  font-size: 36px; letter-spacing: 0.04em;
+  color: var(--gold); opacity: 0.22;
+  line-height: 1;
+}
+
+.pri-title {
+  font-family: var(--font-display);
+  font-size: 17px; letter-spacing: 0.04em;
+  color: var(--cream); margin-bottom: 3px;
+}
+
+.pri-body { font-size: 11px; color: var(--cream3); line-height: 1.6; }
+
+/* Ken notes */
+.ken-note-item {
+  background: var(--bg3);
+  border-left: 2px solid var(--gold);
+  padding: 10px 14px;
+  margin-bottom: 6px;
+}
+
+.ken-note-date { font-family: var(--font-mono); font-size: 7px; color: var(--cream3); margin-bottom: 4px; }
+.ken-note-text { font-size: 12px; color: var(--cream2); line-height: 1.6; }
+
+/* Intel notes */
+.intel-item {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  padding: 12px 16px;
+  display: grid; grid-template-columns: 90px 1fr;
+  gap: 12px;
+}
+
+.intel-date { font-family: var(--font-mono); font-size: 7px; color: var(--cream3); padding-top: 2px; }
+.intel-source { font-family: var(--font-mono); font-size: 7px; color: var(--gold); margin-bottom: 4px; }
+.intel-text { font-size: 12px; color: var(--cream2); line-height: 1.6; }
+
+/* ══ CARDS ══ */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+
+.card { background: var(--bg2); padding: 24px; }
+.card-sm { background: var(--bg2); padding: 18px 20px; }
+
+.card-label {
+  font-family: var(--font-mono);
+  font-size: 6.5px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+  margin-bottom: 8px; display: block;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 20px; letter-spacing: 0.04em;
+  color: var(--cream); margin-bottom: 10px;
+}
+
+.card-body { font-size: 12px; color: var(--cream3); line-height: 1.75; }
+
+.card-highlight {
+  margin-top: 12px; padding: 10px 14px;
+  background: var(--gold3);
+  border-left: 2px solid var(--gold);
+  font-style: italic; font-size: 11px;
+  color: var(--gold2); line-height: 1.6;
+}
+
+/* Framework cards */
+.framework-card { background: var(--bg2); padding: 26px; position: relative; overflow: hidden; }
+
+.fw-bg-letter {
+  position: absolute; right: -6px; bottom: -10px;
+  font-family: var(--font-display);
+  font-size: 72px; color: var(--gold);
+  opacity: 0.04; line-height: 1;
+  pointer-events: none;
+}
+
+.fw-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+
+.fw-tag {
+  font-family: var(--font-mono);
+  font-size: 6.5px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  margin-bottom: 10px; display: inline-block;
+}
+
+.fw-name { font-family: var(--font-display); font-size: 24px; color: var(--cream); margin-bottom: 10px; }
+.fw-desc { font-size: 12px; color: var(--cream3); line-height: 1.75; margin-bottom: 12px; }
+
+.fw-model { background: var(--bg3); padding: 12px 14px; margin-bottom: 8px; border-left: 2px solid var(--gold); }
+.fw-model-title { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+.fw-model-body { font-size: 11px; color: var(--cream2); line-height: 1.65; }
+
+.fw-warning { background: var(--red2); border-left: 2px solid var(--red); padding: 10px 14px; font-size: 11px; color: var(--cream2); line-height: 1.6; margin-top: 8px; }
+.fw-warning::before { content: '⚠ '; color: var(--red); }
+
+/* Mental model cards */
+.model-card { background: var(--bg2); padding: 24px 26px; border-top: 3px solid var(--gold); }
+.model-num { font-family: var(--font-display); font-size: 44px; color: var(--gold); opacity: 0.14; line-height: 1; margin-bottom: -6px; }
+.model-name { font-family: var(--font-display); font-size: 18px; letter-spacing: 0.04em; color: var(--cream); margin-bottom: 5px; }
+.model-source { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.12em; color: var(--cream3); margin-bottom: 10px; }
+.model-body { font-size: 12px; color: var(--cream3); line-height: 1.75; margin-bottom: 10px; }
+.model-apply { padding: 9px 12px; background: var(--gold3); border-left: 2px solid var(--gold); font-family: var(--font-mono); font-size: 9px; color: var(--gold2); line-height: 1.6; }
+.model-apply::before { content: 'APPLY → '; opacity: 0.7; }
+
+/* Book cards */
+.book-card { background: var(--bg2); padding: 20px 22px; cursor: pointer; transition: background 0.15s; }
+.book-card:hover { background: var(--bg3); }
+.book-card.expanded { background: var(--bg3); }
+
+.book-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.book-num { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.15em; color: var(--gold); opacity: 0.5; margin-bottom: 3px; display: block; }
+.book-title { font-family: var(--font-display); font-size: 15px; letter-spacing: 0.03em; color: var(--cream); line-height: 1.2; margin-bottom: 2px; }
+.book-author { font-family: var(--font-mono); font-size: 7px; color: var(--cream3); margin-bottom: 5px; display: block; }
+.book-tag { font-family: var(--font-mono); font-size: 6px; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 6px; border: 1px solid; display: inline-block; }
+.book-tag.core { color: var(--gold); border-color: var(--gold); }
+.book-tag.biz { color: var(--green); border-color: var(--green); }
+.book-tag.spirit { color: var(--amber); border-color: var(--amber); }
+.book-tag.mind { color: var(--blue); border-color: var(--blue); }
+.book-toggle { font-family: var(--font-mono); font-size: 16px; color: var(--gold); opacity: 0.5; flex-shrink: 0; margin-top: 2px; transition: transform 0.2s; user-select: none; }
+.book-card.expanded .book-toggle { transform: rotate(45deg); opacity: 1; }
+
+.book-details { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border2); }
+.book-card.expanded .book-details { display: block; }
+
+.book-summary { font-size: 12px; color: var(--cream3); line-height: 1.75; margin-bottom: 12px; }
+.book-models-title { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 6px; display: block; }
+.book-model-item { display: flex; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border2); font-size: 11px; color: var(--cream3); line-height: 1.5; }
+.book-model-item::before { content: '→'; color: var(--gold); opacity: 0.5; flex-shrink: 0; }
+.book-apply { background: var(--gold3); border-left: 2px solid var(--gold); padding: 9px 12px; font-size: 11px; color: var(--gold2); line-height: 1.6; margin: 12px 0; font-style: italic; }
+
+.book-read-status { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.read-toggle { appearance: none; width: 32px; height: 16px; background: var(--bg4); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; position: relative; transition: background 0.2s; }
+.read-toggle::after { content: ''; position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--cream3); top: 2px; left: 2px; transition: all 0.2s; }
+.read-toggle:checked { background: var(--gold3); border-color: var(--gold); }
+.read-toggle:checked::after { background: var(--gold); left: 18px; }
+.read-label { font-family: var(--font-mono); font-size: 8px; color: var(--cream3); }
+
+.book-notes-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream3); margin-bottom: 6px; display: block; margin-top: 12px; }
+.note-item { background: var(--bg4); border-left: 2px solid var(--cream3); padding: 7px 10px; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.note-text { font-size: 11px; color: var(--cream2); line-height: 1.5; flex: 1; }
+.note-date { font-family: var(--font-mono); font-size: 7px; color: var(--cream3); flex-shrink: 0; }
+.note-del { font-size: 10px; color: var(--cream3); cursor: pointer; flex-shrink: 0; padding: 0 4px; }
+.note-del:hover { color: var(--red); }
+.note-input-row { display: flex; gap: 6px; margin-top: 6px; }
+.note-input { flex: 1; background: var(--bg4); border: 1px solid var(--border); color: var(--cream); font-family: var(--font-mono); font-size: 10px; padding: 7px 10px; outline: none; }
+.note-input:focus { border-color: var(--gold); }
+.note-input::placeholder { color: var(--cream3); }
+.note-btn { background: var(--gold); border: none; color: var(--bg); font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; padding: 7px 12px; cursor: pointer; }
+.note-btn:hover { background: var(--gold2); }
+
+/* Environment */
+.env-card { padding: 24px 26px; border-left: 4px solid; }
+.env-card.positive { background: var(--green2); border-color: var(--green); }
+.env-card.negative { background: var(--red2); border-color: var(--red); }
+.env-card.building { background: var(--gold3); border-color: var(--gold); }
+.env-card.neutral { background: var(--bg3); border-color: var(--cream3); }
+.env-label { font-family: var(--font-mono); font-size: 6.5px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+.env-card.positive .env-label { color: var(--green); }
+.env-card.negative .env-label { color: var(--red); }
+.env-card.building .env-label { color: var(--gold); }
+.env-card.neutral .env-label { color: var(--cream3); }
+.env-title { font-family: var(--font-display); font-size: 17px; color: var(--cream); margin-bottom: 8px; }
+.env-body { font-size: 11px; color: var(--cream3); line-height: 1.7; }
+
+/* Daily ritual */
+.ritual-block { background: var(--bg2); border: 1px solid var(--border); padding: 22px 26px; }
+.ritual-time { font-family: var(--font-display); font-size: 32px; color: var(--gold); opacity: 0.55; line-height: 1; margin-bottom: 3px; }
+.ritual-name { font-family: var(--font-display); font-size: 17px; color: var(--cream); margin-bottom: 8px; }
+.ritual-items { list-style: none; }
+.ritual-items li { font-size: 11px; color: var(--cream3); padding: 4px 0; border-bottom: 1px solid var(--border2); display: flex; gap: 8px; }
+.ritual-items li::before { content: '·'; color: var(--gold); flex-shrink: 0; }
+
+/* Phase roadmap */
+.phase-row { display: flex; background: var(--border); border: 1px solid var(--border); overflow-x: auto; margin-bottom: 20px; }
+.phase { background: var(--bg2); padding: 24px 20px; min-width: 160px; flex: 1; border-right: 1px solid var(--border2); }
+.phase:last-child { border-right: none; }
+.phase.now { background: var(--bg3); border-top: 3px solid var(--gold); }
+.phase-num { font-family: var(--font-display); font-size: 40px; color: var(--gold); opacity: 0.18; line-height: 1; }
+.phase-dates { font-family: var(--font-mono); font-size: 7px; color: var(--gold); opacity: 0.7; margin-bottom: 5px; }
+.phase-name { font-family: var(--font-display); font-size: 16px; color: var(--cream); margin-bottom: 8px; }
+.phase-items { list-style: none; }
+.phase-items li { font-size: 10px; color: var(--cream3); padding: 3px 0; border-bottom: 1px solid var(--border2); display: flex; gap: 5px; }
+.phase-items li::before { content: '→'; color: var(--gold); opacity: 0.4; flex-shrink: 0; }
+
+/* Commitments */
+.commitment { display: flex; gap: 18px; background: var(--bg2); padding: 20px 24px; border-bottom: 1px solid var(--border2); align-items: flex-start; }
+.com-glyph { font-family: var(--font-display); font-size: 28px; color: var(--gold); opacity: 0.22; flex-shrink: 0; line-height: 1; }
+.com-title { font-family: var(--font-display); font-size: 18px; letter-spacing: 0.04em; color: var(--gold2); margin-bottom: 5px; }
+.com-body { font-size: 12px; color: var(--cream3); line-height: 1.75; }
+
+/* Relationships */
+.rel-card { background: var(--bg2); padding: 18px 20px; }
+.rel-badge { font-family: var(--font-mono); font-size: 6.5px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; display: inline-block; padding: 2px 7px; border: 1px solid; }
+.rel-badge.priority { color: var(--gold); border-color: var(--gold); }
+.rel-badge.active { color: var(--green); border-color: var(--green); }
+.rel-badge.long { color: var(--cream3); border-color: var(--cream3); }
+.rel-name { font-family: var(--font-display); font-size: 17px; color: var(--cream); margin-bottom: 2px; }
+.rel-role { font-family: var(--font-mono); font-size: 7px; color: var(--cream3); margin-bottom: 7px; }
+.rel-body { font-size: 11px; color: var(--cream3); line-height: 1.6; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  body { grid-template-columns: 1fr; }
+  .sidebar { height: auto; position: relative; }
+  .page-hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { display: none; }
+  .section-body, .section-header { padding-left: 24px; padding-right: 24px; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .phase-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div id="loading-overlay">
+  <div class="loading-inner">
+    <div class="loading-name">DVN</div>
+    <div class="loading-sub">Loading command center...</div>
+  </div>
+</div>
+
+<!-- Sync badge -->
+<div id="sync-badge" onclick="manualRefresh()" title="Click to refresh data">
+  <div class="sync-dot" id="sync-dot"></div>
+  <span id="sync-text">Loading...</span>
+</div>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sid-hero">
+    <div class="sid-initials">D · V · N</div>
+    <div class="sid-name">DERYL<br>VAN<br>NOSTRAND</div>
+    <div class="sid-tagline">Builder · Servant Leader<br>Minister · Future Father<br>Lake of the Ozarks, MO</div>
+    <div class="fw-bg-letter" style="position:absolute;right:-8px;bottom:-8px;font-family:var(--font-display);font-size:56px;color:var(--gold);opacity:0.05;line-height:1;pointer-events:none;">DVN</div>
+  </div>
+
+  <div class="sid-pulse">
+    "I am here to do God's work — to spread love, lead with truth and compassion, and build things that better humanity."
+  </div>
+
+  <nav class="nav">
+    <span class="nav-group-label">Live Data</span>
+    <a class="nav-link" href="#live"><span class="nav-bullet"></span>This Week</a>
+    <a class="nav-link" href="#log-section"><span class="nav-bullet"></span>Growth Log</a>
+    <a class="nav-link" href="#ken"><span class="nav-bullet"></span>Ken Alignment</a>
+    <a class="nav-link" href="#intel"><span class="nav-bullet"></span>Newsletter Intel</a>
+
+    <span class="nav-group-label">Core Identity</span>
+    <a class="nav-link" href="#identity"><span class="nav-bullet"></span>Frameworks</a>
+    <a class="nav-link" href="#models"><span class="nav-bullet"></span>Mental Models</a>
+    <a class="nav-link" href="#builder"><span class="nav-bullet"></span>Builder Vision</a>
+    <a class="nav-link" href="#philosophy"><span class="nav-bullet"></span>Servant Leadership</a>
+
+    <span class="nav-group-label">Operations</span>
+    <a class="nav-link" href="#environment"><span class="nav-bullet"></span>Environment</a>
+    <a class="nav-link" href="#ritual"><span class="nav-bullet"></span>Daily Ritual</a>
+    <a class="nav-link" href="#priorities"><span class="nav-bullet"></span>Priorities</a>
+    <a class="nav-link" href="#performance"><span class="nav-bullet"></span>Performance</a>
+
+    <span class="nav-group-label">Vision</span>
+    <a class="nav-link" href="#roadmap"><span class="nav-bullet"></span>Roadmap</a>
+    <a class="nav-link" href="#library"><span class="nav-bullet"></span>Library</a>
+    <a class="nav-link" href="#commitments"><span class="nav-bullet"></span>Commitments</a>
+    <a class="nav-link" href="#relationships"><span class="nav-bullet"></span>Relationships</a>
+  </nav>
+
+  <!-- Dynamic stats from data.json -->
+  <div class="sid-stats" id="sidebar-stats">
+    <span class="stats-title">Live Stats</span>
+    <div class="stat"><span class="stat-k">Loading...</span><span class="stat-v">—</span></div>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="hero-left">
+      <p class="hero-tag">Personal Command Center · Powered by data.json + GitHub</p>
+      <h1 class="hero-title">THE<br><span>BUILDER'S</span><br>CODEX</h1>
+      <p class="hero-mission">"Every dollar is a vote. Every choice compounds. Choose local. Think long term. Build community."</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-block">
+        <div class="hsb-label">Primary Genius Type</div>
+        <div class="hsb-val">BLAZE</div>
+        <div class="hsb-sub">WHO first · Magnifier · People Smart</div>
+      </div>
+      <div class="hero-stat-block">
+        <div class="hsb-label">Gene Key Life's Work</div>
+        <div class="hsb-val">KEY 13</div>
+        <div class="hsb-sub">The Guide · Art of Listening</div>
+      </div>
+      <div class="hero-stat-block">
+        <div class="hsb-label">Myers-Briggs</div>
+        <div class="hsb-val">ENFJ-A</div>
+        <div class="hsb-sub">Protagonist · Assertive · WHY Leader</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LIVE DATA: THIS WEEK ══ -->
+  <section class="section" id="live">
+    <div class="section-header">
+      <span class="sec-label">Agent-Updated · Live from data.json</span>
+      <h2 class="sec-title">THIS <em>WEEK</em></h2>
+    </div>
+    <div class="section-body">
+      <div id="weekly-banner-container">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ GROWTH LOG ══ -->
+  <section class="section" id="log-section">
+    <div class="section-header">
+      <span class="sec-label">Write here or let your agent write for you</span>
+      <h2 class="sec-title">GROWTH <em>LOG</em></h2>
+    </div>
+    <div class="section-body">
+      <div class="log-composer">
+        <span class="log-composer-title">New Entry — Saved to browser + exportable to GitHub</span>
+        <div class="log-type-row">
+          <button class="log-type-btn selected" onclick="selectLogType(this,'win')">🏆 Win</button>
+          <button class="log-type-btn" onclick="selectLogType(this,'insight')">💡 Insight</button>
+          <button class="log-type-btn" onclick="selectLogType(this,'friction')">🔥 Friction</button>
+          <button class="log-type-btn" onclick="selectLogType(this,'intention')">🎯 Intention</button>
+        </div>
+        <textarea class="log-textarea" id="log-input" placeholder="What happened? What did you learn? What are you building toward?"></textarea>
+        <div class="log-submit-row">
+          <span class="sync-note">Entries save locally. Use the GitHub push button to sync to your repo.</span>
+          <div style="display:flex;gap:8px;">
+            <button class="github-push-btn" onclick="copyLogJSON()" title="Copy log JSON to paste into GitHub">⬆ Copy for GitHub</button>
+            <button class="log-submit" onclick="addLogEntry()">LOG IT →</button>
+          </div>
+        </div>
+      </div>
+      <div id="log-entries"></div>
+    </div>
+  </section>
+
+  <!-- ══ KEN ALIGNMENT ══ -->
+  <section class="section" id="ken">
+    <div class="section-header">
+      <span class="sec-label">Agent updates this after every conversation</span>
+      <h2 class="sec-title">KEN <em>WILKINS</em></h2>
+    </div>
+    <div class="section-body">
+      <div id="ken-container"><!-- rendered by JS --></div>
+    </div>
+  </section>
+
+  <!-- ══ NEWSLETTER INTEL ══ -->
+  <section class="section" id="intel">
+    <div class="section-header">
+      <span class="sec-label">Agent drops community intel here as you gather it</span>
+      <h2 class="sec-title">NEWSLETTER <em>INTEL</em></h2>
+    </div>
+    <div class="section-body">
+      <div id="intel-container"><!-- rendered by JS --></div>
+    </div>
+  </section>
+
+  <!-- ══ IDENTITY FRAMEWORKS (static) ══ -->
+  <section class="section" id="identity">
+    <div class="section-header">
+      <span class="sec-label">Who You Are</span>
+      <h2 class="sec-title">THE FOUR <em>FRAMEWORKS</em></h2>
+    </div>
+    <div class="section-body">
+      <div class="grid-2" style="margin-bottom:20px;">
+        <div class="framework-card">
+          <div class="fw-bg-letter">BLZ</div>
+          <span class="fw-icon">🔥</span>
+          <span class="fw-tag">Blaze Genius</span>
+          <div class="fw-name">THE MAGNIFIER</div>
+          <div class="fw-desc">People Smart. Summer Energy. WHO first. You grow relationships so the same value reaches exponentially more people. The bar IS this genius in its natural expression.</div>
+          <div class="fw-model"><div class="fw-model-title">WHO before HOW</div><div class="fw-model-body">Before figuring out how to do something, ask who already knows or who can open the door. Your genius is in the relationship that unlocks the method, not the method itself.</div></div>
+          <div class="fw-warning">Losing formula: spreadsheets, rigid routines, solo systems. Hire Steel. Stay Blaze.</div>
+        </div>
+        <div class="framework-card">
+          <div class="fw-bg-letter">G13</div>
+          <span class="fw-icon">🗝️</span>
+          <span class="fw-tag">Gene Key 13</span>
+          <div class="fw-name">THE GUIDE</div>
+          <div class="fw-desc">Life's Work: deep listening. Every person is a hero in their own myth. Key 7 (Evolution): move people forward. Key 2 (Purpose): a new world tries to incarnate through you. Key 3 (Prosperity): Innovation — shadow is Chaos.</div>
+          <div class="fw-model"><div class="fw-model-title">Shadow → Gift</div><div class="fw-model-body">Key 13 Shadow = Discord (absorbing drama). Gift = Empathy. Key 3 Shadow = Chaos (scattered). Gift = Innovation. Move from Shadow to Gift — daily. Name the shadow. Walk through it.</div></div>
+          <div class="fw-warning">Your current environment feeds Key 13 Shadow. You hear everything. Protect your field.</div>
+        </div>
+        <div class="framework-card">
+          <div class="fw-bg-letter">ENF</div>
+          <span class="fw-icon">⚡</span>
+          <span class="fw-tag">ENFJ-A Protagonist</span>
+          <div class="fw-name">THE PROTAGONIST</div>
+          <div class="fw-desc">83% Extraverted · 75% Intuitive · 60% Feeling · 67% Judging · 79% Assertive. You see potential in people before they see it themselves — which is why Ken said you filled needs he didn't know he had.</div>
+          <div class="fw-model"><div class="fw-model-title">The ENFJ Trap</div><div class="fw-model-body">Overextending, idealizing people, avoiding conflict even when it would serve the relationship. Watch for this with Oscar. Name it. Don't carry what isn't yours.</div></div>
+          <div class="fw-warning">Shadow: waiting until perfect before shipping. Ship the newsletter. Pitch Oscar. Initiate with Ken. Act before ready.</div>
+        </div>
+        <div class="framework-card">
+          <div class="fw-bg-letter">WHY</div>
+          <span class="fw-icon">🎯</span>
+          <span class="fw-tag">Start With Why</span>
+          <div class="fw-name">WHY-TYPE LEADER</div>
+          <div class="fw-desc">WHY → HOW → WHAT. Lead every conversation from the inside out. Your WHY: "I believe people are more powerful when connected to something real — land, community, each other, themselves."</div>
+          <div class="fw-model"><div class="fw-model-title">The Golden Circle</div><div class="fw-model-body">WHY activates the limbic brain — the decision-making center. "I believe the strongest communities are built when people own real things" lands in a different place than "I'm a licensed realtor." The first creates trust.</div></div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--gold);padding:26px 32px;text-align:center;">
+        <p style="font-family:var(--font-body);font-style:italic;font-size:15px;color:var(--cream2);line-height:1.8;max-width:58ch;margin:0 auto;">Four independent frameworks all arrive at the same architecture: <strong style="color:var(--cream);">you are wired to guide, connect, and lead through people — not through systems or solo execution.</strong> Trust it completely. Stop fighting it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MENTAL MODELS ══ -->
+  <section class="section" id="models">
+    <div class="section-header">
+      <span class="sec-label">Use These Daily — Not Just Know Them</span>
+      <h2 class="sec-title">MENTAL <em>MODELS</em></h2>
+    </div>
+    <div class="section-body">
+      <div class="grid-3">
+        <div class="model-card"><div class="model-num">01</div><div class="model-name">WHO BEFORE HOW</div><div class="model-source">Blaze Genius / Dan Sullivan</div><div class="model-body">Before asking "how do I do this?", ask "who has already done this?" Your genius is in relationship leverage, not process execution.</div><div class="model-apply">Every week: what's one WHO you haven't called yet?</div></div>
+        <div class="model-card"><div class="model-num">02</div><div class="model-name">SHADOW → GIFT</div><div class="model-source">Gene Keys · Rudd</div><div class="model-body">Every shadow contains its gift on the other side. Chaos → Innovation. Discord → Empathy. Name the shadow. Walk through it — don't run from it.</div><div class="model-apply">When feeling chaos: "What is the gift in this?" Then act from Gift, not Shadow.</div></div>
+        <div class="model-card"><div class="model-num">03</div><div class="model-name">THE GOLDEN CIRCLE</div><div class="model-source">Start With Why · Sinek</div><div class="model-body">WHY → HOW → WHAT. Lead every conversation from belief. Most people start with what they do. You start with why you do it — completely different kind of trust.</div><div class="model-apply">Before every conversation: what's my WHY today? Start there.</div></div>
+        <div class="model-card"><div class="model-num">04</div><div class="model-name">COMPOUND CHARACTER</div><div class="model-source">Naval Ravikant</div><div class="model-body">Long-term games with long-term people. In long-term games, trust compounds. Every bar regular, every Ken conversation — compound interest accounts.</div><div class="model-apply">Every interaction: am I playing a long-term or short-term game here?</div></div>
+        <div class="model-card"><div class="model-num">05</div><div class="model-name">THE GO-GIVER LAW</div><div class="model-source">Burg & Mann</div><div class="model-body">Your influence is determined by how abundantly you place other people's interests first. The less you try to get, the more flows back.</div><div class="model-apply">Daily: how did I add value without asking for anything today?</div></div>
+        <div class="model-card"><div class="model-num">06</div><div class="model-name">ENVIRONMENT IS DESTINY</div><div class="model-source">Napoleon Hill</div><div class="model-body">98% drift — they absorb whatever environment surrounds them. 2% design their environment deliberately. This command center is anti-drift technology.</div><div class="model-apply">Weekly: what am I absorbing? Is it building or eroding me?</div></div>
+        <div class="model-card"><div class="model-num">07</div><div class="model-name">MOTIVATION MAPPING</div><div class="model-source">Laws of Human Nature</div><div class="model-body">People are not motivated by what they say they want. Find the deeper motivation — identity, fear, desire. Gene Key 13 listening hears what they're not saying.</div><div class="model-apply">In every relationship: what's the real motivation beneath the stated one?</div></div>
+        <div class="model-card"><div class="model-num">08</div><div class="model-name">SPECIFIC KNOWLEDGE</div><div class="model-source">Naval Ravikant</div><div class="model-body">Your moat: lake hospitality culture + consciousness + immersion production + ENFJ people-reading + servant leadership in F&B. Nobody else has this exact combination.</div><div class="model-apply">Build media and content at the intersection nobody else occupies.</div></div>
+        <div class="model-card"><div class="model-num">09</div><div class="model-name">WU WEI</div><div class="model-source">Wayne Dyer / Tao</div><div class="model-body">Action in alignment with natural flow produces more than forced effort. When something feels like constant strain — you're fighting the current. Blaze in flow IS wu wei.</div><div class="model-apply">When something feels like constant strain: what would be easier and more natural?</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BUILDER ══ -->
+  <section class="section" id="builder">
+    <div class="section-header">
+      <span class="sec-label">The 10–20 Year Throughline</span>
+      <h2 class="sec-title">THE <em>BUILDER</em></h2>
+    </div>
+    <div class="section-body">
+      <div style="background:var(--bg2);border:1px solid var(--gold);padding:32px 36px;margin-bottom:20px;position:relative;overflow:hidden;">
+        <div style="position:absolute;right:-10px;bottom:-20px;font-family:var(--font-display);font-size:100px;color:var(--gold);opacity:0.04;line-height:1;pointer-events:none;">BUILD</div>
+        <h3 style="font-family:var(--font-display);font-size:24px;color:var(--cream);margin-bottom:14px;">Not just an operator. A developer.</h3>
+        <p style="font-size:13px;color:var(--cream2);line-height:1.85;max-width:66ch;">I design and create the systems, spaces, environments, and brands that reshape how people experience being human. The world is organized in ways that are not beneficial to human flourishing. My work across hospitality, real estate, media, consciousness, and education is construction work in service of countering the extractive default.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card"><span class="card-label">Vision 01</span><div class="card-title">Hospitality as Human Experience</div><div class="card-body">Environments where people feel genuinely cared for, seen, and restored. The question is never "maximize revenue" — it's "what would make this person feel restored?" Revenue follows that.</div></div>
+        <div class="card"><span class="card-label">Vision 02</span><div class="card-title">Education & Emotional Intelligence</div><div class="card-body">Frameworks helping people — especially children — understand emotional regulation and what it means to be fully human. The gap between what school teaches and what people actually need.</div></div>
+        <div class="card"><span class="card-label">Vision 03</span><div class="card-title">Servant Leadership Infrastructure</div><div class="card-body">Teams built around finding what motivates people at the deepest level. Leadership that creates more leaders, not more followers. The measure: what happens when you're not in the room?</div></div>
+        <div class="card"><span class="card-label">Vision 04</span><div class="card-title">Community & Spiritual Architecture</div><div class="card-body">Physical and social environments where people reconnect to land, each other, and something greater than the consumption loop. Lake of the Ozarks as the laboratory.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SERVANT LEADERSHIP ══ -->
+  <section class="section" id="philosophy">
+    <div class="section-header">
+      <span class="sec-label">The Operating Philosophy</span>
+      <h2 class="sec-title">SERVANT <em>LEADERSHIP</em></h2>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="card"><div class="card-title">The Go-Giver</div><div class="card-body">Five Laws: Value (worth = how much you give), Compensation (income determined by how many you serve), Influence (place others first), Authenticity (most powerful strategy), Receptivity (must be able to receive). Applied to every shift, every real estate conversation, every Ken interaction.</div><div class="card-highlight">"Constantly, consistently, and abundantly place other people's interests first."</div></div>
+        <div class="card"><div class="card-title">Finding the Desire</div><div class="card-body">You can't motivate people who aren't ready. But you can find the desire that's already in them. Ken didn't know he needed someone who fills gaps. He felt it before he named it. That's motivation mapping at the highest level.</div><div class="card-highlight">Applied in fitness coaching, real estate, community building, every team you lead.</div></div>
+        <div class="card"><div class="card-title">Leadership That Creates Leaders</div><div class="card-body">The measure of leadership isn't what happens when you're present — it's what happens when you're not. Train your bar replacement. Build managers everywhere you go. Every team should be stronger when you leave.</div></div>
+        <div class="card"><div class="card-title">Human Experience as Design</div><div class="card-body">Every business built around the human experience of the people inside it. The question first is always "what would make this person feel genuinely cared for?" — revenue follows. The world runs on the opposite assumption. Build into that gap.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ENVIRONMENT ══ -->
+  <section class="section" id="environment">
+    <div class="section-header">
+      <span class="sec-label">You Become Who You Surround Yourself With</span>
+      <h2 class="sec-title">YOUR <em>ENVIRONMENT</em></h2>
+    </div>
+    <div class="section-body">
+      <div style="background:var(--red2);border:1px solid var(--red);padding:18px 22px;margin-bottom:20px;">
+        <p style="font-family:var(--font-mono);font-size:7px;letter-spacing:0.2em;color:var(--red);margin-bottom:8px;">CURRENT AUDIT</p>
+        <p style="font-size:13px;color:var(--cream2);line-height:1.8;">Drama, complaining, a scatterbrained boss who doesn't communicate or track things. For a Gene Key 13 ENFJ Blaze Genius, <strong style="color:var(--cream);">this isn't just uncomfortable — it's structurally toxic to your operating system.</strong> The gap right now: you haven't built your own environment yet. You're living in someone else's. That's what to fix.</p>
+      </div>
+      <div class="grid-2">
+        <div class="env-card negative"><span class="env-label">Draining · Current</span><div class="env-title">What's Working Against You</div><div class="env-body">Drama and complaining as ambient culture. A boss who doesn't communicate or track — meaning you compensate more. No local peer group at your level of ambition. Environment designed for drift, not growth.</div></div>
+        <div class="env-card positive"><span class="env-label">Charging · Build These</span><div class="env-title">What You're Building Toward</div><div class="env-body">Ken and Growth House community: people who have built and are thinking about meaning. Jesse Ray. Farmers market network. Ozark Independent readers. Oscar relationship converted into a track record.</div></div>
+        <div class="env-card building"><span class="env-label">Protect · Daily</span><div class="env-title">Protection Protocol</div><div class="env-body">Before each shift: set intention — "I am here to serve and observe. I don't carry what isn't mine." During: listen to understand, not to absorb. After: decompress before going home. Don't carry the shift.</div></div>
+        <div class="env-card neutral"><span class="env-label">Reframe · Strategic</span><div class="env-title">Oscar's Chaos = Your Opportunity</div><div class="env-body">A scatterbrained boss is a systems void. For someone who fills gaps before being asked, that void is the opportunity. Fill it without martyrdom. Document what you do. The resort manager path runs through this friction.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ DAILY RITUAL ══ -->
+  <section class="section" id="ritual">
+    <div class="section-header">
+      <span class="sec-label">The Activation Layer</span>
+      <h2 class="sec-title">DAILY <em>RITUAL</em></h2>
+    </div>
+    <div class="section-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="ritual-block"><div class="ritual-time">AM</div><div class="ritual-name">Morning Anchor</div><ul class="ritual-items"><li>Read one identity commitment out loud — not silently</li><li>State your WHY for the day. One sentence.</li><li>Name one thing you're building toward — not just doing today</li><li>Physical movement first. The body leads the mind.</li><li>No social media before this ritual is complete.</li></ul></div>
+        <div class="ritual-block"><div class="ritual-time">PRE</div><div class="ritual-name">Pre-Shift Intention</div><ul class="ritual-items"><li>"I am here to serve and observe, not to absorb"</li><li>Name one real estate lead to follow up with today</li><li>Name one person in the room you want to genuinely listen to</li><li>Gene Key 13 practice: every person is a hero in their story</li><li>The bar is your laboratory. What are you studying tonight?</li></ul></div>
+        <div class="ritual-block"><div class="ritual-time">POST</div><div class="ritual-name">Decompression</div><ul class="ritual-items"><li>10 min silence — no podcast, no music</li><li>What energy did I absorb tonight that isn't mine? Release it.</li><li>One win from the shift → write in Growth Log</li><li>One piece of newsletter intel → write it down</li><li>Water. Don't carry the shift into tomorrow.</li></ul></div>
+        <div class="ritual-block"><div class="ritual-time">WK</div><div class="ritual-name">Weekly Builder Session</div><ul class="ritual-items"><li>Review command center — add to Growth Log</li><li>WHO check: who haven't I called that I should have?</li><li>Draft Ozark Independent content — Claude drafts, you approve</li><li>Financial check: debt + Bitcoin DCA progress</li><li>Body check: weight, energy, protocol adherence</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PRIORITIES (live) ══ -->
+  <section class="section" id="priorities">
+    <div class="section-header">
+      <span class="sec-label">Summer 2026 — Agent can update these</span>
+      <h2 class="sec-title">THE FOCUS <em>LIST</em></h2>
+    </div>
+    <div class="section-body" style="padding-bottom:0;">
+      <div id="priorities-container" style="border:1px solid var(--border);background:var(--bg2);">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PERFORMANCE ══ -->
+  <section class="section" id="performance">
+    <div class="section-header">
+      <span class="sec-label">Agent updates stats in data.json</span>
+      <h2 class="sec-title">PHYSICAL <em>PERFORMANCE</em></h2>
+    </div>
+    <div class="section-body">
+      <div id="performance-container"><!-- rendered by JS --></div>
+    </div>
+  </section>
+
+  <!-- ══ ROADMAP ══ -->
+  <section class="section" id="roadmap">
+    <div class="section-header">
+      <span class="sec-label">2026–2036</span>
+      <h2 class="sec-title">THE <em>ROADMAP</em></h2>
+    </div>
+    <div class="section-body">
+      <div class="phase-row">
+        <div class="phase now"><div class="phase-num">0</div><div class="phase-dates">NOW – SEP 2026</div><div class="phase-name">FOUNDATION</div><ul class="phase-items"><li>Fitness transformation</li><li>Financial stabilization</li><li>Buddy's: manager path</li><li>Ken alignment active</li><li>Ozark Independent live</li></ul></div>
+        <div class="phase"><div class="phase-num">1</div><div class="phase-dates">APR – DEC 2026</div><div class="phase-name">LEAD MAGNET</div><ul class="phase-items"><li>Bar as relationship engine</li><li>Ken structure established</li><li>Growth House Oct event</li><li>Cove by Cove launches</li></ul></div>
+        <div class="phase"><div class="phase-num">2</div><div class="phase-dates">2027–2028</div><div class="phase-name">FIRST ASSET</div><ul class="phase-items"><li>First STR property</li><li>Beach biz PR launch</li><li>First land flip</li><li>Fitness platform revenue</li></ul></div>
+        <div class="phase"><div class="phase-num">3</div><div class="phase-dates">2028–2030</div><div class="phase-name">EXPANSION</div><ul class="phase-items"><li>3–4 properties</li><li>Run for office</li><li>Family chapter begins</li><li>Event production co.</li></ul></div>
+        <div class="phase"><div class="phase-num">4</div><div class="phase-dates">2030–2033</div><div class="phase-name">PLATFORM</div><ul class="phase-items"><li>5–7 properties</li><li>Political office</li><li>Education frameworks</li><li>Mentorship primary</li></ul></div>
+        <div class="phase"><div class="phase-num">5</div><div class="phase-dates">2033–2036+</div><div class="phase-name">LEGACY</div><ul class="phase-items"><li>$1M+ real assets</li><li>Family rooted</li><li>Model replicable</li><li>Builders mentored</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ LIBRARY (interactive) ══ -->
+  <section class="section" id="library">
+    <div class="section-header">
+      <span class="sec-label">Click to expand · Notes save to browser + sync via data.json</span>
+      <h2 class="sec-title">THE <em>LIBRARY</em></h2>
+    </div>
+    <div class="section-body">
+      <div class="grid-3" id="book-grid">
+        <!-- Books injected by JS from BOOKS array -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ COMMITMENTS ══ -->
+  <section class="section" id="commitments">
+    <div class="section-header">
+      <span class="sec-label">Read as Truths, Not Aspirations</span>
+      <h2 class="sec-title">THE <em>COMMITMENTS</em></h2>
+    </div>
+    <div class="section-body" style="padding-bottom:0;">
+      <div style="border:1px solid var(--border);">
+        <div class="commitment"><div class="com-glyph">I</div><div><div class="com-title">I Am Here to Do God's Work</div><div class="com-body">I spread love. I lead with authenticity, truth, compassion, and courage. Every environment I enter is an opportunity for that work.</div></div></div>
+        <div class="commitment"><div class="com-glyph">II</div><div><div class="com-title">I Am a Builder</div><div class="com-body">I design systems, spaces, environments, and brands that counter the extractive default and better the human experience. I build things that outlast me.</div></div></div>
+        <div class="commitment"><div class="com-glyph">III</div><div><div class="com-title">I Am a Connector</div><div class="com-body">I walk into every room asking who needs to meet whom. My network is my net worth and I tend it with discipline.</div></div></div>
+        <div class="commitment"><div class="com-glyph">IV</div><div><div class="com-title">I Am a Guide</div><div class="com-body">Gene Key 13 is my Life's Work — helping others see the hero in their own story. I create spaces where people discover their own power.</div></div></div>
+        <div class="commitment"><div class="com-glyph">V</div><div><div class="com-title">I Am a Servant Leader</div><div class="com-body">I lead by serving. I find what motivates people at the deepest level. I create more leaders, not more followers.</div></div></div>
+        <div class="commitment"><div class="com-glyph">VI</div><div><div class="com-title">I Am a Future Father</div><div class="com-body">A family is coming — a wife, children, a household rooted in love, truth, land, and community. Everything I build this season is in service of that reality.</div></div></div>
+        <div class="commitment"><div class="com-glyph">VII</div><div><div class="com-title">I Am Financially Sovereign</div><div class="com-body">I build assets that generate income without my direct labor. Bitcoin. STR properties. Equity. Every dollar is a vote.</div></div></div>
+        <div class="commitment" style="border-bottom:none;"><div class="com-glyph">VIII</div><div><div class="com-title">I Am a Man of My Community</div><div class="com-body">Before I build globally, I plant deeply here. Lake Ozark, Missouri is my laboratory and anchor. Choose local. Think long term. Build community.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RELATIONSHIPS ══ -->
+  <section class="section" id="relationships">
+    <div class="section-header">
+      <span class="sec-label">The Network</span>
+      <h2 class="sec-title">ACTIVE <em>RELATIONSHIPS</em></h2>
+    </div>
+    <div class="section-body">
+      <div class="grid-3">
+        <div class="rel-card"><span class="rel-badge priority">Priority Now</span><div class="rel-name">Oscar</div><div class="rel-role">Owner · Buddy's Resort</div><div class="rel-body">Most important immediate relationship. Fill gaps without martyrdom. Path: resort manager → sweat equity (fall).</div></div>
+        <div class="rel-card"><span class="rel-badge priority">Priority Now</span><div class="rel-name">Ken Wilkins</div><div class="rel-role">9-Figure Operator · Coach</div><div class="rel-body">4-year relationship reaching its next phase. Recalibrate after every conversation via agent.</div></div>
+        <div class="rel-card"><span class="rel-badge active">Active</span><div class="rel-name">Landen</div><div class="rel-role">Real Estate · Cove & Co.</div><div class="rel-body">Closings and market expertise. Deryl brings relationships; Landen converts. Stay in genius zones.</div></div>
+        <div class="rel-card"><span class="rel-badge active">Active</span><div class="rel-name">Nathan Maurer</div><div class="rel-role">Broker · Legacy Real Estate</div><div class="rel-body">Developer, investor, market depth. Mastermind node. Deposit before you withdraw.</div></div>
+        <div class="rel-card"><span class="rel-badge active">Active</span><div class="rel-name">Jesse Ray</div><div class="rel-role">Growth House Host</div><div class="rel-body">Step up as co-producer for October 2026. The event production company is born here.</div></div>
+        <div class="rel-card"><span class="rel-badge long">Long Game</span><div class="rel-name">Rana / Prasad / Scott</div><div class="rel-role">Fellowship of Minds Layer</div><div class="rel-body">Maintain warmly — not urgent this season. The global layer gets built after the local foundation is unshakeable.</div></div>
+      </div>
+      <div style="text-align:center;padding:44px 20px 16px;border-top:1px solid var(--border);margin-top:20px;">
+        <p style="font-family:var(--font-display);font-size:clamp(18px,2.5vw,28px);letter-spacing:0.04em;color:var(--cream2);line-height:1.5;max-width:48ch;margin:0 auto 10px;">"EVERY DOLLAR IS A VOTE. EVERY CHOICE COMPOUNDS. CHOOSE LOCAL. THINK LONG TERM. BUILD COMMUNITY."</p>
+        <p style="font-family:var(--font-mono);font-size:7px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.5;">Deryl VanNostrand · Builder · April 2026</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ══════════════════════════════════════════
+// CONFIGURATION — set your data.json URL here
+// ══════════════════════════════════════════
+const DATA_URL = './data.json'; // relative path — works on Netlify
+// If you want to load from GitHub raw directly (no build step):
+// const DATA_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/data.json';
+
+// ══════════════════════════════════════════
+// BOOKS DATA
+// ══════════════════════════════════════════
+const BOOKS = [
+  { id:'book-01', num:'01', title:'The Millionaire Master Plan', author:'Roger James Hamilton', tag:'core', tagLabel:'Core',
+    summary:'The foundational framework for understanding your genius type. Blaze = People Smart, Summer Energy, WHO-first. Most people fail not from lack of effort but from operating out of their genius type. Wealth = Value × Leverage.',
+    models:['WHO before HOW — your genius is in the relationship that unlocks the method, not the method itself.','4 Genius Types: Dynamo (ideas), Blaze (relationships), Tempo (systems), Steel (details). Stay in Blaze.','Wealth Lighthouse: 8 stages. Know your stage before planning your next move.','The Seasons: You\'re in Summer — maximize connection, not production.'],
+    apply:'WHO before HOW. Every week: who haven\'t I called that I should have?' },
+  { id:'book-02', num:'02', title:'Start With Why', author:'Simon Sinek', tag:'core', tagLabel:'Core',
+    summary:'The Golden Circle: WHY → HOW → WHAT. Lead every conversation inside-out. The limbic brain (decisions) responds to WHY. Trust and loyalty live in the limbic brain — not the rational mind.',
+    models:['The Tipping Point: 15–18% are early adopters who buy WHY. Reach them, the rest follows through social proof.','Trust vs Loyalty: trust is performance-based (temporary). Loyalty is belief-based (long-term). You want loyalty. Build it with WHY.','The Celery Test: filter every opportunity through your WHY — does this fit who I am at the core?'],
+    apply:'Your WHY: "I believe people are more powerful when connected to something real." Say it before every key conversation.' },
+  { id:'book-03', num:'03', title:'The Go-Giver', author:'Bob Burg & John David Mann', tag:'biz', tagLabel:'Business',
+    summary:'Five Laws of Stratospheric Success: Value (worth = how much you give), Compensation (income by how many you serve), Influence (place others first), Authenticity (most powerful strategy), Receptivity (you must be able to receive).',
+    models:['Law of Value: true worth = how much more you give in value than you take in payment. The sale becomes almost an afterthought.','The influence paradox: you gain influence by placing others\' interests first consistently. People trust a server, not a salesman.','Receptivity as skill: if you\'re uncomfortable receiving, you block the circuit. Giving and receiving are the same energy.'],
+    apply:'Before every interaction: what can I give first before I think about what I get?' },
+  { id:'book-04', num:'04', title:'Gene Keys', author:'Richard Rudd', tag:'spirit', tagLabel:'Spirit',
+    summary:'64 archetypes (Shadow → Gift → Siddhi). Your keys: 13 (Life\'s Work — The Guide), 7 (Evolution), 2 (Purpose), 3 (Prosperity). The work is moving from Shadow to Gift in daily life.',
+    models:['Shadow → Gift → Siddhi: every negative pattern contains its gift. Discord → Empathy. Chaos → Innovation. The shadow is the doorway.','Key 13 Gift (Empathy): when you listen so deeply the other person feels completely seen, they trust you at a cellular level.','Key 3 Shadow (Chaos): scattered attention, too many ideas, not finishing. Counter: fewer commitments, deeper execution, partnership.'],
+    apply:'Daily: which shadow am I in — Discord or Chaos? What\'s the gift on the other side? Move toward it.' },
+  { id:'book-05', num:'05', title:'The Almanac of Naval Ravikant', author:'Eric Jorgenson', tag:'core', tagLabel:'Core',
+    summary:'Wealth creation is learnable. Specific knowledge + leverage + long-term games = wealth. Happiness is a choice and a skill, not a circumstance. Build toward financial independence so you work on what you want, when you want.',
+    models:['Specific Knowledge: built from curiosity, not training. Your combination of lake culture + consciousness + hospitality + servant leadership is the moat.','Four Leverages: labor (least scalable), capital, code, media (both infinitely scalable). Build toward media. Ozark Independent = media leverage.','Long-term games: all returns in life compound — money, relationships, character. Short-term games reset.','Judgment over effort: right judgment + leverage beats raw grinding.'],
+    apply:'What specific knowledge do I have that nobody else has in exactly my combination? Build the media layer around that.' },
+  { id:'book-06', num:'06', title:'Outwitting the Devil', author:'Napoleon Hill', tag:'mind', tagLabel:'Mind',
+    summary:'Written in 1938, suppressed for decades. Hill argues 98% of humanity is controlled through drifting — moving without a definite purpose, absorbing environment without choosing it. This command center IS the anti-drift document.',
+    models:['Drifting vs Non-Drifting: 98% are made by their circumstances. 2% make their circumstances. Choose deliberately.','Seven Fears: poverty, criticism, ill health, lost love, old age, loss of liberty, death. Named fears lose their power.','Hypnotic Rhythm: repeated thoughts become automatic. Good habits create positive rhythm. The daily ritual is rhythm work.'],
+    apply:'Weekly: am I drifting or directed? What\'s my definite chief aim this week? Name it. Write it. Act on it.' },
+  { id:'book-07', num:'07', title:'Laws of Human Nature', author:'Robert Greene', tag:'biz', tagLabel:'Business',
+    summary:'18 laws drawn from history and psychology. Most of what drives human behavior is unconscious — ego, status, insecurity, shadow. Understanding these gives you leverage in every relationship. Gene Key 13 listening IS the Greene empathy strategy.',
+    models:['The Law of Irrationality: people are not primarily rational. Emotions drive decisions; rationality justifies them after. Work with emotions, not against them.','Motivation mapping: beneath every stated want is a deeper motivation — identity, fear, status need. Find that and you understand the person completely.','The Law of Shortsightedness: humans prioritize immediate over long-term. Your long-game orientation is a genuine competitive advantage.'],
+    apply:'In every significant relationship: what\'s the real motivation beneath what they\'re saying? Listen for it at the Gene Key 13 level.' },
+  { id:'book-08', num:'08', title:'High Performance Habits', author:'Brendon Burchard', tag:'biz', tagLabel:'Business',
+    summary:'6 habits that separate high performers from everyone else — not talent or motivation, but learnable habits. High performers work with more clarity, energy, and intentionality, not just harder.',
+    models:['Seek Clarity: know who you want to be, what you want to master, and how to serve others.','Generate Energy: physical first — sleep, movement, nutrition. Everything is secondary to your physical state.','Raise Necessity: find why you MUST perform. Make commitments public.','Demonstrate Courage: share your ideas, take action, speak truth even when uncomfortable. This is the habit ENFJ Protagonists struggle with most.'],
+    apply:'Ship before ready. Demonstrate Courage is the habit you need most right now. Stop waiting for perfect.' },
+  { id:'book-09', num:'09', title:'A New Earth', author:'Eckhart Tolle', tag:'spirit', tagLabel:'Spirit',
+    summary:'The ego is not you — it\'s a conditioned structure that creates suffering through identification with form, status, and story. The bar is a presence laboratory. Every shift is an opportunity to operate from being rather than ego.',
+    models:['Ego\'s Three Strategies: wanting more (greed), wanting to be right (resistance), wanting to be superior (pride). Spot these in the drama at work.','Three Modes: Enthusiasm, Enjoyment, Acceptance. If you\'re not in one of these, you\'re in ego-driven suffering.','The Pain Body: accumulated emotional pain that feeds on drama. Drama-heavy environments activate pain bodies. Don\'t let it activate yours.'],
+    apply:'When drama enters: am I in Enthusiasm, Enjoyment, or Acceptance? If not, what\'s activating my pain body? Name it. Return to presence.' },
+  { id:'book-10', num:'10', title:'Psycho-Cybernetics', author:'Maxwell Maltz', tag:'mind', tagLabel:'Mind',
+    summary:'A plastic surgeon who discovered that changing patients\' faces didn\'t always change how they felt about themselves — the self-image was the thermostat. The nervous system cannot distinguish between vivid imagination and real experience.',
+    models:['Self-image as thermostat: your life returns to match your self-image. Change the image, the life follows. This command center IS self-image work.','Mental rehearsal: visualize yourself as the 2036 version with full sensory detail. The nervous system wires for it.','The creative mechanism: your subconscious works on goals during idle time. Feed it clear images and let it work.'],
+    apply:'Morning ritual: 60 seconds seeing yourself as the 2036 version. Resort manager. Builder. Father. Community leader. In detail.' },
+  { id:'book-11', num:'11', title:'The Way of the Superior Man', author:'David Deida', tag:'mind', tagLabel:'Mind',
+    summary:'A man\'s deepest purpose must be his organizing principle — above comfort, above approval. A man without clear purpose becomes unstable. Your builder identity and calling to do God\'s work IS your purpose. Everything else organizes around it.',
+    models:['Purpose as north star: unwavering, regardless of who approves, who stays or leaves, what circumstances arise.','Live at your edge: the edge is just beyond your comfort zone. Not initiating the Oscar conversation, not fully stepping into Ken — not living at the edge.','Receive feedback without being destabilized: feel it, consider it, return to center. Stability is presence, not rigidity.'],
+    apply:'Where are you not living at your edge right now? The Oscar conversation? The resort manager pitch? That\'s where the growth is.' },
+  { id:'book-12', num:'12', title:'Rumi — Poetry & Philosophy', author:'Jalal ad-Din Rumi', tag:'spirit', tagLabel:'Spirit',
+    summary:'13th-century Sufi mystic. Core themes: longing of the soul for its source, surrender as the highest form of trust, love as the fundamental organizing force. Your consciousness work with Ken is Rumi territory.',
+    models:['The Reed Flute: the soul longs for its origin, and that longing IS the path. Your desire to minister, to father, to build — this is the reed\'s cry. Follow it.','Surrender ≠ weakness: surrender is the highest form of trust. Blaze in flow, wu wei, Gene Key 13 empathy — all forms of surrender.','The Guest House: every emotion is a visitor. Welcome them all as guides, not permanent residents. The frame for processing drama at work.'],
+    apply:'When pulled into bar drama: welcome the dark thought, meet it at the door. Name it. Welcome it. Let it pass through.' }
+];
+
+// ══════════════════════════════════════════
+// STORAGE HELPERS
+// ══════════════════════════════════════════
+function getLocal(key, def) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? def; } catch { return def; }
+}
+function setLocal(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+}
+
+// ══════════════════════════════════════════
+// LOAD DATA
+// ══════════════════════════════════════════
+let DATA = null;
+let currentLogType = 'win';
+
+async function loadData() {
+  try {
+    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    DATA = await res.json();
+    renderAll(DATA);
+    setSyncStatus('synced', DATA._meta?.last_updated);
+  } catch (e) {
+    console.warn('Could not load data.json, using localStorage fallback');
+    DATA = null;
+    renderAll(null);
+    setSyncStatus('local', null);
+  } finally {
+    hideLoader();
+  }
+}
+
+function renderAll(data) {
+  renderStats(data?.stats);
+  renderWeekly(data?.weekly_intentions);
+  renderLog(data?.growth_log);
+  renderKen(data?.ken_alignment);
+  renderIntel(data?.newsletter?.intel_notes);
+  renderPriorities(data?.priorities);
+  renderPerformance(data?.stats);
+  renderBooks();
+}
+
+// ══════════════════════════════════════════
+// RENDER SIDEBAR STATS
+// ══════════════════════════════════════════
+function renderStats(stats) {
+  if (!stats) return;
+  const el = document.getElementById('sidebar-stats');
+  el.innerHTML = `
+    <span class="stats-title">Live Stats</span>
+    <div class="stat"><span class="stat-k">Weight</span><span class="stat-v ${stats.weight_current <= stats.weight_goal ? 'ok' : 'warn'}">${stats.weight_current}→${stats.weight_goal}</span></div>
+    <div class="stat"><span class="stat-k">Testosterone</span><span class="stat-v ${stats.testosterone_status}">${stats.testosterone}</span></div>
+    <div class="stat"><span class="stat-k">LH</span><span class="stat-v ${stats.lh_status}">${stats.lh}</span></div>
+    <div class="stat"><span class="stat-k">Estradiol</span><span class="stat-v ${stats.estradiol_status}">${stats.estradiol}↑</span></div>
+    <div class="stat"><span class="stat-k">ALT/AST</span><span class="stat-v ${stats.alt_ast_status}">${stats.alt_ast}</span></div>
+    <div class="stat"><span class="stat-k">Ken Mtg</span><span class="stat-v ${stats.ken_meeting_status}">${stats.ken_meeting}</span></div>
+    <div class="stat"><span class="stat-k">Protocol</span><span class="stat-v ${stats.protocol_status}">${stats.protocol_start}</span></div>
+    <div class="stat"><span class="stat-k">Buddy's Role</span><span class="stat-v ${stats.buddys_role_status}">${stats.buddys_role}</span></div>
+  `;
+}
+
+// ══════════════════════════════════════════
+// RENDER WEEKLY
+// ══════════════════════════════════════════
+function renderWeekly(wi) {
+  const el = document.getElementById('weekly-banner-container');
+  if (!wi) { el.innerHTML = '<p style="font-size:12px;color:var(--cream3);">No weekly intentions in data.json yet.</p>'; return; }
+  el.innerHTML = `
+    <div class="weekly-banner">
+      <div class="wb-left">
+        <div class="wb-week">Week of ${esc(wi.week_of)}</div>
+        <div class="wb-theme">${esc(wi.theme)}</div>
+      </div>
+      <ul class="wb-intentions" style="flex:1;max-width:400px;">
+        ${(wi.intentions||[]).map(i=>`<li>${esc(i)}</li>`).join('')}
+      </ul>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════
+// RENDER LOG
+// ══════════════════════════════════════════
+function renderLog(remoteEntries) {
+  const localEntries = getLocal('growth-log-v2', []);
+  const allEntries = [...localEntries, ...(remoteEntries||[]).filter(r => !localEntries.find(l=>l.id===r.id))];
+  const icons = { win:'🏆', insight:'💡', friction:'🔥', intention:'🎯' };
+  const labels = { win:'WIN', insight:'INSIGHT', friction:'FRICTION', intention:'INTENTION' };
+  const el = document.getElementById('log-entries');
+  if (!allEntries.length) { el.innerHTML = '<p style="font-size:12px;color:var(--cream3);padding:12px;">No entries yet. Write your first one above.</p>'; return; }
+  el.innerHTML = allEntries.map((e,i)=>`
+    <div class="log-entry ${esc(e.type)}">
+      <div class="log-entry-header">
+        <span class="log-entry-type">${icons[e.type]||''} ${labels[e.type]||e.type.toUpperCase()}</span>
+        <span class="log-entry-date">${esc(e.date)}</span>
+      </div>
+      <div class="log-entry-text">${esc(e.text)}</div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+// ADD LOG ENTRY
+// ══════════════════════════════════════════
+function addLogEntry() {
+  const input = document.getElementById('log-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const entry = {
+    id: 'local-' + Date.now(),
+    type: currentLogType,
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    text
+  };
+  const entries = getLocal('growth-log-v2', []);
+  entries.unshift(entry);
+  setLocal('growth-log-v2', entries);
+  input.value = '';
+  renderLog(DATA?.growth_log);
+}
+
+function selectLogType(btn, type) {
+  document.querySelectorAll('.log-type-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  currentLogType = type;
+}
+
+function copyLogJSON() {
+  const entries = getLocal('growth-log-v2', []);
+  const json = JSON.stringify(entries, null, 2);
+  navigator.clipboard.writeText(json).then(()=>{
+    alert('Log JSON copied! Paste it into data.json → "growth_log" array in your GitHub repo.');
+  });
+}
+
+// ══════════════════════════════════════════
+// RENDER KEN
+// ══════════════════════════════════════════
+function renderKen(ken) {
+  const el = document.getElementById('ken-container');
+  if (!ken) { el.innerHTML='<p style="font-size:12px;color:var(--cream3);">No Ken alignment data yet.</p>'; return; }
+  el.innerHTML = `
+    <div style="background:var(--bg3);border:1px solid var(--gold);padding:24px 28px;margin-bottom:20px;position:relative;">
+      <div style="position:absolute;top:-1px;left:20px;background:var(--bg);padding:0 8px;font-family:var(--font-mono);font-size:7px;letter-spacing:0.15em;color:var(--gold);">LAST CONTACT · ${esc(ken.last_conversation)}</div>
+      <blockquote style="font-family:var(--font-body);font-style:italic;font-size:18px;color:var(--gold2);line-height:1.6;margin-bottom:8px;">"${esc(ken.key_quote)}"</blockquote>
+      <div style="font-family:var(--font-mono);font-size:7px;letter-spacing:0.15em;text-transform:uppercase;color:var(--cream3);">Status: ${esc(ken.status)}</div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);padding:20px 24px;margin-bottom:16px;">
+      <div style="font-family:var(--font-mono);font-size:7px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:10px;">NEXT ACTION</div>
+      <p style="font-size:13px;color:var(--cream2);">${esc(ken.next_action)}</p>
+    </div>
+    <div style="font-family:var(--font-mono);font-size:7px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:8px;">CONVERSATION NOTES</div>
+    ${(ken.notes||[]).map(n=>`
+      <div class="ken-note-item">
+        <div class="ken-note-date">${esc(n.date)}</div>
+        <div class="ken-note-text">${esc(n.text)}</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ══════════════════════════════════════════
+// RENDER INTEL
+// ══════════════════════════════════════════
+function renderIntel(notes) {
+  const el = document.getElementById('intel-container');
+  if (!notes?.length) { el.innerHTML='<p style="font-size:12px;color:var(--cream3);">No newsletter intel yet. Your agent drops notes here after restaurant visits and community events.</p>'; return; }
+  el.innerHTML = `<div style="border:1px solid var(--border);">
+    ${notes.map(n=>`
+      <div class="intel-item">
+        <div>
+          <div class="intel-date">${esc(n.date)}</div>
+          <div class="intel-source">${esc(n.source)}</div>
+        </div>
+        <div class="intel-text">${esc(n.note)}</div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+// ══════════════════════════════════════════
+// RENDER PRIORITIES
+// ══════════════════════════════════════════
+function renderPriorities(priorities) {
+  const el = document.getElementById('priorities-container');
+  if (!priorities?.length) return;
+  el.innerHTML = priorities.map(p=>`
+    <div class="priority">
+      <div class="pri-n">${p.num}</div>
+      <div>
+        <div class="pri-title">${esc(p.title)}</div>
+        <div class="pri-body">${esc(p.body)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+// RENDER PERFORMANCE
+// ══════════════════════════════════════════
+function renderPerformance(stats) {
+  const el = document.getElementById('performance-container');
+  if (!stats) { el.innerHTML='<p style="color:var(--cream3);font-size:12px;">Stats loading from data.json...</p>'; return; }
+  const pct = Math.round(((stats.weight_start - stats.weight_current) / (stats.weight_start - stats.weight_goal)) * 100);
+  el.innerHTML = `
+    <div class="grid-2">
+      <div class="card">
+        <span class="card-label">Weight Arc</span>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;">
+          <div><div style="font-family:var(--font-display);font-size:48px;color:var(--cream);line-height:1;">${stats.weight_current}</div><div style="font-family:var(--font-mono);font-size:8px;color:var(--cream3);">CURRENT LBS</div></div>
+          <div style="font-family:var(--font-display);font-size:22px;color:var(--gold);opacity:0.4;">→</div>
+          <div><div style="font-family:var(--font-display);font-size:48px;color:var(--gold);line-height:1;">${stats.weight_goal}</div><div style="font-family:var(--font-mono);font-size:8px;color:var(--gold);">GOAL LBS</div></div>
+        </div>
+        <div style="height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:6px;">
+          <div style="height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:${Math.max(0,Math.min(100,pct))}%;transition:width 1s ease;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:8px;color:var(--cream3);">
+          <span>Start ${stats.weight_start}</span><span>Now ${stats.weight_current}</span><span>Goal ${stats.weight_goal}</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-label">Hone Health Labs · April 7, 2026</span>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border2);"><span style="font-size:12px;color:var(--cream2);">Testosterone</span><span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--amber);">${esc(stats.testosterone)} ↓</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border2);"><span style="font-size:12px;color:var(--cream2);">LH</span><span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--red);">${esc(stats.lh)} ↓↓</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border2);"><span style="font-size:12px;color:var(--cream2);">Estradiol</span><span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--red);">${esc(stats.estradiol)} ↑</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border2);"><span style="font-size:12px;color:var(--cream2);">ALT/AST</span><span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--red);">${esc(stats.alt_ast)}</span></div>
+        <div style="margin-top:10px;padding:8px 12px;background:var(--red2);border-left:2px solid var(--red);font-size:11px;color:var(--cream2);">Primary lever: body fat ↓ → aromatase ↓ → estradiol ↓ → LH ↑ → testosterone ↑. The physical transformation IS the hormone protocol.</div>
+      </div>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════
+// RENDER BOOKS
+// ══════════════════════════════════════════
+function renderBooks() {
+  const grid = document.getElementById('book-grid');
+  grid.innerHTML = BOOKS.map(b=>`
+    <div class="book-card" onclick="toggleBook(this,'${b.id}')">
+      <div class="book-header">
+        <div>
+          <span class="book-num">${b.num}</span>
+          <div class="book-title">${esc(b.title)}</div>
+          <span class="book-author">${esc(b.author)}</span>
+          <span class="book-tag ${b.tag}">${b.tagLabel}</span>
+        </div>
+        <div class="book-toggle">+</div>
+      </div>
+      <div class="book-details">
+        <div class="book-read-status">
+          <input type="checkbox" class="read-toggle" id="read-${b.id}" onchange="saveRead('${b.id}',this.checked)" ${getLocal('book-read-'+b.id,false)?'checked':''}>
+          <span class="read-label">I've read this</span>
+        </div>
+        <div class="book-summary">${esc(b.summary)}</div>
+        <div class="book-models">
+          <span class="book-models-title">Key Mental Models</span>
+          ${b.models.map(m=>`<div class="book-model-item">${esc(m)}</div>`).join('')}
+        </div>
+        <div class="book-apply">${esc(b.apply)}</div>
+        <span class="book-notes-label">Your Notes</span>
+        <div id="notes-list-${b.id}"></div>
+        <div class="note-input-row">
+          <input class="note-input" id="note-input-${b.id}" placeholder="Add a note, insight, or quote..." onkeydown="if(event.key==='Enter')addNote('${b.id}')">
+          <button class="note-btn" onclick="addNote('${b.id}')">ADD</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // render existing notes
+  BOOKS.forEach(b => renderBookNotes(b.id));
+}
+
+function toggleBook(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.book-card.expanded').forEach(c=>c.classList.remove('expanded'));
+  if (!wasExpanded) card.classList.add('expanded');
+}
+
+function renderBookNotes(bookId) {
+  const list = document.getElementById('notes-list-' + bookId);
+  if (!list) return;
+  const notes = getLocal('book-notes-' + bookId, []);
+  list.innerHTML = notes.map((n,i)=>`
+    <div class="note-item">
+      <span class="note-text">${esc(n.text)}</span>
+      <span class="note-date">${n.date}</span>
+      <span class="note-del" onclick="deleteNote('${bookId}',${i})">✕</span>
+    </div>
+  `).join('');
+}
+
+function addNote(bookId) {
+  const input = document.getElementById('note-input-' + bookId);
+  const text = input.value.trim();
+  if (!text) return;
+  const notes = getLocal('book-notes-' + bookId, []);
+  notes.push({ text, date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) });
+  setLocal('book-notes-' + bookId, notes);
+  input.value = '';
+  renderBookNotes(bookId);
+}
+
+function deleteNote(bookId, index) {
+  const notes = getLocal('book-notes-' + bookId, []);
+  notes.splice(index, 1);
+  setLocal('book-notes-' + bookId, notes);
+  renderBookNotes(bookId);
+}
+
+function saveRead(bookId, checked) {
+  setLocal('book-read-' + bookId, checked);
+}
+
+// ══════════════════════════════════════════
+// SYNC STATUS
+// ══════════════════════════════════════════
+function setSyncStatus(status, timestamp) {
+  const dot = document.getElementById('sync-dot');
+  const text = document.getElementById('sync-text');
+  if (status === 'synced') {
+    dot.classList.remove('stale');
+    const d = timestamp ? new Date(timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'today';
+    text.textContent = 'Synced ' + d;
+  } else {
+    dot.classList.add('stale');
+    text.textContent = 'Local only — no data.json';
+  }
+}
+
+function manualRefresh() {
+  document.getElementById('sync-text').textContent = 'Refreshing...';
+  loadData();
+}
+
+// ══════════════════════════════════════════
+// LOADER
+// ══════════════════════════════════════════
+function hideLoader() {
+  const overlay = document.getElementById('loading-overlay');
+  overlay.style.opacity = '0';
+  setTimeout(()=>overlay.style.display='none', 400);
+}
+
+// ══════════════════════════════════════════
+// NAV HIGHLIGHT
+// ══════════════════════════════════════════
+const navLinks = document.querySelectorAll('.nav-link');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l=>l.classList.remove('active'));
+      const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.2 });
+
+// observe after render
+setTimeout(()=>{
+  document.querySelectorAll('section[id], div[id]').forEach(s=>s.id&&obs.observe(s));
+}, 500);
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+loadData();
+</script>
+</body>
+</html>

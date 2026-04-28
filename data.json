@@ -1,0 +1,163 @@
+{
+  "_meta": {
+    "last_updated": "2026-04-28T00:00:00Z",
+    "updated_by": "manual",
+    "version": "1.0"
+  },
+
+  "stats": {
+    "weight_current": 219,
+    "weight_goal": 205,
+    "weight_start": 235,
+    "testosterone": "341 ng/dL",
+    "testosterone_status": "warn",
+    "lh": "Very Low",
+    "lh_status": "bad",
+    "estradiol": "48.5",
+    "estradiol_status": "bad",
+    "alt_ast": "Elevated",
+    "alt_ast_status": "bad",
+    "ken_meeting": "Apr 28",
+    "ken_meeting_status": "gold",
+    "protocol_start": "Apr 20",
+    "protocol_status": "warn",
+    "buddys_role": "Fall Target",
+    "buddys_role_status": "ok"
+  },
+
+  "growth_log": [
+    {
+      "id": "log-001",
+      "type": "insight",
+      "date": "Apr 28, 2026",
+      "text": "Ken said 'I've been trying to think about how to build a business around you.' That's not a compliment — that's a signal. Walk in Tuesday knowing this is two builders figuring out what building together looks like, not an interview."
+    },
+    {
+      "id": "log-002",
+      "type": "friction",
+      "date": "Apr 27, 2026",
+      "text": "Environment at Buddy's: drama, complaining, Oscar scatterbrained and not tracking things. Key 13 Shadow (Discord) is right there. Reframe: this is the systems void that makes me indispensable. Fill gaps without martyrdom. Document everything."
+    }
+  ],
+
+  "priorities": [
+    {
+      "num": 1,
+      "title": "Debt Payoff & Financial Stabilization",
+      "body": "Every dollar toward freedom. Bitcoin DCA $100/month automated.",
+      "status": "active"
+    },
+    {
+      "num": 2,
+      "title": "Fitness & Wellness Optimization",
+      "body": "219 → 205 lbs. Peptide protocol active April 20. Physician consult first.",
+      "status": "active"
+    },
+    {
+      "num": 3,
+      "title": "Bartending Craft",
+      "body": "Top 20 cocktails by heart. Best bar experience on the lake.",
+      "status": "active"
+    },
+    {
+      "num": 4,
+      "title": "Community Intelligence Gathering",
+      "body": "1–2 restaurant visits per week. Feed the newsletter Business Beat section.",
+      "status": "active"
+    },
+    {
+      "num": 5,
+      "title": "The Ozark Independent Newsletter",
+      "body": "Claude drafts, Deryl approves. Consistent publication. Truth and community.",
+      "status": "active"
+    }
+  ],
+
+  "ken_alignment": {
+    "last_conversation": "Apr 28, 2026",
+    "status": "Meeting Today",
+    "key_quote": "I've been trying to think about how I could build a business around you.",
+    "next_action": "Tuesday conversation — recalibrate after",
+    "notes": [
+      {
+        "date": "Apr 28, 2026",
+        "text": "Meeting scheduled. Walk in with alignment doc. Ask the 6 questions. Listen more than talk."
+      }
+    ]
+  },
+
+  "newsletter": {
+    "current_issue": 1,
+    "status": "In Progress",
+    "next_publish": "TBD",
+    "intel_notes": [
+      {
+        "date": "Apr 28, 2026",
+        "source": "General",
+        "note": "Command center and agent system being built — this is a Business Beat story eventually."
+      }
+    ]
+  },
+
+  "book_notes": {
+    "book-01": {
+      "read": false,
+      "notes": []
+    },
+    "book-02": {
+      "read": false,
+      "notes": []
+    },
+    "book-03": {
+      "read": false,
+      "notes": []
+    },
+    "book-04": {
+      "read": false,
+      "notes": []
+    },
+    "book-05": {
+      "read": false,
+      "notes": []
+    },
+    "book-06": {
+      "read": false,
+      "notes": []
+    },
+    "book-07": {
+      "read": false,
+      "notes": []
+    },
+    "book-08": {
+      "read": false,
+      "notes": []
+    },
+    "book-09": {
+      "read": false,
+      "notes": []
+    },
+    "book-10": {
+      "read": false,
+      "notes": []
+    },
+    "book-11": {
+      "read": false,
+      "notes": []
+    },
+    "book-12": {
+      "read": false,
+      "notes": []
+    }
+  },
+
+  "weekly_intentions": {
+    "week_of": "Apr 28, 2026",
+    "theme": "The Alignment Week",
+    "intentions": [
+      "Walk into Ken meeting as a builder meeting a builder — not an applicant",
+      "Fill Oscar's communication gaps without martyrdom — document everything",
+      "Draft Ozark Independent Issue 1",
+      "One WHO call I've been putting off"
+    ]
+  }
+}
