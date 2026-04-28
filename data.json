@@ -1,8 +1,15 @@
 {
   "_meta": {
-    "last_updated": "2026-04-28T00:00:00Z",
-    "updated_by": "manual",
-    "version": "1.0"
+    "last_updated": "2026-04-28T15:00:00Z",
+    "updated_by": "claude-rebuild",
+    "version": "2.0"
+  },
+
+  "north_star": {
+    "mission": "Build the skills, the money, and the character — then go back and give it.",
+    "calling": "I am here to do God's work — to spread love, lead with authenticity, truth, compassion, and courage, and build things that better humanity.",
+    "phase": "Foundation",
+    "phase_description": "Stack cash, clear debt, prepare for Puerto Rico"
   },
 
   "stats": {
@@ -17,147 +24,203 @@
     "estradiol_status": "bad",
     "alt_ast": "Elevated",
     "alt_ast_status": "bad",
-    "ken_meeting": "Apr 28",
-    "ken_meeting_status": "gold",
+    "debt_total": 33000,
+    "debt_status": "bad",
+    "cash_on_hand": 4000,
+    "cash_status": "warn",
     "protocol_start": "Apr 20",
     "protocol_status": "warn",
-    "buddys_role": "Fall Target",
-    "buddys_role_status": "ok"
+    "buddys_role": "Summer Cash",
+    "buddys_role_status": "ok",
+    "ken_next_meeting": "May 5",
+    "ken_meeting_status": "gold"
+  },
+
+  "ken_alignment": {
+    "last_conversation": "Apr 28, 2026",
+    "duration": "1hr 20min",
+    "status": "Trial Week Being Scheduled",
+    "relationship_temperature": "Strong — Ken was moved by the presentation Deryl sent",
+    "key_quote": "I've been trying to think about how I could build a business around you.",
+    "next_meeting": "May 5, 2026 at 2pm Ken's time / 1pm Deryl's time",
+    "next_action": "Bring compensation number, timing decision, and trial week date options to May 5th meeting",
+    "trial_week": "Proposed — schedule within 30 days",
+    "role_structure": "30 hours/week supporting Ken, 10 hours/week building Deryl's businesses",
+    "notes": [
+      {
+        "date": "Apr 28, 2026",
+        "text": "First real alignment conversation. Ken confirmed he wants to build something around Deryl. Discussed executive assistant role, Puerto Rico trial week, concierge business, luxury tours, boat rentals, Airbnb/Turo arbitrage. Ken proposed acquiring an existing concierge company. Financial reality shared openly — $33k debt, $4k cash, summer earning potential $5-10k/month. Decision: finish summer at Buddy's, stack cash, then transition. May 5th follow-up set to discuss compensation and timing."
+      }
+    ],
+    "deryl_action_items": [
+      "Schedule trial week in Puerto Rico (within 30 days)",
+      "Bring specific compensation number to May 5th meeting",
+      "Build one-page skills and offerings doc for Ken",
+      "Create financial snapshot: balances, income forecast, debt plan",
+      "Contact collection agencies to negotiate defaulted card balances",
+      "Research OUPV captain's license requirements",
+      "Start Spanish — 10 hours/week",
+      "Read Unreasonable Hospitality"
+    ],
+    "ken_commitments": [
+      "Arrange trial week in Puerto Rico",
+      "Provide weekly mentorship/growth sessions",
+      "Explore concierge company acquisition",
+      "Introduce local restaurant owner contacts",
+      "Help with housing and car logistics for Puerto Rico"
+    ],
+    "business_ideas_confirmed": [
+      "Concierge services company (possibly acquire existing local company)",
+      "Curated luxury island tours (high-end vehicles, scripted experiences)",
+      "Boat rentals and captain services",
+      "Airbnb rental arbitrage",
+      "Turo vehicle monetization",
+      "Beach chair rental / hospitality services"
+    ]
   },
 
   "growth_log": [
     {
-      "id": "log-001",
+      "id": "log-003",
+      "type": "win",
+      "date": "Apr 28, 2026",
+      "text": "Ken conversation happened. He was genuinely moved by the alignment presentation. Said he's been thinking about how to build a business around me. Trial week in Puerto Rico proposed. May 5th follow-up set. This is real."
+    },
+    {
+      "id": "log-004",
       "type": "insight",
       "date": "Apr 28, 2026",
+      "text": "The North Star crystallized: build the skills, money, and character — then go back and give it. Marshfield isn't where I settle. It's where I serve. That distinction changes everything. I come back with something to give, not somewhere to retreat to."
+    },
+    {
+      "id": "log-005",
+      "type": "insight",
+      "date": "Apr 28, 2026",
+      "text": "The speaker vision has been there since childhood. The 2018 high school video triggered it. I've always been called to lead and pour back into people. Everything I'm building — Ken, Puerto Rico, hospitality, boats — is the path to having something worth giving. The mission is God's work. The businesses are the vehicle."
+    },
+    {
+      "id": "log-001",
+      "type": "insight",
+      "date": "Apr 27, 2026",
       "text": "Ken said 'I've been trying to think about how to build a business around you.' That's not a compliment — that's a signal. Walk in Tuesday knowing this is two builders figuring out what building together looks like, not an interview."
     },
     {
       "id": "log-002",
       "type": "friction",
       "date": "Apr 27, 2026",
-      "text": "Environment at Buddy's: drama, complaining, Oscar scatterbrained and not tracking things. Key 13 Shadow (Discord) is right there. Reframe: this is the systems void that makes me indispensable. Fill gaps without martyrdom. Document everything."
+      "text": "The environment at Buddy's: drama, complaining, Oscar scatterbrained and not tracking things. Key 13 Shadow (Discord) is right there. Reframe: this is the systems void that makes me indispensable. Fill gaps without martyrdom. Document everything. The path through this season requires protecting my field while stacking cash."
     }
   ],
 
   "priorities": [
     {
       "num": 1,
-      "title": "Debt Payoff & Financial Stabilization",
-      "body": "Every dollar toward freedom. Bitcoin DCA $100/month automated.",
-      "status": "active"
+      "title": "Ken Alignment — May 5th Meeting",
+      "body": "Bring compensation number, timing decision, and trial week dates. This is the most important conversation of the year.",
+      "status": "active",
+      "deadline": "May 5, 2026"
     },
     {
       "num": 2,
-      "title": "Fitness & Wellness Optimization",
-      "body": "219 → 205 lbs. Peptide protocol active April 20. Physician consult first.",
-      "status": "active"
+      "title": "Stack Cash This Summer",
+      "body": "Buddy's Resort through summer. $5-10k/month potential. Clear debt, build cash reserve before Puerto Rico transition.",
+      "status": "active",
+      "deadline": "Sep 2026"
     },
     {
       "num": 3,
-      "title": "Bartending Craft",
-      "body": "Top 20 cocktails by heart. Best bar experience on the lake.",
-      "status": "active"
+      "title": "Debt Negotiation",
+      "body": "Contact collection agencies. Negotiate lump-sum settlements on $18k defaulted credit card. Target 40-60% off if possible.",
+      "status": "active",
+      "deadline": "End of May 2026"
     },
     {
       "num": 4,
-      "title": "Community Intelligence Gathering",
-      "body": "1–2 restaurant visits per week. Feed the newsletter Business Beat section.",
-      "status": "active"
+      "title": "Health Transformation",
+      "body": "219 → 205 lbs. Peptide protocol active. Physician consult on labs. Body is the first business.",
+      "status": "active",
+      "deadline": "Sep 2026"
     },
     {
       "num": 5,
-      "title": "The Ozark Independent Newsletter",
-      "body": "Claude drafts, Deryl approves. Consistent publication. Truth and community.",
-      "status": "active"
+      "title": "Puerto Rico Trial Week",
+      "body": "Schedule and execute trial week with Ken within 30 days. Experience the life before committing.",
+      "status": "active",
+      "deadline": "May 2026"
     }
   ],
 
-  "ken_alignment": {
-    "last_conversation": "Apr 28, 2026",
-    "status": "Meeting Today",
-    "key_quote": "I've been trying to think about how I could build a business around you.",
-    "next_action": "Tuesday conversation — recalibrate after",
-    "notes": [
-      {
-        "date": "Apr 28, 2026",
-        "text": "Meeting scheduled. Walk in with alignment doc. Ask the 6 questions. Listen more than talk."
-      }
+  "weekly_intentions": {
+    "week_of": "Apr 28, 2026",
+    "theme": "Post-Ken Clarity Week",
+    "intentions": [
+      "Schedule Puerto Rico trial week with Ken",
+      "Build compensation number and one-page skills doc for May 5th",
+      "Start financial snapshot — balances, income forecast, debt plan",
+      "Begin Spanish study — first 10 hours this week"
     ]
   },
 
   "newsletter": {
-    "current_issue": 1,
-    "status": "In Progress",
-    "next_publish": "TBD",
-    "intel_notes": [
+    "status": "Deprioritized — not active this season",
+    "intel_notes": []
+  },
+
+  "businesses": {
+    "active": [
       {
-        "date": "Apr 28, 2026",
-        "source": "General",
-        "note": "Command center and agent system being built — this is a Business Beat story eventually."
+        "name": "Buddy's Resort — Bartending",
+        "stage": "Active",
+        "purpose": "Cash flow engine for summer 2026",
+        "monthly_potential": "$5,000-10,000"
       }
+    ],
+    "building": [
+      {
+        "name": "Ken Wilkins — Executive Assistant / Operations Partner",
+        "stage": "Negotiating",
+        "location": "Puerto Rico",
+        "next_step": "May 5th meeting — compensation and timing"
+      },
+      {
+        "name": "Concierge Services Company",
+        "stage": "Concept",
+        "location": "Puerto Rico",
+        "next_step": "Research existing companies Ken mentioned acquiring"
+      },
+      {
+        "name": "Curated Luxury Island Tours",
+        "stage": "Concept",
+        "location": "Puerto Rico",
+        "next_step": "Research vehicles, routes, pricing during trial week"
+      },
+      {
+        "name": "Boat Rentals / Captain Services",
+        "stage": "Concept",
+        "location": "Puerto Rico / Lake of the Ozarks",
+        "next_step": "Research OUPV captain's license requirements"
+      }
+    ],
+    "long_game": [
+      "STR Portfolio — Lake of the Ozarks",
+      "Land Flip — Miller County",
+      "Event Production Company (Growth House model)",
+      "Fellowship of Minds — Rana, Prasad, Scott"
     ]
   },
 
   "book_notes": {
-    "book-01": {
-      "read": false,
-      "notes": []
-    },
-    "book-02": {
-      "read": false,
-      "notes": []
-    },
-    "book-03": {
-      "read": false,
-      "notes": []
-    },
-    "book-04": {
-      "read": false,
-      "notes": []
-    },
-    "book-05": {
-      "read": false,
-      "notes": []
-    },
-    "book-06": {
-      "read": false,
-      "notes": []
-    },
-    "book-07": {
-      "read": false,
-      "notes": []
-    },
-    "book-08": {
-      "read": false,
-      "notes": []
-    },
-    "book-09": {
-      "read": false,
-      "notes": []
-    },
-    "book-10": {
-      "read": false,
-      "notes": []
-    },
-    "book-11": {
-      "read": false,
-      "notes": []
-    },
-    "book-12": {
-      "read": false,
-      "notes": []
-    }
-  },
-
-  "weekly_intentions": {
-    "week_of": "Apr 28, 2026",
-    "theme": "The Alignment Week",
-    "intentions": [
-      "Walk into Ken meeting as a builder meeting a builder — not an applicant",
-      "Fill Oscar's communication gaps without martyrdom — document everything",
-      "Draft Ozark Independent Issue 1",
-      "One WHO call I've been putting off"
-    ]
+    "book-01": { "read": false, "notes": [] },
+    "book-02": { "read": false, "notes": [] },
+    "book-03": { "read": false, "notes": [] },
+    "book-04": { "read": false, "notes": [] },
+    "book-05": { "read": false, "notes": [] },
+    "book-06": { "read": false, "notes": [] },
+    "book-07": { "read": false, "notes": [] },
+    "book-08": { "read": false, "notes": [] },
+    "book-09": { "read": false, "notes": [] },
+    "book-10": { "read": false, "notes": [] },
+    "book-11": { "read": false, "notes": [] },
+    "book-12": { "read": false, "notes": [] }
   }
 }
