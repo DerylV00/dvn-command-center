@@ -1,19 +1,17 @@
 {
   "_meta": {
-    "last_updated": "2026-04-28T15:00:00Z",
-    "updated_by": "claude-rebuild",
+    "last_updated": "2026-04-28T16:46:00Z",
+    "updated_by": "optimus-agent",
     "version": "2.0"
   },
-
   "north_star": {
     "mission": "Build the skills, the money, and the character — then go back and give it.",
     "calling": "I am here to do God's work — to spread love, lead with authenticity, truth, compassion, and courage, and build things that better humanity.",
     "phase": "Foundation",
     "phase_description": "Stack cash, clear debt, prepare for Puerto Rico"
   },
-
   "stats": {
-    "weight_current": 219,
+    "weight_current": 215.4,
     "weight_goal": 205,
     "weight_start": 235,
     "testosterone": "341 ng/dL",
@@ -28,22 +26,21 @@
     "debt_status": "bad",
     "cash_on_hand": 4000,
     "cash_status": "warn",
-    "protocol_start": "Apr 20",
+    "protocol_start": "On Hold — awaiting Dr. Buol labs",
     "protocol_status": "warn",
     "buddys_role": "Summer Cash",
     "buddys_role_status": "ok",
-    "ken_next_meeting": "May 5",
+    "ken_next_meeting": "May 5, 1pm CT",
     "ken_meeting_status": "gold"
   },
-
   "ken_alignment": {
     "last_conversation": "Apr 28, 2026",
     "duration": "1hr 20min",
     "status": "Trial Week Being Scheduled",
-    "relationship_temperature": "Strong — Ken was moved by the presentation Deryl sent",
+    "relationship_temperature": "Strong — Ken confirmed he wants to build something around Deryl",
     "key_quote": "I've been trying to think about how I could build a business around you.",
-    "next_meeting": "May 5, 2026 at 2pm Ken's time / 1pm Deryl's time",
-    "next_action": "Bring compensation number, timing decision, and trial week date options to May 5th meeting",
+    "next_meeting": "May 5, 2026 at 2pm Ken's time / 1pm Deryl's time (CT)",
+    "next_action": "Bring compensation number, timing decision, and trial week date options",
     "trial_week": "Proposed — schedule within 30 days",
     "role_structure": "30 hours/week supporting Ken, 10 hours/week building Deryl's businesses",
     "notes": [
@@ -78,8 +75,20 @@
       "Beach chair rental / hospitality services"
     ]
   },
-
   "growth_log": [
+    {
+      "id": "GL-2026-04-28-001",
+      "date": "Apr 28, 2026",
+      "type": "KEN",
+      "title": "Ken Wilkins alignment conversation — 1hr 20min",
+      "summary": "First real alignment conversation. Ken confirmed he wants to build something around Deryl. Role = EA + ops partner + business builder in Puerto Rico. Trial week proposed. Next meeting May 5.",
+      "action_items": [
+        "Prepare compensation number by May 5",
+        "Define timing decision — finish summer vs earlier",
+        "Prepare trial week date options",
+        "Follow up with Jesse re: equity"
+      ]
+    },
     {
       "id": "log-003",
       "type": "win",
@@ -111,7 +120,6 @@
       "text": "The environment at Buddy's: drama, complaining, Oscar scatterbrained and not tracking things. Key 13 Shadow (Discord) is right there. Reframe: this is the systems void that makes me indispensable. Fill gaps without martyrdom. Document everything. The path through this season requires protecting my field while stacking cash."
     }
   ],
-
   "priorities": [
     {
       "num": 1,
@@ -149,7 +157,6 @@
       "deadline": "May 2026"
     }
   ],
-
   "weekly_intentions": {
     "week_of": "Apr 28, 2026",
     "theme": "Post-Ken Clarity Week",
@@ -160,12 +167,10 @@
       "Begin Spanish study — first 10 hours this week"
     ]
   },
-
   "newsletter": {
     "status": "Deprioritized — not active this season",
     "intel_notes": []
   },
-
   "businesses": {
     "active": [
       {
@@ -208,19 +213,64 @@
       "Fellowship of Minds — Rana, Prasad, Scott"
     ]
   },
-
   "book_notes": {
-    "book-01": { "read": false, "notes": [] },
-    "book-02": { "read": false, "notes": [] },
-    "book-03": { "read": false, "notes": [] },
-    "book-04": { "read": false, "notes": [] },
-    "book-05": { "read": false, "notes": [] },
-    "book-06": { "read": false, "notes": [] },
-    "book-07": { "read": false, "notes": [] },
-    "book-08": { "read": false, "notes": [] },
-    "book-09": { "read": false, "notes": [] },
-    "book-10": { "read": false, "notes": [] },
-    "book-11": { "read": false, "notes": [] },
-    "book-12": { "read": false, "notes": [] }
-  }
+    "book-01": {
+      "read": false,
+      "notes": []
+    },
+    "book-02": {
+      "read": false,
+      "notes": []
+    },
+    "book-03": {
+      "read": false,
+      "notes": []
+    },
+    "book-04": {
+      "read": false,
+      "notes": []
+    },
+    "book-05": {
+      "read": false,
+      "notes": []
+    },
+    "book-06": {
+      "read": false,
+      "notes": []
+    },
+    "book-07": {
+      "read": false,
+      "notes": []
+    },
+    "book-08": {
+      "read": false,
+      "notes": []
+    },
+    "book-09": {
+      "read": false,
+      "notes": []
+    },
+    "book-10": {
+      "read": false,
+      "notes": []
+    },
+    "book-11": {
+      "read": false,
+      "notes": []
+    },
+    "book-12": {
+      "read": false,
+      "notes": []
+    }
+  },
+  "health_log": [
+    {
+      "date": "Apr 28, 2026",
+      "weight": 215.4,
+      "energy": 7,
+      "sleep_hours": 8,
+      "notes": "Recovery day after high-output weekend (3x 19k steps, 12-15hr days). Leg day at gym. Sauna + mobility. Blood draw with Dr. Buol for peptide baseline. Peptide protocol on hold pending results.",
+      "macros_target": "2530 cal | 206g protein | 269g carbs | 70g fat"
+    }
+  ]
 }
