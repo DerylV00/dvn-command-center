@@ -1,276 +1,378 @@
 {
   "_meta": {
-    "last_updated": "2026-04-28T16:46:00Z",
-    "updated_by": "optimus-agent",
-    "version": "2.0"
+    "last_updated": "2026-04-28T18:00:00Z",
+    "updated_by": "claude-rebuild",
+    "version": "3.0"
   },
+
+  "today": {
+    "date": "Apr 28, 2026",
+    "one_thing": "Deliver the one-pager and compensation number to Ken on May 5th",
+    "yesterday_summary": "Full vision rebuild session with Claude. North Star locked. Ken one-pager built. Command center rebuilt. GitHub repo live. Data.json integrated.",
+    "next_ken_action": "May 5th — bring $5K/month ask, June 1 vs Sept 15 options, trial week dates",
+    "energy": "high",
+    "focus_level": "high"
+  },
+
+  "weekly_summary": {
+    "week_of": "Apr 28, 2026",
+    "theme": "The Alignment Week — Everything Changed",
+    "written_by": "claude",
+    "summary": "This was the week the North Star crystallized. Ken conversation happened and confirmed the alignment is real. Built the full command center system, agent context, one-pager, and North Star document in one session. The vision is no longer vague — it has a name, a direction, and a next meeting on May 5th.",
+    "wins": [
+      "Ken conversation went better than expected — he was moved by the presentation",
+      "North Star locked: Build the skills, money, character — then go back and give it",
+      "Full command center system built and live on GitHub",
+      "One-pager completed with $5K ask and flexibility clause",
+      "Two timeline options defined: June 1 vs Sept 15"
+    ],
+    "frictions": [
+      "Environment at Buddy's still draining — drama and Oscar scatter continuing",
+      "Debt reality is real: $33K with $4K cash is tight",
+      "Key 3 Chaos showed up — built a lot of things in one day, follow-through is the test"
+    ],
+    "patterns_noticed": [
+      "Blaze Genius in full expression — multiple systems built rapidly",
+      "Fear of commitment showing up around the Puerto Rico decision",
+      "Strong alignment with Ken felt viscerally — 'refreshing' was the word used"
+    ],
+    "next_week_focus": [
+      "Deliver one-pager to Ken before May 5th meeting",
+      "Build financial snapshot: exact balances, income forecast, debt plan",
+      "Schedule Puerto Rico trial week",
+      "Start Spanish — 10 hours this week, no exceptions",
+      "Contact collection agencies about debt negotiation"
+    ]
+  },
+
   "north_star": {
     "mission": "Build the skills, the money, and the character — then go back and give it.",
     "calling": "I am here to do God's work — to spread love, lead with authenticity, truth, compassion, and courage, and build things that better humanity.",
     "phase": "Foundation",
-    "phase_description": "Stack cash, clear debt, prepare for Puerto Rico"
+    "phase_description": "Stack cash, clear debt, prepare for Puerto Rico",
+    "last_reviewed": "Apr 28, 2026"
   },
-  "stats": {
-    "weight_current": 215.4,
-    "weight_goal": 205,
-    "weight_start": 235,
-    "testosterone": "341 ng/dL",
-    "testosterone_status": "warn",
-    "lh": "Very Low",
-    "lh_status": "bad",
-    "estradiol": "48.5",
-    "estradiol_status": "bad",
-    "alt_ast": "Elevated",
-    "alt_ast_status": "bad",
-    "debt_total": 33000,
-    "debt_status": "bad",
-    "cash_on_hand": 4000,
-    "cash_status": "warn",
-    "protocol_start": "On Hold — awaiting Dr. Buol labs",
-    "protocol_status": "warn",
-    "buddys_role": "Summer Cash",
-    "buddys_role_status": "ok",
-    "ken_next_meeting": "May 5, 1pm CT",
-    "ken_meeting_status": "gold"
-  },
-  "ken_alignment": {
-    "last_conversation": "Apr 28, 2026",
-    "duration": "1hr 20min",
-    "status": "Trial Week Being Scheduled",
-    "relationship_temperature": "Strong — Ken confirmed he wants to build something around Deryl",
-    "key_quote": "I've been trying to think about how I could build a business around you.",
-    "next_meeting": "May 5, 2026 at 2pm Ken's time / 1pm Deryl's time (CT)",
-    "next_action": "Bring compensation number, timing decision, and trial week date options",
-    "trial_week": "Proposed — schedule within 30 days",
-    "role_structure": "30 hours/week supporting Ken, 10 hours/week building Deryl's businesses",
-    "notes": [
-      {
-        "date": "Apr 28, 2026",
-        "text": "First real alignment conversation. Ken confirmed he wants to build something around Deryl. Discussed executive assistant role, Puerto Rico trial week, concierge business, luxury tours, boat rentals, Airbnb/Turo arbitrage. Ken proposed acquiring an existing concierge company. Financial reality shared openly — $33k debt, $4k cash, summer earning potential $5-10k/month. Decision: finish summer at Buddy's, stack cash, then transition. May 5th follow-up set to discuss compensation and timing."
-      }
-    ],
-    "deryl_action_items": [
-      "Schedule trial week in Puerto Rico (within 30 days)",
-      "Bring specific compensation number to May 5th meeting",
-      "Build one-page skills and offerings doc for Ken",
-      "Create financial snapshot: balances, income forecast, debt plan",
-      "Contact collection agencies to negotiate defaulted card balances",
-      "Research OUPV captain's license requirements",
-      "Start Spanish — 10 hours/week",
-      "Read Unreasonable Hospitality"
-    ],
-    "ken_commitments": [
-      "Arrange trial week in Puerto Rico",
-      "Provide weekly mentorship/growth sessions",
-      "Explore concierge company acquisition",
-      "Introduce local restaurant owner contacts",
-      "Help with housing and car logistics for Puerto Rico"
-    ],
-    "business_ideas_confirmed": [
-      "Concierge services company (possibly acquire existing local company)",
-      "Curated luxury island tours (high-end vehicles, scripted experiences)",
-      "Boat rentals and captain services",
-      "Airbnb rental arbitrage",
-      "Turo vehicle monetization",
-      "Beach chair rental / hospitality services"
-    ]
-  },
-  "growth_log": [
-    {
-      "id": "GL-2026-04-28-001",
-      "date": "Apr 28, 2026",
-      "type": "KEN",
-      "title": "Ken Wilkins alignment conversation — 1hr 20min",
-      "summary": "First real alignment conversation. Ken confirmed he wants to build something around Deryl. Role = EA + ops partner + business builder in Puerto Rico. Trial week proposed. Next meeting May 5.",
-      "action_items": [
-        "Prepare compensation number by May 5",
-        "Define timing decision — finish summer vs earlier",
-        "Prepare trial week date options",
-        "Follow up with Jesse re: equity"
+
+  "projects": {
+
+    "ken_alignment": {
+      "name": "Ken Wilkins Alignment",
+      "status": "active",
+      "status_label": "Trial Week Being Scheduled",
+      "priority": 1,
+      "last_updated": "Apr 28, 2026",
+      "next_action": "May 5th — deliver one-pager, compensation ask, and trial week dates",
+      "next_action_date": "May 5, 2026",
+      "last_conversation": "Apr 28, 2026",
+      "relationship_temperature": "strong",
+      "key_quote": "I've been trying to think about how I could build a business around you.",
+      "next_meeting": "May 5, 2026 at 1pm Deryl's time",
+      "compensation_ask": "$5,000/month + housing + transportation",
+      "timeline_options": ["June 1, 2026", "September 15, 2026"],
+      "trial_week_status": "To be scheduled — within 30 days of May 5",
+      "notes": [
+        {
+          "date": "Apr 28, 2026",
+          "source": "Fireflies — 1hr 20min conversation",
+          "text": "Ken was moved by the alignment presentation Deryl sent. Confirmed he wants to build something around Deryl. Proposed trial week in Puerto Rico. Discussed concierge company acquisition, luxury tours, boat rentals, Airbnb/Turo. Next meeting May 5th to discuss compensation and timing. Ken committed to weekly mentorship sessions."
+        }
+      ],
+      "ken_commitments": [
+        "Arrange trial week in Puerto Rico",
+        "Weekly mentorship / growth sessions",
+        "Explore concierge company acquisition",
+        "Introduce high-end restaurant contacts for bartending work",
+        "Help with housing and car logistics for Puerto Rico"
+      ],
+      "deryl_action_items": [
+        { "item": "Deliver one-pager to Ken before May 5th", "due": "May 4, 2026", "done": false },
+        { "item": "Bring $5K/month compensation ask to meeting", "due": "May 5, 2026", "done": false },
+        { "item": "Schedule Puerto Rico trial week", "due": "May 15, 2026", "done": false },
+        { "item": "Build financial snapshot for meeting", "due": "May 5, 2026", "done": false },
+        { "item": "Research OUPV captain's license requirements", "due": "May 15, 2026", "done": false }
       ]
     },
-    {
-      "id": "log-003",
-      "type": "win",
-      "date": "Apr 28, 2026",
-      "text": "Ken conversation happened. He was genuinely moved by the alignment presentation. Said he's been thinking about how to build a business around me. Trial week in Puerto Rico proposed. May 5th follow-up set. This is real."
+
+    "puerto_rico": {
+      "name": "Puerto Rico Plan",
+      "status": "planning",
+      "status_label": "Pre-Trial Research",
+      "priority": 2,
+      "last_updated": "Apr 28, 2026",
+      "next_action": "Schedule trial week after May 5th meeting",
+      "target_move_date_a": "June 1, 2026",
+      "target_move_date_b": "September 15, 2026",
+      "housing_status": "TBD — discuss with Ken on May 5th",
+      "transport_plan": "Role vehicle + personal motorcycle + bicycle",
+      "spanish_hours_this_week": 0,
+      "spanish_hours_target_weekly": 10,
+      "businesses_to_launch": [
+        "Concierge Services Company",
+        "Curated Luxury Island Tours",
+        "Boat Rentals & Captain Services",
+        "Airbnb Rental Arbitrage",
+        "Turo Vehicle Monetization"
+      ],
+      "questions_for_ken": [
+        "What did your last assistant do and what did you pay them?",
+        "What does the housing situation actually look like — private space?",
+        "What neighborhood — is there outdoor access, trails, water?",
+        "Can I have a motorcycle there?",
+        "What's the Airbnb arbitrage model exactly?"
+      ],
+      "notes": []
     },
-    {
-      "id": "log-004",
-      "type": "insight",
-      "date": "Apr 28, 2026",
-      "text": "The North Star crystallized: build the skills, money, and character — then go back and give it. Marshfield isn't where I settle. It's where I serve. That distinction changes everything. I come back with something to give, not somewhere to retreat to."
+
+    "growth_house": {
+      "name": "Growth House / Immersion",
+      "status": "active",
+      "status_label": "October 2026 Event Planning",
+      "priority": 3,
+      "last_updated": "Apr 28, 2026",
+      "next_action": "Reach out to Jesse before being asked — step up as co-producer",
+      "next_event": "October 2026",
+      "next_event_location": "TBD",
+      "role": "Co-Producer",
+      "production_suite": "8-document operations suite built — 2 events completed",
+      "jesse_relationship": "Active — reach out proactively",
+      "notes": []
     },
+
+    "buddys_resort": {
+      "name": "Buddy's Resort",
+      "status": "active",
+      "status_label": "Summer Cash Engine",
+      "priority": 4,
+      "last_updated": "Apr 28, 2026",
+      "next_action": "Stack cash intentionally this summer — treat every shift as funding Puerto Rico",
+      "current_role": "Bartender",
+      "target_role": "Resort Manager / Sweat Equity",
+      "income_target_monthly": 7000,
+      "income_actual_monthly": 0,
+      "oscar_relationship": "Important — deliver value, document contributions",
+      "environment_status": "Draining — drama, complaining, scatterbrained management",
+      "protection_protocol": "active",
+      "notes": []
+    },
+
+    "financial": {
+      "name": "Financial Sovereignty",
+      "status": "active",
+      "status_label": "Debt Reduction Season",
+      "priority": 5,
+      "last_updated": "Apr 28, 2026",
+      "next_action": "Contact collection agencies to negotiate defaulted card balances",
+      "debt_credit_card": 18000,
+      "debt_credit_card_status": "defaulted — not accruing interest",
+      "debt_personal_loan": 15000,
+      "debt_personal_loan_status": "low interest — individual",
+      "debt_total": 33000,
+      "cash_on_hand": 4000,
+      "crypto_value": 3000,
+      "mining_monthly": 290,
+      "bitcoin_dca_monthly": 100,
+      "summer_income_target": 50000,
+      "summer_income_actual": 0,
+      "debt_payoff_target_date": "2028-04-28",
+      "monthly_debt_payment": 1000,
+      "notes": []
+    },
+
+    "health": {
+      "name": "Physical Performance",
+      "status": "active",
+      "status_label": "Transformation Season",
+      "priority": 6,
+      "last_updated": "Apr 28, 2026",
+      "next_action": "Physician consult before increasing peptide doses",
+      "weight_current": 219,
+      "weight_goal": 205,
+      "weight_start": 235,
+      "weight_logs": [
+        { "date": "Apr 28, 2026", "weight": 219 }
+      ],
+      "labs": {
+        "date": "Apr 7, 2026",
+        "source": "Hone Health",
+        "testosterone_total": "341 ng/dL",
+        "testosterone_status": "warn",
+        "lh": "Very Low",
+        "lh_status": "bad",
+        "estradiol": "48.5 pg/mL",
+        "estradiol_status": "bad",
+        "alt": "Elevated",
+        "alt_status": "bad",
+        "ast": "Elevated",
+        "ast_status": "bad",
+        "pattern": "Secondary Hypogonadism"
+      },
+      "peptide_protocol": {
+        "status": "active",
+        "start_date": "Apr 20, 2026",
+        "vendor": "Peptide Crafters",
+        "code": "crafters10",
+        "items": [
+          { "name": "Diamond Glow", "dose": "70mg", "status": "active" },
+          { "name": "Semax", "dose": "10mg x2", "status": "active" },
+          { "name": "GLP-3 R", "dose": "30mg", "status": "pending_consult" },
+          { "name": "Kisspeptin", "dose": "TBD", "status": "on_hold" }
+        ]
+      },
+      "physician_contacts": [
+        { "name": "Gameday Men's Health Columbia", "phone": "573-255-8660" },
+        { "name": "Dr. Nittler JC Total Health", "phone": "573-298-6855" }
+      ],
+      "notes": []
+    },
+
+    "real_estate": {
+      "name": "Cove & Co. Real Estate",
+      "status": "active",
+      "status_label": "Lead Gen & Relationships",
+      "priority": 7,
+      "last_updated": "Apr 28, 2026",
+      "next_action": "Follow up with Landen on any active leads",
+      "brokerage": "Legacy Real Estate Group",
+      "crm": "Follow Up Boss",
+      "mls": "MARIS",
+      "lead_capture": "Popl",
+      "teammates": ["Landen (closings)", "Nathan Maurer (broker/mentor)"],
+      "cove_by_cove_launch": "October 2026",
+      "notes": []
+    },
+
+    "library": {
+      "name": "The Library",
+      "status": "active",
+      "status_label": "Reading & Applying",
+      "priority": 8,
+      "last_updated": "Apr 28, 2026",
+      "next_action": "Read Unreasonable Hospitality before Puerto Rico trial week",
+      "current_read": "Unreasonable Hospitality — Will Guidara",
+      "books_read": [],
+      "books_in_progress": ["Unreasonable Hospitality"],
+      "notes": []
+    }
+  },
+
+  "growth_log": [
     {
       "id": "log-005",
       "type": "insight",
+      "project": "ken_alignment",
       "date": "Apr 28, 2026",
-      "text": "The speaker vision has been there since childhood. The 2018 high school video triggered it. I've always been called to lead and pour back into people. Everything I'm building — Ken, Puerto Rico, hospitality, boats — is the path to having something worth giving. The mission is God's work. The businesses are the vehicle."
+      "text": "The speaker vision crystallized. Build a life worth coming back from — then go back and give it. Marshfield is where I serve, not where I settle. The distinction changes the whole mission."
     },
     {
-      "id": "log-001",
+      "id": "log-004",
+      "type": "win",
+      "project": "ken_alignment",
+      "date": "Apr 28, 2026",
+      "text": "Ken conversation went well. He was moved by the alignment presentation. Trial week in Puerto Rico proposed. May 5th follow-up set. $5K/month ask locked. One-pager built."
+    },
+    {
+      "id": "log-003",
       "type": "insight",
-      "date": "Apr 27, 2026",
-      "text": "Ken said 'I've been trying to think about how to build a business around you.' That's not a compliment — that's a signal. Walk in Tuesday knowing this is two builders figuring out what building together looks like, not an interview."
+      "project": "puerto_rico",
+      "date": "Apr 28, 2026",
+      "text": "Fear of the unknown is real — but the alignment between me, Ken, Growth House, and the concierge vision is too strong to ignore. The word that kept coming up: refreshing. That's the body saying yes."
     },
     {
       "id": "log-002",
       "type": "friction",
+      "project": "buddys_resort",
       "date": "Apr 27, 2026",
-      "text": "The environment at Buddy's: drama, complaining, Oscar scatterbrained and not tracking things. Key 13 Shadow (Discord) is right there. Reframe: this is the systems void that makes me indispensable. Fill gaps without martyrdom. Document everything. The path through this season requires protecting my field while stacking cash."
+      "text": "Environment at Buddy's: drama, complaining, Oscar scatterbrained. Key 13 Shadow (Discord) activated. Reframe: this is the systems void that makes me indispensable. Fill gaps without martyrdom. Stack cash. Get out with integrity."
+    },
+    {
+      "id": "log-001",
+      "type": "intention",
+      "project": "ken_alignment",
+      "date": "Apr 27, 2026",
+      "text": "Walk into the Ken conversation as a builder meeting a builder — not an applicant. He approached. That changes the energy of everything."
     }
   ],
+
+  "calendar": {
+    "upcoming": [
+      {
+        "id": "cal-001",
+        "date": "May 5, 2026",
+        "time": "1:00 PM CDT",
+        "title": "Ken Wilkins — Follow-Up Meeting",
+        "type": "meeting",
+        "project": "ken_alignment",
+        "prep": ["Deliver one-pager", "Compensation number: $5K/month", "Timeline: June 1 vs Sept 15", "Trial week date options"],
+        "questions": ["What did your last assistant do and what did you pay them?", "What does housing look like?", "Can I have a motorcycle there?"]
+      },
+      {
+        "id": "cal-002",
+        "date": "May 2026",
+        "time": "TBD",
+        "title": "Puerto Rico Trial Week",
+        "type": "milestone",
+        "project": "puerto_rico",
+        "prep": ["Read Unreasonable Hospitality", "Spanish basics started", "Financial snapshot built"]
+      },
+      {
+        "id": "cal-003",
+        "date": "Oct 2026",
+        "time": "TBD",
+        "title": "Growth House Event — Co-Producer",
+        "type": "event",
+        "project": "growth_house",
+        "prep": ["Reach out to Jesse proactively", "Start production planning 8 weeks out"]
+      }
+    ]
+  },
+
+  "fireflies": {
+    "last_meeting_logged": "Apr 28, 2026",
+    "last_meeting_title": "Recap w/Deryl & Ken",
+    "meetings_this_month": 2,
+    "pending_processing": []
+  },
+
   "priorities": [
     {
       "num": 1,
-      "title": "Ken Alignment — May 5th Meeting",
-      "body": "Bring compensation number, timing decision, and trial week dates. This is the most important conversation of the year.",
+      "title": "Ken Meeting — May 5th",
+      "body": "Deliver one-pager. Bring $5K/month ask. June 1 vs Sept 15 decision. Trial week dates.",
+      "project": "ken_alignment",
       "status": "active",
       "deadline": "May 5, 2026"
     },
     {
       "num": 2,
-      "title": "Stack Cash This Summer",
-      "body": "Buddy's Resort through summer. $5-10k/month potential. Clear debt, build cash reserve before Puerto Rico transition.",
+      "title": "Financial Snapshot",
+      "body": "Build exact balances, income forecast, debt negotiation plan before May 5th.",
+      "project": "financial",
       "status": "active",
-      "deadline": "Sep 2026"
+      "deadline": "May 4, 2026"
     },
     {
       "num": 3,
-      "title": "Debt Negotiation",
-      "body": "Contact collection agencies. Negotiate lump-sum settlements on $18k defaulted credit card. Target 40-60% off if possible.",
+      "title": "Spanish — 10 Hours This Week",
+      "body": "Start now. Not next week. Duolingo + iTalki tutor. 10 hours minimum.",
+      "project": "puerto_rico",
       "status": "active",
-      "deadline": "End of May 2026"
+      "deadline": "May 4, 2026"
     },
     {
       "num": 4,
-      "title": "Health Transformation",
-      "body": "219 → 205 lbs. Peptide protocol active. Physician consult on labs. Body is the first business.",
+      "title": "Stack Summer Cash",
+      "body": "Buddy's Resort through summer. Every shift funds Puerto Rico. Target $7K/month.",
+      "project": "buddys_resort",
       "status": "active",
       "deadline": "Sep 2026"
     },
     {
       "num": 5,
-      "title": "Puerto Rico Trial Week",
-      "body": "Schedule and execute trial week with Ken within 30 days. Experience the life before committing.",
+      "title": "Health Transformation",
+      "body": "219 → 205 lbs. Peptide protocol active. Physician consult on labs.",
+      "project": "health",
       "status": "active",
-      "deadline": "May 2026"
-    }
-  ],
-  "weekly_intentions": {
-    "week_of": "Apr 28, 2026",
-    "theme": "Post-Ken Clarity Week",
-    "intentions": [
-      "Schedule Puerto Rico trial week with Ken",
-      "Build compensation number and one-page skills doc for May 5th",
-      "Start financial snapshot — balances, income forecast, debt plan",
-      "Begin Spanish study — first 10 hours this week"
-    ]
-  },
-  "newsletter": {
-    "status": "Deprioritized — not active this season",
-    "intel_notes": []
-  },
-  "businesses": {
-    "active": [
-      {
-        "name": "Buddy's Resort — Bartending",
-        "stage": "Active",
-        "purpose": "Cash flow engine for summer 2026",
-        "monthly_potential": "$5,000-10,000"
-      }
-    ],
-    "building": [
-      {
-        "name": "Ken Wilkins — Executive Assistant / Operations Partner",
-        "stage": "Negotiating",
-        "location": "Puerto Rico",
-        "next_step": "May 5th meeting — compensation and timing"
-      },
-      {
-        "name": "Concierge Services Company",
-        "stage": "Concept",
-        "location": "Puerto Rico",
-        "next_step": "Research existing companies Ken mentioned acquiring"
-      },
-      {
-        "name": "Curated Luxury Island Tours",
-        "stage": "Concept",
-        "location": "Puerto Rico",
-        "next_step": "Research vehicles, routes, pricing during trial week"
-      },
-      {
-        "name": "Boat Rentals / Captain Services",
-        "stage": "Concept",
-        "location": "Puerto Rico / Lake of the Ozarks",
-        "next_step": "Research OUPV captain's license requirements"
-      }
-    ],
-    "long_game": [
-      "STR Portfolio — Lake of the Ozarks",
-      "Land Flip — Miller County",
-      "Event Production Company (Growth House model)",
-      "Fellowship of Minds — Rana, Prasad, Scott"
-    ]
-  },
-  "book_notes": {
-    "book-01": {
-      "read": false,
-      "notes": []
-    },
-    "book-02": {
-      "read": false,
-      "notes": []
-    },
-    "book-03": {
-      "read": false,
-      "notes": []
-    },
-    "book-04": {
-      "read": false,
-      "notes": []
-    },
-    "book-05": {
-      "read": false,
-      "notes": []
-    },
-    "book-06": {
-      "read": false,
-      "notes": []
-    },
-    "book-07": {
-      "read": false,
-      "notes": []
-    },
-    "book-08": {
-      "read": false,
-      "notes": []
-    },
-    "book-09": {
-      "read": false,
-      "notes": []
-    },
-    "book-10": {
-      "read": false,
-      "notes": []
-    },
-    "book-11": {
-      "read": false,
-      "notes": []
-    },
-    "book-12": {
-      "read": false,
-      "notes": []
-    }
-  },
-  "health_log": [
-    {
-      "date": "Apr 28, 2026",
-      "weight": 215.4,
-      "energy": 7,
-      "sleep_hours": 8,
-      "notes": "Recovery day after high-output weekend (3x 19k steps, 12-15hr days). Leg day at gym. Sauna + mobility. Blood draw with Dr. Buol for peptide baseline. Peptide protocol on hold pending results.",
-      "macros_target": "2530 cal | 206g protein | 269g carbs | 70g fat"
+      "deadline": "Sep 2026"
     }
   ]
 }
