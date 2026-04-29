@@ -1009,6 +1009,7 @@ body::before {
 }
 
 @keyframes grow { from { width: 0; } to { width: var(--pct); } }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
 /* ══ PRIORITY LIST ══ */
 .priority {
@@ -1059,7 +1060,184 @@ body::before {
 .rel-role { font-family: var(--font-mono); font-size: 7px; color: var(--cream3); margin-bottom: 8px; }
 .rel-body { font-size: 11px; color: var(--cream3); line-height: 1.6; }
 
-/* ══ ANIMATE IN ══ */
+/* ══ PROJECT CARDS ══ */
+.proj-card {
+  background: var(--bg2);
+  padding: 20px 20px;
+  position: relative;
+  cursor: default;
+  transition: background 0.15s;
+}
+
+.proj-card:hover { background: var(--bg3); }
+
+.proj-card-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 10px;
+}
+
+.proj-status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%; flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.proj-status-dot.active { background: var(--green); }
+.proj-status-dot.planning { background: var(--amber); }
+.proj-status-dot.hold { background: var(--cream3); }
+
+.proj-priority {
+  font-family: var(--font-mono);
+  font-size: 7px; font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--cream3);
+}
+
+.proj-name {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 700;
+  color: var(--cream); margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.proj-status-label {
+  font-family: var(--font-mono);
+  font-size: 7px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 8px;
+  display: block;
+}
+
+.proj-next {
+  font-size: 11px; color: var(--cream3);
+  line-height: 1.5; margin-bottom: 8px;
+}
+
+.proj-date {
+  font-family: var(--font-mono);
+  font-size: 8px; color: var(--ember);
+}
+
+.proj-updated {
+  font-family: var(--font-mono);
+  font-size: 7px; color: var(--cream3);
+  margin-top: 8px;
+  border-top: 1px solid var(--border2);
+  padding-top: 6px;
+}
+
+/* ══ CALENDAR EVENTS ══ */
+.cal-event {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--fire);
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 16px; align-items: start;
+}
+
+.cal-event.milestone { border-left-color: var(--gold); }
+.cal-event.event { border-left-color: var(--ember); }
+.cal-event.deadline { border-left-color: var(--red); }
+
+.cal-date {
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--fire);
+  line-height: 1.5;
+}
+
+.cal-event.milestone .cal-date { color: var(--gold); }
+.cal-event.event .cal-date { color: var(--ember); }
+
+.cal-title {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 700;
+  color: var(--cream); margin-bottom: 4px;
+}
+
+.cal-prep {
+  font-size: 11px; color: var(--cream3);
+  line-height: 1.5;
+}
+
+.cal-type-badge {
+  font-family: var(--font-mono);
+  font-size: 7px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 3px 8px; border: 1px solid;
+  white-space: nowrap;
+}
+
+.cal-event .cal-type-badge { color: var(--fire); border-color: var(--fire); }
+.cal-event.milestone .cal-type-badge { color: var(--gold); border-color: var(--gold); }
+.cal-event.event .cal-type-badge { color: var(--ember); border-color: var(--ember); }
+
+/* ══ FINANCIAL PROGRESS ══ */
+.financial-bars {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.fin-bar-card {
+  background: var(--bg2);
+  padding: 24px 28px;
+}
+
+.fin-label {
+  font-family: var(--font-mono);
+  font-size: 7px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.fin-numbers {
+  display: flex; align-items: baseline;
+  gap: 8px; margin-bottom: 12px;
+}
+
+.fin-main {
+  font-family: var(--font-display);
+  font-size: 40px; font-weight: 900;
+  font-style: italic; line-height: 1;
+}
+
+.fin-sub {
+  font-family: var(--font-mono);
+  font-size: 9px; color: var(--cream3);
+}
+
+.fin-track {
+  height: 4px; background: var(--bg4);
+  border-radius: 2px; overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.fin-fill-debt {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red), var(--amber));
+  border-radius: 2px;
+  transition: width 1.2s ease;
+}
+
+.fin-fill-cash {
+  height: 100%;
+  background: linear-gradient(90deg, var(--fire), var(--gold));
+  border-radius: 2px;
+  transition: width 1.2s ease;
+}
+
+.fin-progress-labels {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 8px;
+  color: var(--cream3);
+}
+
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1099,7 +1277,14 @@ body::before {
 
   <nav class="nav">
     <div class="nav-group">
-      <span class="nav-group-label">Who You Are</span>
+      <span class="nav-group-label">Live</span>
+      <a class="nav-link" href="#today"><span class="nav-bullet"></span>Today</a>
+      <a class="nav-link" href="#weekly"><span class="nav-bullet"></span>This Week</a>
+      <a class="nav-link" href="#projects"><span class="nav-bullet"></span>Projects</a>
+      <a class="nav-link" href="#calendar"><span class="nav-bullet"></span>Calendar</a>
+      <a class="nav-link" href="#log-section"><span class="nav-bullet"></span>Growth Log</a>
+    </div>
+    <div class="nav-group">
       <a class="nav-link" href="#identity"><span class="nav-bullet"></span>Frameworks</a>
       <a class="nav-link" href="#models"><span class="nav-bullet"></span>Mental Models</a>
       <a class="nav-link" href="#builder"><span class="nav-bullet"></span>Builder Vision</a>
@@ -1145,10 +1330,16 @@ body::before {
 <!-- ══ MAIN ══ -->
 <main class="main">
 
+  <!-- SYNC BADGE -->
+  <div id="sync-badge" onclick="manualRefresh()" title="Click to refresh data" style="position:fixed;bottom:20px;right:20px;background:var(--bg2);border:1px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream3);z-index:500;cursor:pointer;transition:border-color 0.2s;">
+    <div class="sync-dot" id="sync-dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite;"></div>
+    <span id="sync-text">Loading...</span>
+  </div>
+
   <!-- HERO -->
   <div class="page-hero">
     <div class="hero-left">
-      <p class="hero-tag">Personal Command Center · Version 3.0 · April 2026</p>
+      <p class="hero-tag">Personal Command Center · Version 4.0 · April 2026</p>
       <h1 class="hero-title">Build.<br><span>Then</span><br>Give Back.</h1>
       <p class="hero-mission">"Every dollar is a vote. Every choice compounds. Choose local. Think long term. Build community."</p>
     </div>
@@ -1170,6 +1361,92 @@ body::before {
       </div>
     </div>
   </div>
+
+  <!-- TODAY PANEL -->
+  <section class="section" id="today" style="background:var(--bg2);">
+    <div class="section-header" style="padding-bottom:20px;">
+      <div>
+        <span class="sec-label" id="today-date-label">Today</span>
+        <h2 class="sec-title">THE <em>DAY</em></h2>
+      </div>
+    </div>
+    <div class="section-body" style="padding-top:0;">
+      <div id="today-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:20px;">
+        <div style="background:var(--bg3);padding:20px 22px;">
+          <div style="font-family:var(--font-mono);font-size:7px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--fire);margin-bottom:8px;">ONE THING TODAY</div>
+          <div id="today-one-thing" style="font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--cream);line-height:1.4;">Loading...</div>
+        </div>
+        <div style="background:var(--bg3);padding:20px 22px;">
+          <div style="font-family:var(--font-mono);font-size:7px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">YESTERDAY</div>
+          <div id="today-yesterday" style="font-size:12px;color:var(--cream2);line-height:1.6;">Loading...</div>
+        </div>
+        <div style="background:var(--bg3);padding:20px 22px;">
+          <div style="font-family:var(--font-mono);font-size:7px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ember);margin-bottom:8px;">NEXT KEN ACTION</div>
+          <div id="today-ken-action" style="font-size:12px;color:var(--cream2);line-height:1.6;">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEEKLY SUMMARY -->
+  <section class="section" id="weekly" style="background:var(--bg3);">
+    <div class="section-header" style="padding-bottom:20px;">
+      <div>
+        <span class="sec-label" id="weekly-label">Weekly Summary</span>
+        <h2 class="sec-title">THIS <em>WEEK</em></h2>
+      </div>
+    </div>
+    <div class="section-body" style="padding-top:0;" id="weekly-body">
+      <div style="background:var(--bg2);border:1px solid var(--border);padding:20px 24px;margin-bottom:16px;">
+        <div style="font-family:var(--font-mono);font-size:7px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">THEME</div>
+        <div id="weekly-theme" style="font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--gold2);line-height:1.5;">Loading...</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);">
+        <div style="background:var(--bg2);padding:18px 20px;">
+          <div style="font-family:var(--font-mono);font-size:7px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">WINS</div>
+          <div id="weekly-wins" style="font-size:12px;color:var(--cream2);line-height:1.7;">Loading...</div>
+        </div>
+        <div style="background:var(--bg2);padding:18px 20px;">
+          <div style="font-family:var(--font-mono);font-size:7px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px;">FRICTIONS</div>
+          <div id="weekly-frictions" style="font-size:12px;color:var(--cream2);line-height:1.7;">Loading...</div>
+        </div>
+        <div style="background:var(--bg2);padding:18px 20px;">
+          <div style="font-family:var(--font-mono);font-size:7px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ember);margin-bottom:10px;">NEXT WEEK FOCUS</div>
+          <div id="weekly-focus" style="font-size:12px;color:var(--cream2);line-height:1.7;">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT CARDS -->
+  <section class="section" id="projects">
+    <div class="section-header">
+      <div>
+        <span class="sec-label">Agent-Updated · Live from data.json</span>
+        <h2 class="sec-title">ACTIVE <em>PROJECTS</em></h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div id="project-cards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:24px;">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDAR -->
+  <section class="section" id="calendar">
+    <div class="section-header">
+      <div>
+        <span class="sec-label">Synced with Google Calendar via Notion</span>
+        <h2 class="sec-title">COMING <em>UP</em></h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div id="calendar-events" style="display:flex;flex-direction:column;gap:1px;">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+  </section>
 
   <!-- HONEST FEEDBACK BANNER -->
   <div class="section" id="feedback" style="border-bottom:1px solid var(--border);">
@@ -2270,7 +2547,7 @@ body::before {
   </section>
 
   <!-- GROWTH LOG -->
-  <section class="section" id="log">
+  <section class="section" id="log-section">
     <div class="section-header">
       <div>
         <span class="sec-label">The Living Document</span>
@@ -2494,8 +2771,279 @@ function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ══ DATA.JSON LOADER ══
+const DATA_URL = './data.json';
+let LIVE_DATA = null;
+
+async function loadLiveData() {
+  try {
+    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    LIVE_DATA = await res.json();
+    renderLiveSections(LIVE_DATA);
+    setSyncBadge('synced', LIVE_DATA._meta?.last_updated);
+  } catch(e) {
+    setSyncBadge('local', null);
+    renderLiveSections(null);
+  }
+}
+
+function renderLiveSections(d) {
+  renderToday(d?.today, d?.projects?.ken_alignment);
+  renderWeeklySummary(d?.weekly_summary);
+  renderProjectCards(d?.projects);
+  renderCalendar(d?.calendar?.upcoming);
+  renderFinancialBars(d?.projects?.financial);
+  renderLiveLog(d?.growth_log);
+  renderLivePriorities(d?.priorities);
+  renderLiveKen(d?.projects?.ken_alignment);
+  renderLivePerformance(d?.projects?.health);
+  updateSyncText(d?._meta?.last_updated);
+}
+
+// ══ TODAY PANEL ══
+function renderToday(today, ken) {
+  if (!today) return;
+  const dateEl = document.getElementById('today-date-label');
+  const oneEl = document.getElementById('today-one-thing');
+  const yestEl = document.getElementById('today-yesterday');
+  const kenEl = document.getElementById('today-ken-action');
+  if (dateEl) dateEl.textContent = today.date || 'Today';
+  if (oneEl) oneEl.textContent = today.one_thing || '—';
+  if (yestEl) yestEl.textContent = today.yesterday_summary || '—';
+  if (kenEl) kenEl.textContent = ken?.next_action || today.next_ken_action || '—';
+}
+
+// ══ WEEKLY SUMMARY ══
+function renderWeeklySummary(ws) {
+  if (!ws) return;
+  const label = document.getElementById('weekly-label');
+  const theme = document.getElementById('weekly-theme');
+  const wins = document.getElementById('weekly-wins');
+  const frictions = document.getElementById('weekly-frictions');
+  const focus = document.getElementById('weekly-focus');
+  if (label) label.textContent = 'Week of ' + (ws.week_of || '');
+  if (theme) theme.textContent = ws.theme || '—';
+  if (wins && ws.wins) wins.innerHTML = ws.wins.map(w => `<div style="display:flex;gap:8px;padding:3px 0;border-bottom:1px solid var(--border2);"><span style="color:var(--green);flex-shrink:0;">✓</span><span>${escHtml(w)}</span></div>`).join('');
+  if (frictions && ws.frictions) frictions.innerHTML = ws.frictions.map(f => `<div style="display:flex;gap:8px;padding:3px 0;border-bottom:1px solid var(--border2);"><span style="color:var(--red);flex-shrink:0;">→</span><span>${escHtml(f)}</span></div>`).join('');
+  if (focus && ws.next_week_focus) focus.innerHTML = ws.next_week_focus.map(f => `<div style="display:flex;gap:8px;padding:3px 0;border-bottom:1px solid var(--border2);"><span style="color:var(--ember);flex-shrink:0;">→</span><span>${escHtml(f)}</span></div>`).join('');
+}
+
+// ══ PROJECT CARDS ══
+const PROJECT_ICONS = {
+  ken_alignment: '🤝',
+  puerto_rico: '🌊',
+  growth_house: '🎪',
+  buddys_resort: '🍹',
+  financial: '💰',
+  health: '💪',
+  real_estate: '🏡',
+  library: '📚'
+};
+
+const PROJECT_COLORS = {
+  ken_alignment: 'var(--fire)',
+  puerto_rico: 'var(--ember)',
+  growth_house: 'var(--gold)',
+  buddys_resort: 'var(--amber)',
+  financial: 'var(--green)',
+  health: 'var(--slate-lt)',
+  real_estate: 'var(--gold)',
+  library: 'var(--cream3)'
+};
+
+function renderProjectCards(projects) {
+  const el = document.getElementById('project-cards');
+  if (!el || !projects) return;
+  const order = ['ken_alignment','puerto_rico','growth_house','buddys_resort','financial','health','real_estate','library'];
+  el.innerHTML = order.map(key => {
+    const p = projects[key];
+    if (!p) return '';
+    const color = PROJECT_COLORS[key] || 'var(--fire)';
+    const icon = PROJECT_ICONS[key] || '📋';
+    const statusClass = p.status === 'active' ? 'active' : p.status === 'planning' ? 'planning' : 'hold';
+    return `
+      <div class="proj-card" style="border-top:3px solid ${color};">
+        <div class="proj-card-top">
+          <span style="font-size:16px;">${icon}</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="proj-status-dot ${statusClass}"></div>
+            <span class="proj-priority">#${p.priority || ''}</span>
+          </div>
+        </div>
+        <div class="proj-name">${escHtml(p.name || key)}</div>
+        <span class="proj-status-label" style="color:${color};">${escHtml(p.status_label || p.status || '')}</span>
+        <div class="proj-next">${escHtml(p.next_action || '—')}</div>
+        ${p.next_action_date ? `<div class="proj-date">→ ${escHtml(p.next_action_date)}</div>` : ''}
+        <div class="proj-updated">Updated ${escHtml(p.last_updated || '—')}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ══ CALENDAR ══
+function renderCalendar(events) {
+  const el = document.getElementById('calendar-events');
+  if (!el || !events?.length) {
+    if (el) el.innerHTML = '<div style="padding:16px;font-family:var(--font-mono);font-size:10px;color:var(--cream3);">No upcoming events in data.json. Optimus updates this from your Google Calendar.</div>';
+    return;
+  }
+  el.innerHTML = events.map(e => {
+    const typeClass = e.type === 'milestone' ? 'milestone' : e.type === 'event' ? 'event' : e.type === 'deadline' ? 'deadline' : '';
+    const prep = e.prep?.slice(0, 3).map(p => `<span style="display:inline-block;background:var(--bg3);border:1px solid var(--border2);padding:2px 8px;font-family:var(--font-mono);font-size:8px;color:var(--cream3);margin:2px 2px 0 0;">${escHtml(p)}</span>`).join('') || '';
+    return `
+      <div class="cal-event ${typeClass}">
+        <div>
+          <div class="cal-date">${escHtml(e.date)}</div>
+          ${e.time ? `<div style="font-family:var(--font-mono);font-size:8px;color:var(--cream3);">${escHtml(e.time)}</div>` : ''}
+        </div>
+        <div>
+          <div class="cal-title">${escHtml(e.title)}</div>
+          ${prep ? `<div style="margin-top:6px;">${prep}</div>` : ''}
+        </div>
+        <span class="cal-type-badge">${escHtml(e.type || 'meeting')}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ══ FINANCIAL BARS ══
+function renderFinancialBars(fin) {
+  // Find the performance section and prepend financial bars
+  const perfSection = document.getElementById('performance');
+  if (!perfSection || !fin) return;
+  const existing = document.getElementById('financial-bars-block');
+  if (existing) existing.remove();
+
+  const debtStart = 33000;
+  const debtCurrent = fin.debt_total || 33000;
+  const debtPct = Math.round(((debtStart - debtCurrent) / debtStart) * 100);
+  const cashTarget = 15000;
+  const cashCurrent = fin.cash_on_hand || 0;
+  const cashPct = Math.min(100, Math.round((cashCurrent / cashTarget) * 100));
+
+  const block = document.createElement('div');
+  block.id = 'financial-bars-block';
+  block.className = 'financial-bars';
+  block.innerHTML = `
+    <div class="fin-bar-card">
+      <div class="fin-label" style="color:var(--red);">Debt Paydown</div>
+      <div class="fin-numbers">
+        <div class="fin-main" style="color:var(--red);">$${(debtCurrent/1000).toFixed(0)}K</div>
+        <div class="fin-sub">remaining of $${(debtStart/1000).toFixed(0)}K</div>
+      </div>
+      <div class="fin-track"><div class="fin-fill-debt" style="width:${debtPct}%;"></div></div>
+      <div class="fin-progress-labels"><span>$${(debtStart/1000).toFixed(0)}K start</span><span>${debtPct}% paid</span><span>$0 goal</span></div>
+    </div>
+    <div class="fin-bar-card">
+      <div class="fin-label" style="color:var(--green);">Cash Stack</div>
+      <div class="fin-numbers">
+        <div class="fin-main" style="color:var(--green);">$${(cashCurrent/1000).toFixed(1)}K</div>
+        <div class="fin-sub">toward $${(cashTarget/1000).toFixed(0)}K target</div>
+      </div>
+      <div class="fin-track"><div class="fin-fill-cash" style="width:${cashPct}%;"></div></div>
+      <div class="fin-progress-labels"><span>$0 start</span><span>${cashPct}% there</span><span>$${(cashTarget/1000).toFixed(0)}K goal</span></div>
+    </div>
+  `;
+
+  const sectionBody = perfSection.querySelector('.section-body') || perfSection;
+  sectionBody.insertBefore(block, sectionBody.firstChild);
+}
+
+// ══ LIVE LOG (from data.json) ══
+function renderLiveLog(remoteEntries) {
+  const localEntries = getStorage('growth-log-v2', []);
+  const all = [...localEntries, ...(remoteEntries || []).filter(r => !localEntries.find(l => l.id === r.id))];
+  const icons = { win: '🏆', insight: '💡', friction: '🔥', intention: '🎯' };
+  const labels = { win: 'WIN', insight: 'INSIGHT', friction: 'FRICTION', intention: 'INTENTION' };
+  const el = document.getElementById('log-entries');
+  if (!el) return;
+  if (!all.length) { el.innerHTML = '<div style="padding:16px;font-size:12px;color:var(--cream3);">No entries yet.</div>'; return; }
+  el.innerHTML = all.map(e => `
+    <div class="log-entry ${escHtml(e.type || 'insight')}">
+      <div class="log-entry-header">
+        <span class="log-entry-type">${icons[e.type] || ''} ${labels[e.type] || (e.type || '').toUpperCase()}${e.project ? ' · ' + escHtml(e.project).replace(/_/g, ' ') : ''}</span>
+        <span class="log-entry-date">${escHtml(e.date || '')}</span>
+      </div>
+      <div class="log-entry-text">${escHtml(e.text || '')}</div>
+    </div>
+  `).join('');
+}
+
+// ══ LIVE PRIORITIES ══
+function renderLivePriorities(priorities) {
+  const el = document.getElementById('priorities-container');
+  if (!el || !priorities?.length) return;
+  el.innerHTML = priorities.map(p => `
+    <div class="priority">
+      <div class="pri-n">${p.num}</div>
+      <div>
+        <div class="pri-title">${escHtml(p.title)}</div>
+        <div class="pri-body">${escHtml(p.body)}</div>
+        ${p.deadline ? `<div style="margin-top:5px;font-family:var(--font-mono);font-size:8px;font-weight:600;letter-spacing:0.12em;color:var(--fire);">→ ${escHtml(p.deadline)}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══ LIVE KEN ══
+function renderLiveKen(ken) {
+  if (!ken) return;
+  const q = document.querySelector('.ken-quote blockquote');
+  const cite = document.querySelector('.ken-quote cite');
+  if (q) q.textContent = '"' + ken.key_quote + '"';
+  if (cite) cite.textContent = 'Last conversation: ' + ken.last_conversation + ' · Status: ' + ken.status;
+  const nextAction = document.getElementById('ken-next-action-text');
+  if (nextAction) nextAction.textContent = ken.next_action;
+}
+
+// ══ LIVE PERFORMANCE ══
+function renderLivePerformance(health) {
+  if (!health) return;
+  const wc = document.getElementById('weight-current');
+  const wg = document.getElementById('weight-goal');
+  const pf = document.getElementById('progress-fill');
+  if (!health.weight_current) return;
+  const pct = Math.round(((health.weight_start - health.weight_current) / (health.weight_start - health.weight_goal)) * 100);
+  if (wc) wc.textContent = health.weight_current;
+  if (wg) wg.textContent = health.weight_goal;
+  if (pf) pf.style.width = Math.max(0, Math.min(100, pct)) + '%';
+}
+
+// ══ SYNC BADGE ══
+function setSyncBadge(status, ts) {
+  const dot = document.getElementById('sync-dot');
+  const text = document.getElementById('sync-text');
+  if (!dot || !text) return;
+  if (status === 'synced') {
+    dot.classList.remove('stale');
+    const d = ts ? new Date(ts).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'today';
+    text.textContent = 'Synced ' + d;
+  } else {
+    dot.classList.add('stale');
+    text.textContent = 'Local only';
+  }
+}
+
+function updateSyncText(ts) {
+  const meta = document.getElementById('nav-meta');
+  const footer = document.getElementById('footer-meta');
+  const d = ts ? new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+  const txt = 'DVN Command Center v4.0 · Updated ' + d;
+  if (meta) meta.textContent = txt;
+  if (footer) footer.textContent = txt;
+}
+
+// ══ MANUAL REFRESH ══
+function manualRefresh() {
+  const text = document.getElementById('sync-text');
+  if (text) text.textContent = 'Refreshing...';
+  loadLiveData();
+}
+
 // init
 loadLogs();
+loadLiveData();
+
 </script>
 </body>
 </html>
