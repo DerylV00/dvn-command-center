@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-04-30T16:22:41.648209+00:00",
-    "last_entry": "Prepare compensation number for May 5 Ken meeting"
+    "last_updated": "2026-04-30T16:25:52.628115+00:00",
+    "last_entry": "Puerto Rico Prep \u2014 Logistics Brain Dump"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -295,6 +295,14 @@
     }
   },
   "growth_log": [
+    {
+      "date": "2026-04-30",
+      "type": "UPDATE",
+      "project": "puerto_rico",
+      "entry": "Full pre-PR logistics identified: sell camper OR offer to uncle (he may drive to pick it up), transfer camper title into Deryl name first. Pack car, drive to Arizona, leave car with family. Store extra stuff \u2014 possibly at moms. Get motorcycle license (permit first since old one expired). All of this needs to happen before Puerto Rico trial week.",
+      "title": "Puerto Rico Prep \u2014 Logistics Brain Dump",
+      "action_items": "Transfer camper title | Offer camper to uncle | Sell or dispose of camper | Pack car | Drive to AZ | Leave car with family | Store stuff at moms | Get motorcycle permit | Get motorcycle license"
+    },
     {
       "id": "log-005",
       "type": "insight",
