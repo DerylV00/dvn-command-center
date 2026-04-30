@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-04-30T16:25:52.628115+00:00",
-    "last_entry": "Puerto Rico Prep \u2014 Logistics Brain Dump"
+    "last_updated": "2026-04-30T16:26:02.259728+00:00",
+    "last_entry": "Transfer camper title into your name"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -436,6 +436,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Transfer camper title into your name",
+      "project": "puerto_rico",
+      "due_date": "2026-05-15",
+      "priority": "urgent",
+      "status": "to_do",
+      "created": "2026-04-30"
+    },
     {
       "title": "Prepare compensation number for May 5 Ken meeting",
       "project": "ken_alignment",
