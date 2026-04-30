@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-04-30T16:26:02.259728+00:00",
-    "last_entry": "Transfer camper title into your name"
+    "last_updated": "2026-04-30T16:26:03.953216+00:00",
+    "last_entry": "Call uncle \u2014 offer camper, see if he will drive to pick it up"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -436,6 +436,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Call uncle \u2014 offer camper, see if he will drive to pick it up",
+      "project": "puerto_rico",
+      "due_date": "2026-05-07",
+      "priority": "urgent",
+      "status": "to_do",
+      "created": "2026-04-30"
+    },
     {
       "title": "Transfer camper title into your name",
       "project": "puerto_rico",
