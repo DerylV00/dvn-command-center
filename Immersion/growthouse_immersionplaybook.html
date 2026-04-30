@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth House — Immersion Event Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold2:#E8C96A;
+  --dark:#0D0D14; --panel:#13131C; --mid:#1C1C28; --mid2:#222233;
+  --blue:#2A6B8A; --blue-bg:rgba(42,107,138,0.1); --blue-light:#5AAFD4;
+  --border:rgba(201,168,76,0.15);
+  --text:rgba(255,255,255,0.87); --dim:rgba(255,255,255,0.42);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:240px;min-height:100vh;background:var(--panel);
+  border-right:1px solid var(--border);position:fixed;top:0;left:0;
+  display:flex;flex-direction:column;overflow-y:auto;z-index:50;
+}
+.sb-brand{padding:24px 20px 18px;border-bottom:1px solid var(--border);}
+.sb-prod{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--blue-light);text-transform:uppercase;margin-bottom:6px;}
+.sb-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;line-height:1.2;}
+.sb-sub{font-size:11px;color:var(--dim);margin-top:3px;}
+.sb-nav{padding:12px 0;flex:1;}
+.sb-group{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 20px 5px;opacity:0.7;}
+.sb-link{display:flex;align-items:center;gap:10px;padding:8px 20px;text-decoration:none;color:var(--dim);font-size:12px;transition:all 0.2s;border-left:2px solid transparent;}
+.sb-link:hover{color:var(--text);background:rgba(42,107,138,0.08);border-left-color:var(--blue-light);}
+.sb-link.active{color:var(--blue-light);background:rgba(42,107,138,0.1);border-left-color:var(--blue-light);}
+.sb-num{font-family:'Syne Mono',monospace;font-size:9px;color:rgba(201,168,76,0.5);min-width:20px;}
+.sb-footer{padding:14px 20px;border-top:1px solid var(--border);font-size:10px;color:var(--dim);font-family:'Syne Mono',monospace;letter-spacing:1px;}
+
+/* ── MAIN ── */
+.main{margin-left:240px;}
+
+/* ── COVER ── */
+.cover{
+  padding:80px 72px;background:var(--panel);
+  border-bottom:1px solid var(--border);position:relative;overflow:hidden;
+}
+.cover::after{
+  content:'';position:absolute;top:-200px;right:-200px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(42,107,138,0.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.cover-eyebrow{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--blue-light);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:14px;}
+.cover-eyebrow::after{content:'';display:inline-block;width:40px;height:1px;background:var(--blue-light);opacity:0.4;}
+.cover-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,6vw,96px);font-weight:700;line-height:1.0;margin-bottom:12px;}
+.cover-title span{color:var(--gold);}
+.cover-sub{font-size:14px;color:var(--dim);margin-bottom:36px;line-height:1.8;max-width:560px;}
+.cover-meta{display:flex;gap:36px;flex-wrap:wrap;}
+.cover-mi{display:flex;flex-direction:column;gap:3px;}
+.cover-ml{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.cover-mv{font-size:13px;color:var(--text);}
+
+/* ── SECTION ── */
+.section{padding:64px 72px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.section:last-child{border-bottom:none;}
+
+.sec-badge{display:inline-flex;align-items:center;gap:10px;background:var(--blue);padding:5px 14px;margin-bottom:24px;}
+.sec-badge-text{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:white;text-transform:uppercase;}
+
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,42px);font-weight:700;line-height:1.1;margin-bottom:10px;}
+.sec-title span{color:var(--gold);}
+.sec-lead{font-size:14px;color:var(--dim);line-height:1.8;max-width:680px;margin-bottom:36px;}
+
+h2.sub{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+h3.sub{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--blue-light);text-transform:uppercase;margin:24px 0 10px;}
+
+/* ── PHASE STRIP ── */
+.phase-wrap{display:flex;flex-direction:column;gap:3px;margin:16px 0;}
+.phase-strip{display:grid;grid-template-columns:56px 1fr;}
+.phase-tab{display:flex;align-items:flex-start;justify-content:center;padding-top:18px;}
+.phase-label{writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--dark);font-weight:600;padding:8px 4px;}
+.phase-pre  .phase-tab{background:var(--blue);}
+.phase-day  .phase-tab{background:var(--gold);}
+.phase-post .phase-tab{background:var(--mid2);border-top:2px solid var(--gold);}
+.phase-body{padding:22px 24px;}
+.phase-pre  .phase-body{background:var(--mid);}
+.phase-day  .phase-body{background:var(--panel);border-top:2px solid var(--gold);}
+.phase-post .phase-body{background:var(--mid2);}
+.phase-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;margin-bottom:4px;}
+.phase-auth{font-size:11.5px;color:var(--dim);font-style:italic;margin-bottom:14px;}
+
+/* ── BULLETS & CHECKLIST ── */
+.blt-list{display:flex;flex-direction:column;gap:7px;margin:10px 0 18px;}
+.blt-item{display:flex;gap:12px;font-size:13px;color:var(--text);line-height:1.65;padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);}
+.blt-dot{color:var(--gold);font-size:14px;line-height:1.5;flex-shrink:0;}
+.blt-item strong{color:white;}
+
+.chk-list{display:flex;flex-direction:column;gap:6px;margin:10px 0 18px;}
+.chk-item{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--text);line-height:1.65;padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);}
+.chk-box{width:15px;height:15px;border:1.5px solid var(--gold);flex-shrink:0;margin-top:2px;}
+.chk-owner{font-family:'Syne Mono',monospace;font-size:9px;color:var(--gold);background:rgba(201,168,76,0.1);padding:1px 7px;white-space:nowrap;align-self:flex-start;margin-top:2px;flex-shrink:0;}
+
+/* ── NOTE / WARN ── */
+.note{border-left:3px solid var(--gold);padding:14px 18px;background:rgba(201,168,76,0.04);margin:12px 0;font-size:13px;color:var(--dim);line-height:1.75;font-style:italic;}
+.warn{border-left:3px solid #8B2020;padding:14px 18px;background:rgba(139,32,32,0.1);margin:12px 0;font-size:13px;color:#e05555;line-height:1.75;}
+.ok  {border-left:3px solid #2A8A5A;padding:14px 18px;background:rgba(42,138,90,0.08);margin:12px 0;font-size:13px;color:#5ABD87;line-height:1.75;}
+
+/* ── ROS TABLE ── */
+.ros-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:14px 0 24px;}
+.ros-table th{background:var(--mid);color:var(--blue-light);font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:9px 11px;text-align:left;border-bottom:2px solid var(--blue);}
+.ros-table td{padding:8px 11px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text);vertical-align:top;line-height:1.5;}
+.ros-table tr:nth-child(even) td{background:rgba(255,255,255,0.015);}
+.ros-table tr:hover td{background:rgba(42,107,138,0.06);}
+.ros-time{font-family:'Syne Mono',monospace;font-size:10px;color:var(--gold);white-space:nowrap;}
+.ros-owner{font-size:11px;color:var(--blue-light);font-style:italic;}
+.ros-notes{font-size:11px;color:var(--dim);font-style:italic;}
+
+/* ── FILL-IN ── */
+.fill-in{display:flex;gap:10px;align-items:center;padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-left:2px solid var(--gold);margin:3px 0;font-size:13px;}
+.fill-label{font-weight:600;color:white;}
+.fill-val{color:var(--dim);font-style:italic;font-size:12px;}
+
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:180px 1fr;gap:0;margin:4px 0;}
+.two-col-l{background:rgba(42,107,138,0.07);padding:9px 12px;font-size:12.5px;font-weight:600;color:var(--dim);border:1px solid rgba(42,107,138,0.12);border-right:none;}
+.two-col-r{background:rgba(255,255,255,0.02);padding:9px 12px;font-size:13px;color:var(--text);line-height:1.6;border:1px solid rgba(255,255,255,0.04);}
+
+/* ── DAY BLOCKS ── */
+.day-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;margin:20px 0;}
+.day-block{padding:24px 20px;background:var(--panel);}
+.day-block.active{border-top:2px solid var(--blue);}
+.day-num{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--blue-light);text-transform:uppercase;margin-bottom:6px;}
+.day-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:6px;}
+.day-desc{font-size:12px;color:var(--dim);line-height:1.6;}
+.day-team{font-family:'Syne Mono',monospace;font-size:9px;color:var(--gold);margin-top:10px;letter-spacing:1px;}
+
+/* ── MEMBER PROFILE ── */
+.profile-card{background:var(--mid);border:1px solid var(--border);padding:20px;max-width:420px;margin:12px 0;}
+.profile-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:3px;}
+.profile-role-text{font-size:12px;color:var(--dim);font-style:italic;margin-bottom:14px;}
+.profile-rows{display:flex;flex-direction:column;gap:5px;}
+.profile-row{display:grid;grid-template-columns:120px 1fr;gap:8px;font-size:12.5px;}
+.profile-key{color:var(--gold);font-weight:500;}
+.profile-val{color:var(--text);}
+
+@media(max-width:900px){
+  .sidebar{position:static;width:100%;min-height:auto;border-right:none;border-bottom:1px solid var(--border);}
+  .sb-nav{display:none;}
+  .main{margin-left:0;}
+  .cover,.section{padding:40px 24px;}
+  .two-col{grid-template-columns:1fr;}
+  .two-col-l{border-right:1px solid rgba(42,107,138,0.12);border-bottom:none;}
+}
+
+  .nav-back{
+    font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--dim);text-decoration:none;
+    display:flex;align-items:center;gap:8px;transition:color 0.2s;
+    border:1px solid var(--border);padding:8px 16px;
+  }
+  .nav-back:hover{color:var(--gold);border-color:var(--gold);}
+
+/* ── VISUAL ENHANCEMENTS ── */
+/* Hero horizontal lines */
+.hero::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(to right,transparent,rgba(201,168,76,0.08),transparent) 0 28% / 100% 1px no-repeat,
+    linear-gradient(to right,transparent,rgba(201,168,76,0.05),transparent) 0 62% / 100% 1px no-repeat;
+}
+/* Stronger glow */
+body { background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 60%); }
+/* Nav back button polish */
+.nav-back {
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,0.44);text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+  border:1px solid rgba(201,168,76,0.2);
+  padding:9px 18px;
+  transition:all 0.22s;
+}
+.nav-back:hover { color:#C9A84C; border-color:#C9A84C; background:rgba(201,168,76,0.06); }
+/* Section gradient dividers */
+.section, .sec { border-bottom: none; position: relative; }
+.section::after, .sec::after {
+  content:'';
+  position:absolute;
+  bottom:0;left:10%;right:10%;
+  height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,168,76,0.15),transparent);
+}
+/* Card hover — lift + glow */
+.room-card:hover, .pos-card:hover, .work-card:hover, .gap-card:hover,
+.excursion-card:hover, .analysis-card:hover, .day-block:hover,
+.venue-zone:hover, .energy-block:hover {
+  transform:translateY(-3px) !important;
+  box-shadow:0 12px 40px rgba(0,0,0,0.35) !important;
+  transition:transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+/* Stronger panel backgrounds */
+.panel, [class*="panel"] { background: #0F0F1A; }
+/* Section number styling */
+.section-num, .sec-num {
+  display:flex;align-items:center;gap:16px;
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:4px;
+  color:#C9A84C;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.section-num::after, .sec-num::after {
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,rgba(201,168,76,0.3),transparent);
+}
+/* Bigger hero title max */
+.cover-title, .hero-title, .format-title {
+  letter-spacing:-1px;
+}
+/* Pulse dot animation for living doc badges */
+@keyframes pulse-gold {
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,168,76,0.4);}
+  50%{opacity:0.7;box-shadow:0 0 0 6px rgba(201,168,76,0);}
+}
+/* Checkboxes pop */
+.chk-box {
+  transition:border-color 0.2s, background 0.2s;
+}
+.chk-item:hover .chk-box {
+  border-color:#C9A84C;
+  background:rgba(201,168,76,0.1);
+}
+/* ROS table row hover */
+.ros-table tr:hover td {
+  background:rgba(201,168,76,0.04) !important;
+}
+/* Note blocks — slightly more visible */
+.note, .warn, .ok, .win, .alert, .pink-note {
+  border-left-width:4px;
+}
+
+
+/* ── DOCUMENT ACCENT ── */
+:root { --accent:#5AAFD4; --accent-border:rgba(90,175,212,0.3); --accent-glow:rgba(90,175,212,0.07); }
+.nav { border-bottom-color:rgba(90,175,212,0.3); }
+.nav-brand { color:#5AAFD4; }
+.nav-back { border-color:rgba(90,175,212,0.3); }
+.nav-back:hover { color:#5AAFD4; border-color:#5AAFD4; background:rgba(90,175,212,0.07); }
+/* Hero accent line */
+.cover::before, .hero::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,#5AAFD4,transparent);
+  z-index:10;
+}
+/* Doc stamp in hero */
+.cover-tag, .hero-tag, .cover-eyebrow {
+  color:#5AAFD4;
+}
+/* Section numbers */
+.section-num::after, .sec-num::after, .sec-badge {
+  background:#5AAFD4;
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-prod">Growth House</div>
+    <div class="sb-title">Immersion<br>Playbook</div>
+    <div class="sb-sub">Operations System · Oct 2026</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-group">Structure</div>
+    <a href="#s01" class="sb-link active"><span class="sb-num">01</span>Event Overview</a>
+    <a href="#s02" class="sb-link"><span class="sb-num">02</span>Team & Roles</a>
+    <a href="#s03" class="sb-link"><span class="sb-num">03</span>Deryl's Role — Full Detail</a>
+    <div class="sb-group">Execution</div>
+    <a href="#s04" class="sb-link"><span class="sb-num">04</span>Run of Show</a>
+    <a href="#s05" class="sb-link"><span class="sb-num">05</span>Phase-Gated Checklists</a>
+    <a href="#s06" class="sb-link"><span class="sb-num">06</span>Non-Negotiable Rules</a>
+    <div class="sb-group">Standards</div>
+    <a href="#s07" class="sb-link"><span class="sb-num">07</span>Member Hospitality</a>
+    <a href="#s08" class="sb-link"><span class="sb-num">08</span>Vendor Briefings</a>
+    <a href="#s09" class="sb-link"><span class="sb-num">09</span>Emergency Protocols</a>
+    <div class="sb-group">Intelligence</div>
+    <a href="#s10" class="sb-link"><span class="sb-num">10</span>AI System</a>
+  <a href="index.html" class="nav-back">← Back to Suite</a></nav>
+  <div class="sb-footer">Production 1 of 2<br>Oct 2026 · v1</div>
+</aside>
+
+<main class="main">
+
+<div class="cover">
+  <div class="cover-eyebrow">Production 01 · Growth House Immersion</div>
+  <h1 class="cover-title">Immersion Event<br><span>Playbook</span></h1>
+  <p class="cover-sub">Operations system for the four-day Growth House mastermind. Setup through breakdown. Every role defined. Every day owned.</p>
+  <div class="cover-meta">
+    <div class="cover-mi"><span class="cover-ml">Operations Director</span><span class="cover-mv">Deryl VanNostrand</span></div>
+    <div class="cover-mi"><span class="cover-ml">Event Director</span><span class="cover-mv">Jesse Ray</span></div>
+    <div class="cover-mi"><span class="cover-ml">Event</span><span class="cover-mv">October 2026</span></div>
+    <div class="cover-mi"><span class="cover-ml">Format</span><span class="cover-mv">4 days + setup + breakdown</span></div>
+  </div>
+</div>
+
+<!-- S01 — EVENT OVERVIEW -->
+<div class="section" id="s01">
+  <div class="sec-badge"><span class="sec-badge-text">01 · Event Overview</span></div>
+  <h1 class="sec-title">The <span>Immersion</span> Structure</h1>
+  <p class="sec-lead">Six distinct days. Each with its own team configuration, energy, and operational requirements. The cocktail night is a separate production — see the Cocktail Night Production Bible.</p>
+
+  <div class="day-overview">
+    <div class="day-block">
+      <div class="day-num">Day Before</div>
+      <div class="day-name">Setup Day</div>
+      <div class="day-desc">U-Haul pickup. Venue load-in. Full space setup. Bar stations. Member rooms. Signage.</div>
+      <div class="day-team">Deryl + Joshawn · U-Haul</div>
+    </div>
+    <div class="day-block active">
+      <div class="day-num">Day 1</div>
+      <div class="day-name">Arrival Dinner</div>
+      <div class="day-desc">First night. Members arrive, settle in, first meal together. Hospitality-first. Soft energy. Low production intensity.</div>
+      <div class="day-team">Lean team · 3–4 staff</div>
+    </div>
+    <div class="day-block active">
+      <div class="day-num">Day 2</div>
+      <div class="day-name">Growth House Day</div>
+      <div class="day-desc">Full mastermind. Sessions, hot seats, deep work. Elevated 7-figure+ dinner closes the day. Full team day.</div>
+      <div class="day-team">Full team · 5–7 staff</div>
+    </div>
+    <div class="day-block active">
+      <div class="day-num">Day 3</div>
+      <div class="day-name">Immersion Day</div>
+      <div class="day-desc">Small group, 10–20 members max. 8-figure+ tight circle. Deep immersion. Lean operations. Different energy entirely.</div>
+      <div class="day-team">Deryl + Joshawn (option)</div>
+    </div>
+    <div class="day-block active">
+      <div class="day-num">Day 4</div>
+      <div class="day-name">Fun Excursion</div>
+      <div class="day-desc">Off-site adventure. ATVs, Navy SEALs, Sedona — whatever Jesse locks. Physical, high-energy, bonding-focused.</div>
+      <div class="day-team">Deryl leads · 2–3 staff</div>
+    </div>
+    <div class="day-block">
+      <div class="day-num">Day After</div>
+      <div class="day-name">Breakdown Day</div>
+      <div class="day-desc">Full venue breakdown and clean. U-Haul load-out and return. Leave it better than found.</div>
+      <div class="day-team">Deryl + Joshawn · U-Haul</div>
+    </div>
+  </div>
+
+  <div class="note">» Cocktail Night is a separate production on the last night. It has its own team, its own run of show, and its own Production Bible. See Production 02.</div>
+
+  <h2 class="sub">Two-Person Leadership Model</h2>
+  <div class="two-col"><div class="two-col-l">Jesse Ray</div><div class="two-col-r">Event Director. Owns the experience inside the room. Vision, culture, member relationships, sessions, toasts, closing circles. Never managing logistics.</div></div>
+  <div class="two-col"><div class="two-col-l">Deryl VanNostrand</div><div class="two-col-r">Operations Director. Owns the entire machine around that experience. Pre-event planning, day-of floor execution, post-event documentation. The event runs because of this role.</div></div>
+  <div class="note">» Jesse focuses on the room. Deryl makes sure there is a room to focus on.</div>
+</div>
+
+<!-- S02 — TEAM & ROLES -->
+<div class="section" id="s02">
+  <div class="sec-badge"><span class="sec-badge-text">02 · Team & Roles</span></div>
+  <h1 class="sec-title">Immersion <span>Team</span></h1>
+  <p class="sec-lead">Every person in their lane before doors open. No overlap. No vacuum for Jesse to fill.</p>
+
+  <h2 class="sub">Role 1 — Event Director · Jesse Ray</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Leads all sessions, welcomes, toasts, and closing circles</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Makes real-time calls on all program changes</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Represents Growth House brand to members and sponsors</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Delivers personal follow-up to every member within 48 hours of event close</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Is <strong>NOT</strong> managing logistics — fully delegated to Deryl. Never gives a setup instruction during the event.</span></div>
+  </div>
+
+  <h2 class="sub">Role 2 — Operations Director · Deryl VanNostrand</h2>
+  <div class="phase-wrap">
+    <div class="phase-strip phase-pre">
+      <div class="phase-tab"><div class="phase-label">Pre</div></div>
+      <div class="phase-body">
+        <div class="phase-title">Pre-Event — 4 Weeks to Doors Open</div>
+        <div class="phase-auth">Full planning ownership · Directs Pre/Post Coordinator on all execution tasks</div>
+        <div class="blt-list">
+          <div class="blt-item"><span class="blt-dot">•</span><span>Builds and owns master event plan: task matrix, countdown timeline, vendor schedule, ROS</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Contacts and confirms all vendors: Chef Shannon, bartenders, Fogo, photographer</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Runs full inventory audit — quantities per headcount, what to order</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Reviews all Member Profile Cards — memorizes names, coffee orders, dietary flags</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Sends all vendor briefing documents in writing 48–72 hours before event</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Pre-maps 2–3 sponsor-member introduction pairings</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-strip phase-day">
+      <div class="phase-tab"><div class="phase-label">Day</div></div>
+      <div class="phase-body">
+        <div class="phase-title">Day-Of — All Immersion Days</div>
+        <div class="phase-auth">Full floor authority · Single point of contact between all staff and Jesse</div>
+        <div class="blt-list">
+          <div class="blt-item"><span class="blt-dot">•</span><span>Runs pre-event huddle — all staff in zones, role cards in hand, ROS reviewed</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Floats the entire space — sees everything, resolves problems before they surface</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Calls all course timing for every meal. Chef Shannon cooks, Deryl signals.</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Distributes all forms, worksheets, and commitment cards on schedule</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Day 3 Immersion: primary operator for the smaller group, Joshawn available as support</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-strip phase-post">
+      <div class="phase-tab"><div class="phase-label">Post</div></div>
+      <div class="phase-body">
+        <div class="phase-title">Post-Event — Same Night Through 30 Days</div>
+        <div class="phase-auth">Full debrief ownership · Directs Pre/Post Coordinator on follow-up</div>
+        <div class="blt-list">
+          <div class="blt-item"><span class="blt-dot">•</span><span>Same night: ops debrief via Telegram agent — inventory, staff notes, observations</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Within 48 hours: all Member Profile Cards updated with event learnings</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Manages 30/60/90 day commitment check-in cadence via AI agent</span></div>
+          <div class="blt-item"><span class="blt-dot">•</span><span>Delivers refinement report to Jesse before next event planning window opens</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="sub">Role 3 — AV Lead & Setup/Breakdown · Joshawn</h2>
+  <div class="note">» Pending confirmation. Rate ~$25–30/hr. Setup day + all session days + breakdown day. Confirm before May 4.</div>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Setup day:</strong> Arrives with Deryl. U-Haul load-in. Full space setup alongside Deryl.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Session days:</strong> Loads all decks in ROS order. Tests all AV 30 min before every session. Stations at AV during sessions — does not leave for any other task.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Day 3 option:</strong> Available as lean support during Immersion Day if Deryl needs a second set of hands.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Breakdown day:</strong> Full load-out, U-Haul return, venue clean alongside Deryl.</span></div>
+  </div>
+
+  <h2 class="sub">Role 4 — Pre & Post Event Coordinator · TBD</h2>
+  <div class="warn">⚠ Previous person (Jess) removed. Sourcing replacement. Deryl interviews. Must be: organized, detail-oriented, excellent communicator, zero drama.</div>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Pre-event:</strong> All member communications on Deryl's schedule — save-the-dates, intake, welcome packets, reminders</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Builds Member Profile Cards from intake responses</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Prints and assembles all event materials — schedules, cards, welcome packets</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Day-of:</strong> No role. AI automation handles communications. Deryl handles the floor.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Post-event:</strong> Thank you sends, feedback forms, 90-day check-in cadence via AI agent</span></div>
+  </div>
+
+  <h2 class="sub">Role 5 — Chef · Chef Shannon</h2>
+  <div class="ok">✓ Jesse already contacted Shannon with October dates. Confirm and lock before June.</div>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Covers all meals across all immersion days — ideally all day</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Brings sous chef — solves the clearing and plating problem from Arizona</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Receives full dietary restriction list 48 hours out. Zero surprises.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Cooks on Deryl's timing signal for every course</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Leaves kitchen cleaner than found — the standard Shannon set in Arizona</span></div>
+  </div>
+
+  <h2 class="sub">Role 6 — Floor Staff / Hospitality · TBD ×1–2</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Knows every member by name and face before Day 1</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Coffee orders ready before members ask. Every morning.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Session beverage refresh ready before members return from every break</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Reports anything off to Deryl immediately — never handles member concerns alone</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>One chain of command: Deryl</span></div>
+  </div>
+
+  <h2 class="sub">Role 7 — Content Creator · Amys</h2>
+  <div class="ok">✓ Excellent in Arizona. Jesse and Deryl both agreed — keep her. Confirm October availability ASAP.</div>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Shot list provided in advance — arrival energy, session moments, closing circle, off-site adventure</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Portrait studio: banner outside, target 50+ headshots. Pre-communicated to members.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>No filming during hot seats or personal sharing — camera down when Jesse signals</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Raw footage delivered to Deryl same night or within 24 hours</span></div>
+  </div>
+</div>
+
+<!-- S03 — DERYL FULL ROLE -->
+<div class="section" id="s03">
+  <div class="sec-badge"><span class="sec-badge-text">03 · Operations Director Detail</span></div>
+  <h1 class="sec-title">Deryl's Role — <span>Full Detail</span></h1>
+  <p class="sec-lead">Complete responsibilities by phase. This is the job description. Pre-event, the event runs on planning. Day-of, it runs on presence. Post-event, it gets better because of documentation.</p>
+
+  <h2 class="sub">4 Weeks Out</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Contact and confirm Chef Shannon — menu concept, equipment needs, sous chef confirmed, arrival time, cover count</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Contact and confirm bartenders — real bartenders, brief on three-bar setup and full cocktail menu</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Confirm Joshawn — availability, rate, dates for setup day, all session days, breakdown day</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Reserve U-Haul for setup day and breakdown day</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Begin master inventory audit — what is on hand vs. what needs to be sourced</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Confirm venue logistics with Jesse — layout, AV infrastructure, power, outdoor zones</span></div>
+  </div>
+
+  <h2 class="sub">2 Weeks Out</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Review all Member Profile Cards — memorize every name, coffee order, dietary hard stop</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Finalize cocktail menu with bartenders — full mixer list confirmed (Coke, soda, simple syrup, citrus)</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Submit full supply order — bar, kitchen, snacks, welcome packet items, room supplies</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Build three-bar layout map for cocktail night and pre-map sponsor-member introduction pairings</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Confirm Amys — shot list built and sent to her</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Order directional signage and portrait studio banner</span></div>
+  </div>
+
+  <h2 class="sub">48 Hours Out</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Full inventory walkthrough — every item physically checked against master list</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Delivery order audited on arrival — check every item before assuming it's stocked</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Vendor briefing documents sent to all vendors in writing</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Emergency contacts confirmed for October venue city — nearest hospital, urgent care, venue emergency line</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Staff briefing sent — full ROS, role cards, Telegram group chat activated</span></div>
+  </div>
+
+  <h2 class="sub">Setup Day (Day Before)</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl + Joshawn</span><span>U-Haul pickup first thing — load all event supplies</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Set up all session rooms — chairs, tables, materials, water, stationery</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Stage all member rooms — welcome card, snacks, water, schedule, personal touch item</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Place sponsor signage and portrait studio banner in all zones</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Place trash cans in ALL zones FIRST — before anything else</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Joshawn</span><span>AV setup — screens, speakers, HDMI, clicker tested. All decks loaded.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Walk every room as the member — does it feel like we thought about you?</span></div>
+  </div>
+
+  <h2 class="sub">Pre-Event Huddle (30 Min Before First Arrival)</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>All staff present and in their zones</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Role cards distributed — everyone has theirs in hand</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>ROS reviewed — everyone knows the full day</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Jesse</span><span>Last-minute program changes communicated</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Signs off. Doors open.</span></div>
+  </div>
+
+  <h2 class="sub">Post-Event (Same Night → 30 Days)</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Same night: ops debrief via Telegram — while it's fresh. Non-negotiable.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Within 24 hours: full debrief in Notion, inventory updated with actuals</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Within 48 hours: all Member Profile Cards updated with event observations</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Staff individually thanked — bartenders with cash tip before they leave</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl + Joshawn</span><span>Breakdown day: full load-out, U-Haul return, venue left better than found</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>30/60/90 day commitment check-ins managed via AI agent</span></div>
+  </div>
+</div>
+
+<!-- S04 — RUN OF SHOW -->
+<div class="section" id="s04">
+  <div class="sec-badge"><span class="sec-badge-text">04 · Run of Show</span></div>
+  <h1 class="sec-title">Run of <span>Show</span></h1>
+  <p class="sec-lead">Every role operates from this document simultaneously. If it is not on the ROS, it does not exist. Deryl owns it. Jesse approves it. All staff receive it 48 hours before doors open.</p>
+
+  <div class="fill-in"><span class="fill-label">Event Dates</span><span class="fill-val">[FILL IN — October 2026]</span></div>
+  <div class="fill-in"><span class="fill-label">Venue</span><span class="fill-val">[FILL IN — mountain property, health/wellness retreat vibe]</span></div>
+  <div class="fill-in"><span class="fill-label">Member Count</span><span class="fill-val">[FILL IN]</span></div>
+  <div class="fill-in"><span class="fill-label">Immersion Group</span><span class="fill-val">[FILL IN — 10–20 for Day 3]</span></div>
+
+  <h2 class="sub">Setup Day — Day Before Event</h2>
+  <table class="ros-table">
+    <thead><tr><th>Time</th><th>Task</th><th>Owner</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="ros-time">Morning</td><td>U-Haul pickup</td><td class="ros-owner">Deryl + Joshawn</td><td class="ros-notes">~$106 all-in. First task of the day.</td></tr>
+      <tr><td class="ros-time">Load-in</td><td>Venue arrival + unload</td><td class="ros-owner">Deryl + Joshawn</td><td class="ros-notes">20 min to unload with two people</td></tr>
+      <tr><td class="ros-time">All day</td><td>Full venue setup</td><td class="ros-owner">Deryl leads</td><td class="ros-notes">Trash cans first. Then session rooms. Then bar. Then member rooms.</td></tr>
+      <tr><td class="ros-time">Parallel</td><td>AV full setup + test</td><td class="ros-owner">Joshawn</td><td class="ros-notes">All decks loaded. Every cable tested. Backup device ready.</td></tr>
+      <tr><td class="ros-time">Before leave</td><td>Final walkthrough</td><td class="ros-owner">Deryl</td><td class="ros-notes">Step into each member room as the member. Does it feel like we thought about you?</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub">Day 1 — Arrival & Welcome Dinner</h2>
+  <table class="ros-table">
+    <thead><tr><th>Time</th><th>Item</th><th>Owner</th><th>Location</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="ros-time">7:00–9:00 AM</td><td>Wellness window open</td><td class="ros-owner">Deryl</td><td>Sauna / pool / patio</td><td class="ros-notes">Optional. Fully set up before first member wakes.</td></tr>
+      <tr><td class="ros-time">From 12:00 PM</td><td>Member arrivals begin</td><td class="ros-owner">Pre-Event Coord.</td><td>Entrance</td><td class="ros-notes">Personalized greeting. Walk to room. Welcome packet in hand.</td></tr>
+      <tr><td class="ros-time">All afternoon</td><td>Members settle in</td><td class="ros-owner">Floor staff</td><td>Venue</td><td class="ros-notes">Coffee orders fulfilled. Rooms checked. Deryl floating.</td></tr>
+      <tr><td class="ros-time">6:30 PM</td><td>Welcome dinner begins</td><td class="ros-owner">Deryl + Chef Shannon</td><td>Dining</td><td class="ros-notes">First meal together. Soft energy. Real plates.</td></tr>
+      <tr><td class="ros-time">8:00 PM</td><td>Jesse welcome address</td><td class="ros-owner">Jesse</td><td>Dining / main space</td><td class="ros-notes">Sets the tone for the weekend. Deryl holds the space.</td></tr>
+      <tr><td class="ros-time">10:00 PM</td><td>Staff debrief</td><td class="ros-owner">Deryl</td><td>Back of house</td><td class="ros-notes">10 min. Notes logged. Team ready for Day 2.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub">Day 2 — Growth House Day (7-Figure+ Night)</h2>
+  <table class="ros-table">
+    <thead><tr><th>Time</th><th>Item</th><th>Owner</th><th>Location</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="ros-time">7:00–9:00 AM</td><td>Wellness window open</td><td class="ros-owner">Deryl</td><td>Sauna / pool / patio</td><td class="ros-notes">Optional. Yoga, cold plunge, wellness drinks. Fully set up by 7.</td></tr>
+      <tr><td class="ros-time">9:00 AM</td><td>Breakfast available</td><td class="ros-owner">Floor staff</td><td>Dining</td><td class="ros-notes">Bamboo plates. Deryl calls timing.</td></tr>
+      <tr><td class="ros-time">9:30 AM</td><td>AV check</td><td class="ros-owner">Joshawn</td><td>Session room</td><td class="ros-notes">30 min before session. Non-negotiable.</td></tr>
+      <tr><td class="ros-time">10:00 AM</td><td>Session 1 begins</td><td class="ros-owner">Jesse</td><td>Session room</td><td class="ros-notes">Room fully set. Materials at every seat.</td></tr>
+      <tr><td class="ros-time">11:30 AM</td><td>Active outdoor break — 30 min</td><td class="ros-owner">Deryl</td><td>Outside / lawn</td><td class="ros-notes">Bag toss, mini golf, or walk-and-talk. Min 30 min. Outside.</td></tr>
+      <tr><td class="ros-time">12:00 PM</td><td>Session 2 begins</td><td class="ros-owner">Jesse</td><td>Session room</td><td class="ros-notes">Beverages refreshed before members return.</td></tr>
+      <tr><td class="ros-time">1:30 PM</td><td>Lunch service</td><td class="ros-owner">Floor staff</td><td>Dining</td><td class="ros-notes">Bamboo. Deryl calls timing.</td></tr>
+      <tr><td class="ros-time">2:30 PM</td><td>Afternoon session</td><td class="ros-owner">Jesse</td><td>Session room</td><td class="ros-notes">AV re-tested at 2:15 PM.</td></tr>
+      <tr><td class="ros-time">4:00 PM</td><td>Active outdoor break — 30 min</td><td class="ros-owner">Deryl</td><td>Outside</td><td class="ros-notes">Walk-and-talk. Strategic member pairing by Deryl.</td></tr>
+      <tr><td class="ros-time">4:30 PM</td><td>Hot seats begin</td><td class="ros-owner">Jesse</td><td>Session room</td><td class="ros-notes">Commitment cards at every seat. Deryl distributes.</td></tr>
+      <tr><td class="ros-time">7:00 PM</td><td>Elevated dinner — 7-Figure+ Night</td><td class="ros-owner">Deryl + Chef Shannon</td><td>Dining</td><td class="ros-notes">Real plates. Shannon's sous chef assists clearing. Dish washer running. The premium moment.</td></tr>
+      <tr><td class="ros-time">9:00 PM</td><td>Closing circle</td><td class="ros-owner">Jesse</td><td>Main space</td><td class="ros-notes">Deryl holds the space — no staff interruptions.</td></tr>
+      <tr><td class="ros-time">10:00 PM</td><td>Staff debrief</td><td class="ros-owner">Deryl</td><td>Back of house</td><td class="ros-notes">Notes logged same night.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub">Day 3 — Immersion Day (8-Figure+ Tight Group)</h2>
+  <div class="note">» This is the inner circle day. 10–20 members max. Different energy from Day 2. Lean operations. Deryl is the primary operator. Joshawn available as option.</div>
+  <table class="ros-table">
+    <thead><tr><th>Time</th><th>Item</th><th>Owner</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="ros-time">7:00–9:00 AM</td><td>Wellness window open</td><td class="ros-owner">Deryl</td><td class="ros-notes">Last morning for the inner circle. Make it count.</td></tr>
+      <tr><td class="ros-time">9:00 AM</td><td>Breakfast — intimate</td><td class="ros-owner">Deryl</td><td class="ros-notes">Smaller group. Chef Shannon or simplified service.</td></tr>
+      <tr><td class="ros-time">10:00 AM</td><td>Immersion session begins</td><td class="ros-owner">Jesse</td><td class="ros-notes">Deep work. Small room. No distractions. Deryl on the floor only when needed.</td></tr>
+      <tr><td class="ros-time">Throughout</td><td>Minimal service</td><td class="ros-owner">Deryl</td><td class="ros-notes">Water, coffee, snacks available. Deryl reads the room. Less is more here.</td></tr>
+      <tr><td class="ros-time">1:30 PM</td><td>Lunch</td><td class="ros-owner">Deryl</td><td class="ros-notes">Simple. Nourishing. Doesn't interrupt the energy.</td></tr>
+      <tr><td class="ros-time">Afternoon</td><td>Continued immersion / integration</td><td class="ros-owner">Jesse</td><td class="ros-notes">Jesse leads. Deryl holds space.</td></tr>
+      <tr><td class="ros-time">Evening</td><td>Closing circle — inner circle</td><td class="ros-owner">Jesse</td><td class="ros-notes">Intimate. The most important closing of the weekend for this group.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub">Day 4 — Fun Excursion</h2>
+  <div class="note">» Details TBD with Jesse. Full logistics protocol in Section 09. No EVs for any off-site day.</div>
+  <table class="ros-table">
+    <thead><tr><th>Time</th><th>Item</th><th>Owner</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="ros-time">7:00–9:00 AM</td><td>Wellness window open</td><td class="ros-owner">Deryl</td><td class="ros-notes">Energy prep for the physical day ahead.</td></tr>
+      <tr><td class="ros-time">8:00 AM</td><td>Breakfast — light, high protein</td><td class="ros-owner">Floor staff</td><td class="ros-notes">No heavy food before physical activity.</td></tr>
+      <tr><td class="ros-time">8:45 AM</td><td>Morning briefing (3 min)</td><td class="ros-owner">Deryl</td><td class="ros-notes">Activity, departure time, what to bring, vehicles, return time. Answers every question before it's asked.</td></tr>
+      <tr><td class="ros-time">9:00 AM</td><td>Convoy departs</td><td class="ros-owner">Deryl</td><td class="ros-notes">Gas-powered vehicles only. Headcount before vehicles move.</td></tr>
+      <tr><td class="ros-time">Activity</td><td>[ATVs / SEAL training / Sedona / TBD]</td><td class="ros-owner">Activity lead</td><td class="ros-notes">Deryl has emergency contacts. Camera crew rolling.</td></tr>
+      <tr><td class="ros-time">Return</td><td>Return to venue + recovery</td><td class="ros-owner">Deryl</td><td class="ros-notes">Protein, water, electrolytes in vehicles. Pool, sauna open on return.</td></tr>
+      <tr><td class="ros-time">Evening</td><td>Final group dinner</td><td class="ros-owner">Deryl + Chef Shannon</td><td class="ros-notes">Celebratory. Full group together before cocktail night.</td></tr>
+      <tr><td class="ros-time">Night</td><td>→ Cocktail Night Production begins</td><td class="ros-owner">Deryl</td><td class="ros-notes">Hand off to Cocktail Night operations. See Cocktail Night Production Bible.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub">Breakdown Day — Day After</h2>
+  <table class="ros-table">
+    <thead><tr><th>Time</th><th>Task</th><th>Owner</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="ros-time">Morning</td><td>Full breakdown begins</td><td class="ros-owner">Deryl + Joshawn + All staff</td><td class="ros-notes">Deryl leads. No one leaves early.</td></tr>
+      <tr><td class="ros-time">All day</td><td>Venue clean and reset</td><td class="ros-owner">All staff</td><td class="ros-notes">Leave it better than found. Every surface cleaned.</td></tr>
+      <tr><td class="ros-time">Afternoon</td><td>U-Haul load + return</td><td class="ros-owner">Deryl + Joshawn</td><td class="ros-notes">~$106. Load everything. Return same day.</td></tr>
+      <tr><td class="ros-time">Same day</td><td>Ops debrief filed</td><td class="ros-owner">Deryl</td><td class="ros-notes">While it is fresh. Non-negotiable.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S05 — CHECKLISTS -->
+<div class="section" id="s05">
+  <div class="sec-badge"><span class="sec-badge-text">05 · Phase-Gated Checklists</span></div>
+  <h1 class="sec-title">Phase-Gated <span>Checklists</span></h1>
+  <p class="sec-lead">Every phase has a gate. The gate does not open until every item is checked. Deryl signs off on all gates.</p>
+
+  <h2 class="sub">Gate 1 — 4 Weeks Out · Event Confirmed</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Jesse</span><span>Confirm final member list, headcount, and event dates</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Jesse</span><span>Lock October mountain property venue</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Jesse</span><span>Confirm speaker / presenter lineup and session topics</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Pre-Event Coord.</span><span>Send Save the Date + Confirmation to all members</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Pre-Event Coord.</span><span>Open member intake form — probing questions format, 3 minutes max</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Contact Chef Shannon — lock her for October, confirm menu concept, sous chef availability</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Confirm Joshawn — availability, rate, full schedule</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Reserve U-Haul for setup day and breakdown day</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Contact bartenders — real bartenders confirmed, brief on three-bar setup</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Begin master inventory audit</span></div>
+  </div>
+
+  <h2 class="sub">Gate 2 — 2 Weeks Out · Intake Closed, Profiles Built</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Pre-Event Coord.</span><span>Close intake form, compile all responses, build Member Profile Cards</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Pre-Event Coord.</span><span>Send Pre-Event Welcome Email — include portrait studio notice</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Pre-Event Coord.</span><span>Confirm headcount — no changes after this gate</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Review all Member Profile Cards — memorize every name, coffee order, dietary hard stop</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Finalize cocktail menu — full mixer list confirmed with bartenders</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Submit full supply order: bar, kitchen, snacks, room supplies, welcome packet items</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Order directional signage and portrait studio banner</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Joshawn</span><span>Reach out to all presenters — slide decks, tech requirements, AV needs</span></div>
+  </div>
+
+  <h2 class="sub">Gate 3 — 48 Hours Out · Final Lock</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Pre-Event Coord.</span><span>Send 48-Hour Reminder — arrival time, parking, schedule, portrait studio notice</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Pre-Event Coord.</span><span>Send staff briefing — full ROS, role cards, Telegram group activated</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Full inventory walkthrough — every item physically checked</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Delivery order audited on receipt — check every item against the list</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Vendor briefing documents sent to all vendors in writing</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Emergency contacts confirmed for October venue city — saved in Deryl's phone</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Joshawn</span><span>All slide decks loaded in ROS order. AV fully tested. Backup device charged.</span></div>
+  </div>
+
+  <h2 class="sub">Gate 4 — Post-Event · Within 24 Hours</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Ops debrief filed in Notion same night — while it's fresh</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Pre-Event Coord.</span><span>Thank you + feedback form sent to all members</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Master inventory updated — reorders and cuts identified</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Member Profile Cards updated with event observations</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Jesse</span><span>Personal follow-up to each member within 48 hours</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl + Joshawn</span><span>Breakdown day: full load-out, U-Haul return, venue left better than found</span></div>
+  </div>
+</div>
+
+<!-- S06 — NON-NEGOTIABLES -->
+<div class="section" id="s06">
+  <div class="sec-badge"><span class="sec-badge-text">06 · Non-Negotiable Rules</span></div>
+  <h1 class="sec-title">Non-Negotiable <span>Rules</span></h1>
+  <p class="sec-lead">These do not change. They do not get negotiated day-of. They are the floor.</p>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span>Wellness window 7–9am fully set up before first member wakes. Sessions start 10am. Every day.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Active outdoor breaks minimum 30 minutes. Outside. Moving. Every session day.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Real bartenders only — not bottle girls. Jesse confirmed.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Bartender consulted on full mixer list in pre-event call. Coke, soda, simple syrup, citrus all confirmed.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Delivery orders audited on arrival. Check every item. Never send Deryl to a store.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Pool and patio clean before group photo. That is the money shot.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Champagne poured and ready before every toast. Never let a toast moment wait on the bar.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>AV tested 30 min before every session. Not 5 minutes. Not when Jesse walks in.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Role cards distributed at pre-event huddle. Everyone has theirs in hand before doors open.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Vendor briefing documents sent in writing before every event. No verbal-only confirmations.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>U-Haul reserved for both setup day and breakdown day before Gate 1 closes.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>No EVs for off-site days. Gas-powered vehicles only. Headcount before convoy moves.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Deryl does NOT drive sponsors. Uber Black or arranged transport.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Portrait studio has a banner and is pre-communicated to members. Target: 50+ headshots.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Staff meal planned and confirmed. Everyone eats. Everyone is hydrated.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Emergency contacts confirmed and saved in Deryl's phone 48 hours out.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Contingency budget line. 10% of total. Always.</span></div>
+  </div>
+</div>
+
+<!-- S07 — MEMBER HOSPITALITY -->
+<div class="section" id="s07">
+  <div class="sec-badge"><span class="sec-badge-text">07 · Member Hospitality</span></div>
+  <h1 class="sec-title">Member <span>Hospitality</span></h1>
+  <p class="sec-lead">Every member should feel the event was designed specifically for them. That feeling is manufactured deliberately — through intake, preparation, and intentional execution.</p>
+  <div class="note">» A room is a message. It either says 'we thought about you' or 'we set up a bed.' We are always saying the first.</div>
+
+  <h2 class="sub">Member Intake — Probing Questions Format</h2>
+  <p style="font-size:13px;color:var(--dim);margin-bottom:12px;line-height:1.7;">5–7 questions. Feels like a conversation. Takes 3 minutes. No pamphlets. Sent 3 weeks out.</p>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Dietary restrictions or allergies — hard stops only</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Exact coffee order and morning drink preference</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Wellness preferences — sauna, cold plunge, yoga, morning person or not</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Favorite snacks and drinks — what should be waiting in your room?</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>One thing you're working through right now (optional — powerful for Jesse's session planning)</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Anything that would make this weekend feel perfect for you</span></div>
+  </div>
+
+  <h2 class="sub">Member Profile Card Template</h2>
+  <div class="profile-card">
+    <div class="profile-name">James Helm</div>
+    <div class="profile-role-text">Montana · River property developer</div>
+    <div class="profile-rows">
+      <div class="profile-row"><span class="profile-key">Coffee</span><span class="profile-val">Black, no sugar</span></div>
+      <div class="profile-row"><span class="profile-key">Snacks</span><span class="profile-val">Nuts and dark chocolate</span></div>
+      <div class="profile-row"><span class="profile-key">Dietary ⚠</span><span class="profile-val" style="color:#e05555;">ALLERGIC TO SHELLFISH</span></div>
+      <div class="profile-row"><span class="profile-key">Wellness</span><span class="profile-val">Sauna yes · Cold plunge yes · Early riser</span></div>
+      <div class="profile-row"><span class="profile-key">Conversation</span><span class="profile-val">Ask him about his river property in Montana</span></div>
+      <div class="profile-row"><span class="profile-key">90-day commit</span><span class="profile-val">[From last event if returning]</span></div>
+    </div>
+  </div>
+
+  <h2 class="sub">Room Setup Protocol</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span>Bed made hotel-style — crisp, clean, tight corners</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Welcome card on pillow — member's name, one personal sentence</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Water bottle (full) on nightstand</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Event schedule (clean printed copy) on desk</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Member's preferred snacks — from their intake form</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Sponsor product matched to their profile</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Special requests fulfilled — blackout curtains, extra pillows, fan — already in place</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span><strong>Final check: step into the room as the member. Does it feel like we thought about you?</strong></span></div>
+  </div>
+</div>
+
+<!-- S08 — VENDOR BRIEFINGS -->
+<div class="section" id="s08">
+  <div class="sec-badge"><span class="sec-badge-text">08 · Vendor Briefings</span></div>
+  <h1 class="sec-title">Vendor Briefing <span>Templates</span></h1>
+  <p class="sec-lead">Every vendor gets a briefing document in writing 48–72 hours before the event. No vendor arrives and figures it out.</p>
+
+  <h2 class="sub">Chef Shannon Briefing Template</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Arrival:</strong> [TIME]. Park at [LOCATION]. Text Deryl when you arrive: [NUMBER].</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Kitchen Walkthrough:</strong> Deryl meets you on arrival — walks through every appliance, storage zone, and timing constraint before you cook a single meal.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Cover Count:</strong> [NUMBER] members + [NUMBER] staff. Staff meal included — yours and your sous chef's is on us.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Meal Schedule:</strong> [FILL IN per day]</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Dietary Hard Stops:</strong> [LIST ALL RESTRICTIONS BY NAME — delivered 48 hours out. Zero surprises day-of.]</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Course Timing:</strong> Deryl calls timing from the floor. Chef cooks, Deryl signals when the room is ready. You will never be waiting on us.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Point of Contact:</strong> Deryl VanNostrand only during the event. [NUMBER].</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Payment:</strong> [AMOUNT · METHOD · TIMING]. Cash tip from Jesse and Deryl before you leave.</span></div>
+  </div>
+
+  <h2 class="sub">Bartender Briefing Template</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Arrival:</strong> [TIME] — 30–60 min before doors open at [TIME]. Full recipe walkthrough and test before any member arrives.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Your Bar:</strong> [Cocktail / Wine-Beer / Non-Alc] — three-bar setup, you own your zone.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Recipes + Full Mixer List:</strong> Sent in advance. Coke, soda, simple syrup, citrus all confirmed and stocked.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Zone Rule:</strong> You do not leave your bar zone during service. If you need anything, Deryl or floor staff comes to you.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Ice:</strong> You manage ice. Tell Deryl immediately if running low — do not wait until it's a problem.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Meal:</strong> Provided. You will not go hungry.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Payment + Tip:</strong> [AMOUNT]. Cash tip at end of night before you leave.</span></div>
+  </div>
+</div>
+
+<!-- S09 — EMERGENCY -->
+<div class="section" id="s09">
+  <div class="sec-badge"><span class="sec-badge-text">09 · Emergency Protocols</span></div>
+  <h1 class="sec-title">Emergency <span>Protocols</span></h1>
+  <p class="sec-lead">The best production teams aren't the ones who never face problems — they're the ones who already decided what to do before the problem happened.</p>
+  <div class="warn">⚠ All emergency contacts saved in Deryl's phone before every event. Nearest hospital, urgent care, venue emergency line confirmed 48 hours out.</div>
+
+  <h2 class="sub">Scenario 1 — Chef Cancels Within 48 Hours</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">→</span><span>Deryl notifies Jesse privately. Do not announce to members.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>Option A: Backup chef — identify one before every event. Have the number saved.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>Option B: Premium catering delivery — 2 options researched for October venue city before the event.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>Jesse addresses any meal change to members as a curated decision, not a crisis.</span></div>
+  </div>
+
+  <h2 class="sub">Scenario 2 — AV Fails During a Session</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">→</span><span>Joshawn owns the fix — quietly. Jesse continues speaking, holds room energy.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>If fix takes more than 3 minutes: Jesse calls a comfort break, framed as intentional.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>Backup device charged and ready. Switch to it immediately.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>If unresolvable: Jesse continues without slides. A great facilitator doesn't need a deck.</span></div>
+  </div>
+
+  <h2 class="sub">Scenario 3 — Member Medical Situation</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">→</span><span>Floor staff reports to Deryl immediately — do not handle alone.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>If non-emergency: Deryl handles discreetly. Jesse informed privately, not mid-session.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>If emergency: Call 911 immediately. Deryl stays with member. Jesse notified.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>Member emergency contact is on their profile card. Deryl has it.</span></div>
+  </div>
+
+  <h2 class="sub">Scenario 4 — Key Staff No-Show</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">→</span><span>Joshawn no-show: Deryl takes AV station temporarily. Load simplest possible setup.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>Floor staff no-show: Remaining staff absorbs zones. Deryl adjusts rotation. Service may simplify but never visibly degrades.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span>Rule: no member ever notices a staff gap.</span></div>
+  </div>
+
+  <h2 class="sub">Emergency Contacts Template</h2>
+  <div class="fill-in"><span class="fill-label">Nearest Hospital</span><span class="fill-val">[Address + phone — confirmed 48 hours out]</span></div>
+  <div class="fill-in"><span class="fill-label">Nearest Urgent Care</span><span class="fill-val">[FILL IN]</span></div>
+  <div class="fill-in"><span class="fill-label">Venue Emergency Line</span><span class="fill-val">[FILL IN]</span></div>
+  <div class="fill-in"><span class="fill-label">Backup Chef</span><span class="fill-val">[Name + number — sourced before Gate 1]</span></div>
+  <div class="fill-in"><span class="fill-label">Backup Catering</span><span class="fill-val">[2 options for October venue city]</span></div>
+</div>
+
+<!-- S10 — AI SYSTEM -->
+<div class="section" id="s10">
+  <div class="sec-badge"><span class="sec-badge-text">10 · AI System</span></div>
+  <h1 class="sec-title">AI Agent <span>System</span></h1>
+  <p class="sec-lead">Role-based agents via Telegram. Each team member gets their own agent. The ROS feeds all reminders. Voice notes become institutional knowledge. Every event makes the system smarter.</p>
+
+  <h2 class="sub">Phase 1 — Before July 2026 — Team Agents</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Operations Lead Agent (Deryl)</strong> — built first, tested solo for 2 weeks. Task matrix, inventory, escalation alerts.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Event Director Agent (Jesse)</strong> — full ROS, member roster, session notes, sponsor commitments</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Pre/Post Coordinator Agent</strong> — intake status, communication timeline, welcome packet checklist</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Tech / AV Agent (Joshawn)</strong> — AV checklist, presenter slide status, equipment inventory</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Chef Agent</strong> — meal schedule, dietary restrictions per member, course timing reminders</span></div>
+  </div>
+
+  <h2 class="sub">Voice Note Intelligence System</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">01</span><span>Any team member drops a voice note or video debrief into the designated Telegram channel</span></div>
+    <div class="blt-item"><span class="blt-dot">02</span><span>AI agent automatically transcribes and synthesizes key insights</span></div>
+    <div class="blt-item"><span class="blt-dot">03</span><span>Action items extracted and logged in the relevant Notion section with date stamp</span></div>
+    <div class="blt-item"><span class="blt-dot">04</span><span>Accountability reminders fire automatically based on extracted commitments</span></div>
+    <div class="blt-item"><span class="blt-dot">05</span><span>Pre-event: AI surfaces all relevant past event notes — nothing lost, everything compounds</span></div>
+  </div>
+
+  <div class="note">» Nobody in the mastermind space is building a system like this. This is the moat. Every event makes it more valuable. Every member makes it smarter.</div>
+
+  <!-- closing -->
+  <div style="margin-top:60px;padding:40px;background:var(--panel);border-top:2px solid var(--blue);text-align:center;">
+    <div style="font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--blue-light);text-transform:uppercase;margin-bottom:14px;">Growth House · Immersion Playbook · Production 01 of 02</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;margin-bottom:10px;">This system gets smarter every event.</div>
+    <p style="font-size:13px;color:var(--dim);line-height:1.75;max-width:500px;margin:0 auto 16px;">Every debrief improves the next event. Every voice note becomes institutional knowledge. Every member interaction adds depth.</p>
+    <div style="font-family:'Syne Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;">Deryl VanNostrand · Operations Director · Growth House · October 2026</div>
+  </div>
+</div>
+
+</main>
+
+<script>
+const links = document.querySelectorAll('.sb-link');
+const sections = document.querySelectorAll('.section[id]');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      links.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.sb-link[href="#${e.target.id}"]`);
+      if(link) link.classList.add('active');
+    }
+  });
+}, { threshold:0.2, rootMargin:'-10% 0px -60% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth House — Arizona Mansion Property Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--dark:#09090D;--panel:#101015;--mid:#16161E;--mid2:#1C1C26;
+  --border:rgba(201,168,76,0.14);--text:rgba(255,255,255,0.87);--dim:rgba(255,255,255,0.44);
+  --imm:#2A6B8A;--imm-bg:rgba(42,107,138,0.1);--imm-l:#5AAFD4;
+  --cock:#7A1F4A;--cock-bg:rgba(122,31,74,0.12);--cock-l:#D47FAA;
+  --both-c:#3A6A3A;--both-bg:rgba(58,106,58,0.12);--both-l:#5ABD7A;
+  --speak:#6B3A1F;--speak-bg:rgba(107,58,31,0.15);--speak-l:#D4AA7F;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:260px;min-height:100vh;background:var(--panel);border-right:1px solid var(--border);position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;z-index:50;}
+.sb-brand{padding:24px 20px 18px;border-bottom:1px solid var(--border);}
+.sb-tag{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+.sb-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;line-height:1.2;}
+.sb-sub{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.4;}
+.sb-nav{padding:10px 0;flex:1;}
+.sb-group{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 20px 4px;opacity:0.6;}
+.sb-link{display:flex;align-items:center;gap:10px;padding:7px 20px;text-decoration:none;color:var(--dim);font-size:12px;transition:all 0.18s;border-left:2px solid transparent;line-height:1.3;}
+.sb-link:hover{color:var(--text);background:rgba(201,168,76,0.05);border-left-color:var(--gold);}
+.sb-link.active{color:var(--gold);background:rgba(201,168,76,0.07);border-left-color:var(--gold);}
+.sb-num{font-family:'Syne Mono',monospace;font-size:9px;color:rgba(201,168,76,0.4);min-width:20px;}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.dot-imm{background:var(--imm-l);}
+.dot-cock{background:var(--cock-l);}
+.dot-both{background:var(--both-l);}
+.dot-speak{background:var(--speak-l);}
+.dot-gold{background:var(--gold);}
+.sb-footer{padding:14px 20px;border-top:1px solid var(--border);font-size:10px;color:var(--dim);line-height:1.6;}
+
+/* MAIN */
+.main{margin-left:260px;}
+
+/* COVER */
+.cover{min-height:90vh;padding:80px 72px;background:var(--panel);border-bottom:1px solid var(--border);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 85% 10%,rgba(201,168,76,0.07) 0%,transparent 60%),radial-gradient(ellipse 40% 50% at 5% 85%,rgba(122,31,74,0.07) 0%,transparent 55%);pointer-events:none;}
+.cover-tag{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.cover-tag::after{content:'';display:inline-block;width:40px;height:1px;background:var(--gold);opacity:0.4;}
+.cover-title{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,6.5vw,88px);font-weight:700;line-height:0.92;margin-bottom:20px;}
+.cover-title em{color:var(--gold);font-style:italic;}
+.cover-sub{font-size:15px;color:var(--dim);max-width:620px;line-height:1.85;margin-bottom:48px;}
+.cover-stats{display:flex;gap:40px;flex-wrap:wrap;}
+.stat-block{display:flex;flex-direction:column;gap:4px;}
+.stat-label{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;}
+.stat-sub{font-size:11px;color:var(--dim);}
+
+/* SECTION */
+.section{padding:64px 72px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.section:last-child{border-bottom:none;}
+.sec-badge{display:inline-flex;align-items:center;gap:10px;padding:5px 14px;margin-bottom:22px;font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:white;}
+.sb-gold{background:var(--gold);color:var(--dark);}
+.sb-imm{background:var(--imm);}
+.sb-cock{background:var(--cock);}
+.sb-both{background:var(--both-c);}
+.sb-speak{background:var(--speak);}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,44px);font-weight:700;line-height:1.05;margin-bottom:10px;}
+.sec-title span{color:var(--gold);}
+.sec-title em{font-style:italic;color:var(--cock-l);}
+.sec-lead{font-size:14px;color:var(--dim);line-height:1.85;max-width:720px;margin-bottom:36px;}
+h2.sub{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+h3.sub{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin:22px 0 10px;}
+
+/* ROOM CARD */
+.room-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:3px;margin:16px 0;}
+.room-card{background:var(--panel);padding:28px;border-left:4px solid;}
+.room-card:hover{background:var(--mid);}
+.rc-imm{border-left-color:var(--imm-l);}
+.rc-cock{border-left-color:var(--cock-l);}
+.rc-both{border-left-color:var(--both-l);}
+.rc-speak{border-left-color:var(--speak-l);}
+.rc-gold{border-left-color:var(--gold);}
+.room-floor{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+.rc-imm .room-floor{color:var(--imm-l);}
+.rc-cock .room-floor{color:var(--cock-l);}
+.rc-both .room-floor{color:var(--both-l);}
+.rc-speak .room-floor{color:var(--speak-l);}
+.rc-gold .room-floor{color:var(--gold);}
+.room-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:6px;line-height:1.2;}
+.room-purpose{font-size:12.5px;color:var(--dim);font-style:italic;margin-bottom:16px;line-height:1.65;}
+.room-uses{display:flex;flex-direction:column;gap:5px;}
+.room-use{display:flex;gap:10px;font-size:12.5px;color:var(--text);line-height:1.55;}
+.room-use::before{content:'›';color:var(--gold);flex-shrink:0;}
+.room-note{margin-top:14px;padding:10px 12px;border-left:2px solid;font-size:12px;color:var(--dim);font-style:italic;line-height:1.6;}
+.rc-imm .room-note{border-color:var(--imm-l);}
+.rc-cock .room-note{border-color:var(--cock-l);}
+.rc-both .room-note{border-color:var(--both-l);}
+.rc-speak .room-note{border-color:var(--speak-l);}
+.rc-gold .room-note{border-color:var(--gold);}
+
+/* USE TAGS */
+.use-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.use-tag{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 8px;border:1px solid;}
+.tag-imm{color:var(--imm-l);border-color:var(--imm);}
+.tag-cock{color:var(--cock-l);border-color:var(--cock);}
+.tag-both{color:var(--both-l);border-color:var(--both-c);}
+
+/* LEVEL BLOCKS */
+.level-header{background:var(--mid);padding:16px 20px;border-left:4px solid var(--gold);margin-bottom:3px;}
+.level-header-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;}
+.level-header-sub{font-size:12px;color:var(--dim);margin-top:3px;}
+
+/* BOOLITS */
+.blt-list{display:flex;flex-direction:column;gap:7px;margin:10px 0 18px;}
+.blt-item{display:flex;gap:12px;font-size:13.5px;color:var(--text);line-height:1.65;padding:10px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);}
+.blt-dot{color:var(--gold);flex-shrink:0;font-size:14px;line-height:1.5;}
+.blt-item strong{color:white;}
+
+/* NOTE / ALERT */
+.note{border-left:3px solid var(--gold);padding:14px 18px;background:rgba(201,168,76,0.04);margin:12px 0;font-size:13px;color:var(--dim);line-height:1.75;font-style:italic;}
+.alert{border-left:3px solid var(--cock-l);padding:14px 18px;background:var(--cock-bg);margin:12px 0;font-size:13px;color:var(--cock-l);line-height:1.75;}
+.win{border-left:3px solid var(--both-l);padding:14px 18px;background:var(--both-bg);margin:12px 0;font-size:13px;color:var(--both-l);line-height:1.75;}
+
+/* COCKTAIL NIGHT FULL MAP */
+.cn-map{background:var(--panel);border:1px solid var(--border);padding:36px;margin:20px 0;}
+.cn-map-title{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:24px;}
+.cn-levels{display:flex;flex-direction:column;gap:3px;}
+.cn-level{display:grid;grid-template-columns:120px 1fr;gap:3px;}
+.cn-level-label{background:var(--mid2);padding:16px 14px;display:flex;align-items:center;justify-content:center;}
+.cn-level-label-text{writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.cn-level-zones{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+.cn-zone{padding:18px 16px;text-align:center;}
+.cn-zone-icon{font-size:20px;margin-bottom:7px;}
+.cn-zone-name{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.cn-zone-desc{font-size:11.5px;color:var(--dim);line-height:1.45;}
+.cn-zone-e{font-size:10px;margin-top:6px;font-style:italic;}
+
+.z-speak{background:var(--speak-bg);}.z-speak .cn-zone-name{color:var(--speak-l);}.z-speak .cn-zone-e{color:var(--speak-l);}
+.z-cock{background:var(--cock-bg);}.z-cock .cn-zone-name{color:var(--cock-l);}.z-cock .cn-zone-e{color:var(--cock-l);}
+.z-imm{background:var(--imm-bg);}.z-imm .cn-zone-name{color:var(--imm-l);}.z-imm .cn-zone-e{color:var(--imm-l);}
+.z-both{background:var(--both-bg);}.z-both .cn-zone-name{color:var(--both-l);}.z-both .cn-zone-e{color:var(--both-l);}
+.z-gold{background:rgba(201,168,76,0.07);}.z-gold .cn-zone-name{color:var(--gold);}.z-gold .cn-zone-e{color:var(--gold);}
+.z-neutral{background:rgba(255,255,255,0.02);}.z-neutral .cn-zone-name{color:var(--dim);}
+
+/* IMMERSION DAY MAP */
+.imm-days{display:flex;flex-direction:column;gap:3px;margin:16px 0;}
+.imm-day{display:grid;grid-template-columns:100px 1fr;gap:3px;}
+.imm-day-label{background:var(--imm);padding:16px 10px;display:flex;align-items:center;justify-content:center;}
+.imm-day-label-text{writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:white;text-align:center;}
+.imm-day-rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:3px;}
+.imm-room{padding:16px;background:var(--panel);}
+.imm-room-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;margin-bottom:5px;}
+.imm-room-use{font-size:12px;color:var(--dim);line-height:1.6;}
+
+/* MEMBER ROOM ASSIGNMENTS */
+.assign-table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0;}
+.assign-table th{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);text-transform:uppercase;background:var(--panel);}
+.assign-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text);vertical-align:top;line-height:1.55;}
+.assign-table tr:nth-child(even) td{background:rgba(255,255,255,0.015);}
+.assign-room-name{font-weight:600;}
+.assign-who{color:var(--dim);font-style:italic;}
+.assign-note{font-size:11.5px;color:var(--dim);}
+
+/* SPEAKEASY HIGHLIGHT */
+.speak-block{background:var(--speak-bg);border:1px solid rgba(107,58,31,0.3);border-left:4px solid var(--speak-l);padding:36px;margin:20px 0;}
+.speak-label{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--speak-l);text-transform:uppercase;margin-bottom:12px;}
+.speak-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;margin-bottom:12px;line-height:1.1;}
+.speak-body{font-size:14px;color:rgba(255,255,255,0.7);line-height:1.85;margin-bottom:20px;}
+
+/* ROOFTOP HIGHLIGHT */
+.roof-block{background:rgba(201,168,76,0.05);border:1px solid var(--border);border-top:3px solid var(--gold);padding:36px;margin:20px 0;}
+
+/* WELLNESS BLOCK */
+.well-block{background:var(--both-bg);border:1px solid rgba(58,106,58,0.25);border-left:4px solid var(--both-l);padding:28px;margin:20px 0;}
+.well-label{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--both-l);text-transform:uppercase;margin-bottom:10px;}
+.well-items{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;}
+.well-item{padding:16px;background:rgba(0,0,0,0.2);}
+.well-item-icon{font-size:20px;margin-bottom:8px;}
+.well-item-name{font-size:13px;font-weight:600;margin-bottom:5px;color:var(--both-l);}
+.well-item-desc{font-size:12px;color:var(--dim);line-height:1.6;}
+
+/* PHOTO MOMENTS */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:16px 0;}
+.photo-card{background:var(--panel);padding:20px;}
+.photo-num{font-family:'Syne Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:8px;}
+.photo-name{font-size:14px;font-weight:600;margin-bottom:6px;}
+.photo-desc{font-size:12px;color:var(--dim);line-height:1.65;}
+.photo-amys{font-family:'Syne Mono',monospace;font-size:9px;color:var(--cock-l);margin-top:10px;letter-spacing:1px;}
+
+/* DERYL PRE-EVENT CHECKLIST */
+.chk-list{display:flex;flex-direction:column;gap:6px;margin:10px 0 18px;}
+.chk-item{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--text);line-height:1.65;padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);}
+.chk-box{width:15px;height:15px;border:1.5px solid var(--gold);flex-shrink:0;margin-top:2px;}
+.chk-owner{font-family:'Syne Mono',monospace;font-size:9px;color:var(--gold);background:rgba(201,168,76,0.1);padding:1px 7px;white-space:nowrap;align-self:flex-start;margin-top:2px;flex-shrink:0;}
+
+@media(max-width:900px){
+  .sidebar{position:static;width:100%;min-height:auto;border-right:none;border-bottom:1px solid var(--border);}
+  .sb-nav{display:none;}
+  .main{margin-left:0;}
+  .cover,.section{padding:40px 24px;}
+  .room-grid,.photo-grid,.well-items{grid-template-columns:1fr;}
+  .cn-level,.imm-day{grid-template-columns:1fr;}
+  .cn-level-zones{grid-template-columns:1fr;}
+}
+
+  .nav-back{
+    font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--dim);text-decoration:none;
+    display:flex;align-items:center;gap:8px;transition:color 0.2s;
+    border:1px solid var(--border);padding:8px 16px;
+  }
+  .nav-back:hover{color:var(--gold);border-color:var(--gold);}
+
+/* ── VISUAL ENHANCEMENTS ── */
+/* Hero horizontal lines */
+.hero::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(to right,transparent,rgba(201,168,76,0.08),transparent) 0 28% / 100% 1px no-repeat,
+    linear-gradient(to right,transparent,rgba(201,168,76,0.05),transparent) 0 62% / 100% 1px no-repeat;
+}
+/* Stronger glow */
+body { background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 60%); }
+/* Nav back button polish */
+.nav-back {
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,0.44);text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+  border:1px solid rgba(201,168,76,0.2);
+  padding:9px 18px;
+  transition:all 0.22s;
+}
+.nav-back:hover { color:#C9A84C; border-color:#C9A84C; background:rgba(201,168,76,0.06); }
+/* Section gradient dividers */
+.section, .sec { border-bottom: none; position: relative; }
+.section::after, .sec::after {
+  content:'';
+  position:absolute;
+  bottom:0;left:10%;right:10%;
+  height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,168,76,0.15),transparent);
+}
+/* Card hover — lift + glow */
+.room-card:hover, .pos-card:hover, .work-card:hover, .gap-card:hover,
+.excursion-card:hover, .analysis-card:hover, .day-block:hover,
+.venue-zone:hover, .energy-block:hover {
+  transform:translateY(-3px) !important;
+  box-shadow:0 12px 40px rgba(0,0,0,0.35) !important;
+  transition:transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+/* Stronger panel backgrounds */
+.panel, [class*="panel"] { background: #0F0F1A; }
+/* Section number styling */
+.section-num, .sec-num {
+  display:flex;align-items:center;gap:16px;
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:4px;
+  color:#C9A84C;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.section-num::after, .sec-num::after {
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,rgba(201,168,76,0.3),transparent);
+}
+/* Bigger hero title max */
+.cover-title, .hero-title, .format-title {
+  letter-spacing:-1px;
+}
+/* Pulse dot animation for living doc badges */
+@keyframes pulse-gold {
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,168,76,0.4);}
+  50%{opacity:0.7;box-shadow:0 0 0 6px rgba(201,168,76,0);}
+}
+/* Checkboxes pop */
+.chk-box {
+  transition:border-color 0.2s, background 0.2s;
+}
+.chk-item:hover .chk-box {
+  border-color:#C9A84C;
+  background:rgba(201,168,76,0.1);
+}
+/* ROS table row hover */
+.ros-table tr:hover td {
+  background:rgba(201,168,76,0.04) !important;
+}
+/* Note blocks — slightly more visible */
+.note, .warn, .ok, .win, .alert, .pink-note {
+  border-left-width:4px;
+}
+
+
+/* ── DOCUMENT ACCENT ── */
+:root { --accent:#D4943A; --accent-border:rgba(212,148,58,0.3); --accent-glow:rgba(212,148,58,0.07); }
+.nav { border-bottom-color:rgba(212,148,58,0.3); }
+.nav-brand { color:#D4943A; }
+.nav-back { border-color:rgba(212,148,58,0.3); }
+.nav-back:hover { color:#D4943A; border-color:#D4943A; background:rgba(212,148,58,0.07); }
+/* Hero accent line */
+.cover::before, .hero::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,#D4943A,transparent);
+  z-index:10;
+}
+/* Doc stamp in hero */
+.cover-tag, .hero-tag, .cover-eyebrow {
+  color:#D4943A;
+}
+/* Section numbers */
+.section-num::after, .sec-num::after, .sec-badge {
+  background:#D4943A;
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-tag">Growth House · Arizona</div>
+    <div class="sb-title">Mansion Property<br>Intelligence</div>
+    <div class="sb-sub">Room-by-room activation map<br>Immersion days + Cocktail Night</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-group">Overview</div>
+    <a href="#cover" class="sb-link active"><span class="sb-dot dot-gold"></span>Property Overview</a>
+    <a href="#s01" class="sb-link"><span class="sb-dot dot-speak"></span>The Speakeasy — Featured</a>
+    <div class="sb-group">By Level</div>
+    <a href="#s02" class="sb-link"><span class="sb-num">B1</span>Lower Level</a>
+    <a href="#s03" class="sb-link"><span class="sb-num">L1</span>Main Level — Indoor</a>
+    <a href="#s04" class="sb-link"><span class="sb-num">L1</span>Main Level — Outdoor</a>
+    <a href="#s05" class="sb-link"><span class="sb-num">R</span>Rooftop — Two Zones</a>
+    <div class="sb-group">Event Maps</div>
+    <a href="#s06" class="sb-link"><span class="sb-dot dot-imm"></span>Immersion Days 1–4</a>
+    <a href="#s07" class="sb-link"><span class="sb-dot dot-cock"></span>Cocktail Night Full Map</a>
+    <a href="#s08" class="sb-link"><span class="sb-dot dot-both"></span>Wellness Suite</a>
+    <a href="#s09" class="sb-link"><span class="sb-dot dot-gold"></span>Member Room Assignments</a>
+    <a href="#s10" class="sb-link"><span class="sb-dot dot-gold"></span>Photo Moments — Amys</a>
+    <a href="#s11" class="sb-link"><span class="sb-dot dot-gold"></span>Deryl Pre-Event Checklist</a>
+  <a href="index.html" class="nav-back">← Back to Suite</a></nav>
+  <div class="sb-footer">35+ rooms mapped · Both productions<br>Updated from full photo review</div>
+</aside>
+
+<main class="main">
+
+<!-- COVER -->
+<div class="cover" id="cover">
+  <div class="cover-tag">Growth House · Arizona Mansion · Property Intelligence</div>
+  <h1 class="cover-title">The Property<br>Is the <em>Production</em></h1>
+  <p class="cover-sub">This is not a venue rental. This is a multi-level, purpose-built event environment with a speakeasy, rooftop with two zones, a wellness suite, a wine cellar, a great room with a programmable LED ceiling, a dining room with fire, and a casita for Jesse. Every room has a job. This document assigns it.</p>
+  <div class="cover-stats">
+    <div class="stat-block"><span class="stat-label">Levels</span><span class="stat-value">4</span><span class="stat-sub">Lower · Main · Upper · Rooftop</span></div>
+    <div class="stat-block"><span class="stat-label">Key Spaces</span><span class="stat-value">17+</span><span class="stat-sub">Named zones mapped</span></div>
+    <div class="stat-block"><span class="stat-label">Productions</span><span class="stat-value">2</span><span class="stat-sub">Immersion + Cocktail Night</span></div>
+    <div class="stat-block"><span class="stat-label">Rooftop Zones</span><span class="stat-value">2</span><span class="stat-sub">Fire + Kitchen + Games</span></div>
+    <div class="stat-block"><span class="stat-label">Secret Weapon</span><span class="stat-value">1</span><span class="stat-sub">The Speakeasy</span></div>
+  </div>
+</div>
+
+<!-- S01 — SPEAKEASY -->
+<div class="section" id="s01">
+  <div class="sec-badge sb-speak">★ The Speakeasy — Most Important Room in the Property</div>
+  <h1 class="sec-title">The <span>Speakeasy</span></h1>
+  <p class="sec-lead">Nobody expects this room. That is exactly why it works. Staircase access from the lower level, dark red velvet curtains, a Chesterfield leather sofa, barrel chairs, Persian rug, gold lighting, a bar in the corner. It is a fully designed speakeasy inside a mansion.</p>
+
+  <div class="speak-block">
+    <div class="speak-label">The Speakeasy · Lower Level</div>
+    <div class="speak-title">The Room Nobody Knew Existed.</div>
+    <div class="speak-body">For the 8-figure Day 3 Immersion circle — this is the room Jesse uses. Intimate. Dark. No pool visible. No distraction. The environment is designed for deep conversation. Ten people in this room with Jesse feels like being let into something that most people never see.<br><br>For cocktail night — this becomes the most talked-about moment of the event. During the first hour, Deryl does a curated reveal: "There is a speakeasy downstairs. I'm opening it at 8pm." Guests find it through the staircase. The red curtain parts. The room is already lit and a bartender is running a specialty whiskey and cigar service. Guests who discover it feel like they've found something. That feeling is impossible to manufacture — but this room already has it built in.</div>
+  </div>
+
+  <h2 class="sub">How It Gets Used</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">★</span><span><strong>Day 3 Immersion Day:</strong> Jesse leads the 8-figure inner circle in this room. The environment matches the energy — closed, intimate, no performative element. The real conversations happen in rooms like this.</span></div>
+    <div class="blt-item"><span class="blt-dot">★</span><span><strong>Cocktail Night — Timed Reveal:</strong> Deryl announces the speakeasy opens at 8pm. One bartender running whiskey and cigar service. Maximum 12–15 people in the room at once. Floor staff directs guests who seem to want a quieter moment.</span></div>
+    <div class="blt-item"><span class="blt-dot">★</span><span><strong>Late-night closing circle:</strong> After the main cocktail night winds down, Jesse can pull the inner circle down here for the final conversation of the weekend. The room is already perfect for it.</span></div>
+    <div class="blt-item"><span class="blt-dot">★</span><span><strong>Amys moment:</strong> The reveal shot — red curtain parting, amber light, leather chairs, a group walking into the room for the first time. This is a hero content moment.</span></div>
+  </div>
+
+  <div class="win">✓ Nobody in the mastermind space has a speakeasy in their venue. This is Growth House's unfair advantage. Use it deliberately.</div>
+</div>
+
+<!-- S02 — LOWER LEVEL -->
+<div class="section" id="s02">
+  <div class="sec-badge sb-speak">Lower Level</div>
+  <h1 class="sec-title">Lower Level <span>Rooms</span></h1>
+  <p class="sec-lead">The speakeasy anchors the lower level. Adjacent to it: the sauna, steam room, and the illuminated staircase connecting to the main level master suite area.</p>
+
+  <div class="level-header">
+    <div class="level-header-title">Lower Level · Wellness + Speakeasy</div>
+    <div class="level-header-sub">Accessed via glass-balustrade staircase from master suite area · LED-lit steps</div>
+  </div>
+
+  <div class="room-grid">
+    <div class="room-card rc-speak">
+      <div class="room-floor">Lower Level · Speakeasy</div>
+      <div class="room-name">The Speakeasy</div>
+      <div class="room-purpose">Chesterfield leather sofa, barrel chairs, Persian rug, velvet curtains, amber lighting, bar in corner, staircase access.</div>
+      <div class="room-uses">
+        <div class="room-use">Day 3 Immersion inner circle session — Jesse's room</div>
+        <div class="room-use">Cocktail night timed reveal at 8pm — whiskey + cigar bar</div>
+        <div class="room-use">Late-night closing moment for inner circle</div>
+        <div class="room-use">Amys hero content moment — curtain reveal shot</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-imm">Immersion</span><span class="use-tag tag-cock">Cocktail Night</span></div>
+      <div class="room-note">Capacity: 12–15 people maximum. The intimacy is the point. Never overfill it.</div>
+    </div>
+
+    <div class="room-card rc-both">
+      <div class="room-floor">Lower Level · Wellness</div>
+      <div class="room-name">Am-Finn Dry Sauna</div>
+      <div class="room-purpose">Professional Finnish dry sauna, cedar lined, bucket and ladle, multiple bench levels. Branded Am-Finn unit.</div>
+      <div class="room-uses">
+        <div class="room-use">Wellness window 7–9am — pre-heated and ready before members wake</div>
+        <div class="room-use">Recovery after off-site excursion days</div>
+        <div class="room-use">Optional mention in member intake — who is a sauna person?</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-imm">Immersion</span></div>
+      <div class="room-note">Pre-heat 45 min before wellness window opens. Confirm on-site controls with venue.</div>
+    </div>
+
+    <div class="room-card rc-both">
+      <div class="room-floor">Lower Level · Wellness</div>
+      <div class="room-name">Steam Room</div>
+      <div class="room-purpose">Full commercial-grade steam room. Floor-to-ceiling marble, tiered bench seating for 6–8 people. Temperature-controlled.</div>
+      <div class="room-uses">
+        <div class="room-use">Wellness window — steam session option alongside sauna</div>
+        <div class="room-use">Recovery station after excursion day</div>
+        <div class="room-use">Call out specifically in member intake — steam is a different profile than sauna</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-imm">Immersion</span></div>
+      <div class="room-note">The wellness suite (sauna + steam) is a legitimate spa facility. Position it that way in member communications.</div>
+    </div>
+
+    <div class="room-card rc-gold">
+      <div class="room-floor">Lower Level · Transition</div>
+      <div class="room-name">LED Staircase + Master Landing</div>
+      <div class="room-purpose">Glass balustrade staircase with warm LED step lighting. Connects lower level to master suite area. Soaking tub visible at landing.</div>
+      <div class="room-uses">
+        <div class="room-use">Cocktail night: Amys positions on landing for overhead great room shots</div>
+        <div class="room-use">The reveal moment — walking down into the speakeasy for the first time</div>
+        <div class="room-use">Morning: natural circulation path from bedroom to wellness suite</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-both">Both</span></div>
+      <div class="room-note">The staircase itself is a photo moment. Gold warm light, glass railing. Brief members not to block it during cocktail night arrival flow.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S03 — MAIN LEVEL INDOOR -->
+<div class="section" id="s03">
+  <div class="sec-badge sb-imm">Main Level · Indoor</div>
+  <h1 class="sec-title">Main Level — <span>Indoor Zones</span></h1>
+  <p class="sec-lead">The great room is the heart of everything. The LED ceiling is the production department you never have to rent. Every room at this level has a direct job for both productions.</p>
+
+  <div class="level-header">
+    <div class="level-header-title">Main Level Indoor · Great Room + Dining + Wine + Casita</div>
+    <div class="level-header-sub">Full open-plan with sliders to pool · LED coffered ceiling · Gas fireplace · Wine cellar room adjacent</div>
+  </div>
+
+  <div class="room-grid">
+    <div class="room-card rc-both">
+      <div class="room-floor">Main Level · Primary</div>
+      <div class="room-name">Great Room</div>
+      <div class="room-purpose">Massive open-plan. Programmable LED coffered ceiling. Gas fireplace. Full sliders to pool — inside and outside become one space. Kitchen island. Black velvet sectional. Built-in shelving.</div>
+      <div class="room-uses">
+        <div class="room-use"><strong>Immersion:</strong> Primary session room — chairs arranged in circle or rows. LED ceiling set to neutral warm white. Sliders open between sessions.</div>
+        <div class="room-use"><strong>Cocktail Night:</strong> DJ in corner. Ceiling programmed to color arc — deep blue arrival, builds through the night. Sectional pushed to walls = open dance floor. Kitchen island becomes bar service station.</div>
+        <div class="room-use">Morning coffee station at kitchen island — every member's order ready</div>
+        <div class="room-use">Sliders open = indoor/outdoor flow for entire event</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-imm">Immersion</span><span class="use-tag tag-cock">Cocktail Night</span></div>
+      <div class="room-note">The LED ceiling is the most valuable production asset in this property. Confirm with venue: who controls it? What app? Deryl needs to understand this system before setup day.</div>
+    </div>
+
+    <div class="room-card rc-imm">
+      <div class="room-floor">Main Level · Dining</div>
+      <div class="room-name">Formal Dining Room</div>
+      <div class="room-purpose">Dark cork accent walls. Two gold rod chandeliers. Long wood farm table, seats 10–12. Adjacent wine cellar through glass door. Sliders to pool. Bar credenza at end.</div>
+      <div class="room-uses">
+        <div class="room-use"><strong>Growth House Day dinner:</strong> The 7-figure+ elevated dinner. Chef Shannon plates here. Wine cellar next door. Fire running outside through the glass. This is the money moment.</div>
+        <div class="room-use">Arrival dinner Day 1 — intimate, warm, first meal together</div>
+        <div class="room-use">Cocktail night: champagne staging and toast zone — wine wall backdrop for Amys</div>
+        <div class="room-use">Bar credenza at end of room for dessert and digestif service</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-imm">Immersion</span><span class="use-tag tag-cock">Cocktail Night</span></div>
+      <div class="room-note">The wine cellar visible through the glass door is part of the dining room's aesthetic. Keep it lit and stocked — it is part of the visual experience of every dinner.</div>
+    </div>
+
+    <div class="room-card rc-gold">
+      <div class="room-floor">Main Level · Wine</div>
+      <div class="room-name">Wine Cellar Room</div>
+      <div class="room-purpose">Floor-to-ceiling wine storage, temperature controlled, glass door entrance from dining room. A dedicated room for the wine collection.</div>
+      <div class="room-uses">
+        <div class="room-use">Pre-stage all champagne and wine for cocktail night in this room</div>
+        <div class="room-use">Amys toast shot — pull from here, wine wall visible behind Jesse</div>
+        <div class="room-use">Member intake: is anyone a wine person? Coordinate with Chef Shannon for pairing</div>
+        <div class="room-use">Deryl's inventory staging area for all bar stock</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-both">Both</span></div>
+    </div>
+
+    <div class="room-card rc-imm">
+      <div class="room-floor">Main Level · Kitchen</div>
+      <div class="room-name">Chef's Kitchen</div>
+      <div class="room-purpose">Professional gas range, large farm sink, marble island with bar stools, full appliances. Direct sightline to pool through sliders. This kitchen was designed to perform.</div>
+      <div class="room-uses">
+        <div class="room-use">Chef Shannon's primary workspace for all immersion meals</div>
+        <div class="room-use">Kitchen island doubles as morning coffee and breakfast bar</div>
+        <div class="room-use">Cocktail night: kitchen island = primary cocktail bar service station with Deryl calling course timing</div>
+        <div class="room-use">Confirm with venue: all equipment and gas line operational before setup day</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-imm">Immersion</span><span class="use-tag tag-cock">Cocktail Night</span></div>
+      <div class="room-note">Deryl walks Chef Shannon through every appliance, storage zone, and equipment location on arrival. Before she cooks a single meal. Non-negotiable.</div>
+    </div>
+
+    <div class="room-card rc-imm">
+      <div class="room-floor">Main Level · Jesse's Space</div>
+      <div class="room-name">The Casita</div>
+      <div class="room-purpose">Completely separate living unit. Own kitchen, living room, bedroom, bathroom (herringbone tile), outdoor patio with direct pool access. Jesse's private world inside the event property.</div>
+      <div class="room-uses">
+        <div class="room-use">Jesse's accommodation — full privacy from main house activity</div>
+        <div class="room-use">Jesse can observe pool from his patio without being in the event</div>
+        <div class="room-use">Between sessions: Jesse retreats here to prepare, decompress, or handle calls</div>
+        <div class="room-use">Casita kitchen: Deryl uses as staging area for supplies and welcome packet prep</div>
+        <div class="room-use">Casita outdoor patio: champagne arrival moment for Jesse</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-imm">Immersion</span></div>
+      <div class="room-note">Jesse's personal welcome packet goes in the casita. Same treatment as member rooms — but upgraded. His coffee order ready, his specific snacks, a handwritten note from Deryl.</div>
+    </div>
+
+    <div class="room-card rc-imm">
+      <div class="room-floor">Main Level · Master</div>
+      <div class="room-name">Master Bedroom Suite</div>
+      <div class="room-purpose">Enormous. Two ceiling fans. Floor-to-ceiling glass on two walls. Direct pool and outdoor dining patio access. Connected to master bath with soaking tub and LED staircase.</div>
+      <div class="room-uses">
+        <div class="room-use">Premium member assignment — whoever Jesse designates</div>
+        <div class="room-use">Outdoor dining patio adjacent: morning breakfast in full pool view</div>
+        <div class="room-use">Wellness access: directly connected to sauna and steam below via staircase</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-imm">Immersion</span></div>
+      <div class="room-note">This room gets the full welcome treatment: zebra aesthetic acknowledged in the welcome card, snacks from intake, personal touch item. "You're in the master" should feel like a designation, not just a room assignment.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S04 — MAIN LEVEL OUTDOOR -->
+<div class="section" id="s04">
+  <div class="sec-badge sb-both">Main Level · Outdoor</div>
+  <h1 class="sec-title">Main Level — <span>Outdoor Zones</span></h1>
+  <p class="sec-lead">The backyard is three distinct zones connected by the pool as the spine. Every zone has a natural energy profile. The outdoor linear fire feature along the casita wall is the most underused asset from Arizona.</p>
+
+  <div class="room-grid">
+    <div class="room-card rc-both">
+      <div class="room-floor">Main Level · Pool Deck</div>
+      <div class="room-name">Pool — Center Spine</div>
+      <div class="room-purpose">Long lap pool, spa/hot tub at lower end, wide paver deck on both sides. Illuminated blue/purple at night. The social engine — everyone at every bar can see across the full space.</div>
+      <div class="room-uses">
+        <div class="room-use">Cocktail night: the circulation zone — people move around both sides naturally</div>
+        <div class="room-use">Active outdoor breaks: pool loungers, cold plunge in spa, open water</div>
+        <div class="room-use">Group photo: pool and patio clean before this shot — it is the money shot</div>
+        <div class="room-use">Bottle service rounds move along both pool deck sides</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-both">Both</span></div>
+      <div class="room-note">Confirm pool lighting controls with venue. Blue/purple is already extraordinary — it should be running from the moment cocktail night doors open.</div>
+    </div>
+
+    <div class="room-card rc-cock">
+      <div class="room-floor">Main Level · Right Side</div>
+      <div class="room-name">Covered Pavilion — DJ + Cocktail Bar Zone</div>
+      <div class="room-purpose">Covered structure on right side near house. Outdoor bar/kitchen already built in. Moss wall TV. Overhead coverage protects DJ equipment. Sound bounces off white walls toward pool.</div>
+      <div class="room-uses">
+        <div class="room-use">DJ setup here — overhead coverage, wall acoustics, sightline across entire yard</div>
+        <div class="room-use">Cocktail bar #1 here — highest energy zone, adjacent to DJ</div>
+        <div class="room-use">Photo booth against moss wall — natural branded backdrop, TV can play Growth House content</div>
+        <div class="room-use">Portrait studio in the covered section with controlled lighting</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-cock">Cocktail Night</span></div>
+      <div class="room-note">The moss wall + outdoor TV is a natural photo backdrop that requires zero additional investment. Deryl to confirm TV input options — can it play custom content? This is the same-day highlight reel screen.</div>
+    </div>
+
+    <div class="room-card rc-cock">
+      <div class="room-floor">Main Level · Left Side</div>
+      <div class="room-name">Outdoor Living + Wine/Beer Bar</div>
+      <div class="room-purpose">Covered seating area on opposite side of pool from cocktail bar. Existing outdoor furniture. Deliberately split from primary bar to create crowd movement.</div>
+      <div class="room-uses">
+        <div class="room-use">Wine and beer bar here — opposite side from cocktail bar. Traffic splits naturally.</div>
+        <div class="room-use">Outdoor seating that stays during cocktail night — not all standing</div>
+        <div class="room-use">Non-alc sponsor bar option for this zone or upper lawn</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-cock">Cocktail Night</span></div>
+    </div>
+
+    <div class="room-card rc-both">
+      <div class="room-floor">Main Level · Casita Exterior</div>
+      <div class="room-name">Linear Fire Feature + Casita Patio</div>
+      <div class="room-purpose">Full-length linear gas fire running the entire length of the casita wall. Benches. Looking directly into the wine cellar/dining room through glass. This is the most underused feature in the property.</div>
+      <div class="room-uses">
+        <div class="room-use"><strong>Growth House Day:</strong> Pre-dinner champagne moment — fire running, glasses staged on the benches as members walk from sessions to the dining room. This is the transition that earns the dinner.</div>
+        <div class="room-use">Cocktail night: cigar station here. Fire already running. Amber glow. Intimate conversation in the fire light. Guests see the dining room lit through the glass.</div>
+        <div class="room-use">Morning: fire running during early coffee for members who rise first</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-both">Both</span></div>
+      <div class="room-note">The pre-dinner champagne moment at the linear fire is one of the highest-value 5 minutes in the entire event. Stage it exactly: fire running, champagne poured, benches clear, ambient music from inside. Members walk from sessions and step into this. The contrast is everything.</div>
+    </div>
+
+    <div class="room-card rc-imm">
+      <div class="room-floor">Main Level · Grass Strips</div>
+      <div class="room-name">Lawn Zones — Both Sides of Pool</div>
+      <div class="room-purpose">Artificial turf strips running both sides of the pool deck with stepping stone pathways. Wide enough for lawn games.</div>
+      <div class="room-uses">
+        <div class="room-use">Active outdoor breaks: cornhole already there, giant Jenga, mini golf setup</div>
+        <div class="room-use">Cocktail night: lawn game tournament bracket posted — competitive engagement</div>
+        <div class="room-use">Walk-and-talk pairing zone — Deryl pre-maps who walks with who during breaks</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-both">Both</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S05 — ROOFTOP -->
+<div class="section" id="s05">
+  <div class="sec-badge sb-gold">Rooftop · Two Zones</div>
+  <h1 class="sec-title">The Rooftop — <span>An Entire Second Venue</span></h1>
+  <p class="sec-lead">This is not a rooftop terrace. This is a full additional event level with two distinct zones — a fire zone with mountain views, and a full outdoor kitchen with covered dining. The cornhole boards are already up there.</p>
+
+  <div class="roof-block">
+    <div style="font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;">Rooftop Advantage</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:12px;">Camelback Mountain backdrop at sunset. String lights. A fireplace. And nobody knows it's up there until you take them.</div>
+    <p style="font-size:14px;color:var(--dim);line-height:1.85;">The rooftop reveal — taking the group upstairs for the first time at sunset — is a programmable moment. It should happen exactly once, at exactly the right time, for maximum impact. This is Deryl's call to make during the event. The group needs to be brought up together, not discover it individually.</p>
+  </div>
+
+  <div class="room-grid">
+    <div class="room-card rc-gold">
+      <div class="room-floor">Rooftop · Zone 1</div>
+      <div class="room-name">Fire + Lounge Zone</div>
+      <div class="room-purpose">Stone fireplace chimney with TV mounted above. String lights. Sectional outdoor sofa. Adirondack chairs. Camelback Mountain backdrop. Sunsets here are extraordinary.</div>
+      <div class="room-uses">
+        <div class="room-use"><strong>The rooftop reveal moment:</strong> Deryl takes the group up at sunset during Day 2 active break. Mountain. Fire. No phones. Walk-and-talks happen naturally.</div>
+        <div class="room-use">TV above fireplace: same-day highlight reel plays here on Growth House Day evening</div>
+        <div class="room-use">Cocktail night overflow: announce the rooftop opens at 9pm — sends a second wave of energy up</div>
+        <div class="room-use">Morning: coffee and meditation for early risers with mountain view</div>
+        <div class="room-use">Immersion Day 3 inner circle: Jesse brings the group up here for the closing moment</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-both">Both</span></div>
+      <div class="room-note">The rooftop sunset reveal should happen ONCE during the immersion, at the right moment. Do not let members discover it individually beforehand — the collective first experience is the experience.</div>
+    </div>
+
+    <div class="room-card rc-gold">
+      <div class="room-floor">Rooftop · Zone 2</div>
+      <div class="room-name">Outdoor Kitchen + Covered Dining</div>
+      <div class="room-purpose">Professional outdoor grill, full outdoor kitchen, covered dining table seating 10–12, TV on wall, ceiling fans, string lights. Cornhole boards already present.</div>
+      <div class="room-uses">
+        <div class="room-use">Active outdoor breaks: cornhole tournament on the rooftop lawn with mountain view</div>
+        <div class="room-use">Rooftop breakfast on Growth House Day — served up here before sessions start</div>
+        <div class="room-use">Cocktail night: secondary bar and snack station on rooftop for guests who drift up</div>
+        <div class="room-use">Off-site excursion day recovery: post-return lunch served rooftop with the view</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-both">Both</span></div>
+    </div>
+
+    <div class="room-card rc-gold">
+      <div class="room-floor">Rooftop · View</div>
+      <div class="room-name">Fire Pit — Front Rooftop</div>
+      <div class="room-purpose">Separate smaller fire pit with Adirondack chairs. Mountain view. Quieter than Zone 1. This is the conversation circle within the rooftop level.</div>
+      <div class="room-uses">
+        <div class="room-use">Closing circle option for Growth House Day — fire, mountain, no ceiling above</div>
+        <div class="room-use">Cocktail night: late-night group that drifts up finds this and stays</div>
+        <div class="room-use">Jesse and key members — the private conversation at the end of the night</div>
+      </div>
+      <div class="use-tags"><span class="use-tag tag-both">Both</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S06 — IMMERSION DAYS MAP -->
+<div class="section" id="s06">
+  <div class="sec-badge sb-imm">Immersion Event Map</div>
+  <h1 class="sec-title">Immersion Days — <span>Full Property Activation</span></h1>
+  <p class="sec-lead">Which room does what on which day. Every space assigned. The property works as a system across all four immersion days.</p>
+
+  <div class="imm-days">
+    <div class="imm-day">
+      <div class="imm-day-label"><div class="imm-day-label-text">Setup Day · Day Before</div></div>
+      <div class="imm-day-rooms">
+        <div class="imm-room"><div class="imm-room-name">All Rooms</div><div class="imm-room-use">Deryl + Joshawn. U-Haul. Full load-in. Session room setup, member rooms personalized, bar stocked, signage placed, AV loaded and tested.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Casita Kitchen</div><div class="imm-room-use">Deryl's staging zone. Welcome packets assembled and cross-checked against profile cards.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Chef's Kitchen</div><div class="imm-room-use">Chef Shannon kitchen walkthrough with Deryl. Every appliance confirmed. Dietary list reviewed.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Speakeasy</div><div class="imm-room-use">Whiskey and cigar inventory staged. Bar confirmed operational. Save the reveal.</div></div>
+      </div>
+    </div>
+
+    <div class="imm-day">
+      <div class="imm-day-label"><div class="imm-day-label-text">Day 1 · Arrival Dinner</div></div>
+      <div class="imm-day-rooms">
+        <div class="imm-room"><div class="imm-room-name">Casita Patio</div><div class="imm-room-use">Champagne on arrival. Linear fire running. Members greeted here before walking to rooms.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Member Rooms</div><div class="imm-room-use">Welcome packets in place. Profile card items ready. First impression moment.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Formal Dining</div><div class="imm-room-use">Welcome dinner. Real plates. Chef Shannon. Wine cellar visible. Fire running outside through glass.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Great Room</div><div class="imm-room-use">Jesse welcome address after dinner. Sliders open to pool. LED ceiling warm white.</div></div>
+      </div>
+    </div>
+
+    <div class="imm-day">
+      <div class="imm-day-label"><div class="imm-day-label-text">Day 2 · Growth House Day</div></div>
+      <div class="imm-day-rooms">
+        <div class="imm-room"><div class="imm-room-name">Sauna + Steam</div><div class="imm-room-use">7–9am wellness window. Pre-heated and ready. Pool open. Coffee at kitchen island.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Great Room</div><div class="imm-room-use">Primary session room all day. LED ceiling warm white for sessions. AV tested 9:30am.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Lawn + Rooftop</div><div class="imm-room-use">Active outdoor breaks — 30 min minimum. Rooftop reveal at sunset break.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Casita Fire + Dining</div><div class="imm-room-use">Pre-dinner champagne at fire. Then formal dining 7-figure+ dinner. The money moment.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Great Room</div><div class="imm-room-use">Closing circle. LED ceiling dims to amber. Sliders open to lit pool.</div></div>
+      </div>
+    </div>
+
+    <div class="imm-day">
+      <div class="imm-day-label"><div class="imm-day-label-text">Day 3 · Immersion Day</div></div>
+      <div class="imm-day-rooms">
+        <div class="imm-room"><div class="imm-room-name">Speakeasy</div><div class="imm-room-use">Jesse leads 8-figure inner circle here. 10–20 people. Intimate. Dark. The real conversation room.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Rooftop Fire Zone</div><div class="imm-room-use">Inner circle closing moment. Fire pit, mountain view, no ceiling. The most powerful closing of the weekend.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Casita</div><div class="imm-room-use">Jesse's space between Immersion Day sessions. Full privacy.</div></div>
+      </div>
+    </div>
+
+    <div class="imm-day">
+      <div class="imm-day-label"><div class="imm-day-label-text">Day 4 · Excursion</div></div>
+      <div class="imm-day-rooms">
+        <div class="imm-room"><div class="imm-room-name">Rooftop Kitchen</div><div class="imm-room-use">Pre-excursion breakfast. Light, high protein. Mountain view. Energy before the physical day.</div></div>
+        <div class="imm-room"><div class="imm-room-name">→ Off Property</div><div class="imm-room-use">ATV / SEAL / Sedona. Gas vehicles only. Deryl leads convoy.</div></div>
+        <div class="imm-room"><div class="imm-room-name">Pool + Sauna</div><div class="imm-room-use">Return recovery. Cold plunge in spa. Sauna. Steam. Before cocktail night begins.</div></div>
+        <div class="imm-room"><div class="imm-room-name">→ Cocktail Night</div><div class="imm-room-use">Hand off to cocktail night production. See Section 07.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S07 — COCKTAIL NIGHT MAP -->
+<div class="section" id="s07">
+  <div class="sec-badge sb-cock">Cocktail Night Production Map</div>
+  <h1 class="sec-title">Cocktail Night — <span>Full Property</span></h1>
+  <p class="sec-lead">Every level activated. Three floors of experience. The property does the production work — Deryl's job is to assign each zone correctly and manage the energy arc from arrival through the speakeasy reveal.</p>
+
+  <div class="cn-map">
+    <div class="cn-map-title">Cocktail Night Zone Map — All Levels</div>
+    <div class="cn-levels">
+
+      <!-- ROOFTOP -->
+      <div class="cn-level">
+        <div class="cn-level-label"><div class="cn-level-label-text">Rooftop</div></div>
+        <div class="cn-level-zones">
+          <div class="cn-zone z-gold">
+            <div class="cn-zone-icon">🔥</div>
+            <div class="cn-zone-name">Fire + Lounge</div>
+            <div class="cn-zone-desc">String lights. Fire running. Mountain view. Opens at 9pm — announced reveal. Cigar option.</div>
+            <div class="cn-zone-e">Energy: Release · Discovery</div>
+          </div>
+          <div class="cn-zone z-gold">
+            <div class="cn-zone-icon">🍖</div>
+            <div class="cn-zone-name">Outdoor Kitchen</div>
+            <div class="cn-zone-desc">Late-night snack station. Secondary bar option. Cornhole for the competitive guests who drift up.</div>
+            <div class="cn-zone-e">Energy: Play · Build</div>
+          </div>
+          <div class="cn-zone z-neutral">
+            <div class="cn-zone-icon">🌄</div>
+            <div class="cn-zone-name">Fire Pit — Front</div>
+            <div class="cn-zone-desc">The private conversation spot on the rooftop. Jesse ends the night here with the inner circle.</div>
+            <div class="cn-zone-e">Energy: Release · Close</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN LEVEL OUTDOOR -->
+      <div class="cn-level">
+        <div class="cn-level-label"><div class="cn-level-label-text">Outdoor</div></div>
+        <div class="cn-level-zones">
+          <div class="cn-zone z-cock">
+            <div class="cn-zone-icon">🎵</div>
+            <div class="cn-zone-name">DJ + Cocktail Bar · Pavilion</div>
+            <div class="cn-zone-desc">Covered pavilion. DJ in corner. Cocktail bar #1. Photo booth on moss wall. Highest energy zone.</div>
+            <div class="cn-zone-e">Energy: Amplify · Peak</div>
+          </div>
+          <div class="cn-zone z-imm">
+            <div class="cn-zone-icon">🏊</div>
+            <div class="cn-zone-name">Pool Deck</div>
+            <div class="cn-zone-desc">Blue/purple lit. Bottle service rounds both sides every 30 min. Floor staff in constant rotation. Spa/hot tub open.</div>
+            <div class="cn-zone-e">Energy: Circulate</div>
+          </div>
+          <div class="cn-zone z-both">
+            <div class="cn-zone-icon">🍷</div>
+            <div class="cn-zone-name">Wine & Beer Bar</div>
+            <div class="cn-zone-desc">Opposite side. Splits traffic. Champagne managed here for toasts. Quieter zone than pavilion.</div>
+            <div class="cn-zone-e">Energy: Direct</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN LEVEL INDOOR -->
+      <div class="cn-level">
+        <div class="cn-level-label"><div class="cn-level-label-text">Indoor · Main</div></div>
+        <div class="cn-level-zones">
+          <div class="cn-zone z-cock">
+            <div class="cn-zone-icon">💃</div>
+            <div class="cn-zone-name">Great Room — Dance Floor</div>
+            <div class="cn-zone-desc">Sectional pushed to walls. LED ceiling programmed to color arc. DJ sound flows in from pavilion. Kitchen island = bar.</div>
+            <div class="cn-zone-e">Energy: Amplify · Color</div>
+          </div>
+          <div class="cn-zone z-gold">
+            <div class="cn-zone-icon">🍾</div>
+            <div class="cn-zone-name">Wine Room + Dining</div>
+            <div class="cn-zone-desc">Champagne staging. Toast backdrop with wine wall. Bar credenza service. Intimate from the main party energy.</div>
+            <div class="cn-zone-e">Energy: Ceremonial</div>
+          </div>
+          <div class="cn-zone z-neutral">
+            <div class="cn-zone-icon">🔥</div>
+            <div class="cn-zone-name">Casita Fire Feature</div>
+            <div class="cn-zone-desc">Linear fire running full length. Cigar station on benches. Wine cellar lit through glass. The quietest outdoor zone.</div>
+            <div class="cn-zone-e">Energy: Release</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOWER LEVEL -->
+      <div class="cn-level">
+        <div class="cn-level-label"><div class="cn-level-label-text">Lower Level</div></div>
+        <div class="cn-level-zones">
+          <div class="cn-zone z-speak" style="grid-column:1/3;">
+            <div class="cn-zone-icon">🥃</div>
+            <div class="cn-zone-name">The Speakeasy — Timed Reveal at 8pm</div>
+            <div class="cn-zone-desc">One bartender. Whiskey and cigar service. Maximum 12–15 people. Deryl announces the opening mid-event. Guests who find it feel they've discovered something. Red curtain. Amber light. Chesterfield leather. The best conversation zone in the property.</div>
+            <div class="cn-zone-e">Energy: Discovery · Release · The Moment Nobody Forgets</div>
+          </div>
+          <div class="cn-zone z-neutral">
+            <div class="cn-zone-icon">📸</div>
+            <div class="cn-zone-name">Staircase Landing</div>
+            <div class="cn-zone-desc">Amys overhead shot position. Gold wing sculpture backdrop. The reveal descent into the speakeasy.</div>
+            <div class="cn-zone-e">Energy: Content</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <h2 class="sub">Cocktail Night Energy Arc — By Hour</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">6pm</span><span><strong>Doors open.</strong> Champagne already in hand. DJ at arrival energy. Pool lit. LED ceiling deep blue. Members arrive from excursion recovery — the contrast hits immediately.</span></div>
+    <div class="blt-item"><span class="blt-dot">6:15pm</span><span><strong>Jesse welcome toast.</strong> Champagne pre-staged. Both photographers on it. Dining room wine wall backdrop. Short, powerful, then release back to the party.</span></div>
+    <div class="blt-item"><span class="blt-dot">6:30–8pm</span><span><strong>Full activation.</strong> All outdoor zones live. DJ building. Photo booth pulling guests in. Sponsor intros executed by Deryl in this window. Bottle rounds every 30–45 min. Cornhole bracket running on lawn.</span></div>
+    <div class="blt-item"><span class="blt-dot">8pm</span><span><strong>Speakeasy reveal.</strong> Deryl announces: "The speakeasy is now open downstairs." One sentence. Then moves on. Let the curiosity do the work. First guests descend and the room does the rest.</span></div>
+    <div class="blt-item"><span class="blt-dot">9pm</span><span><strong>Rooftop opens.</strong> Second reveal. "The rooftop is open." A portion of the group migrates up. String lights, fire, mountain silhouette at night. The party is now running on three floors simultaneously.</span></div>
+    <div class="blt-item"><span class="blt-dot">10:30pm</span><span><strong>Wind down.</strong> DJ shifts to closing arc. Deryl signals. Energy gentles.</span></div>
+    <div class="blt-item"><span class="blt-dot">11pm</span><span><strong>Closing toast.</strong> Jesse brings whoever is left together. Champagne. Final words. Then the inner circle goes down to the speakeasy or up to the rooftop fire pit. The night finds its own ending.</span></div>
+  </div>
+</div>
+
+<!-- S08 — WELLNESS SUITE -->
+<div class="section" id="s08">
+  <div class="sec-badge sb-both">Wellness Suite</div>
+  <h1 class="sec-title">The Wellness <span>Suite</span></h1>
+  <p class="sec-lead">This property has a commercial-grade wellness facility. The am-Finn dry sauna, a full steam room, the pool and spa, and a master soaking tub. This is not a nice-to-have. It is a differentiator that should be communicated to members before they arrive.</p>
+
+  <div class="well-block">
+    <div class="well-label">Wellness Suite · Lower Level + Pool</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:10px;">Pre-heat. Pre-stage. Ready before anyone wakes.</div>
+    <p style="font-size:13px;color:var(--dim);line-height:1.75;">The wellness window runs 7–9am every immersion day. Sessions start at 10am. The gap is intentional — it is unstructured networking time, recovery time, and mental preparation time. The wellness suite is not the agenda. It is the environment for conversations that can't happen in a session room.</p>
+    <div class="well-items">
+      <div class="well-item">
+        <div class="well-item-icon">🌡️</div>
+        <div class="well-item-name">Am-Finn Dry Sauna</div>
+        <div class="well-item-desc">Pre-heat 45 min before 7am. Multiple bench levels. Bucket and ladle ready. 2–4 people at a time. Finnish protocol optional.</div>
+      </div>
+      <div class="well-item">
+        <div class="well-item-icon">💨</div>
+        <div class="well-item-name">Steam Room</div>
+        <div class="well-item-desc">Marble lined. 6–8 capacity. Pre-heat 30 min before window. Essential oils optional — confirm with venue if permitted.</div>
+      </div>
+      <div class="well-item">
+        <div class="well-item-icon">🏊</div>
+        <div class="well-item-name">Pool + Spa</div>
+        <div class="well-item-desc">Pool open during wellness window. Spa/cold plunge option. Towels staged poolside before 7am.</div>
+      </div>
+      <div class="well-item">
+        <div class="well-item-icon">🛁</div>
+        <div class="well-item-name">Master Soaking Tub</div>
+        <div class="well-item-desc">Backlit marble surround. LED-lit tub. Available to master suite member during their stay — not a shared amenity.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="sub">Wellness Window Setup Checklist — Deryl</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Sauna pre-heated by 6:15am — confirm sauna controls and pre-heat time with venue on setup day</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Steam room pre-heated by 6:30am</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Towels staged: pool deck, sauna entrance, steam entrance — fresh towels visible before any member arrives</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Wellness drinks ready at kitchen island — Sly CHILL / BOOST, sparkling water, electrolytes</span></div>
+    <div class="chk-item"><div class="chk-owner">Floor staff</span><span>Coffee orders ready by 7am — member profile cards reviewed the night before</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Rooftop open for early risers who want to watch the sunrise with Camelback in the background</span></div>
+  </div>
+</div>
+
+<!-- S09 — MEMBER ROOMS -->
+<div class="section" id="s09">
+  <div class="sec-badge sb-imm">Member Room Assignments</div>
+  <h1 class="sec-title">Member Room <span>Assignments</span></h1>
+  <p class="sec-lead">Every room on this property has a personality. Room assignments are a hospitality decision, not a logistics one. Match the room to the member.</p>
+
+  <table class="assign-table">
+    <thead>
+      <tr><th>Room</th><th>Character</th><th>Best For</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="assign-room-name">Casita</span></td>
+        <td>Private villa with own kitchen, living room, patio, pool access</td>
+        <td><span class="assign-who">Jesse Ray — Event Director</span></td>
+        <td class="assign-note">Full privacy. Own entrance. Pool view. Jesse's welcome packet here — coffee order ready, personal note from Deryl.</td>
+      </tr>
+      <tr>
+        <td><span class="assign-room-name">Master Suite + Zebra</span></td>
+        <td>Largest bedroom. Zebra feature wall. Floor-to-ceiling glass. Pool access. Connected to master bath + LED staircase.</td>
+        <td><span class="assign-who">Jesse's designated premium member</span></td>
+        <td class="assign-note">The premium assignment. Welcome card acknowledges the room. "You're in the zebra suite" is a sentence worth saying.</td>
+      </tr>
+      <tr>
+        <td><span class="assign-room-name">Bedroom 2 — Double King</span></td>
+        <td>Two kings, lighter aesthetic, direct outdoor access, TV, comfortable</td>
+        <td><span class="assign-who">Two members comfortable sharing, or high-value returning member</span></td>
+        <td class="assign-note">The most comfortable shared room option. Good for members who are returning and comfortable together.</td>
+      </tr>
+      <tr>
+        <td><span class="assign-room-name">Bedroom 3 — Pool View</span></td>
+        <td>Canopy bed, giant sliders to pool deck and outdoor dining, enormous floor space</td>
+        <td><span class="assign-who">Early riser or pool person from intake</span></td>
+        <td class="assign-note">Direct pool access makes this the best room for morning people. Wakes up to pool and Camelback. Member intake identifies who this is.</td>
+      </tr>
+      <tr>
+        <td><span class="assign-room-name">Bunk Room</span></td>
+        <td>3 beds, gold chandelier, herringbone floor</td>
+        <td><span class="assign-who">Staff — Deryl + Joshawn + one other</span></td>
+        <td class="assign-note">Not for members. Staff on property overnight = setup efficiency and security. This is the right use of this room.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note">» Room assignments are released to members in their 48-hour reminder. Not in advance — the anticipation is part of the arrival experience. "Your room is ready for you" without telling them which one until they arrive.</div>
+</div>
+
+<!-- S10 — PHOTO MOMENTS -->
+<div class="section" id="s10">
+  <div class="sec-badge sb-cock">Amys · Photo Priority Map</div>
+  <h1 class="sec-title">The 12 Shots <span>That Matter</span></h1>
+  <p class="sec-lead">Every moment below should be on Amys's shot list before she arrives. These are not incidental — they are the content of Growth House. Brief her specifically on each one.</p>
+
+  <div class="photo-grid">
+    <div class="photo-card">
+      <div class="photo-num">01</div>
+      <div class="photo-name">The Arrival</div>
+      <div class="photo-desc">First member walking through the entrance, champagne already waiting. The anticipation expression.</div>
+      <div class="photo-amys">AMYS: Position at entrance, shoot toward house</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">02</div>
+      <div class="photo-name">The Welcome Toast</div>
+      <div class="photo-desc">Jesse, champagne raised, wine wall behind him, dining chandeliers lit. This is the poster shot.</div>
+      <div class="photo-amys">AMYS: Wine room side. Capture Jesse + room + guests</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">03</div>
+      <div class="photo-name">Pool at Night</div>
+      <div class="photo-desc">Blue/purple lit pool, umbrellas, people moving, string lights above. The cocktail night establishing shot.</div>
+      <div class="photo-amys">AMYS: Upper staircase or rooftop edge. Wide.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">04</div>
+      <div class="photo-name">The Speakeasy Reveal</div>
+      <div class="photo-desc">Red curtain pulling back, amber light spilling out, first guests descending the staircase into the room.</div>
+      <div class="photo-amys">AMYS: Landing above. Shoot down into the room reveal.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">05</div>
+      <div class="photo-name">Linear Fire + Dining Glass</div>
+      <div class="photo-desc">The linear fire feature in foreground, wine cellar and dining room lit through the glass wall behind. Champagne glasses on the bench.</div>
+      <div class="photo-amys">AMYS: Capture pre-dinner moment. Magic hour ideal.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">06</div>
+      <div class="photo-name">Rooftop + Mountain Sunset</div>
+      <div class="photo-desc">Group on rooftop, Camelback Mountain behind, fire lit, string lights above. The view that makes people want to come back.</div>
+      <div class="photo-amys">AMYS: Shoot from rooftop edge toward mountain. Golden hour.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">07</div>
+      <div class="photo-name">The LED Ceiling</div>
+      <div class="photo-desc">Great room with ceiling lit, guests below, DJ in corner, sliders open to pool. The production value shot.</div>
+      <div class="photo-amys">AMYS: Wide angle from staircase landing above great room.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">08</div>
+      <div class="photo-name">Session Room Intensity</div>
+      <div class="photo-desc">Jesse facilitating, members engaged, commitment cards in hands. The work. Not posed.</div>
+      <div class="photo-amys">AMYS: Silent entry. No disruption. Natural light. Candid only.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">09</div>
+      <div class="photo-name">Closing Circle</div>
+      <div class="photo-desc">The emotional peak. Jesse and the group. Whatever happens in that circle is the content of Growth House.</div>
+      <div class="photo-amys">AMYS: Jesse nods when she can shoot. Camera down if he signals.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">10</div>
+      <div class="photo-name">Group Photo — Pool Clean</div>
+      <div class="photo-desc">Full group, pool behind, Camelback backdrop. This is the money shot. Pool deck spotless before it happens.</div>
+      <div class="photo-amys">AMYS: Deryl calls the pool clean. Amys sets position. One shot, no second attempts.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">11</div>
+      <div class="photo-name">Wellness Window</div>
+      <div class="photo-desc">Morning light, steam rising from sauna, someone in cold plunge, coffee cup in hand. The lifestyle content.</div>
+      <div class="photo-amys">AMYS: Early. 7:15am. Natural light only. No posed shots.</div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-num">12</div>
+      <div class="photo-name">The Sponsor Moments</div>
+      <div class="photo-desc">Goodburn's tequila in hand at the cocktail bar. Sly at the non-alc station. Natural, not staged. Product visible but never the subject.</div>
+      <div class="photo-amys">AMYS: Brief her on each sponsor specifically. She should know what to capture.</div>
+    </div>
+  </div>
+
+  <div class="alert">⚡ Same-day highlight reel: Amys edits a 3–5 minute reel from the immersion days during cocktail night prep. It plays on the outdoor TV and rooftop TV during the event. Members watch themselves. This is the unexpected peak of the entire weekend.</div>
+</div>
+
+<!-- S11 — PRE-EVENT CHECKLIST -->
+<div class="section" id="s11">
+  <div class="sec-badge sb-gold">Deryl · Property-Specific Checklist</div>
+  <h1 class="sec-title">Property-Specific <span>Pre-Event Checklist</span></h1>
+  <p class="sec-lead">Beyond the standard gate checklists — these are items specific to this property that require confirmation on setup day.</p>
+
+  <h2 class="sub">Confirm with Venue on Setup Day</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>LED ceiling system — who controls it, what app or system, can Deryl pre-program the color arc for cocktail night</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Sauna controls — pre-heat time, maximum temperature, how long to hold</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Steam room controls — pre-heat time, essential oils permitted or not</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Pool lighting controls — color options, who changes it, remote or in-house system</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Linear fire feature — gas or electric, automatic or manual, timing and shutdown protocol</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Rooftop fire pit — same as above</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Outdoor TV inputs — can custom content play? What input is needed for the highlight reel screen?</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Rooftop TV inputs — same question</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Speakeasy bar — is it stocked, what is the protocol, can we bring in additional whiskey for the event</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Wine cellar — what is already in it, what can be used, access protocol</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Rooftop outdoor kitchen — gas grill connected and operational, what is in the outdoor fridge</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Master bedroom soaking tub — how to fill, any protocol, max depth confirmation</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Sound system — does the property have built-in speakers? Which zones? Can DJ tap in?</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Casita kitchen equipment — confirm fully operational separate from main kitchen</span></div>
+  </div>
+
+  <h2 class="sub">Setup Day Property Walk — Deryl's Route</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">1</span><span>Enter main house. Test LED ceiling. Walk every room on main level.</span></div>
+    <div class="blt-item"><span class="blt-dot">2</span><span>Chef Shannon kitchen walkthrough — every appliance, every storage zone, every timer.</span></div>
+    <div class="blt-item"><span class="blt-dot">3</span><span>Descend to lower level. Sauna on. Steam on. Speakeasy bar checked.</span></div>
+    <div class="blt-item"><span class="blt-dot">4</span><span>Up to rooftop. Both zones walked. TV inputs tested. Cornhole staged.</span></div>
+    <div class="blt-item"><span class="blt-dot">5</span><span>Casita walkthrough. Jesse's welcome packet placed. Casita kitchen confirmed.</span></div>
+    <div class="blt-item"><span class="blt-dot">6</span><span>Pool lighting tested. Linear fire confirmed. Outdoor bar confirmed.</span></div>
+    <div class="blt-item"><span class="blt-dot">7</span><span>All member rooms walked as the member — does it feel like we thought about you?</span></div>
+    <div class="blt-item"><span class="blt-dot">8</span><span>Sign off. Property is ready.</span></div>
+  </div>
+
+  <!-- Closing -->
+  <div style="margin-top:64px;padding:48px;background:var(--panel);border-top:3px solid var(--gold);text-align:center;">
+    <div style="font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;">Growth House · Arizona Mansion · Property Intelligence</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;margin-bottom:12px;line-height:1.1;">Every room has a job.<br><em style="color:var(--gold);">This document assigns it.</em></div>
+    <p style="font-size:14px;color:var(--dim);line-height:1.85;max-width:560px;margin:0 auto 18px;">Updated when new photos are reviewed, when venue confirms system details, and after every event. This document compounds.</p>
+    <div style="font-family:'Syne Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;">Deryl VanNostrand · Growth House · Arizona Mansion Intelligence · April 2026</div>
+  </div>
+</div>
+
+</main>
+
+<script>
+const links = document.querySelectorAll('.sb-link');
+const sections = document.querySelectorAll('.section[id], .cover[id]');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const l=document.querySelector(`.sb-link[href="#${e.target.id}"]`);
+      if(l)l.classList.add('active');
+    }
+  });
+},{threshold:0.12,rootMargin:'-10% 0px -60% 0px'});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

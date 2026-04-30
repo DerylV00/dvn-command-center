@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DVN Concierge — Complete Business Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+
+:root {
+  --bg:     #0a0906;
+  --bg2:    #111009;
+  --bg3:    #1a1710;
+  --fire:   #e84c00;
+  --ember:  #ff7b35;
+  --gold:   #c9973a;
+  --gold2:  #e8c070;
+  --green:  #5a9a5a;
+  --blue:   #4a8ab4;
+  --cream:  #f0ead8;
+  --cream2: #c8bfa8;
+  --muted:  #6b6355;
+  --muted2: #8a7f6e;
+  --border: rgba(232,76,0,0.18);
+  --border2:rgba(232,76,0,0.06);
+}
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: 0.5;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 64px 56px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 40%, rgba(232,76,0,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(201,151,58,0.06) 0%, transparent 50%),
+    linear-gradient(180deg, #0d0c08 0%, #0a0906 100%);
+}
+
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(42,39,32,0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42,39,32,0.25) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 100%);
+}
+
+.hero-content { position: relative; max-width: 900px; }
+
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.hero-eyebrow::before {
+  content: ''; width: 32px; height: 2px;
+  background: var(--fire); display: block;
+}
+
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 900; color: var(--cream);
+  line-height: 0.95; letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.hero-name em { color: var(--fire); font-style: italic; }
+
+.hero-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(13px, 2vw, 18px);
+  font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 28px;
+}
+
+.hero-thesis {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(15px, 2vw, 19px);
+  color: var(--cream2); line-height: 1.65;
+  max-width: 680px;
+  padding-left: 20px;
+  border-left: 3px solid var(--fire);
+  margin-bottom: 32px;
+}
+
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.hero-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid;
+}
+
+.hero-tag.fire { color: var(--fire); border-color: var(--fire); }
+.hero-tag.gold { color: var(--gold); border-color: var(--gold); }
+.hero-tag.green { color: var(--green); border-color: var(--green); }
+
+/* ── SECTION ── */
+.section {
+  padding: 56px 64px;
+  border-bottom: 1px solid var(--border);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section.full { max-width: 100%; padding: 56px 64px; }
+
+.sec-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.sec-eyebrow .num { color: var(--muted); font-weight: 400; }
+.sec-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border2); max-width: 80px; }
+
+.sec-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700; color: var(--cream);
+  line-height: 1.1; margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.sec-sub {
+  font-size: 14px; color: var(--muted2);
+  line-height: 1.7; max-width: 62ch;
+  margin-bottom: 36px;
+}
+
+/* ── OPPORTUNITY BANNER ── */
+.opportunity {
+  background: linear-gradient(135deg, #1f1208, #2a1a08);
+  border-left: 4px solid var(--fire);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+  position: relative; overflow: hidden;
+}
+
+.opportunity::after {
+  content: '$';
+  position: absolute; right: 24px; top: -12px;
+  font-family: 'Playfair Display', serif;
+  font-size: 140px; font-weight: 900;
+  color: rgba(232,76,0,0.05); line-height: 1;
+  pointer-events: none;
+}
+
+.opp-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 12px;
+}
+
+.opp-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 18px;
+  color: var(--cream); line-height: 1.6;
+  max-width: 780px; margin-bottom: 12px;
+}
+
+.opp-sub { font-size: 13px; color: var(--muted2); line-height: 1.7; max-width: 720px; }
+.opp-sub strong { color: var(--ember); }
+
+/* ── MARKET CARDS ── */
+.market-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.market-card {
+  background: var(--bg2);
+  padding: 28px 30px;
+}
+
+.market-card.dorado { border-top: 4px solid var(--fire); }
+.market-card.sanjuan { border-top: 4px solid var(--gold); }
+
+.market-city {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.market-card.dorado .market-city { color: var(--fire); }
+.market-card.sanjuan .market-city { color: var(--gold); }
+
+.market-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--cream); margin-bottom: 4px;
+}
+
+.market-flavor {
+  font-size: 12px; color: var(--muted2);
+  font-style: italic; margin-bottom: 16px;
+}
+
+.market-focus-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+
+.market-list { list-style: none; }
+
+.market-list li {
+  font-size: 12px; color: var(--cream2);
+  padding: 6px 0; border-bottom: 1px solid var(--border2);
+  display: flex; gap: 8px; line-height: 1.45;
+}
+
+.market-list li:last-child { border-bottom: none; }
+
+.market-card.dorado .market-list li::before { content: '→'; color: var(--fire); font-size: 10px; flex-shrink: 0; margin-top: 1px; }
+.market-card.sanjuan .market-list li::before { content: '→'; color: var(--gold); font-size: 10px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── SERVICE GRID ── */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.svc-card {
+  background: var(--bg2);
+  padding: 24px 22px;
+  border-top: 3px solid;
+  position: relative;
+}
+
+.svc-card:nth-child(1) { border-top-color: var(--fire); }
+.svc-card:nth-child(2) { border-top-color: var(--ember); }
+.svc-card:nth-child(3) { border-top-color: var(--gold); }
+.svc-card:nth-child(4) { border-top-color: var(--green); }
+.svc-card:nth-child(5) { border-top-color: var(--blue); }
+.svc-card:nth-child(6) { border-top-color: var(--fire); }
+
+.svc-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+
+.svc-cat {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.svc-card:nth-child(1) .svc-cat { color: var(--fire); }
+.svc-card:nth-child(2) .svc-cat { color: var(--ember); }
+.svc-card:nth-child(3) .svc-cat { color: var(--gold); }
+.svc-card:nth-child(4) .svc-cat { color: var(--green); }
+.svc-card:nth-child(5) .svc-cat { color: var(--blue); }
+.svc-card:nth-child(6) .svc-cat { color: var(--fire); }
+
+.svc-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--cream); margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.svc-body { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+
+.svc-deliverables { list-style: none; }
+
+.svc-deliverables li {
+  font-size: 11px; color: var(--cream2);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border2);
+  display: flex; gap: 7px; line-height: 1.4;
+}
+
+.svc-deliverables li:last-child { border-bottom: none; }
+.svc-deliverables li::before { content: '·'; flex-shrink: 0; color: var(--fire); }
+
+/* ── DIFFERENTIATOR ── */
+.diff-block {
+  background: rgba(232,76,0,0.06);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--fire);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+
+.diff-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 12px;
+}
+
+.diff-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--cream); margin-bottom: 10px;
+}
+
+.diff-body { font-size: 13px; color: var(--cream2); line-height: 1.75; max-width: 780px; }
+.diff-body strong { color: var(--ember); }
+
+/* ── COMPETITORS ── */
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.comp-card {
+  background: var(--bg2);
+  padding: 18px 16px;
+}
+
+.comp-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--cream); margin-bottom: 4px;
+}
+
+.comp-focus {
+  font-size: 11px; color: var(--muted2);
+  margin-bottom: 8px; line-height: 1.5;
+}
+
+.comp-gap {
+  font-size: 10px; color: var(--fire);
+  font-style: italic; line-height: 1.5;
+  padding-top: 8px;
+  border-top: 1px solid var(--border2);
+}
+
+.comp-gap::before {
+  content: 'Gap: ';
+  font-style: normal;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  display: block; margin-bottom: 2px;
+}
+
+/* ── PRICING TIERS ── */
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.tier {
+  background: var(--bg2);
+  padding: 28px 24px;
+  position: relative;
+}
+
+.tier.featured {
+  background: rgba(232,76,0,0.07);
+  border: 2px solid var(--fire);
+}
+
+.tier-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 3px 9px; border: 1px solid;
+  display: inline-block; margin-bottom: 12px;
+}
+
+.tier:nth-child(1) .tier-badge { color: var(--gold); border-color: var(--gold); }
+.tier:nth-child(2) .tier-badge { color: var(--fire); border-color: var(--fire); }
+.tier:nth-child(3) .tier-badge { color: var(--muted2); border-color: var(--muted2); }
+
+.tier-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--cream); margin-bottom: 4px;
+}
+
+.tier-target {
+  font-size: 12px; color: var(--muted2);
+  margin-bottom: 16px; font-style: italic;
+}
+
+.tier-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px; font-weight: 900;
+  font-style: italic;
+  margin-bottom: 4px; line-height: 1;
+}
+
+.tier:nth-child(1) .tier-price { color: var(--gold); }
+.tier:nth-child(2) .tier-price { color: var(--fire); }
+.tier:nth-child(3) .tier-price { color: var(--muted2); }
+
+.tier-cadence {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+
+.tier-list { list-style: none; }
+
+.tier-list li {
+  font-size: 11px; color: var(--cream2);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border2);
+  display: flex; gap: 7px; line-height: 1.45;
+}
+
+.tier-list li:last-child { border-bottom: none; }
+
+.tier:nth-child(1) .tier-list li::before { content: '→'; color: var(--gold); font-size: 9px; flex-shrink: 0; }
+.tier:nth-child(2) .tier-list li::before { content: '→'; color: var(--fire); font-size: 9px; flex-shrink: 0; }
+.tier:nth-child(3) .tier-list li::before { content: '→'; color: var(--muted2); font-size: 9px; flex-shrink: 0; }
+
+/* ── PHASE ROADMAP ── */
+.phases {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.phase {
+  background: var(--bg2);
+  padding: 24px 20px;
+  border-top: 4px solid;
+}
+
+.phase:nth-child(1) { border-top-color: var(--fire); }
+.phase:nth-child(2) { border-top-color: var(--ember); }
+.phase:nth-child(3) { border-top-color: var(--gold); }
+.phase:nth-child(4) { border-top-color: var(--green); }
+
+.phase-when {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.phase:nth-child(1) .phase-when { color: var(--fire); }
+.phase:nth-child(2) .phase-when { color: var(--ember); }
+.phase:nth-child(3) .phase-when { color: var(--gold); }
+.phase:nth-child(4) .phase-when { color: var(--green); }
+
+.phase-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--cream); margin-bottom: 10px;
+}
+
+.phase-revenue {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 900;
+  font-style: italic;
+  margin-bottom: 4px; line-height: 1;
+}
+
+.phase:nth-child(1) .phase-revenue { color: var(--fire); }
+.phase:nth-child(2) .phase-revenue { color: var(--ember); }
+.phase:nth-child(3) .phase-revenue { color: var(--gold); }
+.phase:nth-child(4) .phase-revenue { color: var(--green); }
+
+.phase-rev-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.phase-list { list-style: none; }
+
+.phase-list li {
+  font-size: 11px; color: var(--muted);
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex; gap: 6px; line-height: 1.4;
+}
+
+.phase-list li:last-child { border-bottom: none; }
+.phase-list li::before { content: '→'; color: var(--fire); font-size: 9px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── SCALE MODEL ── */
+.scale-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 0;
+  align-items: center;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.scale-node {
+  background: var(--bg2);
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.scale-icon { font-size: 24px; margin-bottom: 6px; display: block; }
+
+.scale-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 4px;
+}
+
+.scale-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--cream); margin-bottom: 4px;
+}
+
+.scale-body { font-size: 10px; color: var(--muted); line-height: 1.5; }
+
+.scale-arrow {
+  background: var(--bg3);
+  padding: 20px 12px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+}
+
+.scale-arrow-icon { font-size: 14px; color: var(--fire); }
+
+.scale-arrow-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 7px; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── CLOSING ── */
+.closing {
+  padding: 80px 64px;
+  text-align: center;
+  position: relative; overflow: hidden;
+  border-top: 1px solid var(--border);
+}
+
+.closing::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(232,76,0,0.07) 0%, transparent 70%);
+}
+
+.closing-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  color: var(--cream); line-height: 1.5;
+  max-width: 56ch; margin: 0 auto 16px;
+  position: relative;
+}
+
+.closing-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--fire); opacity: 0.7;
+  position: relative;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .hero, .section { padding: 40px 28px; }
+  .service-grid, .tiers, .phases { grid-template-columns: 1fr 1fr; }
+  .market-split, .comp-grid { grid-template-columns: 1fr; }
+  .scale-row { grid-template-columns: 1fr; }
+  .closing { padding: 48px 28px; }
+}
+
+
+/* ── MARKETING PLAN ADDITIONS ── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+
+:root {
+  --bg:     #faf7f0;
+  --bg2:    #f0ead8;
+  --bg3:    #e8dfc8;
+  --ink:    #1a1510;
+  --ink2:   #2a2018;
+  --fire:   #c83a00;
+  --ember:  #e85a20;
+  --gold:   #a07828;
+  --gold2:  #c89838;
+  --green:  #3a6a3a;
+  --blue:   #2a5a7a;
+  --red:    #8a2020;
+  --muted:  #6b6355;
+  --muted2: #8a7f6e;
+  --rule:   #d4c9a8;
+  --rule2:  #e0d8c4;
+  --border: #c8bfa8;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* ── COVER ── */
+.cover {
+  background: var(--ink);
+  padding: 72px 80px 64px;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+}
+
+.cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 80% 30%, rgba(200,58,0,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 10% 80%, rgba(160,120,40,0.08) 0%, transparent 50%);
+}
+
+.cover::after {
+  content: 'DVN';
+  position: absolute; right: -24px; bottom: -20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 220px; font-weight: 900;
+  color: rgba(255,255,255,0.025); line-height: 1;
+  pointer-events: none;
+}
+
+.cover-content { position: relative; }
+
+.cover-doc-type {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--fire);
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px;
+}
+
+.cover-doc-type::before {
+  content: ''; width: 32px; height: 2px;
+  background: var(--fire); display: block;
+}
+
+.cover-company {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(52px, 8vw, 96px);
+  font-weight: 900; color: #f0ead8;
+  line-height: 0.92; letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.cover-company em { color: var(--fire); font-style: italic; }
+
+.cover-tagline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(13px, 2vw, 18px);
+  font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold2);
+  margin-bottom: 32px;
+}
+
+.cover-statement {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: clamp(15px, 2vw, 20px);
+  color: rgba(240,234,216,0.65);
+  line-height: 1.7; max-width: 680px;
+  border-left: 3px solid var(--fire);
+  padding-left: 24px; margin-bottom: 48px;
+}
+
+.cover-meta {
+  display: flex; gap: 40px; flex-wrap: wrap;
+}
+
+.meta-item {}
+.meta-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); margin-bottom: 3px;
+}
+
+.meta-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.08em; color: rgba(240,234,216,0.8);
+}
+
+/* ── NAV ── */
+.toc {
+  background: var(--bg2);
+  border-bottom: 2px solid var(--fire);
+  padding: 32px 80px;
+}
+
+.toc-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 16px;
+}
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px 24px;
+}
+
+.toc-item {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--muted); display: flex;
+  align-items: center; gap: 6px;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.toc-item:hover { color: var(--fire); }
+
+.toc-num {
+  font-size: 8px; color: var(--fire);
+  font-weight: 700; letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+/* ── SECTION ── */
+.section {
+  padding: 56px 80px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.sec-header {
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--rule2);
+  display: flex; align-items: flex-end;
+  justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+
+.sec-meta { display: flex; flex-direction: column; }
+
+.sec-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 6px;
+}
+
+.sec-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 700; color: var(--ink);
+  line-height: 1.1; letter-spacing: -0.01em;
+}
+
+.sec-title em { color: var(--fire); font-style: italic; }
+
+.sec-framework {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted2);
+  padding: 4px 12px;
+  border: 1px solid var(--rule);
+  align-self: flex-end;
+}
+
+.sec-intro {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.75; max-width: 70ch;
+  margin-bottom: 28px;
+}
+
+/* ── SHARED COMPONENTS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 20px; }
+
+.card { background: var(--bg); padding: 22px 24px; }
+.card.tinted { background: var(--bg2); }
+.card.dark { background: var(--ink); }
+.card.fire-tint { background: rgba(200,58,0,0.05); border: 1px solid rgba(200,58,0,0.15); }
+.card.green-tint { background: rgba(58,106,58,0.05); }
+.card.red-tint { background: rgba(138,32,32,0.05); }
+.card.gold-tint { background: rgba(160,120,40,0.05); }
+.card.blue-tint { background: rgba(42,90,122,0.05); }
+
+.card-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.fire-label { color: var(--fire); }
+.green-label { color: var(--green); }
+.red-label { color: var(--red); }
+.gold-label { color: var(--gold); }
+.blue-label { color: var(--blue); }
+.muted-label { color: var(--muted2); }
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--ink); margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.card.dark .card-title { color: #f0ead8; }
+
+.card-body { font-size: 12px; color: var(--muted); line-height: 1.65; }
+.card.dark .card-body { color: rgba(240,234,216,0.55); }
+
+.bullet-list { list-style: none; margin-top: 8px; }
+.bullet-list li {
+  font-size: 11.5px; color: var(--muted);
+  padding: 5px 0; border-bottom: 1px solid var(--rule2);
+  display: flex; gap: 8px; line-height: 1.45;
+}
+.bullet-list li:last-child { border-bottom: none; }
+.bullet-list li::before { content: '→'; font-size: 9px; flex-shrink: 0; margin-top: 2px; }
+.fire-bullets li::before { color: var(--fire); }
+.green-bullets li::before { color: var(--green); }
+.red-bullets li::before { color: var(--red); }
+.gold-bullets li::before { color: var(--gold); }
+.blue-bullets li::before { color: var(--blue); }
+
+.highlight-box {
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.highlight-box.fire { background: rgba(200,58,0,0.06); border-left: 3px solid var(--fire); }
+.highlight-box.gold { background: rgba(160,120,40,0.07); border-left: 3px solid var(--gold); }
+.highlight-box.green { background: rgba(58,106,58,0.07); border-left: 3px solid var(--green); }
+.highlight-box.blue { background: rgba(42,90,122,0.07); border-left: 3px solid var(--blue); }
+
+.highlight-box p { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+.highlight-box p strong { color: var(--ink); }
+
+/* ── SWOT ── */
+.swot {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--ink);
+  border: 2px solid var(--ink);
+}
+
+.swot-cell { padding: 28px 28px; }
+.swot-cell.s { background: rgba(58,106,58,0.08); }
+.swot-cell.w { background: rgba(138,32,32,0.08); }
+.swot-cell.o { background: rgba(160,120,40,0.08); }
+.swot-cell.t { background: rgba(42,90,122,0.08); }
+
+.swot-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+
+.swot-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px; font-weight: 900;
+  font-style: italic; line-height: 1;
+  opacity: 0.2;
+}
+
+.swot-cell.s .swot-letter { color: var(--green); }
+.swot-cell.w .swot-letter { color: var(--red); }
+.swot-cell.o .swot-letter { color: var(--gold); }
+.swot-cell.t .swot-letter { color: var(--blue); }
+
+.swot-word {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+}
+
+.swot-cell.s .swot-word { color: var(--green); }
+.swot-cell.w .swot-word { color: var(--red); }
+.swot-cell.o .swot-word { color: var(--gold); }
+.swot-cell.t .swot-word { color: var(--blue); }
+
+/* ── 4Ps ── */
+.four-p {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 20px;
+}
+
+.p-card {
+  background: var(--bg);
+  padding: 28px 28px;
+  border-top: 4px solid;
+}
+
+.p-card:nth-child(1) { border-top-color: var(--fire); }
+.p-card:nth-child(2) { border-top-color: var(--gold); }
+.p-card:nth-child(3) { border-top-color: var(--green); }
+.p-card:nth-child(4) { border-top-color: var(--blue); }
+
+.p-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px; font-weight: 900;
+  font-style: italic; line-height: 1;
+  opacity: 0.08; margin-bottom: -8px;
+}
+
+.p-card:nth-child(1) .p-letter { color: var(--fire); }
+.p-card:nth-child(2) .p-letter { color: var(--gold); }
+.p-card:nth-child(3) .p-letter { color: var(--green); }
+.p-card:nth-child(4) .p-letter { color: var(--blue); }
+
+.p-word {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.p-card:nth-child(1) .p-word { color: var(--fire); }
+.p-card:nth-child(2) .p-word { color: var(--gold); }
+.p-card:nth-child(3) .p-word { color: var(--green); }
+.p-card:nth-child(4) .p-word { color: var(--blue); }
+
+.p-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--ink); margin-bottom: 12px;
+}
+
+/* ── POSITIONING MAP ── */
+.pos-map {
+  width: 100%; aspect-ratio: 1;
+  max-width: 520px;
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--bg2);
+  margin: 0 auto 24px;
+}
+
+.pos-x-axis {
+  position: absolute;
+  bottom: 50%; left: 0; right: 0;
+  height: 1px; background: var(--rule);
+}
+
+.pos-y-axis {
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px; background: var(--rule);
+}
+
+.pos-x-label-l, .pos-x-label-r,
+.pos-y-label-t, .pos-y-label-b {
+  position: absolute;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.pos-x-label-l { left: 8px; top: 50%; transform: translateY(6px); }
+.pos-x-label-r { right: 8px; top: 50%; transform: translateY(6px); }
+.pos-y-label-t { top: 8px; left: 50%; transform: translateX(-50%); }
+.pos-y-label-b { bottom: 8px; left: 50%; transform: translateX(-50%); }
+
+.pos-dot {
+  position: absolute;
+  transform: translate(-50%, 50%);
+  display: flex; flex-direction: column;
+  align-items: center;
+}
+
+.pos-dot-circle {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin-bottom: 4px;
+}
+
+.pos-dot-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 7px; font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* ── COMPETITIVE TABLE ── */
+.comp-table {
+  width: 100%; border-collapse: collapse;
+  border: 1px solid var(--rule);
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+
+.comp-table th {
+  background: var(--ink);
+  color: rgba(240,234,216,0.8);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 10px 14px; text-align: left;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.comp-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule2);
+  border-right: 1px solid var(--rule2);
+  vertical-align: top; color: var(--muted);
+}
+
+.comp-table tr:nth-child(even) td { background: var(--bg2); }
+
+.comp-table tr.dvn td {
+  background: rgba(200,58,0,0.05);
+  font-weight: 500; color: var(--ink);
+}
+
+.check { color: var(--green); font-weight: 700; }
+.cross { color: var(--red); font-weight: 700; }
+.partial { color: var(--gold); font-weight: 700; }
+
+/* ── FINANCIALS ── */
+.fin-table {
+  width: 100%; border-collapse: collapse;
+  border: 1px solid var(--rule); margin-bottom: 16px;
+}
+
+.fin-table th {
+  background: var(--bg3);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted2); padding: 9px 16px;
+  text-align: left; border-bottom: 1px solid var(--rule);
+}
+
+.fin-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule2);
+  font-size: 12px; color: var(--muted);
+}
+
+.fin-table tr:last-child td { border-bottom: none; font-weight: 600; color: var(--ink); background: var(--bg2); }
+
+.fin-table td.num { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; }
+.fin-table td.fire-num { color: var(--fire); }
+.fin-table td.green-num { color: var(--green); }
+.fin-table td.gold-num { color: var(--gold); }
+
+/* ── PERSONAS ── */
+.persona-row {
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 0; background: var(--rule);
+  border: 1px solid var(--rule); margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.persona-sidebar {
+  background: var(--ink); padding: 24px 20px;
+  display: flex; flex-direction: column;
+  justify-content: center;
+}
+
+.persona-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700;
+  font-style: italic; color: #f0ead8;
+  margin-bottom: 6px;
+}
+
+.persona-type {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--fire);
+}
+
+.persona-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 900;
+  font-style: italic; color: var(--fire);
+  margin-top: 12px;
+}
+
+.persona-val-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 7px; color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+.persona-body { background: var(--bg); padding: 24px; }
+
+.persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.persona-field-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--fire); margin-bottom: 4px;
+}
+
+.persona-field-body { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+
+/* ── CLOSING ── */
+.doc-footer {
+  background: var(--ink);
+  padding: 40px 80px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 900;
+  font-style: italic; color: var(--fire);
+}
+
+.footer-meta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.3); text-align: right;
+}
+
+/* PRINT */
+@media print {
+  body { background: white; }
+  .cover { background: #1a1510 !important; }
+}
+
+@media (max-width: 900px) {
+  .cover, .section, .toc, .doc-footer { padding: 36px 28px; }
+  .four-p, .grid-2, .swot { grid-template-columns: 1fr; }
+  .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+  .toc-grid { grid-template-columns: 1fr 1fr; }
+  .persona-row { grid-template-columns: 1fr; }
+}
+
+
+/* ── MERGE NAVIGATION ── */
+.merge-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,9,6,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(232,76,0,0.15);
+  padding: 0 64px;
+  display: flex; align-items: center;
+  gap: 0; overflow-x: auto;
+  scrollbar-width: none; height: 52px;
+}
+.merge-nav::-webkit-scrollbar { display: none; }
+.merge-nav-brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--fire); margin-right: 32px; flex-shrink: 0;
+}
+.merge-nav-link {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(200,191,168,0.5); text-decoration: none;
+  padding: 0 16px; height: 52px;
+  display: flex; align-items: center;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s; white-space: nowrap;
+  flex-shrink: 0;
+}
+.merge-nav-link:hover { color: var(--ember); }
+.merge-nav-link.vision-link { border-bottom-color: var(--fire); color: var(--ember); }
+.merge-nav-link.marketing-link { border-bottom-color: var(--gold); color: var(--gold); }
+.merge-nav-back {
+  margin-left: auto; flex-shrink: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(200,191,168,0.4); text-decoration: none;
+  padding: 6px 14px; border: 1px solid rgba(232,76,0,0.2);
+  transition: all 0.2s;
+}
+.merge-nav-back:hover { color: var(--fire); border-color: var(--fire); }
+
+/* ── CHAPTER DIVIDER ── */
+.chapter-break {
+  background: var(--ink);
+  padding: 56px 64px;
+  position: relative; overflow: hidden;
+}
+.chapter-break::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(232,76,0,0.08) 0%, transparent 70%);
+}
+.chapter-break-content { position: relative; }
+.chapter-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px;
+}
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 900; color: #f0ead8;
+  line-height: 0.95; letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.chapter-title em { color: var(--fire); font-style: italic; }
+.chapter-sub {
+  font-size: 13px; color: rgba(200,191,168,0.6);
+  max-width: 60ch; line-height: 1.7;
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="merge-nav">
+  <div class="merge-nav-brand">DVN Concierge</div>
+  <a class="merge-nav-link vision-link" href="#vision">Vision</a>
+  <a class="merge-nav-link" href="#opportunity">Market</a>
+  <a class="merge-nav-link" href="#edge">Differentiator</a>
+  <a class="merge-nav-link" href="#services">Services</a>
+  <a class="merge-nav-link" href="#pricing">Pricing</a>
+  <a class="merge-nav-link" href="#scale">Scale Model</a>
+  <a class="merge-nav-link marketing-link" href="#marketing">Marketing Plan</a>
+  <a class="merge-nav-link" href="#executive">Summary</a>
+  <a class="merge-nav-link" href="#swot">SWOT</a>
+  <a class="merge-nav-link" href="#segmentation">Segments</a>
+  <a class="merge-nav-link" href="#positioning">Positioning</a>
+  <a class="merge-nav-link" href="#4ps">4 Ps</a>
+  <a class="merge-nav-link" href="#financials">Financials</a>
+  <a class="merge-nav-link" href="#kpis">KPIs</a>
+  <a class="merge-nav-back" href="hub.html">← Hub</a>
+</nav>
+
+<!-- CHAPTER 1: VISION -->
+<div id="vision">
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Business Plan · Version 1.0 · April 2026</div>
+    <div class="hero-name">DVN<br><em>Concierge.</em></div>
+    <div class="hero-sub">White-Glove Lifestyle Architecture · Puerto Rico · Act 60 Market</div>
+    <div class="hero-thesis">"This is not a cleaning service. It is a full-spectrum ecosystem manager — with an AI life operating system layer that no competitor in the market has built. Ken Wilkins is client one. The Act 60 community in Dorado and San Juan is the market. The rest of the world is Phase 3."</div>
+    <div class="hero-tags">
+      <span class="hero-tag fire">Puerto Rico · Act 60</span>
+      <span class="hero-tag fire">Dorado + San Juan</span>
+      <span class="hero-tag gold">Life OS Layer</span>
+      <span class="hero-tag gold">Ken — Client Zero</span>
+      <span class="hero-tag green">$150K–$250K / Client / Year</span>
+      <span class="hero-tag green">Scalable to U.S.</span>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<!-- VISION SECTIONS -->
+<div id="opportunity">
+<!-- THE OPPORTUNITY -->
+<div class="section full">
+  <div class="sec-eyebrow"><span class="num">00 ·</span> The Market</div>
+  <h2 class="sec-title">Why Puerto Rico. Why Now.</h2>
+  <p class="sec-sub">Puerto Rico's Act 60 has created the highest concentration of ultra-high-net-worth individuals outside of the continental US in one of the smallest geographic markets in the world. They all know each other. They all have the same problem: they have everything except time and operational peace.</p>
+
+  <div class="opportunity">
+    <div class="opp-label">The Insight</div>
+    <div class="opp-text">"The Act 60 community in Dorado and San Juan is small and tight. If you build something exceptional for one person, you get introduced to his peers. That's not a marketing strategy — that's the only strategy that works at this level."</div>
+    <div class="opp-sub">The existing concierge providers in PR — Dorado Concierge Group, Bespoke Lifestyle Management, ETC Puerto Rico — are doing <strong>fragments</strong> of what this business does. None of them have an AI systems layer. None of them build a life architecture OS for the client. None of them have a personality-aware agent that learns the client and guides them. <strong>That gap is the business.</strong></div>
+  </div>
+
+  <div class="market-split">
+    <div class="market-card dorado">
+      <div class="market-city">Market 1</div>
+      <div class="market-name">Dorado</div>
+      <div class="market-flavor">"The Resort Lifestyle Sanctuary"</div>
+      <div class="market-focus-label">Concierge Priority</div>
+      <ul class="market-list">
+        <li>Gated estate management and full property operations</li>
+        <li>Golf and beach club logistics for Dorado Beach members</li>
+        <li>Private family wellness — in-home spa, PT, trainers</li>
+        <li>High-security logistics and "island-resilient" infrastructure</li>
+        <li>Cistern notifications, solar systems, hurricane readiness</li>
+        <li>Premium grocery pre-stock before principal arrives</li>
+        <li>Vendor SOP playbooks — consistency across every visit</li>
+      </ul>
+    </div>
+    <div class="market-card sanjuan">
+      <div class="market-city">Market 2</div>
+      <div class="market-name">San Juan</div>
+      <div class="market-flavor">"The Urban Business Hub"</div>
+      <div class="market-focus-label">Concierge Priority</div>
+      <ul class="market-list">
+        <li>Fast-track airport arrivals at SJU and SIG airports</li>
+        <li>Luxury ground transport — bilingual chauffeurs, SUVs</li>
+        <li>Executive networking and VIP event access</li>
+        <li>Condado oceanfront condo logistics and management</li>
+        <li>High-end dining reservations and exclusive club access</li>
+        <li>Legal and corporate liaison for Act 60 regulatory navigation</li>
+        <li>Luxury nightlife and private event coordination</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- THE DIFFERENTIATOR -->
+<div class="section full">
+  <div class="sec-eyebrow"><span class="num">01 ·</span> The Edge</div>
+  <h2 class="sec-title">What Nobody Else Is Building</h2>
+  <p class="sec-sub">Every competitor offers white-glove service. The DVN differentiator is what happens beneath the service — the intelligence layer that makes it feel like magic.</p>
+
+  <div class="diff-block">
+    <div class="diff-label">The AI Life OS — Proprietary Differentiator</div>
+    <div class="diff-title">A Personality-Aware Operating System Built Into Every Engagement</div>
+    <div class="diff-body">Every DVN client gets a personal dashboard and AI agent built specifically around them — their personality frameworks (Myers-Briggs, Gene Keys, Genius Type, Start With Why), their fitness goals, their sleep patterns, their energy levels, their ideas, their key relationships, their business context. <strong>The agent learns who they are and guides them based on that.</strong> Notion becomes their permanent life archive. The dashboard shows them where they are in real time. No other concierge company in the world is building this. It's the layer that turns a service into a system — and a system into a defensible business.</div>
+  </div>
+
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-name">Dorado Concierge Group</div>
+      <div class="comp-focus">Business, legal, and personal concierge for the Dorado area. Strong local network.</div>
+      <div class="comp-gap">No fitness layer. No AI. No life architecture. Transactional only.</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">Bespoke Lifestyle Management</div>
+      <div class="comp-focus">High-end tours, relocation assistance, private household concierge packages.</div>
+      <div class="comp-gap">No tech layer. No ongoing relationship architecture. Event-based, not embedded.</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">ETC Puerto Rico</div>
+      <div class="comp-focus">Executive transportation and lifestyle management. Strong logistics focus.</div>
+      <div class="comp-gap">Transportation-first. No wellness, fitness, or life OS component.</div>
+    </div>
+    <div class="comp-card" style="background:rgba(232,76,0,0.06);border:1px solid var(--fire);">
+      <div class="comp-name" style="color:var(--fire);">DVN Concierge</div>
+      <div class="comp-focus" style="color:var(--cream2);">Full-spectrum ecosystem management + AI life OS + fitness + wellness + estate + executive ops.</div>
+      <div class="comp-gap" style="color:var(--gold);border-top-color:rgba(201,151,58,0.2);">The only concierge service that builds a personality-aware operating system for the client.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICE CATALOG -->
+<div class="section full">
+  <div class="sec-eyebrow"><span class="num">02 ·</span> The Services</div>
+  <h2 class="sec-title">The Full Service Catalog</h2>
+  <p class="sec-sub">Six categories. Each one is a standalone service that can be packaged individually or delivered as part of the full ecosystem engagement.</p>
+
+  <div class="service-grid">
+    <div class="svc-card">
+      <span class="svc-icon">🏗️</span>
+      <div class="svc-cat">Category 1</div>
+      <div class="svc-name">The Invisible Estate Lead</div>
+      <div class="svc-body">Move from "cleaning" to managing vendors. A Client Experience Playbook for every home — SOPs, vendor relationships, preventative maintenance. You manage the crew, not the mop.</div>
+      <ul class="svc-deliverables">
+        <li>Vendor SOP playbook — consistent across every visit</li>
+        <li>Automated stocking of premium consumables</li>
+        <li>Preventative maintenance tracking and alerts</li>
+        <li>Cistern, solar, HVAC, and hurricane readiness</li>
+        <li>Maid service coordination and quality oversight</li>
+      </ul>
+    </div>
+
+    <div class="svc-card">
+      <span class="svc-icon">💪</span>
+      <div class="svc-cat">Category 2</div>
+      <div class="svc-name">Holistic Performance</div>
+      <div class="svc-body">Bio-individual nutrition built on actual blood work and performance goals. Integrated wellness — training, recovery, physical therapy — scheduled around the executive calendar.</div>
+      <ul class="svc-deliverables">
+        <li>Macro and nutrition protocols based on labs</li>
+        <li>Daily training programming and accountability</li>
+        <li>In-home sauna, cold plunge, PT coordination</li>
+        <li>Weekly check-ins and protocol adjustments</li>
+        <li>Progress logged automatically via AI agent</li>
+      </ul>
+    </div>
+
+    <div class="svc-card">
+      <span class="svc-icon">🤖</span>
+      <div class="svc-cat">Category 3</div>
+      <div class="svc-name">The AI Life OS</div>
+      <div class="svc-body">A personal dashboard and agent built around the client's personality, philosophies, and goals. Voice logging, Notion archive, live dashboard, weekly summaries. The layer no competitor has.</div>
+      <ul class="svc-deliverables">
+        <li>Personality framework integration (4 tests)</li>
+        <li>Live personal dashboard at private URL</li>
+        <li>AI agent — voice logging, shadow detection</li>
+        <li>Notion life archive — permanent, searchable</li>
+        <li>Weekly automated review and pattern analysis</li>
+      </ul>
+    </div>
+
+    <div class="svc-card">
+      <span class="svc-icon">✈️</span>
+      <div class="svc-cat">Category 4</div>
+      <div class="svc-name">Executive Operations</div>
+      <div class="svc-body">Time defense at the highest level. Acting as the gatekeeper for non-essential communications, managing private aviation, luxury ground transport, and VIP event logistics.</div>
+      <ul class="svc-deliverables">
+        <li>Private aviation coordination (Tradewind, Jettly)</li>
+        <li>Fast-track airport arrivals at SJU and SIG</li>
+        <li>Bilingual luxury ground transport management</li>
+        <li>VIP event access and dining reservations</li>
+        <li>Communications filtering and calendar defense</li>
+      </ul>
+    </div>
+
+    <div class="svc-card">
+      <span class="svc-icon">🛥️</span>
+      <div class="svc-cat">Category 5</div>
+      <div class="svc-name">Bespoke Experiences</div>
+      <div class="svc-body">Curated island experiences that create the stories clients tell. Private yacht charters, bioluminescent bay tours, rainforest immersions, and custom cultural itineraries.</div>
+      <ul class="svc-deliverables">
+        <li>Private yacht charters with personal chef</li>
+        <li>Night kayaking — bioluminescent bays</li>
+        <li>El Yunque rainforest private tours</li>
+        <li>Curated luxury island itineraries</li>
+        <li>Photography and memory creation services</li>
+      </ul>
+    </div>
+
+    <div class="svc-card">
+      <span class="svc-icon">🌐</span>
+      <div class="svc-cat">Category 6</div>
+      <div class="svc-name">Growth House Events</div>
+      <div class="svc-body">Full event production for immersion and growth events. The existing 8-document production suite, built across two successful events. This is where the network compounds fastest.</div>
+      <ul class="svc-deliverables">
+        <li>Full pre-event operations and production</li>
+        <li>33-person member management and intake</li>
+        <li>Venue coordination and logistics</li>
+        <li>Session facilitation support</li>
+        <li>Post-event follow-up and community building</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING TIERS -->
+<div class="section full">
+  <div class="sec-eyebrow"><span class="num">03 ·</span> The Pricing</div>
+  <h2 class="sec-title">Three Service Tiers</h2>
+  <p class="sec-sub">Built to match the market research. One client at Tier 1 covers all operating costs. Two clients at Tier 1 is financial sovereignty. Tier 3 is the long-game enterprise model.</p>
+
+  <div class="tiers">
+    <div class="tier featured">
+      <span class="tier-badge">Launch Tier · Start Here</span>
+      <div class="tier-name">Elite Individual</div>
+      <div class="tier-target">Dedicated full-spectrum support for one UHNW principal. Ken is the proof of concept.</div>
+      <div class="tier-price">$150K–$250K</div>
+      <div class="tier-cadence">Annual Retainer</div>
+      <ul class="tier-list">
+        <li>Full 30/10 structure — 30 hrs direct support</li>
+        <li>Complete AI Life OS built and maintained</li>
+        <li>Holistic performance and nutrition management</li>
+        <li>Estate and property operations lead</li>
+        <li>Executive operations and time defense</li>
+        <li>Bespoke experience curation</li>
+        <li>Weekly reviews and monthly reporting</li>
+      </ul>
+    </div>
+
+    <div class="tier">
+      <span class="tier-badge">Scale Tier</span>
+      <div class="tier-name">Multi-Family Office</div>
+      <div class="tier-target">Team-based lifestyle management for a small group of HNWIs. Years 2–3 target.</div>
+      <div class="tier-price">$300K–$500K</div>
+      <div class="tier-cadence">Annual Retainer · Team-Based</div>
+      <ul class="tier-list">
+        <li>1:3 Senior Lifestyle Manager to client ratio</li>
+        <li>AI Life OS for each principal</li>
+        <li>Shared vendor network and infrastructure</li>
+        <li>Cross-referral between Act 60 community</li>
+        <li>Growth House event production included</li>
+        <li>Monthly principal meetings and reviews</li>
+      </ul>
+    </div>
+
+    <div class="tier">
+      <span class="tier-badge">Enterprise Tier</span>
+      <div class="tier-name">Corporate Concierge</div>
+      <div class="tier-target">Retainer-based support for executive leadership teams. U.S. expansion model.</div>
+      <div class="tier-price">$500K+</div>
+      <div class="tier-cadence">Annual Retainer · Enterprise</div>
+      <ul class="tier-list">
+        <li>Full executive team lifestyle management</li>
+        <li>Multi-city presence via Senior Lifestyle Managers</li>
+        <li>National anchor vendor network</li>
+        <li>Corporate AI OS for company leadership</li>
+        <li>Dedicated concierge app with real-time updates</li>
+        <li>Private security and travel logistics</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:rgba(201,151,58,0.07);border-left:3px solid var(--gold);padding:16px 20px;">
+    <p style="font-size:13px;color:var(--cream2);line-height:1.7;"><strong style="color:var(--gold);">The math:</strong> One Tier 1 client at $150K/year + your $60K Ken salary = $210K in year one gross. Two Tier 1 clients = $360K gross. At a 40% margin after SLM salaries and operations, that's $144K net. This is the path to financial sovereignty through business — not the salary.</p>
+  </div>
+</div>
+
+<!-- PHASE ROADMAP -->
+<div class="section full">
+  <div class="sec-eyebrow"><span class="num">04 ·</span> The Roadmap</div>
+  <h2 class="sec-title">Four Phases to a Scalable Business</h2>
+  <p class="sec-sub">Built conservatively. Each phase funds the next. Ken's network is the distribution channel at every stage.</p>
+
+  <div class="phases">
+    <div class="phase">
+      <div class="phase-when">Phase 1 · Fall 2026</div>
+      <div class="phase-title">Ken as Client Zero</div>
+      <div class="phase-revenue">$60K</div>
+      <div class="phase-rev-label">Base salary + benefits</div>
+      <ul class="phase-list">
+        <li>Build Ken's full Life OS in Puerto Rico</li>
+        <li>Deliver all six service categories for one principal</li>
+        <li>Document everything as the replicable playbook</li>
+        <li>Get introduced to 2–3 peers in Ken's network</li>
+        <li>Launch concierge experiences (tours, boats)</li>
+        <li>Earn the testimonial and referral</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-when">Phase 2 · 2027</div>
+      <div class="phase-title">First Outside Client</div>
+      <div class="phase-revenue">$210K</div>
+      <div class="phase-rev-label">Ken salary + first retainer</div>
+      <ul class="phase-list">
+        <li>Sign first outside client from Ken's network</li>
+        <li>$150K retainer — individual tier</li>
+        <li>Hire first bilingual local operations hire</li>
+        <li>Build vendor SOP playbook for replication</li>
+        <li>Launch Airbnb and boat rental operations</li>
+        <li>Grow Growth House co-producer role</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-when">Phase 3 · 2028</div>
+      <div class="phase-title">Multi-Client Operation</div>
+      <div class="phase-revenue">$500K+</div>
+      <div class="phase-rev-label">Gross revenue target</div>
+      <ul class="phase-list">
+        <li>3–4 individual clients at $150K–$250K each</li>
+        <li>Senior Lifestyle Manager hired and trained</li>
+        <li>AI Life OS packaged as standalone product</li>
+        <li>Multi-family office tier launched</li>
+        <li>Full Dorado and San Juan market presence</li>
+        <li>Exploring U.S. mainland expansion</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-when">Phase 4 · 2029+</div>
+      <div class="phase-title">U.S. Scale</div>
+      <div class="phase-revenue">$1M+</div>
+      <div class="phase-rev-label">Enterprise revenue potential</div>
+      <ul class="phase-list">
+        <li>Senior Lifestyle Manager network in major U.S. cities</li>
+        <li>National anchor vendor relationships locked</li>
+        <li>Corporate concierge tier live</li>
+        <li>AI Life OS as licensed SaaS product</li>
+        <li>First real estate assets acquired from profit</li>
+        <li>The North Star — building to give back</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SCALE MODEL -->
+<div class="section full">
+  <div class="sec-eyebrow"><span class="num">05 ·</span> The Scale Model</div>
+  <h2 class="sec-title">How This Grows Without You Doing Everything</h2>
+  <p class="sec-sub">The 1:3 Senior Lifestyle Manager model. You build the playbook with Ken. You train the SLMs to replicate it. You become the architect — not the operator.</p>
+
+  <div class="scale-row">
+    <div class="scale-node">
+      <span class="scale-icon">🧠</span>
+      <div class="scale-label">You</div>
+      <div class="scale-title">The Architect</div>
+      <div class="scale-body">Build the systems. Train the SLMs. Manage the client relationships. Own the AI OS platform. This is the Blaze genius position — WHO, not HOW.</div>
+    </div>
+    <div class="scale-arrow">
+      <div class="scale-arrow-icon">→</div>
+      <div class="scale-arrow-label">trains</div>
+    </div>
+    <div class="scale-node">
+      <span class="scale-icon">👥</span>
+      <div class="scale-label">Senior Lifestyle Managers</div>
+      <div class="scale-title">The Operators</div>
+      <div class="scale-body">Bilingual locals who mirror your role for 3 clients each. Trained on the DVN playbook. Each SLM serves 3 principals at $150K each = $450K managed per SLM.</div>
+    </div>
+    <div class="scale-arrow">
+      <div class="scale-arrow-icon">→</div>
+      <div class="scale-arrow-label">serves</div>
+    </div>
+    <div class="scale-node">
+      <span class="scale-icon">🏆</span>
+      <div class="scale-label">UHNW Clients</div>
+      <div class="scale-title">The Principals</div>
+      <div class="scale-body">Act 60 holders in Dorado and San Juan, then U.S. executives. Each paying $150K–$250K/year for a service they can't get anywhere else.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:1px;">
+    <div style="background:var(--bg2);padding:20px 22px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--fire);margin-bottom:8px;">The Vendor Network</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;">A vetted "Anchor Vendor" list for every service category: private chefs, in-home PT, private security, yacht charters, aviation contacts, estate cleaners, photographers, event staff. Built in Puerto Rico first, then replicated city by city in the U.S.</div>
+    </div>
+    <div style="background:var(--bg2);padding:20px 22px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">The Tech Layer</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;">A dedicated concierge app providing clients with real-time updates, seamless booking, and access to their AI agent. Built on the same architecture as the DVN Life OS — just skinned and packaged for the service business. This becomes the moat.</div>
+    </div>
+  </div>
+</div>
+
+<!-- IMMEDIATE NEXT STEPS -->
+<div class="section full">
+  <div class="sec-eyebrow"><span class="num">06 ·</span> Right Now</div>
+  <h2 class="sec-title">What Happens Before Any of This</h2>
+  <p class="sec-sub">None of Phase 2 or beyond is possible without nailing Phase 1. And Phase 1 starts with one conversation.</p>
+
+  <div style="display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);">
+
+    <div style="background:var(--bg2);display:grid;grid-template-columns:56px 1fr;gap:0;overflow:hidden;">
+      <div style="background:var(--fire);display:flex;align-items:center;justify-content:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;font-style:italic;color:var(--bg);">1</div>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--fire);margin-bottom:4px;">May 5, 2026 · Ken Meeting</div>
+        <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">Present the business vision — not just the role</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">Ken needs to understand that what you're building for him is Phase 1 of a business. He's not hiring an assistant — he's co-founding the proof of concept for a scalable concierge service. That framing changes everything about how he introduces you to his peers.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);display:grid;grid-template-columns:56px 1fr;gap:0;overflow:hidden;">
+      <div style="background:var(--ember);display:flex;align-items:center;justify-content:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;font-style:italic;color:var(--bg);">2</div>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--ember);margin-bottom:4px;">May 2026 · Trial Week</div>
+        <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">Start building the Life OS framework for Ken during the week</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">Don't arrive empty-handed. Come with the personality framework questionnaire ready. Start the dashboard build during the trial week. Leave with something tangible already in motion — the first version of his command center, even if rough.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);display:grid;grid-template-columns:56px 1fr;gap:0;overflow:hidden;">
+      <div style="background:var(--gold);display:flex;align-items:center;justify-content:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;font-style:italic;color:var(--bg);">3</div>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Before Puerto Rico · Now</div>
+        <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">Research OUPV license, Puerto Rico LLC formation, Act 60 business requirements</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">The business needs to be legal from day one. Puerto Rico LLC formation is straightforward. OUPV captain license takes 3–5 days of coursework. Research both before the trial week so you can speak to them intelligently with Ken.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2);display:grid;grid-template-columns:56px 1fr;gap:0;overflow:hidden;border-bottom:none;">
+      <div style="background:var(--green);display:flex;align-items:center;justify-content:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;font-style:italic;color:var(--bg);">4</div>
+      </div>
+      <div style="padding:16px 20px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Spanish · Starting Today</div>
+        <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px;">10 hours a week. No exceptions. Spanish is not optional for this business.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;">To hire bilingual staff, negotiate with local vendors, build trust with Puerto Rican clients, and navigate the local regulatory environment — you need functional Spanish within 6 months. This is the one preparation no one can do for you. Start today.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-quote">"You are not building a cleaning service. You are building the operating system for the lives of the people who run the world — starting with one man in Puerto Rico, scaling to the world."</div>
+  <div class="closing-sub">DVN Concierge · Business Plan v1.0 · Deryl VanNostrand · April 2026</div>
+</div>
+
+
+</div>
+
+<!-- CHAPTER 2: MARKETING PLAN -->
+<div class="chapter-break" id="marketing">
+  <div class="chapter-break-content">
+    <div class="chapter-num">Part Two · Formal Business Analysis</div>
+    <div class="chapter-title">The<br><em>Marketing Plan.</em></div>
+    <div class="chapter-sub">SWOT analysis, segmentation, targeting, positioning, competitive benchmarking, the 4 Ps, three-year financial projections, go-to-market strategy, and KPIs. The formal frameworks behind the vision.</div>
+  </div>
+</div>
+
+<!-- MARKETING PLAN SECTIONS -->
+<!-- 00 EXECUTIVE SUMMARY -->
+<div class="section" id="executive">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">00 · Executive Summary</div>
+      <h2 class="sec-title">The Business <em>in One Page</em></h2>
+    </div>
+    <div class="sec-framework">Overview</div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card fire-tint" style="border-top:3px solid var(--fire);">
+      <div class="card-label fire-label">The Business</div>
+      <div class="card-title">DVN Concierge</div>
+      <div class="card-body">A full-spectrum white-glove lifestyle architecture service for ultra-high-net-worth individuals (UHNW) in Puerto Rico's Act 60 community — with a proprietary AI Life Operating System layer that no competitor in the market has built.</div>
+    </div>
+    <div class="card tinted" style="border-top:3px solid var(--gold);">
+      <div class="card-label gold-label">The Problem We Solve</div>
+      <div class="card-title">Time + Operational Peace</div>
+      <div class="card-body">9-figure entrepreneurs under Act 60 in Puerto Rico have capital, network, and freedom — but they lack a single trusted operator who can manage their entire lifestyle ecosystem without them having to think about it.</div>
+    </div>
+    <div class="card tinted" style="border-top:3px solid var(--green);">
+      <div class="card-label green-label">The Opportunity</div>
+      <div class="card-title">$150K–$250K Per Client</div>
+      <div class="card-body">Market research confirms elite individual retainers run $150K–$250K annually. The Act 60 community in Dorado and San Juan is concentrated, high-value, and underserved by existing providers at the AI-integrated level.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box fire">
+    <p><strong>The One-Line Version:</strong> DVN Concierge is the only lifestyle architecture service in Puerto Rico that combines white-glove estate management, holistic performance coaching, executive operations, and a personality-aware AI life operating system — built around the specific human being, not the generic client.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label fire-label">Mission Statement</div>
+      <div class="card-title">To give the world's most accomplished people the one thing they can't buy: an operating system for their life that actually knows them.</div>
+    </div>
+    <div class="card tinted">
+      <div class="card-label gold-label">Vision Statement</div>
+      <div class="card-title">To become the premier lifestyle architecture firm for ultra-high-net-worth principals globally — starting in Puerto Rico, scaling to the United States, and eventually the world.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 SITUATION ANALYSIS -->
+<div class="section" id="situation">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">01 · Situation Analysis</div>
+      <h2 class="sec-title">The Market <em>Landscape</em></h2>
+    </div>
+    <div class="sec-framework">Environmental Scan</div>
+  </div>
+
+  <p class="sec-intro">Puerto Rico's Act 60 tax incentive has created one of the highest concentrations of ultra-high-net-worth individuals in any small geographic market in the world. They cluster in Dorado and San Juan. They know each other. And they all have the same operational needs.</p>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card" style="border-top:3px solid var(--fire);">
+      <div class="card-label fire-label">Dorado Market</div>
+      <div class="card-title">"The Resort Lifestyle Sanctuary"</div>
+      <ul class="bullet-list fire-bullets">
+        <li>Gated estate management and full property operations</li>
+        <li>Golf and Dorado Beach club logistics</li>
+        <li>Private family wellness — spa, PT, in-home training</li>
+        <li>Island-resilient infrastructure (cistern, solar, hurricane)</li>
+        <li>Premium grocery pre-stock before principal arrives</li>
+        <li>High-security logistics and vendor SOP management</li>
+      </ul>
+    </div>
+    <div class="card tinted" style="border-top:3px solid var(--gold);">
+      <div class="card-label gold-label">San Juan Market</div>
+      <div class="card-title">"The Urban Business Hub"</div>
+      <ul class="bullet-list gold-bullets">
+        <li>Fast-track airport arrivals at SJU and SIG</li>
+        <li>Luxury ground transport — bilingual chauffeurs</li>
+        <li>Executive networking and VIP event access</li>
+        <li>Condado oceanfront condo logistics</li>
+        <li>High-end dining reservations and private club access</li>
+        <li>Legal and corporate liaison for Act 60 navigation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card tinted">
+      <div class="card-label fire-label">Market Size</div>
+      <div class="card-title">~3,000 Act 60 Individuals</div>
+      <div class="card-body">Concentrated primarily in Dorado Beach and Condado/Santurce. Growing at 15–20% annually as tax advantages attract new arrivals. Small geography = tight community = referral-driven market.</div>
+    </div>
+    <div class="card tinted">
+      <div class="card-label gold-label">Market Trend</div>
+      <div class="card-title">AI Integration Gap</div>
+      <div class="card-body">No existing concierge provider in Puerto Rico offers AI-integrated lifestyle management. The demand for tech-enabled personal services is accelerating globally but PR's market has no supply-side answer yet.</div>
+    </div>
+    <div class="card tinted">
+      <div class="card-label green-label">Market Entry</div>
+      <div class="card-title">Referral-Only Access</div>
+      <div class="card-body">The UHNW community does not respond to advertising. Access requires warm referrals from trusted peers. Ken Wilkins as Client Zero is the most valuable possible market entry point — his peers are the entire addressable market.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 SWOT -->
+<div class="section" id="swot">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">02 · SWOT Analysis</div>
+      <h2 class="sec-title">Strengths, Weaknesses,<br><em>Opportunities & Threats</em></h2>
+    </div>
+    <div class="sec-framework">Strategic Framework</div>
+  </div>
+
+  <div class="swot" style="margin-bottom:24px;">
+    <div class="swot-cell s">
+      <div class="swot-header">
+        <div class="swot-letter">S</div>
+        <div class="swot-word">Strengths</div>
+      </div>
+      <ul class="bullet-list green-bullets">
+        <li>Proprietary AI Life OS — no competitor in PR has this</li>
+        <li>4-year proven relationship with a 9-figure client (Ken)</li>
+        <li>Swiss army knife skill set — fitness, cooking, tech, ops</li>
+        <li>Growth House credibility — 2 events, 8-document production suite</li>
+        <li>Consciousness + psychedelics experience — relevant to UHNW market</li>
+        <li>ENFJ-A Protagonist + Blaze Genius = natural relationship builder</li>
+        <li>Young, adaptable, no legacy overhead to carry</li>
+        <li>Proof of concept already built (DVN Life OS for self)</li>
+      </ul>
+    </div>
+    <div class="swot-cell w">
+      <div class="swot-header">
+        <div class="swot-letter">W</div>
+        <div class="swot-word">Weaknesses</div>
+      </div>
+      <ul class="bullet-list red-bullets">
+        <li>No formal credentials (training, nutrition, estate management)</li>
+        <li>No Spanish fluency yet — critical for local operations</li>
+        <li>Limited capital — $4K cash, $33K debt</li>
+        <li>No established vendor network in Puerto Rico</li>
+        <li>Single-person operation — no redundancy or backup</li>
+        <li>No Puerto Rico LLC or legal business structure yet</li>
+        <li>Blaze Genius shadow: Key 3 Chaos — many ideas, follow-through varies</li>
+        <li>Limited knowledge of Puerto Rico's unique infrastructure needs</li>
+      </ul>
+    </div>
+    <div class="swot-cell o">
+      <div class="swot-header">
+        <div class="swot-letter">O</div>
+        <div class="swot-word">Opportunities</div>
+      </div>
+      <ul class="bullet-list gold-bullets">
+        <li>Zero AI-integrated competitors in the Puerto Rico market</li>
+        <li>Act 60 community growing 15–20% annually</li>
+        <li>Ken's peer network = warm introductions to addressable market</li>
+        <li>Night kayaking operations already generating millions — validated</li>
+        <li>Turo + Airbnb arbitrage make housing and transport net-neutral</li>
+        <li>OUPV captain license opens boat charter market</li>
+        <li>Growth House network = premium client pipeline</li>
+        <li>U.S. expansion via Senior Lifestyle Manager model (Phase 4)</li>
+      </ul>
+    </div>
+    <div class="swot-cell t">
+      <div class="swot-header">
+        <div class="swot-letter">T</div>
+        <div class="swot-word">Threats</div>
+      </div>
+      <ul class="bullet-list blue-bullets">
+        <li>Established players (Dorado Concierge Group) have local roots</li>
+        <li>UHNW clients have very high and very specific expectations</li>
+        <li>Reputational risk — one bad experience in a tight community spreads fast</li>
+        <li>Hurricane season disruption to operations and availability</li>
+        <li>Act 60 policy could change — impacts addressable market</li>
+        <li>Currency of trust takes time — can't be rushed</li>
+        <li>Single point of failure as solo operator</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight-box fire">
+    <p><strong>SWOT Strategic Implication:</strong> The AI Life OS layer is both the primary strength and the primary opportunity. It transforms a competent but credential-light operator into an irreplaceable system architect. The speed at which the business succeeds depends almost entirely on how quickly the AI layer gets built for Ken and demonstrated to his network.</p>
+  </div>
+</div>
+
+<!-- 03 SEGMENTATION AND TARGETING -->
+<div class="section" id="segmentation">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">03 · Segmentation & Targeting</div>
+      <h2 class="sec-title">Who We Serve <em>and Why</em></h2>
+    </div>
+    <div class="sec-framework">STP Framework</div>
+  </div>
+
+  <p class="sec-intro">The total market is segmented by geography, wealth tier, and lifestyle complexity. DVN Concierge targets the highest-complexity, highest-value segment first — then scales down the complexity curve as operations mature.</p>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card" style="border-top:3px solid var(--fire);">
+      <div class="card-label fire-label">Segment 1 · Primary Target</div>
+      <div class="card-title">Act 60 Principals — Dorado & San Juan</div>
+      <div class="card-body">9-figure entrepreneurs who relocated to PR under Act 60. Typically 40–65, post-exit or active investors. Net worth $100M–$1B+. High operational complexity, deep wellness interest, beginning consciousness exploration. This is the highest-value, highest-fit segment. Ken is the prototype.</div>
+      <ul class="bullet-list fire-bullets" style="margin-top:10px;">
+        <li>Segment size: ~500 qualifying principals currently in PR</li>
+        <li>Annual concierge spend potential: $150K–$250K each</li>
+        <li>Access mechanism: warm referral from existing clients only</li>
+      </ul>
+    </div>
+    <div class="card tinted" style="border-top:3px solid var(--gold);">
+      <div class="card-label gold-label">Segment 2 · Secondary Target</div>
+      <div class="card-title">UHNW Visitors & Growth House Community</div>
+      <div class="card-body">High-net-worth visitors, short-term residents, and the Growth House/Immersion community — individuals who spend 30–90 days per year in PR and want full lifestyle support during their stay without a full-time arrangement.</div>
+      <ul class="bullet-list gold-bullets" style="margin-top:10px;">
+        <li>Segment size: ~2,000 qualifying individuals annually</li>
+        <li>Project-based pricing: $10K–$40K per visit</li>
+        <li>Access mechanism: Growth House referral + event pipeline</li>
+      </ul>
+    </div>
+    <div class="card tinted" style="border-top:3px solid var(--blue);">
+      <div class="card-label blue-label">Segment 3 · Long Game (2029+)</div>
+      <div class="card-title">U.S. Executive Leadership Teams</div>
+      <div class="card-body">Corporate concierge for executive teams at major companies — leveraging the SLM model to deliver lifestyle management across multiple U.S. cities. Enterprise retainer model, $500K+ annually.</div>
+      <ul class="bullet-list blue-bullets" style="margin-top:10px;">
+        <li>Segment size: Large — hundreds of qualifying companies</li>
+        <li>Enterprise retainer: $500K+ annually</li>
+        <li>Access mechanism: Ken's national network + reputation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight-box gold">
+    <p><strong>Targeting Decision:</strong> DVN Concierge pursues Segment 1 exclusively for the first 18 months. One exceptional client experience in a tight community generates more pipeline value than any marketing spend. Segment 2 activates naturally through Growth House events. Segment 3 is a 3-year build.</p>
+  </div>
+</div>
+
+<!-- 04 CUSTOMER PERSONAS -->
+<div class="section" id="personas">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">04 · Customer Personas</div>
+      <h2 class="sec-title">Who Is <em>Buying This</em></h2>
+    </div>
+    <div class="sec-framework">Buyer Personas</div>
+  </div>
+
+  <div class="persona-row">
+    <div class="persona-sidebar">
+      <div class="persona-name">"The Rebuilder"</div>
+      <div class="persona-type">Primary Persona · Ken Archetype</div>
+      <div class="persona-val">$150–250K</div>
+      <div class="persona-val-label">Annual Retainer</div>
+    </div>
+    <div class="persona-body">
+      <div class="persona-grid">
+        <div>
+          <div class="persona-field-label">Profile</div>
+          <div class="persona-field-body">Male, 45–62. Recently exited a company or transitioned to investor role. Net worth $100M–$500M. Act 60 resident in Dorado. Beginning to explore consciousness, wellness, and meaning. Rebuilding identity after a major life transition.</div>
+        </div>
+        <div>
+          <div class="persona-field-label">Core Need</div>
+          <div class="persona-field-body">An operator who anticipates needs before they're asked. Someone who understands the inner journey as well as the outer logistics. Not another employee — a trusted partner who shows up fully and makes the world run quietly.</div>
+        </div>
+        <div>
+          <div class="persona-field-label">Pain Points</div>
+          <div class="persona-field-body">Trusted their last assistant but they couldn't scale with the complexity. Hates having to manage people who need managing. Wants a system, not a task list. Travel disrupts everything. Local vendor relationships are fragmented.</div>
+        </div>
+        <div>
+          <div class="persona-field-label">Buying Trigger</div>
+          <div class="persona-field-body">A warm introduction from a peer they deeply trust. A demonstrated proof of concept — seeing your system in action, not just hearing about it. Ken saying "this is the person you need" to his network closes the sale.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="persona-row" style="margin-top:1px;">
+    <div class="persona-sidebar" style="background:#2a1a08;">
+      <div class="persona-name">"The Optimizer"</div>
+      <div class="persona-type">Secondary Persona · Growth House Archetype</div>
+      <div class="persona-val">$10–40K</div>
+      <div class="persona-val-label">Per Engagement</div>
+    </div>
+    <div class="persona-body">
+      <div class="persona-grid">
+        <div>
+          <div class="persona-field-label">Profile</div>
+          <div class="persona-field-body">Male or female, 35–55. Active builder or investor. Net worth $10M–$100M. Growth House community member. Visits Puerto Rico 3–6 times per year. Deeply invested in performance, consciousness work, and peer community.</div>
+        </div>
+        <div>
+          <div class="persona-field-label">Core Need</div>
+          <div class="persona-field-body">Turnkey lifestyle support during their PR stays. Wants the experience without the coordination overhead. Curated itineraries, hotel-to-villa logistics, fitness support, and social facilitation with other high-performers.</div>
+        </div>
+        <div>
+          <div class="persona-field-label">Pain Points</div>
+          <div class="persona-field-body">Generic concierge services don't understand their world. Doesn't want to be just another tourist. Wants access — to people, to experiences, to places that aren't in any guide. Values authenticity over polish.</div>
+        </div>
+        <div>
+          <div class="persona-field-label">Buying Trigger</div>
+          <div class="persona-field-body">Growth House event experience. Seeing DVN Concierge operate at the event — the coordination, the attention to detail, the anticipation. Word of mouth from another Growth House member who experienced the service.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 POSITIONING -->
+<div class="section" id="positioning">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">05 · Positioning & Differentiation</div>
+      <h2 class="sec-title">Where We Live <em>in the Market</em></h2>
+    </div>
+    <div class="sec-framework">Positioning Strategy</div>
+  </div>
+
+  <div class="highlight-box fire" style="margin-bottom:24px;">
+    <p><strong>Positioning Statement:</strong> For ultra-high-net-worth principals in Puerto Rico who need more than a concierge and more than an assistant, DVN Concierge is the only lifestyle architecture service that combines white-glove operational support with a proprietary AI Life Operating System — built specifically around the personality, philosophy, and goals of each individual principal. Unlike traditional concierge services that perform tasks, DVN Concierge builds and maintains the ecosystem that makes a principal's life run invisibly.</p>
+  </div>
+
+  <div style="margin-bottom:24px;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px;">Positioning Map — AI Integration vs. Service Depth</div>
+    <div class="pos-map">
+      <div class="pos-x-axis"></div>
+      <div class="pos-y-axis"></div>
+      <div class="pos-x-label-l">Low AI Integration</div>
+      <div class="pos-x-label-r">High AI Integration</div>
+      <div class="pos-y-label-t">Deep Service</div>
+      <div class="pos-y-label-b">Surface Service</div>
+
+      <!-- Competitors -->
+      <div class="pos-dot" style="left:25%;bottom:65%;">
+        <div class="pos-dot-circle" style="background:#8a7f6e;"></div>
+        <div class="pos-dot-label" style="color:#8a7f6e;font-size:7px;">Dorado Concierge</div>
+      </div>
+      <div class="pos-dot" style="left:20%;bottom:45%;">
+        <div class="pos-dot-circle" style="background:#8a7f6e;"></div>
+        <div class="pos-dot-label" style="color:#8a7f6e;font-size:7px;">ETC Puerto Rico</div>
+      </div>
+      <div class="pos-dot" style="left:30%;bottom:38%;">
+        <div class="pos-dot-circle" style="background:#8a7f6e;"></div>
+        <div class="pos-dot-label" style="color:#8a7f6e;font-size:7px;">Bespoke Lifestyle</div>
+      </div>
+      <div class="pos-dot" style="left:42%;bottom:30%;">
+        <div class="pos-dot-circle" style="background:#8a7f6e;"></div>
+        <div class="pos-dot-label" style="color:#8a7f6e;font-size:7px;">Premier Concierge</div>
+      </div>
+
+      <!-- DVN -->
+      <div class="pos-dot" style="left:85%;bottom:85%;">
+        <div class="pos-dot-circle" style="background:var(--fire);width:14px;height:14px;box-shadow:0 0 0 4px rgba(200,58,0,0.2);"></div>
+        <div class="pos-dot-label" style="color:var(--fire);font-weight:700;font-size:8px;">DVN Concierge ★</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card" style="border-left:3px solid var(--fire);">
+      <div class="card-label fire-label">Point of Difference 1</div>
+      <div class="card-title">The AI Life OS</div>
+      <div class="card-body">A personality-aware agent and live dashboard built specifically around each client. No competitor in PR offers this. The technology layer creates a moat that deepens over time as the agent learns each client.</div>
+    </div>
+    <div class="card tinted" style="border-left:3px solid var(--gold);">
+      <div class="card-label gold-label">Point of Difference 2</div>
+      <div class="card-title">Ecosystem Management</div>
+      <div class="card-body">Competitors manage tasks. DVN Concierge manages ecosystems — the invisible operational layer that makes a principal's entire life run without friction. The difference between a handyman and an architect.</div>
+    </div>
+    <div class="card tinted" style="border-left:3px solid var(--green);">
+      <div class="card-label green-label">Point of Difference 3</div>
+      <div class="card-title">Consciousness Alignment</div>
+      <div class="card-body">DVN Concierge is the only service that speaks the language of the inner journey its clients are on. Personality frameworks, book-based philosophies, consciousness work — these aren't extras. They're the foundation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 COMPETITIVE ANALYSIS -->
+<div class="section" id="competitive">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">06 · Competitive Analysis</div>
+      <h2 class="sec-title">The Competitive <em>Landscape</em></h2>
+    </div>
+    <div class="sec-framework">Competitive Benchmarking</div>
+  </div>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Provider</th>
+        <th>Estate Mgmt</th>
+        <th>Fitness / Wellness</th>
+        <th>AI Life OS</th>
+        <th>Executive Ops</th>
+        <th>Experiences</th>
+        <th>Act 60 Expertise</th>
+        <th>Annual Retainer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="dvn">
+        <td><strong>DVN Concierge ★</strong></td>
+        <td class="check">✓ Full</td>
+        <td class="check">✓ Integrated</td>
+        <td class="check">✓ Proprietary</td>
+        <td class="check">✓ Full</td>
+        <td class="check">✓ Curated</td>
+        <td class="check">✓ Learning</td>
+        <td class="fire-num" style="font-weight:700;">$150–250K</td>
+      </tr>
+      <tr>
+        <td>Dorado Concierge Group</td>
+        <td class="check">✓</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="check">✓</td>
+        <td class="partial">~</td>
+        <td class="check">✓ Strong</td>
+        <td>Unknown</td>
+      </tr>
+      <tr>
+        <td>Bespoke Lifestyle Mgmt</td>
+        <td class="partial">~</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="partial">~</td>
+        <td class="check">✓</td>
+        <td class="partial">~</td>
+        <td>Unknown</td>
+      </tr>
+      <tr>
+        <td>ETC Puerto Rico</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="check">✓ Transport</td>
+        <td class="partial">~</td>
+        <td class="partial">~</td>
+        <td>Unknown</td>
+      </tr>
+      <tr>
+        <td>Premier Concierge</td>
+        <td class="partial">~</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="partial">~</td>
+        <td class="check">✓</td>
+        <td class="partial">~</td>
+        <td>Unknown</td>
+      </tr>
+      <tr>
+        <td>Quintessentially (Global)</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="cross">✗</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+        <td class="cross">✗</td>
+        <td>$40–80K</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box green">
+    <p><strong>Key Finding:</strong> No competitor in the Puerto Rico market offers AI-integrated lifestyle management. The gap is total. DVN Concierge enters a market where the AI Life OS layer has zero competitive overlap — making it immediately differentiable and defensible as it deepens with each client.</p>
+  </div>
+</div>
+
+<!-- 07 THE 4 Ps -->
+<div class="section" id="4ps">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">07 · The 4 Ps of Marketing</div>
+      <h2 class="sec-title">Product, Price,<br><em>Place & Promotion</em></h2>
+    </div>
+    <div class="sec-framework">Marketing Mix</div>
+  </div>
+
+  <div class="four-p">
+    <div class="p-card">
+      <div class="p-letter">P</div>
+      <div class="p-word">Product</div>
+      <div class="p-title">The Full Service Ecosystem</div>
+      <div class="card-body" style="margin-bottom:12px;">DVN Concierge is not a menu of services — it is a fully integrated lifestyle architecture engagement. Six core service pillars delivered as one coherent operating system.</div>
+      <ul class="bullet-list fire-bullets">
+        <li><strong>The Invisible Estate Lead</strong> — Vendor SOP management, preventative maintenance, premium stocking, maid oversight. Manager, not cleaner.</li>
+        <li><strong>Holistic Performance</strong> — Bio-individual nutrition from blood work, daily training programming, in-home recovery (sauna, cold plunge, PT).</li>
+        <li><strong>AI Life OS</strong> — Personality-aware dashboard and agent, Notion life archive, Google Calendar sync, Fireflies meeting processing, weekly automated reviews.</li>
+        <li><strong>Executive Operations</strong> — Time defense, private aviation coordination, bilingual ground transport, VIP event access, communications gating.</li>
+        <li><strong>Bespoke Experiences</strong> — Private yacht charters, bioluminescent bay tours, rainforest immersions, curated cultural itineraries.</li>
+        <li><strong>Growth House Co-Production</strong> — Full event production for immersion and growth events, member management, venue and logistics.</li>
+      </ul>
+    </div>
+
+    <div class="p-card">
+      <div class="p-letter">P</div>
+      <div class="p-word">Price</div>
+      <div class="p-title">Premium Retainer Model</div>
+      <div class="card-body" style="margin-bottom:12px;">Pricing reflects the integrated nature of the engagement and aligns with market benchmarks for UHNW lifestyle management. Three tiers built for the scale model.</div>
+      <ul class="bullet-list gold-bullets">
+        <li><strong>Elite Individual — $150K–$250K/year:</strong> One dedicated UHNW principal. Full six-pillar engagement including AI Life OS build and maintenance. Ken is Tier 1 at the adjusted salary + package structure.</li>
+        <li><strong>Multi-Family Office — $300K–$500K/year:</strong> Team-based model. 1:3 Senior Lifestyle Manager ratio. Shared infrastructure and vendor network across 3–4 clients.</li>
+        <li><strong>Corporate Enterprise — $500K+/year:</strong> Retainer for executive leadership teams across multiple U.S. cities. Dedicated concierge app and AI OS for each principal.</li>
+        <li><strong>Project Engagements — $10K–$40K:</strong> Visitors and Growth House community. Turnkey lifestyle support during PR stays. No ongoing commitment.</li>
+        <li><strong>Pricing Philosophy:</strong> Value-based, not cost-plus. The AI Life OS layer has no direct market comp — it is priced on the value of having a system that learns you, not on hours worked.</li>
+      </ul>
+    </div>
+
+    <div class="p-card">
+      <div class="p-letter">P</div>
+      <div class="p-word">Place</div>
+      <div class="p-title">Distribution & Access</div>
+      <div class="card-body" style="margin-bottom:12px;">The UHNW market does not respond to advertising. Distribution is relationship-first and referral-only. Market access is earned, not bought.</div>
+      <ul class="bullet-list green-bullets">
+        <li><strong>Channel 1 — Peer Referral (Primary):</strong> Ken Wilkins introduces DVN Concierge to Act 60 peers in Dorado and San Juan. One warm introduction from a trusted peer closes faster than any marketing campaign.</li>
+        <li><strong>Channel 2 — Growth House Events:</strong> Every immersion event is a live demonstration of DVN Concierge's operational excellence. 33 UHNW attendees per event experience the service directly.</li>
+        <li><strong>Channel 3 — Dorado Beach Network:</strong> Physical presence in the Dorado Beach community — golf club, yoga studios, wellness centers, farmers markets. The community is small. Being known matters.</li>
+        <li><strong>Channel 4 — Digital Presence (Minimal):</strong> A private, password-protected website for prospective clients who have been referred. Not SEO-optimized. Not advertised. Invitation only.</li>
+        <li><strong>Geographic Expansion:</strong> Phase 1 Puerto Rico → Phase 4 U.S. major cities via Senior Lifestyle Manager network.</li>
+      </ul>
+    </div>
+
+    <div class="p-card">
+      <div class="p-letter">P</div>
+      <div class="p-word">Promotion</div>
+      <div class="p-title">Invisible Marketing</div>
+      <div class="card-body" style="margin-bottom:12px;">The paradox of marketing to UHNW individuals: the best marketing is the work itself. DVN Concierge does not advertise. It demonstrates. Every engagement is a marketing act.</div>
+      <ul class="bullet-list blue-bullets">
+        <li><strong>The Ken Showcase:</strong> Build something so exceptional for Ken that when he talks about it at a dinner or on a golf course, his peers ask how to get access. This is the entire promotional strategy for Year 1.</li>
+        <li><strong>The Live Dashboard:</strong> Showing Ken's AI Life OS to a prospective client is the most powerful promotional tool possible. It's tangible, visual, and immediately demonstrates what makes DVN different.</li>
+        <li><strong>Growth House Co-Production Credits:</strong> Being publicly recognized as co-producer of a high-quality event builds credibility in exactly the community DVN Concierge serves.</li>
+        <li><strong>The Proof of Concept Story:</strong> "I built this for myself first. Here's my own dashboard. Here's how it works. Now imagine this built around you." This is the sales narrative — authentic and demonstrable.</li>
+        <li><strong>No Social Media, No Ads:</strong> UHNW individuals distrust promotional content. Privacy and discretion are non-negotiable. The business grows through trust, not visibility.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 08 FINANCIALS -->
+<div class="section" id="financials">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">08 · Financial Projections</div>
+      <h2 class="sec-title">The Numbers <em>By Year</em></h2>
+    </div>
+    <div class="sec-framework">3-Year Projection</div>
+  </div>
+
+  <table class="fin-table" style="margin-bottom:24px;">
+    <thead>
+      <tr>
+        <th>Revenue Stream</th>
+        <th>Year 1 (2026–27)</th>
+        <th>Year 2 (2027–28)</th>
+        <th>Year 3 (2028–29)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Ken — Base Salary</td>
+        <td class="num fire-num">$60,000</td>
+        <td class="num fire-num">$60,000</td>
+        <td class="num fire-num">$72,000</td>
+      </tr>
+      <tr>
+        <td>Client 2 — Elite Individual Retainer</td>
+        <td class="num">—</td>
+        <td class="num gold-num">$150,000</td>
+        <td class="num gold-num">$175,000</td>
+      </tr>
+      <tr>
+        <td>Client 3 — Elite Individual Retainer</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+        <td class="num gold-num">$150,000</td>
+      </tr>
+      <tr>
+        <td>Project Engagements (Growth House)</td>
+        <td class="num">$20,000</td>
+        <td class="num">$40,000</td>
+        <td class="num">$60,000</td>
+      </tr>
+      <tr>
+        <td>Concierge Experiences (Tours, Boats)</td>
+        <td class="num">$15,000</td>
+        <td class="num">$40,000</td>
+        <td class="num">$80,000</td>
+      </tr>
+      <tr>
+        <td>Airbnb + Turo Arbitrage</td>
+        <td class="num">$12,000</td>
+        <td class="num">$18,000</td>
+        <td class="num">$24,000</td>
+      </tr>
+      <tr>
+        <td>Weekend Bartending (supplemental)</td>
+        <td class="num">$24,000</td>
+        <td class="num">$24,000</td>
+        <td class="num">—</td>
+      </tr>
+      <tr>
+        <td><strong>Total Gross Revenue</strong></td>
+        <td class="num green-num"><strong>$131,000</strong></td>
+        <td class="num green-num"><strong>$332,000</strong></td>
+        <td class="num green-num"><strong>$561,000</strong></td>
+      </tr>
+      <tr>
+        <td>Operating Costs (est.)</td>
+        <td class="num">($40,000)</td>
+        <td class="num">($120,000)</td>
+        <td class="num">($200,000)</td>
+      </tr>
+      <tr>
+        <td><strong>Net Income</strong></td>
+        <td class="num green-num"><strong>$91,000</strong></td>
+        <td class="num green-num"><strong>$212,000</strong></td>
+        <td class="num green-num"><strong>$361,000</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid-3">
+    <div class="card tinted" style="text-align:center;border-top:3px solid var(--fire);">
+      <div class="card-label fire-label" style="text-align:center;">Break-Even</div>
+      <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;font-style:italic;color:var(--fire);line-height:1;margin:8px 0;">Month 1</div>
+      <div class="card-body">The role with Ken covers all personal living costs from day one. The business layer generates additional revenue on top.</div>
+    </div>
+    <div class="card tinted" style="text-align:center;border-top:3px solid var(--gold);">
+      <div class="card-label gold-label" style="text-align:center;">Debt-Free Target</div>
+      <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;font-style:italic;color:var(--gold);line-height:1;margin:8px 0;">Q3 2027</div>
+      <div class="card-body">$33K in debt cleared within 18 months with combination of Ken salary, Airbnb/Turo, bartending, and experience revenue.</div>
+    </div>
+    <div class="card tinted" style="text-align:center;border-top:3px solid var(--green);">
+      <div class="card-label green-label" style="text-align:center;">First Asset Target</div>
+      <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;font-style:italic;color:var(--green);line-height:1;margin:8px 0;">2028</div>
+      <div class="card-body">First STR property or land asset acquired from Year 2 net income. Financial sovereignty begins with the first owned asset.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 GO-TO-MARKET -->
+<div class="section" id="gtm">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">09 · Go-To-Market Strategy</div>
+      <h2 class="sec-title">How We Enter <em>the Market</em></h2>
+    </div>
+    <div class="sec-framework">GTM Plan</div>
+  </div>
+
+  <p class="sec-intro">The go-to-market strategy has one organizing principle: earn the right to the next client through exceptional delivery for the current one. The entire strategy flows from Ken to his network.</p>
+
+  <div style="display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:24px;">
+    <div style="background:var(--bg);display:grid;grid-template-columns:100px 1fr;gap:0;">
+      <div style="background:var(--fire);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;font-style:italic;color:white;line-height:1;">1</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:4px;text-align:center;">May 2026</div>
+      </div>
+      <div style="padding:18px 22px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--fire);margin-bottom:4px;">Trial Week — The Proof of Concept Begins</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">Fly to Puerto Rico for the trial week with Ken. Arrive with the personality framework questionnaire and a draft dashboard ready. By the end of the week, deliver the first working version of his AI Life OS — even if rough. Leave with a tangible proof that the system works. This becomes the demo used to introduce the service to his peers.</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);display:grid;grid-template-columns:100px 1fr;gap:0;">
+      <div style="background:var(--ember);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;font-style:italic;color:white;line-height:1;">2</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:4px;text-align:center;">Month 3</div>
+      </div>
+      <div style="padding:18px 22px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--ember);margin-bottom:4px;">The Ken Showcase — Earn the Referral</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">By month three in Puerto Rico, Ken's Life OS is fully operational. He can show it to a peer at dinner and say "this is what Deryl built for me." That conversation is worth more than any sales pitch. The goal: earn two warm introductions to Ken's Act 60 peers within the first 90 days of full-time operations.</div>
+      </div>
+    </div>
+    <div style="background:var(--bg);display:grid;grid-template-columns:100px 1fr;gap:0;">
+      <div style="background:var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;font-style:italic;color:white;line-height:1;">3</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-top:4px;text-align:center;">Month 6</div>
+      </div>
+      <div style="padding:18px 22px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Growth House October 2026 — Live Market Demo</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">The October 2026 Growth House event is a live demonstration of DVN Concierge's operational capabilities in front of 33 UHNW attendees. Co-producer credit, flawless execution, and one meaningful conversation per attendee about the service is the goal. Every event is a sales event.</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);display:grid;grid-template-columns:100px 1fr;gap:0;">
+      <div style="background:var(--green);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;font-style:italic;color:white;line-height:1;">4</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-top:4px;text-align:center;">2027</div>
+      </div>
+      <div style="padding:18px 22px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--green);margin-bottom:4px;">First Outside Client — Business Is Real</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">Sign the first client outside of Ken. Build their Life OS. Hire the first bilingual local operations assistant. Formalize the service agreement and the playbook so it can be replicated. The business transitions from a one-person arrangement to a real company with processes, vendors, and scalable operations.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 EXECUTION ROADMAP -->
+<div class="section" id="roadmap">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">10 · Execution Roadmap</div>
+      <h2 class="sec-title">The Plan <em>Quarter by Quarter</em></h2>
+    </div>
+    <div class="sec-framework">Operational Plan</div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:24px;">
+    <div class="card" style="border-top:4px solid var(--fire);">
+      <div class="card-label fire-label">Q2 2026</div>
+      <div class="card-title">Prepare</div>
+      <ul class="bullet-list fire-bullets">
+        <li>May 5th Ken meeting — present business vision</li>
+        <li>Schedule Puerto Rico trial week</li>
+        <li>Research OUPV captain license requirements</li>
+        <li>Research Puerto Rico LLC formation</li>
+        <li>Start Spanish — 10 hours/week non-negotiable</li>
+        <li>Read Unreasonable Hospitality</li>
+        <li>Stack summer cash at Buddy's</li>
+        <li>Contact debt collection agencies</li>
+      </ul>
+    </div>
+    <div class="card tinted" style="border-top:4px solid var(--ember);">
+      <div class="card-label" style="color:var(--ember);">Q3 2026</div>
+      <div class="card-title">Launch</div>
+      <ul class="bullet-list" style="--c:var(--ember);">
+        <li style="border-bottom:1px solid var(--rule2);padding:5px 0;display:flex;gap:8px;font-size:11.5px;color:var(--muted);">→ Move to Puerto Rico (June 1 or Sept 15)</li>
+        <li style="border-bottom:1px solid var(--rule2);padding:5px 0;display:flex;gap:8px;font-size:11.5px;color:var(--muted);">→ Form Puerto Rico LLC</li>
+        <li style="border-bottom:1px solid var(--rule2);padding:5px 0;display:flex;gap:8px;font-size:11.5px;color:var(--muted);">→ Build Ken's full Life OS</li>
+        <li style="border-bottom:1px solid var(--rule2);padding:5px 0;display:flex;gap:8px;font-size:11.5px;color:var(--muted);">→ Start OUPV license coursework</li>
+        <li style="border-bottom:1px solid var(--rule2);padding:5px 0;display:flex;gap:8px;font-size:11.5px;color:var(--muted);">→ Launch Airbnb and Turo operations</li>
+        <li style="border-bottom:1px solid var(--rule2);padding:5px 0;display:flex;gap:8px;font-size:11.5px;color:var(--muted);">→ Begin bilingual vendor network build</li>
+        <li style="padding:5px 0;display:flex;gap:8px;font-size:11.5px;color:var(--muted);">→ Get weekend bartending placement</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:4px solid var(--gold);">
+      <div class="card-label gold-label">Q4 2026</div>
+      <div class="card-title">Demonstrate</div>
+      <ul class="bullet-list gold-bullets">
+        <li>October Growth House event — co-produce flawlessly</li>
+        <li>Ken Life OS fully operational and demonstrated</li>
+        <li>First warm introductions from Ken's peers</li>
+        <li>First curated tour or yacht charter experience</li>
+        <li>Document vendor SOP playbook — first version</li>
+        <li>Begin proposal for Client 2</li>
+        <li>6-month Spanish checkpoint — conversational?</li>
+      </ul>
+    </div>
+    <div class="card tinted" style="border-top:4px solid var(--green);">
+      <div class="card-label green-label">Q1-Q2 2027</div>
+      <div class="card-title">Scale</div>
+      <ul class="bullet-list green-bullets">
+        <li>Sign Client 2 — $150K retainer</li>
+        <li>Hire first bilingual ops assistant</li>
+        <li>OUPV license earned — launch boats</li>
+        <li>Package Life OS as standalone product</li>
+        <li>Multi-family office tier proposal ready</li>
+        <li>First STR property research underway</li>
+        <li>Year 1 financial review — debt paydown status</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 11 KPIs -->
+<div class="section" id="kpis">
+  <div class="sec-header">
+    <div class="sec-meta">
+      <div class="sec-num">11 · KPIs & Success Metrics</div>
+      <h2 class="sec-title">How We Know <em>It's Working</em></h2>
+    </div>
+    <div class="sec-framework">Measurement Framework</div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card" style="border-left:3px solid var(--fire);">
+      <div class="card-label fire-label">Business KPIs</div>
+      <ul class="bullet-list fire-bullets">
+        <li>Number of active clients (Target: 1 → 3 by end of 2027)</li>
+        <li>Annual retainer revenue (Target: $150K by mid-2027)</li>
+        <li>Client retention rate (Target: 100% — lose none)</li>
+        <li>Referrals generated per client (Target: 2 per year)</li>
+        <li>Puerto Rico LLC legally formed (Target: Q3 2026)</li>
+        <li>OUPV license earned (Target: Q4 2026)</li>
+      </ul>
+    </div>
+    <div class="card tinted" style="border-left:3px solid var(--gold);">
+      <div class="card-label gold-label">Financial KPIs</div>
+      <ul class="bullet-list gold-bullets">
+        <li>Total debt reduction (Target: $33K → $0 by Q3 2027)</li>
+        <li>Monthly cash position (Target: $5K+ by Q4 2026)</li>
+        <li>Business revenue separate from Ken salary (Target: $30K Y1)</li>
+        <li>Airbnb + Turo monthly (Target: $1,000/month by month 3)</li>
+        <li>Bitcoin DCA continued (Target: $100/month maintained)</li>
+        <li>First asset acquired (Target: 2028)</li>
+      </ul>
+    </div>
+    <div class="card tinted" style="border-left:3px solid var(--green);">
+      <div class="card-label green-label">Personal KPIs</div>
+      <ul class="bullet-list green-bullets">
+        <li>Weight transformation (Target: 219 → 205 lbs by Q3 2026)</li>
+        <li>Spanish fluency (Target: conversational by month 6 in PR)</li>
+        <li>Ken Life OS fully built (Target: first 30 days in PR)</li>
+        <li>Growth House Oct 2026 — co-producer, flawless execution</li>
+        <li>Weekly growth sessions with Ken — never miss one</li>
+        <li>No Key 3 Chaos — one business focus per quarter</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight-box fire">
+    <p><strong>The North Star Metric:</strong> Number of clients who say "Ken told me about you" in Year 1. This single metric captures whether the service is exceptional enough to be referred, whether Ken trusts it enough to attach his name to it, and whether the GTM strategy is working. One referral in Year 1 means the model is real. Two means it scales.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <div class="footer-brand">DVN Concierge.</div>
+  <div class="footer-meta">
+    Marketing & Business Plan v1.0<br>
+    Deryl VanNostrand · April 2026<br>
+    Private & Confidential
+  </div>
+</div>
+
+
+
+</body>
+</html>

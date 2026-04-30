@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth House — Strategic Analysis & Feedback</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Syne:wght@300;400;500;600;700&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold2:#F0D875;
+  --dark:#07070F;--panel:#0F0F1A;--mid:#151521;--mid2:#1B1B2A;
+  --border:rgba(201,168,76,0.12);--border2:rgba(255,255,255,0.05);
+  --text:rgba(255,255,255,0.88);--dim:rgba(255,255,255,0.44);--dim2:rgba(255,255,255,0.62);
+  /* Status colors */
+  --green:#2A8A5A;--green-bg:rgba(42,138,90,0.1);--green-l:#5ABD87;
+  --amber:#8A6A2A;--amber-bg:rgba(138,106,42,0.1);--amber-l:#D4A85A;
+  --red:#8A2A2A;--red-bg:rgba(138,42,42,0.1);--red-l:#D47A7A;
+  --blue:#2A5A8A;--blue-bg:rgba(42,90,138,0.1);--blue-l:#7AAFD4;
+  --purple:#5A2A8A;--purple-bg:rgba(90,42,138,0.1);--purple-l:#A87AD4;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 52px;
+  background:rgba(7,7,15,0.9);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;
+  color:var(--gold);text-decoration:none;
+}
+.nav-back{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--dim);text-decoration:none;
+  display:flex;align-items:center;gap:8px;transition:color 0.2s;
+}
+.nav-back:hover{color:var(--gold);}
+.nav-center{display:flex;gap:28px;}
+.nav-link{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color 0.2s;
+}
+.nav-link:hover{color:var(--text);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;padding:140px 80px 100px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 100% 0%,rgba(201,168,76,0.08) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 60% at 0% 100%,rgba(42,90,138,0.07) 0%,transparent 55%),
+    linear-gradient(to bottom,rgba(0,0,0,0) 60%,rgba(7,7,15,0.8) 100%);
+  pointer-events:none;
+}
+.hero-type{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:5px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:20px;
+  opacity:0;animation:up 0.8s ease forwards 0.2s;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(60px,9vw,130px);font-weight:900;
+  line-height:0.88;margin-bottom:24px;
+  opacity:0;animation:up 0.9s ease forwards 0.4s;
+}
+.hero-title em{color:var(--gold);font-style:italic;display:block;}
+.hero-sub{
+  font-size:16px;color:var(--dim);max-width:600px;line-height:1.85;
+  margin-bottom:56px;
+  opacity:0;animation:up 0.8s ease forwards 0.6s;
+}
+.hero-stats{
+  display:flex;gap:0;flex-wrap:wrap;
+  border-top:1px solid var(--border);
+  opacity:0;animation:up 0.8s ease forwards 0.8s;
+}
+.hero-stat{
+  padding:24px 36px 0 0;margin-right:36px;
+  border-right:1px solid var(--border);
+}
+.hero-stat:last-child{border-right:none;}
+.hs-num{
+  font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:900;
+  color:var(--gold);line-height:1;
+}
+.hs-label{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;
+  color:var(--dim);text-transform:uppercase;margin-top:4px;
+}
+
+/* ── LAYOUT ── */
+.page{max-width:1200px;margin:0 auto;padding:0 80px;}
+
+/* ── SECTION ── */
+.section{padding:100px 0;border-bottom:1px solid var(--border2);}
+.section:last-child{border-bottom:none;}
+
+.sec-num{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:4px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:16px;
+  display:flex;align-items:center;gap:16px;
+}
+.sec-num::after{content:'';flex:1;height:1px;background:rgba(201,168,76,0.2);}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,4vw,60px);font-weight:900;
+  line-height:0.95;margin-bottom:20px;
+}
+.sec-title em{font-style:italic;color:var(--gold);}
+.sec-lead{
+  font-size:15px;color:var(--dim2);line-height:1.85;
+  max-width:700px;margin-bottom:56px;
+}
+
+/* ── WHAT'S WORKING ── */
+.working-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.work-card{
+  background:var(--green-bg);border:1px solid rgba(42,138,90,0.2);
+  border-left:4px solid var(--green-l);padding:32px;
+}
+.work-card-icon{font-size:28px;margin-bottom:14px;}
+.work-card-title{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;
+  margin-bottom:10px;color:white;
+}
+.work-card-body{font-size:13.5px;color:var(--dim2);line-height:1.8;}
+.work-card-verdict{
+  margin-top:14px;padding:10px 12px;
+  background:rgba(42,138,90,0.1);
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;
+  color:var(--green-l);text-transform:uppercase;
+}
+
+/* ── GAP CARDS ── */
+.gaps{display:flex;flex-direction:column;gap:3px;}
+.gap-card{display:grid;grid-template-columns:64px 1fr;gap:0;}
+.gap-num-block{
+  background:var(--red-bg);display:flex;align-items:flex-start;
+  justify-content:center;padding-top:32px;
+  border-top:2px solid var(--red-l);
+}
+.gap-num{
+  font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:900;
+  color:var(--red-l);line-height:1;writing-mode:vertical-rl;
+  transform:rotate(180deg);
+}
+.gap-body{
+  padding:32px 36px;background:var(--panel);
+  border-top:2px solid var(--red-l);border-left:none;
+}
+.gap-label{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:var(--red-l);text-transform:uppercase;margin-bottom:10px;
+}
+.gap-title{
+  font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;
+  margin-bottom:14px;line-height:1.2;
+}
+.gap-body-text{font-size:13.5px;color:var(--dim2);line-height:1.85;margin-bottom:20px;}
+.gap-fix{
+  background:rgba(201,168,76,0.06);border-left:3px solid var(--gold);
+  padding:16px 18px;
+}
+.gap-fix-label{
+  font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:8px;
+}
+.gap-fix-text{font-size:13px;color:var(--dim2);line-height:1.75;}
+
+/* ── TOP 3 ── */
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:20px;}
+.top3-card{padding:36px 32px;position:relative;overflow:hidden;}
+.top3-card.t1{background:rgba(201,168,76,0.08);border-top:3px solid var(--gold);}
+.top3-card.t2{background:var(--blue-bg);border-top:3px solid var(--blue-l);}
+.top3-card.t3{background:var(--purple-bg);border-top:3px solid var(--purple-l);}
+.top3-rank{
+  position:absolute;top:20px;right:20px;
+  font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:900;
+  line-height:1;opacity:0.07;
+}
+.t1 .top3-rank{color:var(--gold);}
+.t2 .top3-rank{color:var(--blue-l);}
+.t3 .top3-rank{color:var(--purple-l);}
+.top3-label{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;margin-bottom:14px;
+}
+.t1 .top3-label{color:var(--gold);}
+.t2 .top3-label{color:var(--blue-l);}
+.t3 .top3-label{color:var(--purple-l);}
+.top3-title{
+  font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;
+  margin-bottom:12px;line-height:1.2;
+}
+.top3-body{font-size:13px;color:var(--dim2);line-height:1.8;}
+
+/* ── INTEGRITY SECTION ── */
+.integrity-block{
+  background:var(--panel);border:1px solid var(--border);
+  border-top:3px solid var(--gold);padding:56px;margin-top:20px;
+  position:relative;overflow:hidden;
+}
+.integrity-block::before{
+  content:'"';position:absolute;top:-20px;right:40px;
+  font-family:'Cormorant Garamond',serif;font-size:300px;font-weight:900;
+  color:rgba(201,168,76,0.04);line-height:1;pointer-events:none;
+}
+.ib-label{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:20px;
+}
+.ib-title{
+  font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;
+  margin-bottom:20px;line-height:1.15;max-width:700px;
+}
+.ib-body{font-size:14px;color:var(--dim2);line-height:1.9;max-width:760px;margin-bottom:28px;}
+.ib-principle{
+  display:flex;gap:16px;padding:16px 20px;
+  background:rgba(201,168,76,0.04);border-left:2px solid var(--gold);
+  font-size:14px;color:var(--text);line-height:1.7;margin-bottom:8px;
+}
+.ib-principle-num{
+  font-family:'Syne Mono',monospace;font-size:11px;color:var(--gold);
+  flex-shrink:0;padding-top:2px;min-width:24px;
+}
+
+/* ── ZACH QUOTE ── */
+.zach-block{
+  background:var(--mid);border:1px solid var(--border);
+  padding:48px;margin:40px 0;text-align:center;
+}
+.zach-quote{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,40px);
+  font-weight:700;font-style:italic;line-height:1.3;
+  color:var(--gold);margin-bottom:16px;
+}
+.zach-attr{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:4px;
+  color:var(--dim);text-transform:uppercase;
+}
+
+/* ── ENERGY MAP ── */
+.energy-map{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:24px 0;}
+.em-block{padding:28px 24px;text-align:center;}
+.em-build{background:rgba(42,138,90,0.08);border-top:2px solid var(--green-l);}
+.em-direct{background:rgba(201,168,76,0.06);border-top:2px solid var(--gold);}
+.em-release{background:rgba(42,90,138,0.08);border-top:2px solid var(--blue-l);}
+.em-type{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.em-build .em-type{color:var(--green-l);}
+.em-direct .em-type{color:var(--gold);}
+.em-release .em-type{color:var(--blue-l);}
+.em-name{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;
+  margin-bottom:10px;
+}
+.em-desc{font-size:12.5px;color:var(--dim2);line-height:1.7;margin-bottom:14px;}
+.em-examples{display:flex;flex-direction:column;gap:4px;}
+.em-ex{font-size:11.5px;color:var(--dim);display:flex;gap:6px;text-align:left;line-height:1.5;}
+.em-ex::before{content:'→';flex-shrink:0;}
+.em-build .em-ex::before{color:var(--green-l);}
+.em-direct .em-ex::before{color:var(--gold);}
+.em-release .em-ex::before{color:var(--blue-l);}
+
+/* ── CONVERSATION PROMPTS ── */
+.conv-section{
+  background:var(--mid);border:1px solid var(--border);
+  padding:48px;margin-top:40px;
+}
+.conv-label{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:20px;
+}
+.conv-title{
+  font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;
+  margin-bottom:16px;line-height:1.2;
+}
+.conv-intro{font-size:14px;color:var(--dim2);line-height:1.8;margin-bottom:32px;max-width:700px;}
+.conv-threads{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.conv-thread{padding:24px;background:var(--panel);}
+.conv-thread-num{
+  font-family:'Syne Mono',monospace;font-size:10px;letter-spacing:2px;
+  color:var(--gold);margin-bottom:10px;
+}
+.conv-thread-q{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;
+  margin-bottom:8px;line-height:1.3;
+}
+.conv-thread-why{font-size:12.5px;color:var(--dim);line-height:1.65;}
+
+/* ── UTILS ── */
+.blt{display:flex;flex-direction:column;gap:7px;margin:16px 0;}
+.blt-item{
+  display:flex;gap:12px;font-size:13.5px;color:var(--text);
+  line-height:1.7;padding:10px 14px;
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);
+}
+.blt-dot{color:var(--gold);flex-shrink:0;font-size:15px;line-height:1.5;}
+.blt-item strong{color:white;}
+
+.note{
+  border-left:3px solid var(--gold);padding:14px 18px;
+  background:rgba(201,168,76,0.04);margin:16px 0;
+  font-size:13px;color:var(--dim2);line-height:1.75;
+}
+
+/* ── CLOSING ── */
+.closing{
+  padding:120px 0;text-align:center;
+  background:var(--panel);
+  position:relative;overflow:hidden;
+}
+.closing::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(201,168,76,0.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.closing-eyebrow{
+  font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:5px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:20px;position:relative;
+}
+.closing-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(40px,6vw,80px);font-weight:900;
+  line-height:0.92;margin-bottom:20px;position:relative;
+}
+.closing-title em{color:var(--gold);font-style:italic;display:block;}
+.closing-body{
+  font-size:15px;color:var(--dim);max-width:560px;
+  margin:0 auto 40px;line-height:1.85;position:relative;
+}
+.closing-links{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  position:relative;
+}
+.closing-link{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 24px;font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  text-decoration:none;transition:all 0.25s;
+}
+.closing-link.primary{
+  background:var(--gold);color:var(--dark);font-weight:600;
+}
+.closing-link.primary:hover{background:var(--gold2);}
+.closing-link.secondary{
+  border:1px solid var(--border);color:var(--dim);
+}
+.closing-link.secondary:hover{border-color:var(--gold);color:var(--gold);}
+
+@keyframes up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+@media(max-width:960px){
+  .nav{padding:16px 24px;}.nav-center{display:none;}
+  .hero{padding:120px 28px 80px;}
+  .page{padding:0 28px;}
+  .working-grid,.top3,.energy-map,.conv-threads{grid-template-columns:1fr;}
+  .gap-card{grid-template-columns:1fr;}
+  .gap-num-block{display:none;}
+  .hero-stats{flex-direction:column;gap:20px;}
+  .hero-stat{border-right:none;border-bottom:1px solid var(--border);padding-bottom:20px;}
+  .integrity-block{padding:32px;}
+  .conv-section{padding:32px;}
+  .closing{padding:80px 28px;}
+}
+
+/* ── VISUAL ENHANCEMENTS ── */
+/* Hero horizontal lines */
+.hero::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(to right,transparent,rgba(201,168,76,0.08),transparent) 0 28% / 100% 1px no-repeat,
+    linear-gradient(to right,transparent,rgba(201,168,76,0.05),transparent) 0 62% / 100% 1px no-repeat;
+}
+/* Stronger glow */
+body { background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 60%); }
+/* Nav back button polish */
+.nav-back {
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,0.44);text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+  border:1px solid rgba(201,168,76,0.2);
+  padding:9px 18px;
+  transition:all 0.22s;
+}
+.nav-back:hover { color:#C9A84C; border-color:#C9A84C; background:rgba(201,168,76,0.06); }
+/* Section gradient dividers */
+.section, .sec { border-bottom: none; position: relative; }
+.section::after, .sec::after {
+  content:'';
+  position:absolute;
+  bottom:0;left:10%;right:10%;
+  height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,168,76,0.15),transparent);
+}
+/* Card hover — lift + glow */
+.room-card:hover, .pos-card:hover, .work-card:hover, .gap-card:hover,
+.excursion-card:hover, .analysis-card:hover, .day-block:hover,
+.venue-zone:hover, .energy-block:hover {
+  transform:translateY(-3px) !important;
+  box-shadow:0 12px 40px rgba(0,0,0,0.35) !important;
+  transition:transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+/* Stronger panel backgrounds */
+.panel, [class*="panel"] { background: #0F0F1A; }
+/* Section number styling */
+.section-num, .sec-num {
+  display:flex;align-items:center;gap:16px;
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:4px;
+  color:#C9A84C;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.section-num::after, .sec-num::after {
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,rgba(201,168,76,0.3),transparent);
+}
+/* Bigger hero title max */
+.cover-title, .hero-title, .format-title {
+  letter-spacing:-1px;
+}
+/* Pulse dot animation for living doc badges */
+@keyframes pulse-gold {
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,168,76,0.4);}
+  50%{opacity:0.7;box-shadow:0 0 0 6px rgba(201,168,76,0);}
+}
+/* Checkboxes pop */
+.chk-box {
+  transition:border-color 0.2s, background 0.2s;
+}
+.chk-item:hover .chk-box {
+  border-color:#C9A84C;
+  background:rgba(201,168,76,0.1);
+}
+/* ROS table row hover */
+.ros-table tr:hover td {
+  background:rgba(201,168,76,0.04) !important;
+}
+/* Note blocks — slightly more visible */
+.note, .warn, .ok, .win, .alert, .pink-note {
+  border-left-width:4px;
+}
+
+
+/* ── DOCUMENT ACCENT ── */
+:root { --accent:#E07070; --accent-border:rgba(224,112,112,0.3); --accent-glow:rgba(224,112,112,0.08); }
+.nav { border-bottom-color:rgba(224,112,112,0.3); }
+.nav-brand { color:#E07070; }
+.nav-back { border-color:rgba(224,112,112,0.3); }
+.nav-back:hover { color:#E07070; border-color:#E07070; background:rgba(224,112,112,0.08); }
+/* Hero accent line */
+.cover::before, .hero::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,#E07070,transparent);
+  z-index:10;
+}
+/* Doc stamp in hero */
+.cover-tag, .hero-tag, .cover-eyebrow {
+  color:#E07070;
+}
+/* Section numbers */
+.section-num::after, .sec-num::after, .sec-badge {
+  background:#E07070;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Growth House</a>
+  <div class="nav-center">
+    <a href="#working" class="nav-link">What Works</a>
+    <a href="#gaps" class="nav-link">Gaps</a>
+    <a href="#top3" class="nav-link">Top 3 Moves</a>
+    <a href="#integrity" class="nav-link">Integrity</a>
+    <a href="#conversation" class="nav-link">Next</a>
+  </div>
+  <a href="index.html" class="nav-back">← Back to Suite</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div><div style="position:absolute;top:0;right:0;background:#E07070;color:#05050C;font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;font-weight:700;z-index:20;">Strategic Analysis · Document 02</div>
+  <div class="hero-type">Growth House · Strategic Analysis · April 2026</div>
+  <h1 class="hero-title">
+    The Honest<br>
+    <em>Assessment.</em>
+  </h1>
+  <p class="hero-sub">A full review of every document in the suite — what's working at a high level, where the gaps are, the contingencies that need addressing, and the three moves that would most change the event before October. Built from the perspective of Jesse, Ken, Zach, and the vision of camaraderie, energy flow, and thrilling experiences.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hs-num">8</div>
+      <div class="hs-label">Gaps Identified</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-num">3</div>
+      <div class="hs-label">Priority Moves</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-num">6</div>
+      <div class="hs-label">Docs Analyzed</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-num">1</div>
+      <div class="hs-label">North Star Principle</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- WHAT'S WORKING -->
+<!-- ═══════════════════════════════ -->
+<div class="page">
+<section id="working" class="section reveal">
+  <div class="sec-num">Foundation Analysis</div>
+  <h2 class="sec-title">What This System<br><em>Gets Right.</em></h2>
+  <p class="sec-lead">Before the gaps — what's working and what to protect. The foundation is genuinely strong. These are not compliments. They are things the refinement process should never accidentally destroy.</p>
+
+  <div class="working-grid">
+    <div class="work-card reveal">
+      <div class="work-card-icon">⚡</div>
+      <div class="work-card-title">The Two-Production Split</div>
+      <div class="work-card-body">Separating the Immersion Playbook from the Cocktail Night Bible is the single most important structural decision in the entire suite. Before the split it was one event. Now it's two distinct productions that happen to share a weekend. That distinction changes how Jesse thinks about growth, how sponsors think about value, and how members experience the arc of the weekend. The split enables Deryl to own Cocktail Night as its own thing — which is the path to co-producer, not just ops lead.</div>
+      <div class="work-card-verdict">✓ Protect this at all costs</div>
+    </div>
+
+    <div class="work-card reveal">
+      <div class="work-card-icon">🎯</div>
+      <div class="work-card-title">The Member Hospitality System</div>
+      <div class="work-card-body">The profile card with the coffee order, the dietary hard stops, the conversation starter, the personal touch item in the room — this is Ritz-Carlton level thinking applied to a mastermind. Most events at this level still treat hospitality as logistics. This treats it as relationship capital. The framing "a room is a message — it either says we thought about you or we set up a bed" is exactly right and should be the governing statement for every room setup conversation going forward.</div>
+      <div class="work-card-verdict">✓ The moat. Don't dilute it.</div>
+    </div>
+
+    <div class="work-card reveal">
+      <div class="work-card-icon">🤖</div>
+      <div class="work-card-title">The AI Intelligence Layer</div>
+      <div class="work-card-body">Nobody in the mastermind space is building a system where every member interaction compounds into a smarter pre-event brief. The 30/60/90 day commitment tracking with Jesse notified on wins and dark contacts — that is the accountability loop that makes Growth House more than a gathering. The fact that this was Deryl's idea positions it as his signature contribution to the platform. This is the long-term moat. Every event makes it more valuable. Every member makes it smarter.</div>
+      <div class="work-card-verdict">✓ This is the differentiator</div>
+    </div>
+
+    <div class="work-card reveal">
+      <div class="work-card-icon">🌊</div>
+      <div class="work-card-title">Energy as a Governing Principle</div>
+      <div class="work-card-body">Zach's feedback — "it's all energy" — being used as a filter for every production decision is the right lens. Does this decision build energy, direct energy, or release energy? That question applied consistently produces a better event than any checklist. The fact that the documents absorbed this as philosophy rather than just quoting it is the right instinct. It now needs to be implemented at the micro-level — the transitions, the breaks, the moment between Immersion Day and Cocktail Night.</div>
+      <div class="work-card-verdict">✓ Right philosophy. Needs implementation.</div>
+    </div>
+
+    <div class="work-card reveal">
+      <div class="work-card-icon">🏛️</div>
+      <div class="work-card-title">The Property Intelligence Document</div>
+      <div class="work-card-body">28 photos analyzed. 17+ zones mapped. Every room assigned a job for both productions. The speakeasy as a timed reveal. The rooftop as a second floor of the party. The LED ceiling as a built-in production asset. This is the kind of thinking that makes Jesse realize Deryl has been in the property mentally for months before the event starts. No other operations lead in this space is doing this level of pre-event venue intelligence.</div>
+      <div class="work-card-verdict">✓ Makes Jesse's job easier before he asks</div>
+    </div>
+
+    <div class="work-card reveal">
+      <div class="work-card-icon">🔒</div>
+      <div class="work-card-title">The Non-Negotiables Framework</div>
+      <div class="work-card-body">The non-negotiable rules — champagne before every toast, trash cans first, AV tested 30 minutes before sessions, real bartenders not bottle girls, no EVs for off-site days — these exist because someone had to learn them the hard way. They are the Arizona lessons locked into permanent policy. The fact that they live in every document rather than just one means they will actually be executed rather than buried in a checklist nobody reads on event day.</div>
+      <div class="work-card-verdict">✓ The hard-won lessons. Never compromise them.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ -->
+<!-- GAPS -->
+<!-- ═══════════════════════════════ -->
+<section id="gaps" class="section">
+  <div class="sec-num">Gap Analysis</div>
+  <h2 class="sec-title">Where the Gaps<br><em>Actually Are.</em></h2>
+  <p class="sec-lead">Eight gaps identified. Each one is real, addressable, and worth a focused conversation. Some are quick fixes. Some are deeper design questions. All of them matter before October.</p>
+
+  <div class="gaps">
+
+    <!-- GAP 1 -->
+    <div class="gap-card reveal">
+      <div class="gap-num-block"><div class="gap-num">01</div></div>
+      <div class="gap-body">
+        <div class="gap-label">Jesse's Role · Leadership Design</div>
+        <div class="gap-title">Jesse's Role Has No Ceiling and No Floor</div>
+        <div class="gap-body-text">The documents correctly say Jesse should never be giving logistics instructions during the event. But they don't define what Jesse DOES own with the same precision. "Vision, culture, member relationships, sessions, toasts, closing circles" is too broad to actually protect. Jesse is a high-action person. When something feels off he will act. If the system hasn't explicitly pre-decided what Jesse's version of "acting" looks like — which is making a program call, not a logistics call — he will fill vacuums the same way he did in Arizona. The gap isn't that Jesse does too much. The gap is that nobody has defined the exact channel and protocol for when Jesse sees something and needs to address it without pulling Deryl off the floor.</div>
+        <div class="gap-fix">
+          <div class="gap-fix-label">The Fix</div>
+          <div class="gap-fix-text">Jesse's role needs a positive definition as specific as Deryl's. "When Jesse notices something, he tells Deryl in one sentence and Deryl handles it." The communication protocol between Jesse and Deryl during the event — one sentence, one channel, one response time — needs to be written down and agreed on before October. This protects Jesse's attention and Deryl's authority simultaneously. It also gives Jesse a clear answer to "what do I do when I see a problem" without making him feel like he can't act in his own event.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 2 -->
+    <div class="gap-card reveal">
+      <div class="gap-num-block"><div class="gap-num">02</div></div>
+      <div class="gap-body">
+        <div class="gap-label">Energy Design · Zach's Feedback</div>
+        <div class="gap-title">Zach's Energy Feedback Has No Implemented Solution</div>
+        <div class="gap-body-text">Zach said "it's all energy" and the documents absorbed the philosophy without implementing the fix. Walk-and-talks were spontaneous in Arizona and worked. The documents now mandate 30-minute active outdoor breaks. That's right. But they don't define what those breaks actually look like, who runs them, what the environment is, or how they transition back into session energy. A walk-and-talk without structure is just people standing outside not knowing what to do. There's also no mechanism for collecting member energy feedback during the event. The feedback form is post-event. But energy is real-time. Zach noticed something was off and said it after the fact.</div>
+        <div class="gap-fix">
+          <div class="gap-fix-label">The Fix</div>
+          <div class="gap-fix-text">Active breaks need a one-sentence prompt dropped at the start. "Walk with someone you haven't had a real conversation with yet and tell them what you're actually working through right now." One sentence. Then people move. The conversation finds its own depth. Additionally, build a simple inline micro-feedback system — a one-tap Telegram reaction after each session that Deryl can see in real time. If four members tap thumbs down after a session runs long, Deryl knows before the next session starts. This is the difference between responding to energy and managing it proactively.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 3 -->
+    <div class="gap-card reveal">
+      <div class="gap-num-block"><div class="gap-num">03</div></div>
+      <div class="gap-body">
+        <div class="gap-label">Friday Immersion Day · Identity</div>
+        <div class="gap-title">Immersion Day Has No Distinct Identity from Growth House Day</div>
+        <div class="gap-body-text">The 8-figure tight circle on Immersion Day (Friday) is described as "the smaller group" in almost every document. It should feel like the highest invitation in the Growth House world. Right now it feels like an administrative distinction. There's no name for it. No distinct invite process. No different visual or physical environment from Thursday's Growth House Day. The speakeasy is mapped as Jesse's Immersion Day room but there's no ceremony around why this group is there, what's different about Friday, or what Jesse does differently in that room versus the great room on Thursday. Ken operates at a level where the difference between being in the room and being in THE room matters. This gap is felt by the exact people who need to feel the opposite.</div>
+        <div class="gap-fix">
+          <div class="gap-fix-label">The Fix</div>
+          <div class="gap-fix-text">A separate invite that goes to Immersion Day (Friday) members weeks before the event — not an addendum to the general invite, its own message. "You've been invited to the Immersion Day. This is a smaller circle. Here's what that means." Then the speakeasy is set up differently from any other session space. Darker. More intimate. No AV. No slides. No materials on seats. Just chairs and the conversation. The name conversation needs to happen with Jesse: what does he call this circle? That name, once locked, goes on the invite and defines the identity permanently.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 4 -->
+    <div class="gap-card reveal">
+      <div class="gap-num-block"><div class="gap-num">04</div></div>
+      <div class="gap-body">
+        <div class="gap-label">Contingency · Single Point of Failure</div>
+        <div class="gap-title">All Contingencies Lead Back to Deryl</div>
+        <div class="gap-body-text">The emergency protocols cover chef cancellation, AV failure, member medical situations, and key staff no-shows. They all resolve through Deryl. That's correct for a team this size. But it creates a single point of failure at the exact moment when Deryl is most likely to be stretched thin. More critically: if Deryl gets sick the day before the event, the entire system collapses because the system lives in Deryl's head as much as in the documents. Nothing in the documents would allow Jesse to run this event without Deryl. That's not just a logistics risk — it's a risk to the trust Jesse is placing in the system itself.</div>
+        <div class="gap-fix">
+          <div class="gap-fix-label">The Fix</div>
+          <div class="gap-fix-text">Joshawn needs to be briefed as the backup operations lead for physical and AV components. The master ROS needs a column: "If Deryl is not here, this is who calls this moment." The vendor briefings already exist. The property checklist already exists. What's missing is the handoff protocol — a 30-minute briefing with Joshawn before every event that covers the top 10 decisions Deryl would make. This isn't about replacing Deryl. It's about making the system durable enough that Jesse can trust it even in the worst case.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 5 -->
+    <div class="gap-card reveal">
+      <div class="gap-num-block"><div class="gap-num">05</div></div>
+      <div class="gap-body">
+        <div class="gap-label">Transition Design · Highest-Leverage Moment</div>
+        <div class="gap-title">The Immersion-to-Cocktail Night Transition Is Undesigned</div>
+        <div class="gap-body-text">The schedule shows Immersion Day ending and Cocktail Night beginning but the transition between them — one of the highest-leverage moments of the entire weekend — has no design. Members have just come out of the most intense, intimate day of the event. They're raw. They're open. They've been in the speakeasy with Jesse. And then they're supposed to shift into cocktail night energy — DJ, three bars, photo booth, strangers, champagne. That's a jarring transition if it's not handled. The documents treat this as a schedule handoff. It should be treated as a production moment that earns everything that follows.</div>
+        <div class="gap-fix">
+          <div class="gap-fix-label">The Fix</div>
+          <div class="gap-fix-text">A physical transition ritual. Something that marks the close of immersion and the opening of celebration. Jesse gathers the group in the great room for five minutes before cocktail night opens. Not a session. Not a toast. Just a moment: "We just did something real. Tonight we celebrate that." Then the sliders open, the DJ builds, the champagne is already in hand. The members walk from the immersion into the party as a unit rather than filtering in individually. This five-minute moment makes the cocktail night land differently because the people arriving are arriving together, not drifting in separately.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 6 -->
+    <div class="gap-card reveal">
+      <div class="gap-num-block"><div class="gap-num">06</div></div>
+      <div class="gap-body">
+        <div class="gap-label">Member Connection · Relationship Engineering</div>
+        <div class="gap-title">Member-to-Member Connection Is Under-Engineered</div>
+        <div class="gap-body-text">The profile cards and sponsor introduction pairings are excellent. But there's almost no pre-engineering of member-to-member connections specifically. Deryl has conversation starters for each member but no system for deciding who should meet who before the event starts. Ken at 9 figures sees every Growth House event as an opportunity to make two or three connections that matter. Jesse makes introductions instinctively but instinctive introductions during an event are hit or miss because Jesse is also running the room. Deryl can see the whole space but doesn't have the relationship context to know which members have something real to talk about. The result: some members leave having met who they came to meet. Others leave having missed it.</div>
+        <div class="gap-fix">
+          <div class="gap-fix-label">The Fix</div>
+          <div class="gap-fix-text">A pre-mapped connection list: 5–8 member-to-member introduction pairings built during prep week from the intake forms. Not sponsor-member pairings — those are already there. Pure member-to-member. Deryl loads them in the AI agent. They fire as reminders during the event: "Introduce James Helm and [member] in the next 45 minutes — they both mentioned Montana real estate and real estate financing." This is the thing that makes members feel like the event was designed specifically for them even when they don't know it was. Jesse reviews the list before the event. This becomes Deryl's clearest visible value-add to the Growth House program.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 7 -->
+    <div class="gap-card reveal">
+      <div class="gap-num-block"><div class="gap-num">07</div></div>
+      <div class="gap-body">
+        <div class="gap-label">Excursion Day · Sunday Operations</div>
+        <div class="gap-title">The Sunday Fun Day Is Almost Entirely Unplanned</div>
+        <div class="gap-body-text">Every other day in the event arc is mapped in significant detail. Sunday is "Deryl leads, 2–3 staff, off-site, gas vehicles only." That's it. This matters more than it seems because the excursion day is where the barriers between members fully dissolve. Sessions build depth. The excursion builds brotherhood. The off-site moments were where the real connections happened in Arizona according to every member who mentioned it. And yet the documents spend ten times more energy on the cocktail night production than on the day that might produce the most lasting relationships. The imbalance is significant and reflects a gap in how the event's purpose is currently understood operationally.</div>
+        <div class="gap-fix">
+          <div class="gap-fix-label">The Fix</div>
+          <div class="gap-fix-text">A dedicated Excursion Day Operations section — even a brief one. What activity. What time. What vehicles. What the morning briefing looks like (3 minutes, Deryl delivers it, answers every question before it's asked). What Deryl carries — emergency contacts, water, protein, the right energy. What the return protocol looks like. What happens in the property on re-entry before cocktail night begins. The excursion is currently treated as a nice addition. It should be treated as the day that determines whether people come back.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP 8 -->
+    <div class="gap-card reveal">
+      <div class="gap-num-block"><div class="gap-num">08</div></div>
+      <div class="gap-body">
+        <div class="gap-label">Ken's Lens · Intellectual Depth</div>
+        <div class="gap-title">Ken's Level of Thinking Is Absent from the Programming</div>
+        <div class="gap-body-text">Ken operates at the level of AI, global economy, geopolitics, consciousness, and quantum computing. He's in the room. He's presumably in the Immersion Day inner circle on Friday. But the session design and programming in the documents don't reflect any of that intellectual depth. Sessions are described as "hot seats, deep work, sessions" without specificity about the intellectual or philosophical container. This is Jesse's domain and the documents rightly don't over-prescribe it. But there's a gap worth flagging: if Ken is going to invest time in Growth House as a member or collaborator, the event needs to demonstrate it can hold the kind of thinking he operates at. Not every session. Not even most sessions. But the intellectual container needs room for that level.</div>
+        <div class="gap-fix">
+          <div class="gap-fix-label">The Fix</div>
+          <div class="gap-fix-text">One session topic or hot seat format designed explicitly for the Friday Immersion Day inner circle that can hold depth beyond business metrics. "What are you building toward that you haven't told anyone yet?" works at 7 figures and 9 figures simultaneously. There are others like it. Jesse knows which ones — the conversation worth having with him before October is: what is the question that earns Ken's full attention in the room? That question, once identified, becomes the intellectual anchor of the Friday Immersion Day experience. It also signals to Ken that Growth House is a room that can think at his level, not just celebrate success.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ -->
+<!-- TOP 3 -->
+<!-- ═══════════════════════════════ -->
+<section id="top3" class="section">
+  <div class="sec-num">Priority Moves</div>
+  <h2 class="sec-title">The Three Moves That<br><em>Change Everything.</em></h2>
+  <p class="sec-lead">If you could only bring three things to Jesse from this analysis before the May 4–5 call, these are the three. They cost nothing to implement and they change the experience at the deepest level.</p>
+
+  <div class="top3">
+    <div class="top3-card t1 reveal">
+      <div class="top3-rank">1</div>
+      <div class="top3-label">Move 1 · Highest Leverage</div>
+      <div class="top3-title">Design the Immersion-to-Cocktail Night Transition</div>
+      <div class="top3-body">Five minutes. Jesse gathers the group before the sliders open. One sentence: "We just did something real. Tonight we celebrate that." Then the party begins. This costs nothing and it changes everything that follows. The members who arrive at cocktail night having been through that moment arrive differently than members who just filtered out of their rooms. The transition earns the celebration. Right now that moment has no design — which means it either happens accidentally or it doesn't happen at all.</div>
+    </div>
+    <div class="top3-card t2 reveal">
+      <div class="top3-rank">2</div>
+      <div class="top3-label">Move 2 · Identity Work</div>
+      <div class="top3-title">Give the Friday Immersion Day a Name and Its Own Invite</div>
+      <div class="top3-body">This is what Ken needs to feel. Not "the smaller group." Something that signals this Friday circle is the thing. A separate invite. A different room setup — the speakeasy, stripped back, no AV, no slides. A question Jesse asks in that room that he never asks in the great room on Thursday. Jesse knows what that name should be — have that conversation. The name, once locked, reframes Immersion Day from a schedule item into an invitation that people want to be on the list for.</div>
+    </div>
+    <div class="top3-card t3 reveal">
+      <div class="top3-rank">3</div>
+      <div class="top3-label">Move 3 · Relationship Engineering</div>
+      <div class="top3-title">Build the Member-to-Member Introduction System into Prep Week</div>
+      <div class="top3-body">Five to eight pre-mapped pairings loaded into Deryl's agent before the event. Not sponsor introductions — member introductions, built from the intake forms. This is the thing that makes members feel like the event was designed specifically for them even when they don't know it was. It also gives Deryl a visible, concrete job that Jesse can see happening in real time — which is exactly the kind of evidence that proves Deryl is operating as a co-producer, not just a floor manager. Jesse reviews the list. Deryl executes it. It compounds every event.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ -->
+<!-- ENERGY PHILOSOPHY -->
+<!-- ═══════════════════════════════ -->
+<section class="section reveal">
+  <div class="sec-num">The Energy Principle</div>
+  <h2 class="sec-title">It's All Energy.<br><em>Here's the Map.</em></h2>
+  <p class="sec-lead">Zach said it. The documents absorbed it as philosophy. Now it needs to be implemented as design. Every moment of the event falls into one of three categories — and Deryl's job is to know which one each moment is and execute accordingly.</p>
+
+  <div class="zach-block reveal">
+    <div class="zach-quote">"It's all energy."</div>
+    <div class="zach-attr">Zach Kepes · Growth House Member · Arizona 2026 · The most important feedback from the entire event</div>
+  </div>
+
+  <div class="energy-map">
+    <div class="em-block em-build reveal">
+      <div class="em-type">Build</div>
+      <div class="em-name">Building Energy</div>
+      <div class="em-desc">Moments designed to increase intensity, excitement, connection. The environment and programming create forward momentum.</div>
+      <div class="em-examples">
+        <div class="em-ex">DJ first song on cocktail night arrival</div>
+        <div class="em-ex">The rooftop reveal at sunset</div>
+        <div class="em-ex">Active outdoor breaks with a walk-and-talk prompt</div>
+        <div class="em-ex">Hot seat format — high stakes, full attention</div>
+        <div class="em-ex">Arrival champagne already in hand</div>
+        <div class="em-ex">The speakeasy reveal at 8pm</div>
+      </div>
+    </div>
+    <div class="em-block em-direct reveal">
+      <div class="em-type">Direct</div>
+      <div class="em-name">Directing Energy</div>
+      <div class="em-desc">Channeling existing energy toward a specific experience. Spatial design, staff positioning, and timing all direct without announcing.</div>
+      <div class="em-examples">
+        <div class="em-ex">Three bars on opposite sides — forces movement</div>
+        <div class="em-ex">Photo booth operator actively pulling guests in</div>
+        <div class="em-ex">Pre-mapped member-to-member introductions</div>
+        <div class="em-ex">Morning briefing that answers every question pre-emptively</div>
+        <div class="em-ex">Transition ritual between Immersion and Cocktail Night</div>
+        <div class="em-ex">Pre-mapped sponsor introductions in first 90 minutes</div>
+      </div>
+    </div>
+    <div class="em-block em-release reveal">
+      <div class="em-type">Release</div>
+      <div class="em-name">Releasing Energy</div>
+      <div class="em-desc">Intentional decompression. Not passive — deliberately designed moments where intensity drops and connection deepens.</div>
+      <div class="em-examples">
+        <div class="em-ex">Speakeasy — intimate, dark, no agenda after 8pm</div>
+        <div class="em-ex">Rooftop fire pit at the end of cocktail night</div>
+        <div class="em-ex">Sauna and steam — 7am wellness window</div>
+        <div class="em-ex">Closing circle — the release after four days of work</div>
+        <div class="em-ex">Ranch campfire — the 11pm conversation that can't be scheduled</div>
+        <div class="em-ex">Walk-and-talks between sessions</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note reveal">» The environment should never be neutral. Every zone, every transition, every moment of the day should be building, directing, or intentionally releasing energy. Nothing passive. This is the filter that Deryl applies to every production decision — and the frame that makes the answer obvious when a choice is unclear.</div>
+</section>
+
+<!-- ═══════════════════════════════ -->
+<!-- INTEGRITY -->
+<!-- ═══════════════════════════════ -->
+<section id="integrity" class="section reveal">
+  <div class="sec-num">The Integrity Question</div>
+  <h2 class="sec-title">Where the Line<br><em>Actually Is.</em></h2>
+  <p class="sec-lead">The risk to integrity in this system is not operational. The operations are solid. The risk is that the system becomes more impressive than the experience it's trying to create.</p>
+
+  <div class="integrity-block reveal">
+    <div class="ib-label">On Maintaining Integrity</div>
+    <div class="ib-title">The production should serve the energy — not the other way around.</div>
+    <div class="ib-body">There's a version of Growth House where everything is perfectly executed — three bars, 13 staff, speakeasy reveals, rooftop timed reveals — and the members feel like they're at a production rather than a gathering. That version breaks something essential about what makes this event work. Jesse's instinct is right to have the Immersion Day separate from the Cocktail Night. The immersion needs to be under-produced. The speakeasy should feel found, not staged. The walk-and-talks should feel spontaneous, not scheduled. The campfire conversation needs to have no agenda. The integrity of the experience lives in the moments that feel undesigned — and Deryl's job is to create the conditions for those moments to happen, not to manage them when they do.</div>
+    <div class="ib-principle">
+      <span class="ib-principle-num">01</span>
+      <span>When the run of show serves the energy, the event works. When the energy serves the run of show, the event breaks. Every production decision should be evaluated against this test.</span>
+    </div>
+    <div class="ib-principle">
+      <span class="ib-principle-num">02</span>
+      <span>The best moments of every Growth House event will be unplanned. Deryl's job is to clear the path so they can happen — not to fill every minute with something designed.</span>
+    </div>
+    <div class="ib-principle">
+      <span class="ib-principle-num">03</span>
+      <span>Camaraderie cannot be produced. It can only be enabled. The physical environment, the energy design, and the hospitality system are all in service of conditions where real connection becomes possible. Never confuse the conditions with the thing itself.</span>
+    </div>
+    <div class="ib-principle">
+      <span class="ib-principle-num">04</span>
+      <span>The Immersion Day inner circle bonds fastest when the status layer disappears. Nobody has a competitive advantage in the speakeasy. Nobody's business wins matter on an ATV trail. Design for equality. Connection follows.</span>
+    </div>
+    <div class="ib-principle">
+      <span class="ib-principle-num">05</span>
+      <span>Fun and depth are not opposites. The ranch overnight, the ATV day, the 11pm campfire — these are where the event becomes legendary. The most memorable experiences this group will ever have with each other will be the ones that stripped everything back. Build for those moments first.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ -->
+<!-- CONVERSATION THREADS -->
+<!-- ═══════════════════════════════ -->
+<section id="conversation" class="section reveal">
+  <div class="sec-num">The Next Step</div>
+  <h2 class="sec-title">What to Walk Through<br><em>Together.</em></h2>
+  <p class="sec-lead">This analysis opens eight conversations worth having. Each one brings clarity and vision to a specific part of the system. These are the threads — in order of priority.</p>
+
+  <div class="conv-section reveal">
+    <div class="conv-label">Conversation Threads · In Priority Order</div>
+    <div class="conv-title">Eight Questions That Sharpen the Vision.</div>
+    <div class="conv-intro">Each of these deserves a focused conversation — not a checklist, not a quick answer. Some of them will take five minutes. Some of them will take an hour and change the direction of the event. Start from the top.</div>
+
+    <div class="conv-threads">
+      <div class="conv-thread">
+        <div class="conv-thread-num">01 · HIGHEST PRIORITY</div>
+        <div class="conv-thread-q">What does the transition from Immersion Day to Cocktail Night actually look like?</div>
+        <div class="conv-thread-why">This is the most important undesigned moment in the entire weekend. Five minutes of intention here changes everything that follows. Jesse needs to decide what he says and how the room moves from intimate to celebratory.</div>
+      </div>
+      <div class="conv-thread">
+        <div class="conv-thread-num">02 · IDENTITY</div>
+        <div class="conv-thread-q">What is the name and identity of the Friday Immersion Day circle?</div>
+        <div class="conv-thread-why">Jesse knows what to call it. The name conversation unlocks the invite design, the speakeasy setup, and the question Jesse asks on Friday that he never asks on Thursday. This is what Ken needs to feel — not just "the smaller day."</div>
+      </div>
+      <div class="conv-thread">
+        <div class="conv-thread-num">03 · RELATIONSHIP</div>
+        <div class="conv-thread-q">Which members at the next event should be introduced to each other and why?</div>
+        <div class="conv-thread-why">Five to eight pairings. Jesse reviews. Deryl executes. This is the most visible co-producer contribution Deryl can make to the program — turning hospitality into relationship engineering.</div>
+      </div>
+      <div class="conv-thread">
+        <div class="conv-thread-num">04 · ENERGY</div>
+        <div class="conv-thread-q">What does the active outdoor break actually look like on each day?</div>
+        <div class="conv-thread-why">Mandating a 30-minute break is right. Designing it is the next step. What's the prompt? Who delivers it? How does it transition back into session energy? Zach needs to feel this was taken seriously.</div>
+      </div>
+      <div class="conv-thread">
+        <div class="conv-thread-num">05 · KEN'S LENS</div>
+        <div class="conv-thread-q">What is the question that earns Ken's full attention in the Friday Immersion room?</div>
+        <div class="conv-thread-why">Not business metrics. Something bigger. Jesse knows which question opens that level of conversation. Identifying it before October means the inner circle has an intellectual container worthy of the people in it.</div>
+      </div>
+      <div class="conv-thread">
+        <div class="conv-thread-num">06 · EXCURSION</div>
+        <div class="conv-thread-q">What does the full Sunday Fun Day look like operationally?</div>
+        <div class="conv-thread-why">The day that builds brotherhood has the least documentation. What activity, what time, what Deryl carries, what the morning brief looks like, what happens on re-entry. Build this out before October.</div>
+      </div>
+      <div class="conv-thread">
+        <div class="conv-thread-num">07 · AUTHORITY</div>
+        <div class="conv-thread-q">What is the Jesse-Deryl communication protocol during the event?</div>
+        <div class="conv-thread-why">One sentence. One channel. One response time. Agreeing on this before October means Jesse never pulls Deryl off the floor for a logistics call again — and Deryl never has to choose between Jesse and the floor.</div>
+      </div>
+      <div class="conv-thread">
+        <div class="conv-thread-num">08 · RESILIENCE</div>
+        <div class="conv-thread-q">What is the backup protocol if Deryl is unavailable day-of?</div>
+        <div class="conv-thread-why">Not because it will happen. Because a system that can survive its own single point of failure is a system Jesse can fully trust. Joshawn briefed as backup. The top 10 decisions documented. The handoff protocol written.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /page -->
+
+<!-- CLOSING -->
+<div class="closing reveal">
+  <div class="closing-eyebrow">Growth House · Strategic Analysis · Ready to Walk Through</div>
+  <h2 class="closing-title">
+    The System Is Strong.<br>
+    <em>Now Sharpen It.</em>
+  </h2>
+  <p class="closing-body">Eight gaps. Three priority moves. One north star principle. Every conversation thread above is an invitation to bring more clarity and vision to what Growth House is becoming. Let's walk through them.</p>
+  <div class="closing-links">
+    <a href="index.html" class="closing-link primary">← Back to Document Suite</a>
+    <a href="growthouse_eventexperienceos.html" class="closing-link secondary">Event Experience OS</a>
+    <a href="growthouse_vision.html" class="closing-link secondary">The Vision Presentation</a>
+    <a href="growthouse_immersionplaybook.html" class="closing-link secondary">Immersion Playbook</a>
+  </div>
+  <div style="margin-top:48px;font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:rgba(201,168,76,0.4);text-transform:uppercase;">
+    Deryl VanNostrand · Operations Director · Growth House · April 2026
+  </div>
+</div>
+
+<script>
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

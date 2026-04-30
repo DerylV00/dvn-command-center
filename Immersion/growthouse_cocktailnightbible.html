@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth House — Cocktail Night Production Bible</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C; --gold2:#E8C96A;
+  --dark:#0D0009; --panel:#130010; --mid:#1A0018; --mid2:#20001F;
+  --pink:#8B2A5A; --pink-bg:rgba(139,42,90,0.12); --pink-light:#D47FAA;
+  --border:rgba(139,42,90,0.2);
+  --gold-border:rgba(201,168,76,0.15);
+  --text:rgba(255,255,255,0.87); --dim:rgba(255,255,255,0.42);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:240px;min-height:100vh;background:var(--panel);
+  border-right:1px solid var(--border);position:fixed;top:0;left:0;
+  display:flex;flex-direction:column;overflow-y:auto;z-index:50;
+}
+.sb-brand{padding:24px 20px 18px;border-bottom:1px solid var(--border);}
+.sb-prod{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--pink-light);text-transform:uppercase;margin-bottom:6px;}
+.sb-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;line-height:1.2;}
+.sb-sub{font-size:11px;color:var(--dim);margin-top:3px;}
+.sb-nav{padding:12px 0;flex:1;}
+.sb-group{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 20px 5px;opacity:0.7;}
+.sb-link{display:flex;align-items:center;gap:10px;padding:8px 20px;text-decoration:none;color:var(--dim);font-size:12px;transition:all 0.2s;border-left:2px solid transparent;}
+.sb-link:hover{color:var(--text);background:rgba(139,42,90,0.08);border-left-color:var(--pink-light);}
+.sb-link.active{color:var(--pink-light);background:rgba(139,42,90,0.1);border-left-color:var(--pink-light);}
+.sb-num{font-family:'Syne Mono',monospace;font-size:9px;color:rgba(201,168,76,0.5);min-width:20px;}
+.sb-footer{padding:14px 20px;border-top:1px solid var(--border);font-size:10px;color:var(--dim);font-family:'Syne Mono',monospace;letter-spacing:1px;}
+
+/* ── MAIN ── */
+.main{margin-left:240px;}
+
+/* ── COVER ── */
+.cover{
+  min-height:90vh;padding:80px 72px;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.cover::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 10%, rgba(139,42,90,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 10% 90%, rgba(201,168,76,0.06) 0%, transparent 50%);
+  pointer-events:none;
+}
+.cover-eyebrow{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--pink-light);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:14px;}
+.cover-eyebrow::after{content:'';display:inline-block;width:40px;height:1px;background:var(--pink-light);opacity:0.4;}
+.cover-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,6.5vw,96px);font-weight:700;line-height:0.95;margin-bottom:20px;}
+.cover-title em{color:var(--gold);font-style:italic;}
+.cover-title strong{color:var(--pink-light);}
+.cover-sub{font-size:15px;color:var(--dim);margin-bottom:40px;line-height:1.8;max-width:560px;}
+.cover-meta{display:flex;gap:36px;flex-wrap:wrap;}
+.cover-mi{display:flex;flex-direction:column;gap:3px;}
+.cover-ml{font-family:'Syne Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.cover-mv{font-size:13px;color:var(--text);}
+.cover-rule{position:absolute;left:0;bottom:0;width:100%;height:2px;background:linear-gradient(to right,var(--pink),var(--gold),transparent);}
+
+/* ── SECTION ── */
+.section{padding:64px 72px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.section:last-child{border-bottom:none;}
+
+.sec-badge{display:inline-flex;align-items:center;gap:10px;background:var(--pink);padding:5px 14px;margin-bottom:24px;}
+.sec-badge-text{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:white;text-transform:uppercase;}
+
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,44px);font-weight:700;line-height:1.1;margin-bottom:10px;}
+.sec-title span{color:var(--gold);}
+.sec-title em{color:var(--pink-light);font-style:italic;}
+.sec-lead{font-size:14px;color:var(--dim);line-height:1.8;max-width:680px;margin-bottom:36px;}
+
+h2.sub{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+h3.sub{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--pink-light);text-transform:uppercase;margin:24px 0 10px;}
+
+/* ── ELEMENTS ── */
+.blt-list{display:flex;flex-direction:column;gap:7px;margin:10px 0 18px;}
+.blt-item{display:flex;gap:12px;font-size:13px;color:var(--text);line-height:1.65;padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);}
+.blt-dot{color:var(--gold);font-size:14px;line-height:1.5;flex-shrink:0;}
+.blt-item strong{color:white;}
+
+.chk-list{display:flex;flex-direction:column;gap:6px;margin:10px 0 18px;}
+.chk-item{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--text);line-height:1.65;padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);}
+.chk-box{width:15px;height:15px;border:1.5px solid var(--gold);flex-shrink:0;margin-top:2px;}
+.chk-owner{font-family:'Syne Mono',monospace;font-size:9px;color:var(--gold);background:rgba(201,168,76,0.1);padding:1px 7px;white-space:nowrap;align-self:flex-start;margin-top:2px;flex-shrink:0;}
+
+.note{border-left:3px solid var(--gold);padding:14px 18px;background:rgba(201,168,76,0.04);margin:12px 0;font-size:13px;color:var(--dim);line-height:1.75;font-style:italic;}
+.warn{border-left:3px solid #8B2020;padding:14px 18px;background:rgba(139,32,32,0.1);margin:12px 0;font-size:13px;color:#e05555;line-height:1.75;}
+.pink-note{border-left:3px solid var(--pink);padding:14px 18px;background:var(--pink-bg);margin:12px 0;font-size:13px;color:var(--pink-light);line-height:1.75;}
+
+/* ── ROS TABLE ── */
+.ros-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:14px 0 24px;}
+.ros-table th{background:var(--mid);color:var(--pink-light);font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:9px 11px;text-align:left;border-bottom:2px solid var(--pink);}
+.ros-table td{padding:8px 11px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text);vertical-align:top;line-height:1.5;}
+.ros-table tr:nth-child(even) td{background:rgba(255,255,255,0.015);}
+.ros-table tr:hover td{background:rgba(139,42,90,0.06);}
+.ros-time{font-family:'Syne Mono',monospace;font-size:10px;color:var(--gold);white-space:nowrap;}
+.ros-owner{font-size:11px;color:var(--pink-light);font-style:italic;}
+.ros-notes{font-size:11px;color:var(--dim);font-style:italic;}
+.ros-key{background:rgba(201,168,76,0.1);font-weight:600;color:white;}
+
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:180px 1fr;gap:0;margin:4px 0;}
+.two-col-l{background:rgba(139,42,90,0.07);padding:9px 12px;font-size:12.5px;font-weight:600;color:var(--dim);border:1px solid rgba(139,42,90,0.15);border-right:none;}
+.two-col-r{background:rgba(255,255,255,0.02);padding:9px 12px;font-size:13px;color:var(--text);line-height:1.6;border:1px solid rgba(255,255,255,0.04);}
+
+/* ── ROLE CARD ── */
+.role-card{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--pink);padding:24px;margin:12px 0;}
+.role-card-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:4px;}
+.role-card-person{font-family:'Syne Mono',monospace;font-size:10px;color:var(--pink-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.role-card-note{margin-top:12px;padding:10px 12px;background:var(--pink-bg);border-left:2px solid var(--pink);font-size:12px;color:var(--dim);font-style:italic;line-height:1.6;}
+
+/* ── BAR LAYOUT VISUAL ── */
+.bar-layout{background:var(--panel);border:1px solid var(--border);padding:32px;margin:20px 0;position:relative;}
+.bar-layout-title{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:24px;}
+.venue-map{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;gap:8px;min-height:280px;}
+.venue-zone{padding:16px;border:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px;}
+.venue-zone.active{border-color:var(--pink);}
+.venue-zone.gold{border-color:var(--gold);}
+.zone-icon{font-size:24px;}
+.zone-name{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--pink-light);text-transform:uppercase;}
+.zone-name.gold-text{color:var(--gold);}
+.zone-desc{font-size:11px;color:var(--dim);line-height:1.4;}
+.venue-entrance{grid-column:2;text-align:center;padding:10px;border-top:2px solid var(--gold);}
+.venue-entrance-text{font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+
+/* ── FILL-IN ── */
+.fill-in{display:flex;gap:10px;align-items:center;padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-left:2px solid var(--gold);margin:3px 0;font-size:13px;}
+.fill-label{font-weight:600;color:white;}
+.fill-val{color:var(--dim);font-style:italic;font-size:12px;}
+
+@media(max-width:900px){
+  .sidebar{position:static;width:100%;min-height:auto;border-right:none;border-bottom:1px solid var(--border);}
+  .sb-nav{display:none;}
+  .main{margin-left:0;}
+  .cover,.section{padding:40px 24px;}
+  .two-col{grid-template-columns:1fr;}
+  .venue-map{grid-template-columns:1fr;}
+}
+
+  .nav-back{
+    font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--dim);text-decoration:none;
+    display:flex;align-items:center;gap:8px;transition:color 0.2s;
+    border:1px solid var(--border);padding:8px 16px;
+  }
+  .nav-back:hover{color:var(--gold);border-color:var(--gold);}
+
+/* ── VISUAL ENHANCEMENTS ── */
+/* Hero horizontal lines */
+.hero::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(to right,transparent,rgba(201,168,76,0.08),transparent) 0 28% / 100% 1px no-repeat,
+    linear-gradient(to right,transparent,rgba(201,168,76,0.05),transparent) 0 62% / 100% 1px no-repeat;
+}
+/* Stronger glow */
+body { background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 60%); }
+/* Nav back button polish */
+.nav-back {
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,0.44);text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+  border:1px solid rgba(201,168,76,0.2);
+  padding:9px 18px;
+  transition:all 0.22s;
+}
+.nav-back:hover { color:#C9A84C; border-color:#C9A84C; background:rgba(201,168,76,0.06); }
+/* Section gradient dividers */
+.section, .sec { border-bottom: none; position: relative; }
+.section::after, .sec::after {
+  content:'';
+  position:absolute;
+  bottom:0;left:10%;right:10%;
+  height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,168,76,0.15),transparent);
+}
+/* Card hover — lift + glow */
+.room-card:hover, .pos-card:hover, .work-card:hover, .gap-card:hover,
+.excursion-card:hover, .analysis-card:hover, .day-block:hover,
+.venue-zone:hover, .energy-block:hover {
+  transform:translateY(-3px) !important;
+  box-shadow:0 12px 40px rgba(0,0,0,0.35) !important;
+  transition:transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+/* Stronger panel backgrounds */
+.panel, [class*="panel"] { background: #0F0F1A; }
+/* Section number styling */
+.section-num, .sec-num {
+  display:flex;align-items:center;gap:16px;
+  font-family:'Syne Mono',monospace;
+  font-size:9px;letter-spacing:4px;
+  color:#C9A84C;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.section-num::after, .sec-num::after {
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,rgba(201,168,76,0.3),transparent);
+}
+/* Bigger hero title max */
+.cover-title, .hero-title, .format-title {
+  letter-spacing:-1px;
+}
+/* Pulse dot animation for living doc badges */
+@keyframes pulse-gold {
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,168,76,0.4);}
+  50%{opacity:0.7;box-shadow:0 0 0 6px rgba(201,168,76,0);}
+}
+/* Checkboxes pop */
+.chk-box {
+  transition:border-color 0.2s, background 0.2s;
+}
+.chk-item:hover .chk-box {
+  border-color:#C9A84C;
+  background:rgba(201,168,76,0.1);
+}
+/* ROS table row hover */
+.ros-table tr:hover td {
+  background:rgba(201,168,76,0.04) !important;
+}
+/* Note blocks — slightly more visible */
+.note, .warn, .ok, .win, .alert, .pink-note {
+  border-left-width:4px;
+}
+
+
+/* ── DOCUMENT ACCENT ── */
+:root { --accent:#D47FAA; --accent-border:rgba(212,127,170,0.3); --accent-glow:rgba(212,127,170,0.08); }
+.nav { border-bottom-color:rgba(212,127,170,0.3); }
+.nav-brand { color:#D47FAA; }
+.nav-back { border-color:rgba(212,127,170,0.3); }
+.nav-back:hover { color:#D47FAA; border-color:#D47FAA; background:rgba(212,127,170,0.08); }
+/* Hero accent line */
+.cover::before, .hero::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,#D47FAA,transparent);
+  z-index:10;
+}
+/* Doc stamp in hero */
+.cover-tag, .hero-tag, .cover-eyebrow {
+  color:#D47FAA;
+}
+/* Section numbers */
+.section-num::after, .sec-num::after, .sec-badge {
+  background:#D47FAA;
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-prod">Growth House · Production 02</div>
+    <div class="sb-title">Cocktail Night<br>Production</div>
+    <div class="sb-sub">Standalone Event Bible · Oct 2026</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-group">Foundation</div>
+    <a href="#s01" class="sb-link active"><span class="sb-num">01</span>Production Overview</a>
+    <a href="#s02" class="sb-link"><span class="sb-num">02</span>Full Team & Roles</a>
+    <a href="#s03" class="sb-link"><span class="sb-num">03</span>Venue Layout & Zones</a>
+    <div class="sb-group">Execution</div>
+    <a href="#s04" class="sb-link"><span class="sb-num">04</span>Run of Show</a>
+    <a href="#s05" class="sb-link"><span class="sb-num">05</span>Checklists</a>
+    <a href="#s06" class="sb-link"><span class="sb-num">06</span>Non-Negotiable Rules</a>
+    <div class="sb-group">Experience</div>
+    <a href="#s07" class="sb-link"><span class="sb-num">07</span>Bar System</a>
+    <a href="#s08" class="sb-link"><span class="sb-num">08</span>Activations</a>
+    <a href="#s09" class="sb-link"><span class="sb-num">09</span>Sponsor Strategy</a>
+    <a href="#s10" class="sb-link"><span class="sb-num">10</span>Vendor Briefings</a>
+    <a href="#s11" class="sb-link"><span class="sb-num">11</span>Scale Roadmap</a>
+  <a href="index.html" class="nav-back">← Back to Suite</a></nav>
+  <div class="sb-footer">Production 2 of 2<br>Oct 2026 · v1</div>
+</aside>
+
+<main class="main">
+
+<div class="cover">
+  <div class="cover-eyebrow">Production 02 · Standalone Event · Last Night of the Immersion</div>
+  <h1 class="cover-title">
+    Cocktail Night<br>
+    <em>Production</em> <strong>Bible</strong>
+  </h1>
+  <p class="cover-sub">This is not a reception. It is not a mixer. It is a full standalone event production that happens to close the Growth House weekend. DJ, security, photo booth, three bars, sponsor activations, extra photographers. Built for October 2026. Designed to scale.</p>
+  <div class="cover-meta">
+    <div class="cover-mi"><span class="cover-ml">Event Operations Director</span><span class="cover-mv">Deryl VanNostrand</span></div>
+    <div class="cover-mi"><span class="cover-ml">Event Director</span><span class="cover-mv">Jesse Ray</span></div>
+    <div class="cover-mi"><span class="cover-ml">When</span><span class="cover-mv">Last night of event · October 2026</span></div>
+    <div class="cover-mi"><span class="cover-ml">Format</span><span class="cover-mv">Standalone production · Same property</span></div>
+  </div>
+  <div class="cover-rule"></div>
+</div>
+
+<!-- S01 — OVERVIEW -->
+<div class="section" id="s01">
+  <div class="sec-badge"><span class="sec-badge-text">01 · Production Overview</span></div>
+  <h1 class="sec-title">What <em>Cocktail Night</em> <span>Actually Is</span></h1>
+  <p class="sec-lead">Cocktail Night is a separate production from the Growth House Immersion. It has its own team, its own run of show, its own operations lead (still Deryl), and its own Production Bible — this one. The fact that it happens on the same property on the last night of the weekend does not make it a dinner party. It is an event.</p>
+
+  <div class="two-col"><div class="two-col-l">When</div><div class="two-col-r">Last night of the Growth House Immersion weekend. After the work is done. The celebration belongs at the end. Confirmed by Jesse April 23.</div></div>
+  <div class="two-col"><div class="two-col-l">Venue</div><div class="two-col-r">Same property as the Immersion for now. Every April locked to the same venue. As the event scales, venue flexibility increases.</div></div>
+  <div class="two-col"><div class="two-col-l">Guest List</div><div class="two-col-r">Growth House members plus external cocktail night guests. Members are VIP. Cocktail night is the exception where the energy opens beyond the tight immersion circle.</div></div>
+  <div class="two-col"><div class="two-col-l">Scale Vision</div><div class="two-col-r">Starting at current member count. Designed to scale to 150–200+ as the brand grows. Possibly at a separate venue (dealership, rooftop, etc.) in future years.</div></div>
+
+  <div class="pink-note">» Jesse's words: "I think we all agree that should be the last closing thing." This is the celebration. It should feel like one.</div>
+
+  <h2 class="sub">What Makes This Night Different</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>DJ</strong> — live music energy. Sets the arc from arrival through close. This is the first thing members feel when they walk into the space.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Security</strong> — professional perimeter. Guest list managed. Members and sponsors never feel the friction of it.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Three bars</strong> — cocktail, wine/beer, non-alc sponsor. Opposite sides of the space to split traffic and create movement.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Photo booth</strong> — branded activation. Content machine. Memory maker. Operator actively pulls guests in.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Two photographers</strong> — Amys plus a second. Every zone covered. Every moment captured. Sponsor product always in frame.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Sponsor activations</strong> — product in use, natural placement. Sponsor intros executed in first 90 minutes by Deryl.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>QR capture</strong> — non-member guests directed to intake form at bar and entrance. Every guest becomes a lead.</span></div>
+  </div>
+</div>
+
+<!-- S02 — TEAM & ROLES -->
+<div class="section" id="s02">
+  <div class="sec-badge"><span class="sec-badge-text">02 · Full Team & Roles</span></div>
+  <h1 class="sec-title">Cocktail Night <span>Team</span></h1>
+  <p class="sec-lead">13–16 people. Every person in their lane. One chain of command: Deryl.</p>
+
+  <div class="role-card">
+    <div class="role-card-title">Event Operations Director · Deryl VanNostrand</div>
+    <div class="role-card-person">Both Productions · All Phases</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Full floor authority from load-in through close-out</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Coordinates DJ, security, photo booth, all three bars, floor team</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Sound check with DJ minimum 60 min before doors open</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Pre-mapped sponsor activations executed in first 90 minutes — timer set</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>U-shape energy containment — manages crowd flow and zone activation</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>QR capture coordination at all bar and entrance points</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Same-night close-out debrief and breakdown coordination</span></div>
+    </div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-title">DJ · TBD</div>
+    <div class="role-card-person">Source through local/regional network · Quality over cost</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Setup complete before any member enters the space</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Sound check with Deryl minimum 60 min before doors</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Briefed on energy arc: arrival warm-up → mid-night peak → wind-down close</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Takes cues from Deryl for toast moments, sponsor activations, and close time</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Knows the demographic — Growth House members are 7-8 figure entrepreneurs</span></div>
+    </div>
+    <div class="role-card-note">The DJ sets the tone before a single drink is poured. This hire matters. The right DJ makes the room feel like the event was built for them.</div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-title">Security Team Lead + Staff · TBD ×2–3</div>
+    <div class="role-card-person">Professional · Invisible presence · Report to Deryl only</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Manages guest list at entrance — members vs. cocktail night guests</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Covers property perimeter, pool zone, and outdoor areas</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Any conflict handled quietly — never in front of guests</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Briefed on which guests are members (VIP) and which are sponsors</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Reports directly to Deryl — never to Jesse during the event</span></div>
+    </div>
+    <div class="role-card-note">Build the relationship with a quality security team early. As cocktail night scales to 200+, this role becomes critical infrastructure.</div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-title">Cocktail Bar Bartenders ×2 · TBD</div>
+    <div class="role-card-person">Real bartenders only · Signature cocktail specialists</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Full recipe briefing from Deryl before service. Full mixer list confirmed and stocked.</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Tests every drink before doors open</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Can describe every cocktail, every ingredient, every spirit to any guest</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Does not leave bar zone during service</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Manages ice — tells Deryl immediately if running low</span></div>
+    </div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-title">Wine & Beer Bar Bartender ×1 · TBD</div>
+    <div class="role-card-person">Opposite side of venue from cocktail bar · Splits traffic</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Stationed on opposite side of venue — deliberately splits crowd movement</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Full wine list knowledge — can describe every bottle</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Manages champagne for toast moments — Deryl coordinates exact timing</span></div>
+    </div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-title">Non-Alc / Sponsor Bar ×1 · TBD or Sponsor Rep</div>
+    <div class="role-card-person">Premium non-alcoholic experience · Sponsor activation zone</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Sly CHILL / BOOST integration — knows the product and its benefits</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Mocktail menu developed with Deryl pre-event</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Non-drinkers should feel equally catered to — this bar is never an afterthought</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Photo-ready setup — sponsor product placed prominently</span></div>
+    </div>
+    <div class="role-card-note">Consider asking Sly or Dr. Goodburn's to staff this themselves — a brand rep who genuinely believes in the product is more powerful than a hired operator.</div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-title">Floor Staff / Drink Passers ×3–4 · TBD</div>
+    <div class="role-card-person">Assigned zones · Report to Deryl only · One chain of command</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Assigned zones — pool, main space, dining area, outdoor areas</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Every tray pass is also a temperature check — engaged, comfortable, need anything?</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Collect empties on every pass. Never leave a dead glass on a surface.</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Direct foot traffic to photo booth when zone is slow</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Report anything off to Deryl — do not handle guest concerns independently</span></div>
+    </div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-title">Photographers ×2 · Amys + TBD</div>
+    <div class="role-card-person">Amys leads · Second photographer supplements coverage</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Amys owns primary coverage — candid energy, sponsor placement, key moments</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Second photographer covers zones Amys can't be in simultaneously</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>DJ booth, photo booth, bar activations, pool area — every zone captured</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Sponsor product always visible in the background of shots where possible</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Toast moment: both photographers on it simultaneously</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Raw footage delivered to Deryl same night</span></div>
+    </div>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-title">Photo Booth Operator ×1 · TBD</div>
+    <div class="role-card-person">High-energy · Actively pulls guests in · Content machine</div>
+    <div class="blt-list">
+      <div class="blt-item"><span class="blt-dot">•</span><span>Setup complete before doors open — tested, lit, and ready</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Growth House branded backdrop, props, and overlay</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Does NOT wait for guests to find the booth — actively invites groups over</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Digital delivery same night — guests leave with content</span></div>
+      <div class="blt-item"><span class="blt-dot">•</span><span>Sponsor integration in frame — Goodburn's, Sly visible where applicable</span></div>
+    </div>
+    <div class="role-card-note">Personality of the operator matters as much as the equipment. Find someone who creates energy, not someone who just operates a camera.</div>
+  </div>
+</div>
+
+<!-- S03 — VENUE LAYOUT -->
+<div class="section" id="s03">
+  <div class="sec-badge"><span class="sec-badge-text">03 · Venue Layout & Zones</span></div>
+  <h1 class="sec-title">Venue <span>Layout</span></h1>
+  <p class="sec-lead">Intentional zone design. Energy contained in the U-shape. Three bars on opposite sides to split traffic. Every activation has a home. Couches removed from main living room.</p>
+
+  <div class="bar-layout">
+    <div class="bar-layout-title">Cocktail Night Zone Map — Same Property</div>
+    <div class="venue-map">
+
+      <div class="venue-zone active">
+        <div class="zone-icon">🍹</div>
+        <div class="zone-name">Cocktail Bar</div>
+        <div class="zone-desc">Primary bar. Signature cocktails. DJ adjacent. High energy zone.</div>
+      </div>
+
+      <div class="venue-zone" style="border-color:rgba(255,255,255,0.1);">
+        <div class="zone-icon">🎵</div>
+        <div class="zone-name gold-text">DJ Booth</div>
+        <div class="zone-desc">Center or corner. Sound fills entire space. Sets the arc from arrival to close.</div>
+      </div>
+
+      <div class="venue-zone active">
+        <div class="zone-icon">📸</div>
+        <div class="zone-name">Photo Booth</div>
+        <div class="zone-desc">Branded backdrop. Operator actively pulling guests in. Content machine.</div>
+      </div>
+
+      <div class="venue-zone" style="border-color:rgba(255,255,255,0.1);">
+        <div class="zone-icon">🛋️</div>
+        <div class="zone-name gold-text">Main Space</div>
+        <div class="zone-desc">Couches removed. Open floor. Movement and conversation. Portrait studio here.</div>
+      </div>
+
+      <div class="venue-zone" style="border-color:rgba(255,255,255,0.1);">
+        <div class="zone-icon">🌊</div>
+        <div class="zone-name gold-text">Pool Zone</div>
+        <div class="zone-desc">Outdoor flow. Security covers perimeter. Floor staff rotates through.</div>
+      </div>
+
+      <div class="venue-zone active">
+        <div class="zone-icon">🍷</div>
+        <div class="zone-name">Wine & Beer Bar</div>
+        <div class="zone-desc">Opposite side from cocktail bar. Splits traffic. Champagne for toasts.</div>
+      </div>
+
+      <div class="venue-zone" style="border-color:rgba(255,255,255,0.1);">
+        <div class="zone-icon">🛡️</div>
+        <div class="zone-name gold-text">Security Post</div>
+        <div class="zone-desc">Entrance + perimeter. Invisible presence. Guest list here.</div>
+      </div>
+
+      <div class="venue-entrance">
+        <div class="venue-entrance-text">↑ Entrance · QR Capture · Guest List ↑</div>
+      </div>
+
+      <div class="venue-zone active">
+        <div class="zone-icon">🌿</div>
+        <div class="zone-name">Sponsor / Non-Alc Bar</div>
+        <div class="zone-desc">Sly / Goodburn's activation. Mocktails. Photo-ready setup.</div>
+      </div>
+
+    </div>
+    <div style="margin-top:16px;font-size:12px;color:var(--dim);font-style:italic;">Pink border = bar zone · Gold text = shared zone · All zones have trash cans placed first</div>
+  </div>
+
+  <h2 class="sub">Zone Rules</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>U-shape containment:</strong> All energy stays within the defined zone. No guests past the boundary markers. Jesse confirmed this in the April 23 call.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Cocktail bar and wine/beer bar on opposite sides</strong> — this is deliberate. It creates movement, splits crowds, and makes the space feel full from every angle.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Directional signage at every bar and both bathrooms</strong> — guests never stand still wondering where to go.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Couches removed from main living room</strong> — confirmed with Jesse. Open floor for movement and conversation.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Photo booth positioned mid-space</strong> — visible from every zone, accessible from all directions, operator always in motion.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span><strong>Pool zone</strong> — open but managed. Security covers perimeter. Floor staff rotates through. No dead zones.</span></div>
+  </div>
+</div>
+
+<!-- S04 — RUN OF SHOW -->
+<div class="section" id="s04">
+  <div class="sec-badge"><span class="sec-badge-text">04 · Run of Show</span></div>
+  <h1 class="sec-title">Cocktail Night <span>Run of Show</span></h1>
+  <p class="sec-lead">Minute-by-minute. Every role operates from this document. Deryl owns it. Fires all AI agent reminders. Update the schedule, reminders update automatically.</p>
+
+  <div class="fill-in"><span class="fill-label">Event Date</span><span class="fill-val">[Last night of October Immersion weekend — FILL IN]</span></div>
+  <div class="fill-in"><span class="fill-label">Doors Open</span><span class="fill-val">[FILL IN — typically 6:00 PM]</span></div>
+  <div class="fill-in"><span class="fill-label">Guest Count</span><span class="fill-val">[FILL IN — members + cocktail night guests]</span></div>
+
+  <h2 class="sub">Pre-Production (Day Of — Before Doors Open)</h2>
+  <table class="ros-table">
+    <thead><tr><th>Time</th><th>Task</th><th>Owner</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="ros-time">Afternoon</td><td>Immersion Day wraps → cocktail night build begins</td><td class="ros-owner">Deryl</td><td class="ros-notes">Smooth handoff from immersion ops to cocktail night production. Joshawn assists setup.</td></tr>
+      <tr><td class="ros-time">–3 hours</td><td>DJ arrives, begins setup and soundcheck</td><td class="ros-owner">DJ + Deryl</td><td class="ros-notes">Deryl present for full soundcheck. Levels approved before any guest arrives.</td></tr>
+      <tr><td class="ros-time">–2.5 hours</td><td>Security briefed and posts taken</td><td class="ros-owner">Security Lead + Deryl</td><td class="ros-notes">Guest list in hand. Member list highlighted as VIP. Entrance protocol confirmed.</td></tr>
+      <tr><td class="ros-time">–2 hours</td><td>All three bars fully set and tested</td><td class="ros-owner">Bartenders</td><td class="ros-notes">Every drink tested. Every mixer confirmed. Deryl signs off on each bar.</td></tr>
+      <tr><td class="ros-time">–2 hours</td><td>Photo booth setup complete and tested</td><td class="ros-owner">Photo Booth Op.</td><td class="ros-notes">Branded backdrop up. Lighting tested. Digital delivery confirmed and ready.</td></tr>
+      <tr><td class="ros-time">–1.5 hours</td><td>Directional signage placed in all zones</td><td class="ros-owner">Deryl</td><td class="ros-notes">Bar signs on stands. Bathroom signs. QR codes at entrance and all bars.</td></tr>
+      <tr><td class="ros-time">–1 hour</td><td>Trash cans placed in ALL zones</td><td class="ros-owner">Deryl</td><td class="ros-notes">First thing. Every bar zone. Every corridor. Before anything else is staged.</td></tr>
+      <tr><td class="ros-time">–30 min</td><td>Full team pre-event huddle</td><td class="ros-owner">Deryl</td><td class="ros-notes">All 13–16 staff present. Role cards distributed. ROS reviewed. Every zone confirmed ready.</td></tr>
+      <tr><td class="ros-time">–15 min</td><td>Champagne staged and poured for arrival toast</td><td class="ros-owner">Deryl + Wine Bar</td><td class="ros-notes">Ready before the first member walks in. Non-negotiable.</td></tr>
+      <tr><td class="ros-time">–5 min</td><td>Deryl final walkthrough</td><td class="ros-owner">Deryl</td><td class="ros-notes">Every zone. Every staff member in position. Does it feel like an event? Doors open only when yes.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub">Doors Open — Event Arc</h2>
+  <table class="ros-table">
+    <thead><tr><th>Time</th><th>Item</th><th>Owner</th><th>Location</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr class="ros-key"><td class="ros-time">DOORS OPEN</td><td>Guests begin arriving</td><td class="ros-owner">Security + Deryl</td><td>Entrance</td><td class="ros-notes">Guest list checked. QR capture active at entrance. DJ at arrival energy level.</td></tr>
+      <tr><td class="ros-time">+15 min</td><td>Jesse welcome / toast</td><td class="ros-owner">Jesse</td><td>Main space</td><td class="ros-notes">Champagne already poured and in every hand before Jesse speaks. Not after.</td></tr>
+      <tr><td class="ros-time">+30 min</td><td>Sponsor intro #1</td><td class="ros-owner">Deryl</td><td>Bar zone / pool</td><td class="ros-notes">First 90 minutes = highest energy. Execute all sponsor intros in this window.</td></tr>
+      <tr><td class="ros-time">+45 min</td><td>Bottle round #1 + trash sweep</td><td class="ros-owner">Floor staff</td><td>All zones</td><td class="ros-notes">Timer set. Every 30–45 min. Never let empties accumulate.</td></tr>
+      <tr><td class="ros-time">+60 min</td><td>Sponsor intro #2</td><td class="ros-owner">Deryl</td><td>All zones</td><td class="ros-notes">Pre-mapped pairs. Warm, personal introductions only.</td></tr>
+      <tr><td class="ros-time">+75 min</td><td>Fogo appetizers arrive</td><td class="ros-owner">Floor staff</td><td>All zones</td><td class="ros-notes">Never let trays hit empty. Constant rotation.</td></tr>
+      <tr><td class="ros-time">+90 min</td><td>Sponsor intro #3 + DJ energy shift</td><td class="ros-owner">Deryl + DJ</td><td>All zones</td><td class="ros-notes">DJ moves energy up. Room should be fully activated by now.</td></tr>
+      <tr><td class="ros-time">Mid-event</td><td>Bottle rounds every 30–45 min</td><td class="ros-owner">Deryl</td><td>All zones</td><td class="ros-notes">Timer running. Non-negotiable throughout the night.</td></tr>
+      <tr><td class="ros-time">Peak</td><td>Photo booth at maximum activation</td><td class="ros-owner">Photo Booth Op.</td><td>Main space</td><td class="ros-notes">Operator actively pulling groups in. Floor staff directing foot traffic.</td></tr>
+      <tr><td class="ros-time">–90 min to close</td><td>DJ begins wind-down arc</td><td class="ros-owner">Deryl → DJ</td><td>All zones</td><td class="ros-notes">Deryl signals DJ. Energy shifts from peak to celebratory close.</td></tr>
+      <tr><td class="ros-time">–30 min</td><td>Closing toast</td><td class="ros-owner">Jesse + Deryl</td><td>Main space</td><td class="ros-notes">Champagne ready. Both photographers on it.</td></tr>
+      <tr class="ros-key"><td class="ros-time">CLOSE</td><td>Last call. Thank you address by Jesse.</td><td class="ros-owner">Jesse + Deryl</td><td>Main space</td><td class="ros-notes">Jesse thanks the room. Deryl coordinates staff departure. QR captures reviewed.</td></tr>
+      <tr><td class="ros-time">Close +30 min</td><td>Venue clean begins</td><td class="ros-owner">All staff</td><td>All zones</td><td class="ros-notes">Deryl leads. No one leaves early. Leave it better than found.</td></tr>
+      <tr><td class="ros-time">Same night</td><td>Ops debrief filed</td><td class="ros-owner">Deryl</td><td>Telegram / Notion</td><td class="ros-notes">While it is fresh. Non-negotiable.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S05 — CHECKLISTS -->
+<div class="section" id="s05">
+  <div class="sec-badge"><span class="sec-badge-text">05 · Checklists</span></div>
+  <h1 class="sec-title">Pre-Production <span>Checklists</span></h1>
+
+  <h2 class="sub">4 Weeks Out</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Source DJ — brief, audition, confirm. Quality over cost.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Source security team lead — professional, invisible, understands the guest demographic</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Confirm 3 bartenders — real bartenders, brief on three-bar setup and full cocktail menu</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Source photo booth — branded backdrop, digital delivery, energetic operator</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Confirm Amys + second photographer — brief on shot list and activation priorities</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Brief sponsors — confirm product quantities, arrive time, who is manning their bar zone</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Source 3–4 floor staff — energetic, presentable, service-minded</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Jesse</span><span>Confirm cocktail night guest list additions beyond immersion members</span></div>
+  </div>
+
+  <h2 class="sub">48 Hours Out</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Final cocktail menu confirmed with all bartenders — full mixer list audited and stocked</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Guest list finalized — security team receives it</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Venue layout confirmed — couch removal scheduled, bar placement mapped, signage staged</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>DJ briefed on full run of show — energy arc, toast timing, close time</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Sponsor-member introduction pairs pre-mapped and loaded into AI agent</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>QR capture forms set up and tested at entrance and all bar zones</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span class="chk-owner">Deryl</span><span>Delivery order audited on receipt — every item checked</span></div>
+  </div>
+
+  <h2 class="sub">Day-Of Pre-Event</h2>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span>Trash cans placed in ALL zones FIRST — every bar zone, every corridor, every outdoor area</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>DJ setup complete and fully tested — levels approved by Deryl</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>All three bars fully set, stocked, and tested — every drink made, every mixer confirmed</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Photo booth setup complete, tested, and operational — branded backdrop up</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Security briefed and at posts — guest list in hand</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Directional signage placed at all bars and bathrooms</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Couches removed from main living room — open floor confirmed</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Champagne poured and ready 15 minutes before doors open — for arrival toast</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Full team pre-event huddle — role cards in hand, ROS reviewed, every zone confirmed</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Deryl final walkthrough — does it feel like an event? Doors open only when yes.</span></div>
+  </div>
+</div>
+
+<!-- S06 — NON-NEGOTIABLES -->
+<div class="section" id="s06">
+  <div class="sec-badge"><span class="sec-badge-text">06 · Non-Negotiable Rules</span></div>
+  <h1 class="sec-title">Non-Negotiable <span>Rules</span></h1>
+  <div class="chk-list">
+    <div class="chk-item"><div class="chk-box"></div><span>Trash cans in ALL zones FIRST. Every bar zone. Before anything else is staged.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>DJ soundcheck minimum 60 minutes before doors open. Never shorter.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Champagne poured and in every hand before Jesse's opening toast. Never during or after.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>All three bars tested and approved by Deryl before first guest arrives. Every drink. Every mixer.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Security briefed before any guest arrives — guest list in hand, member VIPs identified.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Photo booth operational before doors open — not during the event.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Couches removed from main living room. U-shape energy zone enforced.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Directional signage at every bar and both bathrooms before any guest enters.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Sponsor introductions in first 90 minutes — timer set. This is the high energy window.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Bottle rounds every 30–45 minutes throughout the night. Timer running. Non-negotiable.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Real bartenders only. No bottle girls. Jesse confirmed.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>QR capture active at entrance and all bar zones from doors open.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>One chain of command: Deryl. No one else gives staff instructions during the event.</span></div>
+    <div class="chk-item"><div class="chk-box"></div><span>Same-night ops debrief filed. While it is fresh. Non-negotiable.</span></div>
+  </div>
+</div>
+
+<!-- S07 — BAR SYSTEM -->
+<div class="section" id="s07">
+  <div class="sec-badge"><span class="sec-badge-text">07 · Bar System</span></div>
+  <h1 class="sec-title">Three-Bar <span>System</span></h1>
+  <p class="sec-lead">Three bars. Opposite sides of the space. Every type of guest has their own lane. No bottlenecks. Triple the sponsor visibility.</p>
+
+  <h2 class="sub">Bar 1 — Signature Cocktail Bar</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">🍹</span><span><strong>The Go-Giver:</strong> Dr. Goodburn's Tequila + Sly BOOST Tropical + Simple Syrup + Cranberry. Garnish: orange slice + cherry.</span></div>
+    <div class="blt-item"><span class="blt-dot">🍹</span><span><strong>Mint-Multiplier:</strong> Bourbon + Sly CHILL Citrus + Simple Syrup + Bitters. Garnish: cherry.</span></div>
+    <div class="blt-item"><span class="blt-dot">🍹</span><span><strong>The Legacy:</strong> Bourbon + Sly CHILL Mango + Simple Syrup + Bitters. Garnish: grapefruit + rosemary.</span></div>
+    <div class="blt-item"><span class="blt-dot">🍹</span><span><strong>Espresso Martini:</strong> Vodka + espresso + coffee liqueur + simple syrup. AZ lesson: stock sufficient vodka — minimum 3 bottles.</span></div>
+  </div>
+  <div class="warn">⚠ Arizona gaps: Vodka too light (1 bottle), Red Bull too light (2 units), grapefruit + rosemary missing for The Legacy. Fix before October.</div>
+
+  <h2 class="sub">Bar 2 — Wine & Beer</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Full wine selection — red, white, sparkling, champagne</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Beer selection — curated, not exhaustive. Quality over volume.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Champagne managed here for toasts — Deryl coordinates timing</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>~1.5 bottles wine per member as baseline. Adjust with actuals.</span></div>
+  </div>
+
+  <h2 class="sub">Bar 3 — Non-Alc Sponsor Activation</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Sly CHILL / BOOST as the anchor product — describes the benefits, not just the flavors</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Mocktail menu: built with Deryl pre-event. At least 3 options.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Premium water — sparkling and still. Never just tap.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Photo-ready setup — sponsor product placed prominently for shots</span></div>
+  </div>
+
+  <h2 class="sub">Universal Bar Rules</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Full mixer list confirmed with every bartender in pre-event call — Coke, soda water, tonic, simple syrup, citrus. Never assumed.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Ice: machine + backup bags. Always order backup. Tell Deryl immediately if running low.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Backup ice is non-negotiable regardless of machine status.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Per-member bar quantity formula built from AZ actuals before October.</span></div>
+  </div>
+</div>
+
+<!-- S08 — ACTIVATIONS -->
+<div class="section" id="s08">
+  <div class="sec-badge"><span class="sec-badge-text">08 · Activations</span></div>
+  <h1 class="sec-title">Event <span>Activations</span></h1>
+
+  <h2 class="sub">Photo Booth</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Growth House branded backdrop — custom designed, photo-ready, sponsor logos where appropriate</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Props: branded, fun, ties to the Growth House identity</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Digital delivery same night via text or email — guests leave with content</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Operator: high-energy, creates excitement, actively pulls groups. Not just a camera operator.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Floor staff assigned to direct foot traffic toward booth when zones slow</span></div>
+  </div>
+
+  <h2 class="sub">Portrait Studio</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Professional headshot setup — ring light, neutral backdrop, Amys or second photographer</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Banner outside — visible from main space. Pre-communicated in event welcome message.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Target: 50+ headshots during cocktail night. Arizona had 15–20 of 150. Unacceptable. Fix is signage + communication.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Floor staff actively directs members: "Have you gotten your headshot yet? Walk with me."</span></div>
+  </div>
+
+  <h2 class="sub">QR Capture System</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>QR codes at entrance, all three bars, and photo booth</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Non-member guests directed to short intake form on arrival</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Responses auto-create Person record tagged 'cocktail night capture' in the system</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Within 48 hours: Deryl reviews captures, flags top 3–5 for Jesse with one-line context note</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Every guest who walks through the door becomes a potential lead — none should leave without being captured</span></div>
+  </div>
+</div>
+
+<!-- S09 — SPONSORS -->
+<div class="section" id="s09">
+  <div class="sec-badge"><span class="sec-badge-text">09 · Sponsor Strategy</span></div>
+  <h1 class="sec-title">Sponsor <span>Strategy</span></h1>
+  <p class="sec-lead">Sponsors integrate through product, placement, and a warm introduction. Never through a stage presentation.</p>
+
+  <div class="two-col"><div class="two-col-l">Dr. Goodburn's Tequila</div><div class="two-col-r">Cocktail bar anchor. The Go-Giver cocktail built around their product. Pair with spirits, hospitality, and lifestyle members in introductions.</div></div>
+  <div class="two-col"><div class="two-col-l">Sly</div><div class="two-col-r">Non-alc bar anchor. Mocktail menu built on their product. Pair with health, wellness, and performance members. Wellness window during the day primes the introduction at night.</div></div>
+  <div class="two-col"><div class="two-col-l">New Sponsor Criteria</div><div class="two-col-r">Aligns with the group's wellness and performance identity. Integration should feel organic — product use, placement, warm introduction. Zero stage presentations required.</div></div>
+
+  <h2 class="sub">Introduction Protocol</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>2–3 intentional warm sponsor-to-member introductions in first 90 minutes</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Pairs pre-mapped during prep week — loaded into Deryl's AI agent, fires as reminders during the event</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Introduction style: warm, personal, context-specific. "James — you should meet [SPONSOR]. They're building something you'd find interesting because…"</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Treat sponsors like VIP members, not vendors. They came back because of relationship.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Sponsor offset documented as a budget line item after every event</span></div>
+  </div>
+</div>
+
+<!-- S10 — VENDOR BRIEFINGS -->
+<div class="section" id="s10">
+  <div class="sec-badge"><span class="sec-badge-text">10 · Vendor Briefings</span></div>
+  <h1 class="sec-title">Vendor Briefing <span>Templates</span></h1>
+
+  <h2 class="sub">DJ Briefing Template</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Event:</strong> Growth House Cocktail Night. [DATE]. [LOCATION]. Arrival: [TIME] for soundcheck.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Demographic:</strong> 7-8 figure entrepreneurs. Successful, social, high-energy. Age range approximately 30–55. Not a club crowd — but they know what a great night feels like.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Energy Arc:</strong> Arrival → warm and welcoming → build mid-night → peak at [TIME] → wind down close at [TIME]. Deryl signals each transition.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Key Moments:</strong> Arrival toast at [TIME] — lower energy briefly for Jesse's address. Closing toast at [TIME] — same. Deryl will cue you for both.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Volume:</strong> Loud enough to feel like an event. Quiet enough that conversation doesn't require shouting. Deryl is your volume check throughout the night.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Cue System:</strong> Deryl signals you directly for toast moments, energy shifts, and close time. You take cues from Deryl only — not from guests or other staff.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Payment:</strong> [AMOUNT · METHOD · TIMING].</span></div>
+  </div>
+
+  <h2 class="sub">Security Briefing Template</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Event:</strong> Growth House Cocktail Night. [DATE]. [LOCATION]. Arrive: [TIME].</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Guest List:</strong> [Provided by Deryl 48 hours out.] Growth House members are VIP — highlighted on the list. Cocktail night guests are general admittance with confirmation.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Zone Coverage:</strong> Entrance (one person minimum), pool perimeter (one person), general floor presence as needed.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Protocol:</strong> Invisible presence. No conflict ever happens in front of guests. Any issue is handled quietly and off to the side. Report everything to Deryl — not to Jesse.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Member handling:</strong> Members and their guests are treated with the highest level of respect and discretion at all times.</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Point of Contact:</strong> Deryl VanNostrand only during the event. [NUMBER].</span></div>
+    <div class="blt-item"><span class="blt-dot">→</span><span><strong>Payment:</strong> [AMOUNT · METHOD · TIMING].</span></div>
+  </div>
+</div>
+
+<!-- S11 — SCALE ROADMAP -->
+<div class="section" id="s11">
+  <div class="sec-badge"><span class="sec-badge-text">11 · Scale Roadmap</span></div>
+  <h1 class="sec-title">Cocktail Night <span>Scale Roadmap</span></h1>
+  <p class="sec-lead">This production is built for October 2026 at the current scale. Every element is designed to grow. Here is what that growth looks like.</p>
+
+  <h2 class="sub">October 2026 — Foundation Build</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Same property as Immersion. Current member count plus cocktail night guests.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Three bars, DJ, security, photo booth, two photographers fully operational.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Goal: nail the execution. Build the muscle memory. Document everything.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Deryl files full ops debrief same night. Every gap documented for April 2027.</span></div>
+  </div>
+
+  <h2 class="sub">April 2027 — Refined Execution</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Same property (Nate's house — Jesse wants to lock it now). Larger guest list.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>October learnings fully integrated. Per-head formulas accurate. Zero re-guessing.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Member-facing AI agents live — personalized cocktail night experience for returning members.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>Potentially 100–150 guests. Security team scales accordingly.</span></div>
+  </div>
+
+  <h2 class="sub">2028 and Beyond — Standalone Venue Production</h2>
+  <div class="blt-list">
+    <div class="blt-item"><span class="blt-dot">•</span><span>Cocktail Night potentially moves to a separate premium venue — Mercedes dealership, rooftop, private club.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>150–200+ guests. Production crew. Full lighting rig. Multiple photographers.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>This Production Bible scales with it — every section updated from actual event data.</span></div>
+    <div class="blt-item"><span class="blt-dot">•</span><span>The brand, the system, and the relationships Deryl builds now are what makes that version possible.</span></div>
+  </div>
+
+  <div class="pink-note">» The foundation we lay in October 2026 is what the 2028 version is built on. Get the execution right first. The scale comes when the system earns it.</div>
+
+  <!-- CLOSING -->
+  <div style="margin-top:60px;padding:40px;background:var(--panel);border-top:2px solid var(--pink);text-align:center;">
+    <div style="font-family:'Syne Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--pink-light);text-transform:uppercase;margin-bottom:14px;">Growth House · Cocktail Night Production Bible · Production 02 of 02</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;margin-bottom:10px;line-height:1.1;">This is not a reception.<br><em style="color:var(--gold);">It is an event.</em></div>
+    <p style="font-size:13px;color:var(--dim);line-height:1.75;max-width:500px;margin:0 auto 16px;">Every great celebration has a system behind it. Build the system right and the celebration takes care of itself.</p>
+    <div style="font-family:'Syne Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;">Deryl VanNostrand · Event Operations Director · Growth House · October 2026</div>
+  </div>
+</div>
+
+</main>
+
+<script>
+const links = document.querySelectorAll('.sb-link');
+const sections = document.querySelectorAll('.section[id]');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      links.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.sb-link[href="#${e.target.id}"]`);
+      if(link) link.classList.add('active');
+    }
+  });
+}, { threshold:0.2, rootMargin:'-10% 0px -60% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
