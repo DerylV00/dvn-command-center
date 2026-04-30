@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-04-30T16:26:14.191857+00:00",
-    "last_entry": "Get motorcycle permit"
+    "last_updated": "2026-04-30T16:26:16.229315+00:00",
+    "last_entry": "Get full motorcycle license"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -436,6 +436,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Get full motorcycle license",
+      "project": "puerto_rico",
+      "due_date": "2026-06-15",
+      "priority": "this_week",
+      "status": "to_do",
+      "created": "2026-04-30"
+    },
     {
       "title": "Get motorcycle permit",
       "project": "puerto_rico",
