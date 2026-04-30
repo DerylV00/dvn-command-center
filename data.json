@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-04-30T16:26:12.501223+00:00",
-    "last_entry": "Research MO motorcycle permit requirements (old one expired)"
+    "last_updated": "2026-04-30T16:26:14.191857+00:00",
+    "last_entry": "Get motorcycle permit"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -436,6 +436,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Get motorcycle permit",
+      "project": "puerto_rico",
+      "due_date": "2026-05-20",
+      "priority": "this_week",
+      "status": "to_do",
+      "created": "2026-04-30"
+    },
     {
       "title": "Research MO motorcycle permit requirements (old one expired)",
       "project": "puerto_rico",
