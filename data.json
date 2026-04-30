@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-04-30T16:26:03.953216+00:00",
-    "last_entry": "Call uncle \u2014 offer camper, see if he will drive to pick it up"
+    "last_updated": "2026-04-30T16:26:05.672343+00:00",
+    "last_entry": "Sell camper (if uncle passes)"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -436,6 +436,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Sell camper (if uncle passes)",
+      "project": "puerto_rico",
+      "due_date": "2026-05-20",
+      "priority": "urgent",
+      "status": "to_do",
+      "created": "2026-04-30"
+    },
     {
       "title": "Call uncle \u2014 offer camper, see if he will drive to pick it up",
       "project": "puerto_rico",
