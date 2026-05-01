@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-04-30T16:26:16.229315+00:00",
-    "last_entry": "Get full motorcycle license"
+    "last_updated": "2026-05-01T15:27:49.706457+00:00",
+    "last_entry": "Health \u2014 May 1, 2026"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -516,5 +516,9 @@
       "status": "to_do",
       "created": "2026-04-30"
     }
-  ]
+  ],
+  "stats": {
+    "weight": 216.4,
+    "weight_date": "2026-05-01"
+  }
 }
