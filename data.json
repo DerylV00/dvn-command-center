@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-05-01T15:37:27.719561+00:00",
-    "last_entry": "Health \u2014 May 1, 2026"
+    "last_updated": "2026-05-01T16:32:24.234025+00:00",
+    "last_entry": "Labcorp Results \u2014 April 27, 2026 Draw (Dr. Buol)"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -295,6 +295,14 @@
     }
   },
   "growth_log": [
+    {
+      "date": "2026-05-01",
+      "type": "UPDATE",
+      "project": "health",
+      "entry": "TESTOSTERONE: Total 720 ng/dL (ref 264-916) \u2014 solid mid-range. Free T 13.5 pg/mL (ref 9.3-26.5) \u2014 in range. SHBG 32.1 (ref 16.5-55.9) \u2014 normal, much improved from last draw. LIVER: AST 28 (ref 0-40) NORMAL. ALT 21 (ref 0-44) NORMAL \u2014 liver fully recovered from April elevated readings. LIPIDS: Total Cholesterol 161 (optimal). Triglycerides 45 (excellent). HDL 59 (good). LDL 95 (near optimal). THYROID: TSH 1.280 (normal). T4 Free 1.32 (normal). T3 Free 3.3 (normal). METABOLIC: Glucose 87 (normal). Creatinine 1.00 (normal). eGFR 106 (excellent kidney function). Potassium 5.3 HIGH (ref 3.5-5.2 \u2014 slightly elevated, monitor). HbA1c 5.1% (excellent, non-diabetic). VITAMINS: Vitamin D 30.5 ng/mL (just barely in range, ref 30-100 \u2014 borderline low, supplement). Vitamin B12 923 (excellent). DHEA-Sulfate 213 (normal). CBC: All within normal range. WBC 4.8, RBC 5.49, Hemoglobin 16.0, Hematocrit 49.6 \u2014 all clean.",
+      "title": "Labcorp Results \u2014 April 27, 2026 Draw (Dr. Buol)",
+      "action_items": "Share results with Dr. Buol for protocol green light | Increase Vitamin D supplementation | Monitor potassium (5.3 slightly high) | Peptide protocol can likely proceed"
+    },
     {
       "date": "2026-04-30",
       "type": "UPDATE",
