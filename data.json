@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-05-04T16:29:47.013124+00:00",
-    "last_entry": "Immersion Wellness Morning Block \u2014 7-9am Protocol"
+    "last_updated": "2026-05-04T16:29:57.245726+00:00",
+    "last_entry": "Decide: Sedona standalone retreat vs embedded morning block in immersion events"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -460,6 +460,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Decide: Sedona standalone retreat vs embedded morning block in immersion events",
+      "project": "growth_house",
+      "due_date": "2026-05-10",
+      "priority": "this_week",
+      "status": "to_do",
+      "created": "2026-05-04"
+    },
     {
       "title": "Get full motorcycle license",
       "project": "puerto_rico",
