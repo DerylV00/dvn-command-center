@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-05-04T16:29:59.009315+00:00",
-    "last_entry": "Source Lululemon branded gear quote \u2014 shorts, underwear, socks, towel, bag per member"
+    "last_updated": "2026-05-04T16:30:00.921888+00:00",
+    "last_entry": "Add resistance bands to July LV immersion equipment list"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -460,6 +460,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Add resistance bands to July LV immersion equipment list",
+      "project": "growth_house",
+      "due_date": "2026-05-07",
+      "priority": "urgent",
+      "status": "to_do",
+      "created": "2026-05-04"
+    },
     {
       "title": "Source Lululemon branded gear quote \u2014 shorts, underwear, socks, towel, bag per member",
       "project": "growth_house",
