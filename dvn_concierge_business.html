@@ -14,16 +14,21 @@ html { font-size: 15px; scroll-behavior: smooth; }
   --bg:     #0a0906;
   --bg2:    #111009;
   --bg3:    #1a1710;
+  --ink:    #f0ead8;
+  --ink2:   #c8bfa8;
   --fire:   #e84c00;
   --ember:  #ff7b35;
   --gold:   #c9973a;
   --gold2:  #e8c070;
   --green:  #5a9a5a;
   --blue:   #4a8ab4;
+  --red:    #c44040;
   --cream:  #f0ead8;
   --cream2: #c8bfa8;
-  --muted:  #6b6355;
-  --muted2: #8a7f6e;
+  --muted:  #8a7f6e;
+  --muted2: #6b6355;
+  --rule:   rgba(232,76,0,0.18);
+  --rule2:  rgba(232,76,0,0.08);
   --border: rgba(232,76,0,0.18);
   --border2:rgba(232,76,0,0.06);
 }
@@ -623,40 +628,9 @@ body::before {
 
 /* ── MARKETING PLAN ADDITIONS ── */
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 15px; scroll-behavior: smooth; }
-
-:root {
-  --bg:     #faf7f0;
-  --bg2:    #f0ead8;
-  --bg3:    #e8dfc8;
-  --ink:    #1a1510;
-  --ink2:   #2a2018;
-  --fire:   #c83a00;
-  --ember:  #e85a20;
-  --gold:   #a07828;
-  --gold2:  #c89838;
-  --green:  #3a6a3a;
-  --blue:   #2a5a7a;
-  --red:    #8a2020;
-  --muted:  #6b6355;
-  --muted2: #8a7f6e;
-  --rule:   #d4c9a8;
-  --rule2:  #e0d8c4;
-  --border: #c8bfa8;
-}
-
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Barlow', sans-serif;
-  font-weight: 400;
-  line-height: 1.6;
-}
-
 /* ── COVER ── */
 .cover {
-  background: var(--ink);
+  background: #1a1510;
   padding: 72px 80px 64px;
   position: relative;
   overflow: hidden;
@@ -805,7 +779,7 @@ body {
 .sec-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(26px, 4vw, 40px);
-  font-weight: 700; color: var(--ink);
+  font-weight: 700; color: var(--cream);
   line-height: 1.1; letter-spacing: -0.01em;
 }
 
@@ -822,7 +796,7 @@ body {
 }
 
 .sec-intro {
-  font-size: 13px; color: var(--muted);
+  font-size: 13px; color: var(--cream2);
   line-height: 1.75; max-width: 70ch;
   margin-bottom: 28px;
 }
@@ -858,13 +832,13 @@ body {
 .card-title {
   font-family: 'Playfair Display', serif;
   font-size: 17px; font-weight: 700;
-  color: var(--ink); margin-bottom: 8px;
+  color: var(--cream); margin-bottom: 8px;
   line-height: 1.2;
 }
 
 .card.dark .card-title { color: #f0ead8; }
 
-.card-body { font-size: 12px; color: var(--muted); line-height: 1.65; }
+.card-body { font-size: 12px; color: var(--cream2); line-height: 1.65; }
 .card.dark .card-body { color: rgba(240,234,216,0.55); }
 
 .bullet-list { list-style: none; margin-top: 8px; }
@@ -891,15 +865,15 @@ body {
 .highlight-box.green { background: rgba(58,106,58,0.07); border-left: 3px solid var(--green); }
 .highlight-box.blue { background: rgba(42,90,122,0.07); border-left: 3px solid var(--blue); }
 
-.highlight-box p { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
-.highlight-box p strong { color: var(--ink); }
+.highlight-box p { font-size: 12.5px; color: var(--muted2); line-height: 1.7; }
+.highlight-box p strong { color: var(--cream); }
 
 /* ── SWOT ── */
 .swot {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px; background: var(--ink);
-  border: 2px solid var(--ink);
+  gap: 1px; background: rgba(232,76,0,0.18);
+  border: 2px solid rgba(232,76,0,0.18);
 }
 
 .swot-cell { padding: 28px 28px; }
@@ -983,7 +957,7 @@ body {
 .p-title {
   font-family: 'Playfair Display', serif;
   font-size: 20px; font-weight: 700;
-  color: var(--ink); margin-bottom: 12px;
+  color: var(--cream); margin-bottom: 12px;
 }
 
 /* ── POSITIONING MAP ── */
@@ -1051,7 +1025,7 @@ body {
 }
 
 .comp-table th {
-  background: var(--ink);
+  background: #1a1510;
   color: rgba(240,234,216,0.8);
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 8px; font-weight: 700;
@@ -1070,8 +1044,8 @@ body {
 .comp-table tr:nth-child(even) td { background: var(--bg2); }
 
 .comp-table tr.dvn td {
-  background: rgba(200,58,0,0.05);
-  font-weight: 500; color: var(--ink);
+  background: rgba(200,58,0,0.08);
+  font-weight: 500; color: var(--cream);
 }
 
 .check { color: var(--green); font-weight: 700; }
@@ -1099,7 +1073,7 @@ body {
   font-size: 12px; color: var(--muted);
 }
 
-.fin-table tr:last-child td { border-bottom: none; font-weight: 600; color: var(--ink); background: var(--bg2); }
+.fin-table tr:last-child td { border-bottom: none; font-weight: 600; color: var(--cream); background: var(--bg2); }
 
 .fin-table td.num { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; }
 .fin-table td.fire-num { color: var(--fire); }
@@ -1115,7 +1089,7 @@ body {
 }
 
 .persona-sidebar {
-  background: var(--ink); padding: 24px 20px;
+  background: #1a1510; padding: 24px 20px;
   display: flex; flex-direction: column;
   justify-content: center;
 }
@@ -1162,7 +1136,7 @@ body {
 
 /* ── CLOSING ── */
 .doc-footer {
-  background: var(--ink);
+  background: #1a1510;
   padding: 40px 80px;
   display: flex; justify-content: space-between; align-items: center;
 }
@@ -1239,7 +1213,7 @@ body {
 
 /* ── CHAPTER DIVIDER ── */
 .chapter-break {
-  background: var(--ink);
+  background: #1a1510;
   padding: 56px 64px;
   position: relative; overflow: hidden;
 }
@@ -1288,7 +1262,7 @@ body {
   <a class="merge-nav-link" href="#4ps">4 Ps</a>
   <a class="merge-nav-link" href="#financials">Financials</a>
   <a class="merge-nav-link" href="#kpis">KPIs</a>
-  <a class="merge-nav-back" href="hub.html">← Hub</a>
+  <a class="merge-nav-back" href="index.html">← Index</a>
 </nav>
 
 <!-- CHAPTER 1: VISION -->
