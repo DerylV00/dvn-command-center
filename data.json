@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-05-05T21:34:21.797782+00:00",
-    "last_entry": "Talk to Oscar \u2014 June 1 transition timeline"
+    "last_updated": "2026-05-05T21:34:24.041335+00:00",
+    "last_entry": "Send Thursday 10am CT calendar invite to Ken"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -498,6 +498,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Send Thursday 10am CT calendar invite to Ken",
+      "project": "ken",
+      "due_date": "2026-05-05",
+      "priority": "urgent",
+      "status": "to_do",
+      "created": "2026-05-05"
+    },
     {
       "title": "Talk to Oscar \u2014 June 1 transition timeline",
       "project": "ken",
