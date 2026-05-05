@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-05-05T21:34:20.428053+00:00",
-    "last_entry": "Draft 1-page independent contractor agreement \u2014 send to Ken before Thursday"
+    "last_updated": "2026-05-05T21:34:21.797782+00:00",
+    "last_entry": "Talk to Oscar \u2014 June 1 transition timeline"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -498,6 +498,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Talk to Oscar \u2014 June 1 transition timeline",
+      "project": "ken",
+      "due_date": "2026-05-07",
+      "priority": "urgent",
+      "status": "to_do",
+      "created": "2026-05-05"
+    },
     {
       "title": "Draft 1-page independent contractor agreement \u2014 send to Ken before Thursday",
       "project": "ken",
