@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "last_updated": "2026-05-05T21:34:18.655357+00:00",
-    "last_entry": "Ken & Deryl Call \u2014 May 5, 2026 \u2014 Agreements + Role Clarity"
+    "last_updated": "2026-05-05T21:34:20.428053+00:00",
+    "last_entry": "Draft 1-page independent contractor agreement \u2014 send to Ken before Thursday"
   },
   "today": {
     "date": "Apr 28, 2026",
@@ -498,6 +498,14 @@
     }
   ],
   "tasks": [
+    {
+      "title": "Draft 1-page independent contractor agreement \u2014 send to Ken before Thursday",
+      "project": "ken",
+      "due_date": "2026-05-07",
+      "priority": "urgent",
+      "status": "to_do",
+      "created": "2026-05-05"
+    },
     {
       "title": "Add resistance bands to July LV immersion equipment list",
       "project": "growth_house",
