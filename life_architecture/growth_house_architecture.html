@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Growth House Architecture — Deryl VanNostrand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;scroll-behavior:smooth;}
+:root{
+  --fire:#e84c00;--ember:#ff7b35;--gold:#c9973a;
+  --ink:#1a1510;--bg:#0f0d0a;
+  --paper:#faf7f0;--paper2:#f0ead8;
+  --muted:#6b6355;--muted2:#8a7f6e;
+  --rule:#d4c9a8;--rule2:#e0d8c4;
+  --green:#4a7a4a;
+}
+body{background:#e0d8c8;color:var(--ink);font-family:'Barlow',sans-serif;font-weight:400;line-height:1.6;padding:40px 20px 80px;}
+.page{width:100%;max-width:860px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);box-shadow:0 8px 48px rgba(0,0,0,0.14);position:relative;overflow:hidden;}
+.page::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--gold),var(--ember),var(--fire));}
+.back-nav{padding:16px 48px;background:var(--bg);display:flex;align-items:center;gap:12px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted2);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color 0.15s;}
+.back-link:hover{color:var(--gold);}
+.back-link::before{content:'←';}
+.back-divider{font-size:9px;color:rgba(212,201,168,0.2);}
+.back-current{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);}
+.cover{background:var(--bg);padding:56px 60px 44px;position:relative;overflow:hidden;}
+.cover::after{content:'02';position:absolute;right:-10px;bottom:-20px;font-family:'Playfair Display',serif;font-size:220px;font-weight:900;color:rgba(201,151,58,0.04);line-height:1;pointer-events:none;}
+.cover-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.cover-eyebrow::before{content:'';width:28px;height:2px;background:var(--gold);}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(40px,5.5vw,64px);font-weight:900;color:#f0ead8;line-height:0.95;letter-spacing:-0.02em;margin-bottom:8px;}
+.cover-title em{font-style:italic;color:var(--gold);}
+.cover-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(240,234,216,0.4);margin-bottom:40px;}
+.cover-meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;}
+.cover-meta-cell{padding:0 20px 0 0;}
+.cover-meta-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:4px;}
+.cover-meta-value{font-size:13px;font-weight:500;color:rgba(255,255,255,0.75);}
+.section{padding:36px 60px;border-bottom:1px solid var(--rule2);}
+.section:last-child{border-bottom:none;}
+.sec-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--rule2);}
+.sec-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:16px;line-height:1.15;letter-spacing:-0.01em;}
+.sec-title em{font-style:italic;color:var(--gold);}
+.sec-body{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;}
+.sec-body strong{color:var(--ink);font-weight:600;}
+.declaration{background:linear-gradient(135deg,#1a1510,#1f180a);padding:24px 28px;border-left:4px solid var(--gold);margin:16px 0;}
+.declaration p{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(240,234,216,0.82);line-height:1.65;}
+.declaration p em{color:var(--ember);}
+
+/* PHASE TIMELINE — BOLD */
+.phase-timeline{margin:16px 0;}
+.phase-item{display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:2px;}
+.phase-left{padding:28px 24px 28px 0;border-right:3px solid var(--gold);}
+.phase-when{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.phase-role-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(201,151,58,0.15);}
+.phase-right{padding:28px 0 28px 28px;background:var(--paper2);border-bottom:1px solid var(--rule);}
+.phase-item:last-child .phase-right{border-bottom:none;}
+.phase-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.phase-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.15;}
+.phase-body{font-size:13px;color:var(--muted);line-height:1.75;}
+.phase-item:nth-child(2) .phase-right{background:var(--paper);}
+.phase-item:nth-child(3) .phase-right{background:linear-gradient(135deg,#f0ead8,#faf7f0);}
+.phase-item:nth-child(4) .phase-right{background:linear-gradient(135deg,#1a1510,#1f1a10);}
+.phase-item:nth-child(4) .phase-title{color:#f0ead8;}
+.phase-item:nth-child(4) .phase-body{color:var(--muted2);}
+
+/* WHAT I BRING */
+.bring-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin:16px 0;}
+.bring-col{background:var(--paper);padding:24px 22px;}
+.bring-col.dark{background:var(--bg);}
+.bring-label{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.bring-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:12px;line-height:1.1;}
+.bring-col.dark .bring-title{color:#f0ead8;}
+.bring-body{font-size:12px;color:var(--muted);line-height:1.65;}
+.bring-col.dark .bring-body{color:var(--muted2);}
+
+/* SKILLS GRID */
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin:16px 0;}
+.skill-block{background:var(--paper);padding:22px 24px;}
+.skill-block.dark{background:var(--bg);}
+.skill-block.accent{background:linear-gradient(135deg,#1a0e04,#241508);}
+.skill-block.green{background:#1a2e1a;}
+.skill-tag{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.skill-block.dark .skill-tag,.skill-block.accent .skill-tag{color:var(--ember);}
+.skill-block.green .skill-tag{color:#6ab46a;}
+.skill-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:14px;}
+.skill-block.dark .skill-name,.skill-block.accent .skill-name,.skill-block.green .skill-name{color:#f0ead8;}
+.skill-sub{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--muted);margin-bottom:8px;}
+.skill-block.dark .skill-sub,.skill-block.accent .skill-sub,.skill-block.green .skill-sub{color:var(--muted2);}
+.skill-item{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--muted);line-height:1.5;padding:4px 0;}
+.skill-block.dark .skill-item,.skill-block.accent .skill-item,.skill-block.green .skill-item{color:var(--muted2);}
+.skill-dot{width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0;margin-top:5px;}
+.skill-block.dark .skill-dot,.skill-block.accent .skill-dot{background:var(--ember);}
+.skill-block.green .skill-dot{background:#6ab46a;}
+
+/* PLAYBOOK */
+.playbook-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin:16px 0;}
+.pb-col{background:var(--paper2);padding:18px 20px;}
+.pb-col-label{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.pb-col-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.pb-col-body{font-size:11px;color:var(--muted);line-height:1.6;}
+
+.pg-footer{background:var(--bg);padding:16px 60px;display:flex;justify-content:space-between;align-items:center;}
+.pg-footer-text{font-family:'Barlow Condensed',sans-serif;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);}
+.pg-footer-link{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;}
+.pg-footer-link:hover{color:var(--ember);}
+
+@media(max-width:700px){
+  body{padding:20px 12px 60px;}
+  .cover,.section{padding-left:24px;padding-right:24px;}
+  .back-nav{padding:14px 24px;}
+  .cover-meta{grid-template-columns:1fr 1fr;}
+  .bring-grid,.playbook-row{grid-template-columns:1fr;}
+  .skills-grid{grid-template-columns:1fr;}
+  .phase-item{grid-template-columns:80px 1fr;}
+  .pg-footer{padding:14px 24px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="back-nav">
+    <a class="back-link" href="index.html">Life Architecture</a>
+    <span class="back-divider">·</span>
+    <span class="back-current">Document 02 — Growth House</span>
+  </div>
+
+  <div class="cover">
+    <div class="cover-eyebrow">Document 02 · The Growth House Architecture</div>
+    <div class="cover-title">Co-<em>Producer.</em></div>
+    <div class="cover-sub">The arc alongside Jesse. From operator to architect — one event at a time.</div>
+    <div class="cover-meta">
+      <div class="cover-meta-cell"><div class="cover-meta-label">Partner</div><div class="cover-meta-value">Jesse</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">Events</div><div class="cover-meta-value">Two Complete · Oct 2026 Next</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">October Role</div><div class="cover-meta-value">Methodology Presenter</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">Horizon</div><div class="cover-meta-value">Co-Architect</div></div>
+    </div>
+  </div>
+
+  <!-- THE PARTNERSHIP -->
+  <div class="section">
+    <div class="sec-label">The long game with Jesse</div>
+    <div class="sec-title">Building alongside<br><em>Jesse.</em></div>
+    <p class="sec-body">This isn't a vendor relationship. It isn't even just a co-producer credit. What I'm stepping into with Jesse is a long-game creative and operational partnership — two people who see the same thing and are willing to do the hard work of building it into something real. The Growth House Immersion is the proving ground. Every event is a chapter. Every chapter compounds.</p>
+    <div class="declaration">
+      <p>I don't show up to help run an event. I show up as the person who <em>knows how it's supposed to feel</em> — and makes sure it does. That's a different job. And it becomes a different kind of equity.</p>
+    </div>
+  </div>
+
+  <!-- FOUR PHASES -->
+  <div class="section">
+    <div class="sec-label">The evolution — four phases</div>
+    <div class="sec-title">The role grows<br><em>as the trust compounds.</em></div>
+    <p class="sec-body">This isn't a title chase. It's a natural progression — each phase earned by executing the previous one at a level that makes the next one obvious. The events are the curriculum. I'm the student and the builder at the same time.</p>
+
+    <div class="phase-timeline">
+      <div class="phase-item">
+        <div class="phase-left">
+          <div class="phase-when">Active · June — Oct 2026</div>
+          <div class="phase-role-num">I</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-label">Phase One</div>
+          <div class="phase-title">Director of Event Operations</div>
+          <div class="phase-body">I own the operational spine and I am building toward October as the presenting moment. Two events completed. The October 2026 Immersion is where the methodology gets presented to the room — Ken speaks, I demonstrate Atlas live, two slots offered. The life architect role and the co-producer role converge at this event.</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-left">
+          <div class="phase-when">Oct 2026 — Apr 2027</div>
+          <div class="phase-role-num">II</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-label">Phase Two</div>
+          <div class="phase-title">Co-Producer — Creative Input + Operations</div>
+          <div class="phase-body">After the first full cycle (April + October), I've earned the room. I'm in the creative conversation — not just executing the plan, but helping shape it. What's the theme? What's the arc for this cohort? What experience do we want to engineer? I bring operational knowledge and participant observations to that table. Jesse brings the vision. Together we design it.</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-left">
+          <div class="phase-when">2027 — Ongoing</div>
+          <div class="phase-role-num">III</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-label">Phase Three</div>
+          <div class="phase-title">Lead Facilitator — Inside the Room</div>
+          <div class="phase-body">Spanish fluency unlocks the bilingual room. Cultural fluency unlocks the Puerto Rico room. My background — bartender, empath, student of people — makes me a natural in front of a group. I begin facilitating sessions: a morning integration, a debrief circle, a breakout experience. The moments where real transformation happens. The ones Jesse can trust me with because I've been in the room long enough to know what they need.</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-left">
+          <div class="phase-when">2028 +</div>
+          <div class="phase-role-num">IV</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-label">Phase Four</div>
+          <div class="phase-title">Growth House Architect — The Brand Scales</div>
+          <div class="phase-body">Growth House is no longer one event. It's a methodology. A curriculum. A network. DVN Concierge is the operational infrastructure. The immersion events are the front door. I'm the person who knows how both work — because I built them. Jesse and I are co-architects of something that outlasts either of our individual roles in it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT JESSE GETS -->
+  <div class="section">
+    <div class="sec-label">The partnership — what I bring Jesse</div>
+    <div class="sec-title">What Jesse gets<br><em>from building with me.</em></div>
+    <p class="sec-body">Jesse is the visionary. The relationships. The room. My job is to take whatever Jesse sees and build the architecture that makes it real — operationally, experientially, and sustainably. Every great visionary needs a builder. I'm learning to be both.</p>
+    <div class="bring-grid">
+      <div class="bring-col">
+        <div class="bring-label">Operations</div>
+        <div class="bring-title">Nothing falls through</div>
+        <div class="bring-body">Venue, vendors, logistics, team, run of show — owned completely. Jesse never has to think about execution. It's handled before it's asked about.</div>
+      </div>
+      <div class="bring-col dark">
+        <div class="bring-label">Participant Experience</div>
+        <div class="bring-title">The feeling is designed</div>
+        <div class="bring-body">I track how people move through the event — energy, engagement, friction points. That intelligence feeds directly back into how we design the next one.</div>
+      </div>
+      <div class="bring-col">
+        <div class="bring-label">Network + DVN</div>
+        <div class="bring-title">The system keeps working</div>
+        <div class="bring-body">DVN Concierge serves the same people who attend Growth House. Ken's network are the clients. The immersion is the brand. Everything feeds everything.</div>
+      </div>
+    </div>
+    <div class="declaration">
+      <p>I'm not asking Jesse to trust me with more. I'm showing up prepared for more — and letting the work make the case. <em>The event that runs perfectly is the pitch. The facilitation that lands is the audition. The system that keeps improving is the equity stake.</em></p>
+    </div>
+  </div>
+
+  <!-- WHAT I'M BUILDING IN MYSELF -->
+  <div class="section">
+    <div class="sec-label">What I'm building in myself to grow into this</div>
+    <div class="sec-title">The skills that make<br><em>Phase Four inevitable.</em></div>
+    <p class="sec-body">You don't earn a Co-Architect role by waiting for it. You earn it by building everything it requires before anyone asks. These are the four pillars I'm actively developing — and they all feed the Growth House arc directly.</p>
+    <div class="skills-grid">
+      <div class="skill-block green">
+        <div class="skill-tag">Language</div>
+        <div class="skill-name">Spanish Fluency</div>
+        <div class="skill-sub">10 hrs / week minimum</div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Puerto Rico immersion accelerates this daily</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Bartending in Condado — lived practice nightly</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Target: bilingual facilitation by 2027</span></div>
+      </div>
+      <div class="skill-block dark">
+        <div class="skill-tag">Facilitation</div>
+        <div class="skill-name">Leading Rooms</div>
+        <div class="skill-sub">Active study</div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Unreasonable Hospitality — how to make people feel seen</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Session design: arc, energy, silence, integration</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Every Growth House event is a live classroom</span></div>
+      </div>
+      <div class="skill-block accent">
+        <div class="skill-tag">Hospitality</div>
+        <div class="skill-name">High-Touch<br>Service</div>
+        <div class="skill-sub">Baked into my background</div>
+        <div class="skill-item"><div class="skill-dot"></div><span>7 years reading rooms, adjusting in real-time</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span>OUPV captain's license — water experiences</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span>DVN Concierge model is hospitality at scale</span></div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-tag">Systems</div>
+        <div class="skill-name">Event Architecture</div>
+        <div class="skill-sub">Building the playbook</div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Cocktail Night Bible already exists and works</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Event Experience OS — master document, living</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span>Every event adds a chapter to the methodology</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE PLAYBOOK -->
+  <div class="section">
+    <div class="sec-label">The methodology — what already exists</div>
+    <div class="sec-title">The playbook is<br><em>already being written.</em></div>
+    <p class="sec-body">The documents exist. The systems work. The framework is being tested in real events with real people. By the time Phase Three arrives, the methodology isn't theoretical — it's documented, proven, and ready to scale.</p>
+    <div class="playbook-row">
+      <div class="pb-col">
+        <div class="pb-col-label">Document · Operations</div>
+        <div class="pb-col-title">Cocktail Night Bible</div>
+        <div class="pb-col-body">The complete run of show for the cocktail night format — timed reveals, room energy management, host notes, logistics. The template that makes every event repeatable.</div>
+      </div>
+      <div class="pb-col">
+        <div class="pb-col-label">Document · Strategy</div>
+        <div class="pb-col-title">Event Experience OS</div>
+        <div class="pb-col-body">The strategic brain behind both productions. Two-production model, split venue concept, energy philosophy, group analysis, top improvements. Living document updated after every event.</div>
+      </div>
+      <div class="pb-col">
+        <div class="pb-col-label">Document · Intelligence</div>
+        <div class="pb-col-title">Strategic Analysis</div>
+        <div class="pb-col-body">8 gaps identified, 3 priority moves, the integrity line, the energy map. Eight conversation threads for Jesse, Ken, and Zach. Built from all source materials and the April 23 debrief.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <span class="pg-footer-text">Deryl VanNostrand · The Growth House Architecture · Document 02 · Confidential</span>
+    <a class="pg-footer-link" href="index.html">← Back to Overview</a>
+  </div>
+</div>
+</body>
+</html>

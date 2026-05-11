@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Intersection — Deryl VanNostrand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;scroll-behavior:smooth;}
+:root{
+  --fire:#e84c00;--ember:#ff7b35;--gold:#c9973a;
+  --ink:#1a1510;--bg:#0f0d0a;
+  --paper:#faf7f0;--paper2:#f0ead8;
+  --muted:#6b6355;--muted2:#8a7f6e;
+  --rule:#d4c9a8;--rule2:#e0d8c4;
+}
+body{background:#e0d8c8;color:var(--ink);font-family:'Barlow',sans-serif;font-weight:400;line-height:1.6;padding:40px 20px 80px;}
+.page{width:100%;max-width:860px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);box-shadow:0 8px 48px rgba(0,0,0,0.14);position:relative;overflow:hidden;}
+.page::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--fire),var(--gold),var(--ember),var(--fire));}
+.back-nav{padding:16px 48px;background:var(--bg);display:flex;align-items:center;gap:12px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted2);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color 0.15s;}
+.back-link:hover{color:var(--ember);}
+.back-link::before{content:'←';}
+.back-divider{font-size:9px;color:rgba(212,201,168,0.2);}
+.back-current{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ember);}
+.cover{background:var(--bg);padding:56px 60px 44px;position:relative;overflow:hidden;}
+.cover::after{content:'03';position:absolute;right:-10px;bottom:-20px;font-family:'Playfair Display',serif;font-size:220px;font-weight:900;color:rgba(255,123,53,0.04);line-height:1;pointer-events:none;}
+.cover-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--ember);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.cover-eyebrow::before{content:'';width:28px;height:2px;background:var(--ember);}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(40px,5.5vw,64px);font-weight:900;color:#f0ead8;line-height:0.95;letter-spacing:-0.02em;margin-bottom:8px;}
+.cover-title em{font-style:italic;color:var(--ember);}
+.cover-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(240,234,216,0.4);margin-bottom:40px;}
+.cover-meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;}
+.cover-meta-cell{padding:0 20px 0 0;}
+.cover-meta-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:4px;}
+.cover-meta-value{font-size:13px;font-weight:500;color:rgba(255,255,255,0.75);}
+.section{padding:36px 60px;border-bottom:1px solid var(--rule2);}
+.section:last-child{border-bottom:none;}
+.sec-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--ember);display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--rule2);}
+.sec-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:16px;line-height:1.15;letter-spacing:-0.01em;}
+.sec-title em{font-style:italic;color:var(--ember);}
+.sec-body{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;}
+.sec-body strong{color:var(--ink);font-weight:600;}
+.declaration{background:linear-gradient(135deg,#1a1510,#1f180a);padding:24px 28px;border-left:4px solid var(--ember);margin:16px 0;}
+.declaration p{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(240,234,216,0.82);line-height:1.65;}
+.declaration p em{color:var(--gold);}
+
+/* VENN DIAGRAM - text based */
+.venn-wrap{margin:24px 0;}
+.venn-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;background:var(--rule);border:1px solid var(--rule);}
+.venn-col{background:var(--paper2);padding:28px 24px;}
+.venn-col.center-col{background:var(--bg);padding:28px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.venn-col-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:8px;}
+.venn-col:first-child .venn-col-label{color:var(--fire);}
+.venn-col.center-col .venn-col-label{color:var(--ember);}
+.venn-col:last-child .venn-col-label{color:var(--gold);}
+.venn-col-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:16px;}
+.venn-col.center-col .venn-col-title{color:#f0ead8;font-size:22px;}
+.venn-item{font-size:12px;color:var(--muted);padding:6px 0;border-bottom:1px solid rgba(212,201,168,0.3);line-height:1.5;display:flex;gap:8px;}
+.venn-item:last-child{border-bottom:none;}
+.venn-item::before{content:'·';color:var(--muted2);flex-shrink:0;}
+.venn-center-item{font-size:11px;color:var(--muted2);padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.5;}
+.venn-center-item:last-child{border-bottom:none;}
+
+/* FLYWHEEL DIAGRAM */
+.flywheel{margin:16px 0;}
+.fw-row{display:grid;grid-template-columns:1fr 40px 1fr 40px 1fr;align-items:center;gap:0;margin-bottom:2px;}
+.fw-box{background:var(--paper2);border:1px solid var(--rule);padding:20px 18px;text-align:center;}
+.fw-box.dark{background:var(--bg);}
+.fw-box-label{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;}
+.fw-box:nth-child(1) .fw-box-label{color:var(--fire);}
+.fw-box:nth-child(3) .fw-box-label,.fw-box.dark .fw-box-label{color:var(--ember);}
+.fw-box:nth-child(5) .fw-box-label{color:var(--gold);}
+.fw-box-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--ink);line-height:1.2;}
+.fw-box.dark .fw-box-name{color:#f0ead8;}
+.fw-arrow{text-align:center;font-size:20px;color:rgba(212,201,168,0.35);}
+.fw-detail{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);border-top:none;margin-bottom:16px;}
+.fw-detail-col{background:var(--paper);padding:18px 20px;}
+.fw-detail-label{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;}
+.fw-detail-col:nth-child(1) .fw-detail-label{color:var(--fire);}
+.fw-detail-col:nth-child(2) .fw-detail-label{color:var(--ember);}
+.fw-detail-col:nth-child(3) .fw-detail-label{color:var(--gold);}
+.fw-detail-item{font-size:11px;color:var(--muted);padding:5px 0;border-bottom:1px solid var(--rule2);line-height:1.5;display:flex;gap:6px;}
+.fw-detail-item:last-child{border-bottom:none;}
+.fw-detail-item::before{content:'→';color:var(--muted2);font-size:9px;flex-shrink:0;margin-top:2px;}
+
+/* ROLE CLARITY */
+.role-box{background:var(--bg);padding:40px 48px;margin:16px 0;border-left:4px solid var(--ember);}
+.role-box-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:var(--ember);margin-bottom:12px;}
+.role-box-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#f0ead8;margin-bottom:16px;line-height:1.15;letter-spacing:-0.01em;}
+.role-box-title em{font-style:italic;color:var(--gold);}
+.role-box-body{font-size:14px;color:var(--muted2);line-height:1.8;margin-bottom:24px;}
+.role-items{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.04);}
+.role-item{background:rgba(255,255,255,0.02);padding:16px 20px;}
+.role-item-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--ember);margin-bottom:6px;}
+.role-item-text{font-size:12px;color:var(--muted2);line-height:1.6;}
+
+/* TIMELINE - the build */
+.build-timeline{margin:16px 0;}
+.bt-item{display:grid;grid-template-columns:120px 1fr;gap:0;border-bottom:1px solid var(--rule2);}
+.bt-item:last-child{border-bottom:none;}
+.bt-left{padding:20px 20px 20px 0;border-right:2px solid var(--ember);}
+.bt-when{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ember);line-height:1.4;margin-bottom:4px;}
+.bt-who{font-size:10px;color:var(--muted);font-style:italic;}
+.bt-right{padding:20px 0 20px 24px;}
+.bt-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.bt-body{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* NORTH STAR */
+.north-star-box{background:linear-gradient(135deg,#1a0e04,#0f0a04);padding:40px 48px;border-left:4px solid var(--fire);}
+.ns-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--fire);margin-bottom:12px;}
+.ns-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:rgba(240,234,216,0.85);line-height:1.5;margin-bottom:16px;}
+.ns-body{font-size:13px;color:var(--muted2);line-height:1.75;}
+.ns-body em{color:var(--gold);font-style:italic;}
+
+.pg-footer{background:var(--bg);padding:16px 60px;display:flex;justify-content:space-between;align-items:center;}
+.pg-footer-text{font-family:'Barlow Condensed',sans-serif;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);}
+.pg-footer-link{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--ember);text-decoration:none;}
+.pg-footer-link:hover{color:var(--gold);}
+
+@media(max-width:700px){
+  body{padding:20px 12px 60px;}
+  .cover,.section{padding-left:24px;padding-right:24px;}
+  .back-nav{padding:14px 24px;}
+  .cover-meta{grid-template-columns:1fr 1fr;}
+  .venn-grid{grid-template-columns:1fr;}
+  .fw-row{grid-template-columns:1fr;gap:4px;}
+  .fw-arrow{transform:rotate(90deg);}
+  .fw-detail,.role-items,.bt-item{grid-template-columns:1fr;}
+  .bt-item{grid-template-columns:80px 1fr;}
+  .role-box{padding:24px 20px;}
+  .north-star-box{padding:28px 24px;}
+  .pg-footer{padding:14px 24px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="back-nav">
+    <a class="back-link" href="index.html">Life Architecture</a>
+    <span class="back-divider">·</span>
+    <span class="back-current">Document 03 — The Intersection</span>
+  </div>
+
+  <div class="cover">
+    <div class="cover-eyebrow">Document 03 · The Intersection</div>
+    <div class="cover-title">The <em>Flywheel.</em></div>
+    <div class="cover-sub">Where Ken and Growth House meet — and why building them together is more powerful than either alone.</div>
+    <div class="cover-meta">
+      <div class="cover-meta-cell"><div class="cover-meta-label">Ken's World</div><div class="cover-meta-value">9-Fig. Network</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">Growth House</div><div class="cover-meta-value">The Methodology</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">DVN Concierge</div><div class="cover-meta-value">The Business</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">The Long Arc</div><div class="cover-meta-value">Young Men</div></div>
+    </div>
+  </div>
+
+  <!-- WHERE THEY MEET -->
+  <div class="section">
+    <div class="sec-label">The overlap</div>
+    <div class="sec-title">Not three worlds.<br><em>One fellowship.</em></div>
+    <p class="sec-body">Ken and Growth House look like separate tracks. They're not. They are the individual and community expressions of the same thing — Fellowship of Minds. The specific, rare middle ground between human depth and AI capability. Where the technology extends genuine presence rather than replacing it. Where alignment is the product, not the service.<br><br>The person who sits at the center of all three levels isn't an assistant or a co-producer. They're the architect of the infrastructure that makes positive-sum human development possible — at the individual level with Ken, at the community level with the Immersion, and at the generational level with the young men who will one day inherit what the fellowship learned.</p>
+    <div class="venn-wrap">
+      <div class="venn-grid">
+        <div class="venn-col">
+          <div class="venn-col-label">Ken's World</div>
+          <div class="venn-col-title">9-Figure Network</div>
+          <div class="venn-item">Act 60 community in Puerto Rico</div>
+          <div class="venn-item">Investors, entrepreneurs, $100M+ exits</div>
+          <div class="venn-item">People who want to live better, not just wealthier</div>
+          <div class="venn-item">No one serving them with real intelligence</div>
+        </div>
+        <div class="venn-col center-col">
+          <div class="venn-col-label">Both Worlds</div>
+          <div class="venn-col-title">DVN<br>Concierge</div>
+          <div class="venn-center-item">Same people</div>
+          <div class="venn-center-item">Same values</div>
+          <div class="venn-center-item">Same gap</div>
+          <div class="venn-center-item">One builder</div>
+        </div>
+        <div class="venn-col">
+          <div class="venn-col-label">Growth House</div>
+          <div class="venn-col-title">The Methodology</div>
+          <div class="venn-item">High-performers seeking transformation</div>
+          <div class="venn-item">Jesse's curated community</div>
+          <div class="venn-item">Events as the front door to something deeper</div>
+          <div class="venn-item">No operational infrastructure — yet</div>
+        </div>
+      </div>
+    </div>
+    <div class="declaration">
+      <p>The lighthouse is the map. Ken is the first floor. October is the first rung. The young men's program is the beacon at the top. Every decision made right now is a brick in something that will still be standing in 2031.</em></p>
+    </div>
+  </div>
+
+  <!-- THE FLYWHEEL -->
+  <div class="section">
+    <div class="sec-label">The mechanism</div>
+    <div class="sec-title">How the flywheel<br><em>actually spins.</em></div>
+    <p class="sec-body">This isn't just a nice diagram. Each connection is a real mechanism — a warm intro, a proof of concept, a revenue stream, a credibility signal. The flywheel builds momentum every time any part of it moves.</p>
+    <div class="flywheel">
+      <div class="fw-row">
+        <div class="fw-box"><div class="fw-box-label">Ken's World</div><div class="fw-box-name">9-Figure<br>Network</div></div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-box dark"><div class="fw-box-label">Growth House</div><div class="fw-box-name">Immersion<br>Events</div></div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-box"><div class="fw-box-label">DVN Concierge</div><div class="fw-box-name">Service<br>Business</div></div>
+      </div>
+      <div class="fw-detail">
+        <div class="fw-detail-col">
+          <div class="fw-detail-label">Ken feeds Growth House</div>
+          <div class="fw-detail-item">Ken's peers = warm intros to every Act 60 holder in PR</div>
+          <div class="fw-detail-item">Ken is Client Zero — proof of concept for the methodology</div>
+          <div class="fw-detail-item">Ken's credibility opens rooms Deryl can't access alone</div>
+          <div class="fw-detail-item">Growth House events happen in Ken's backyard</div>
+        </div>
+        <div class="fw-detail-col">
+          <div class="fw-detail-label">Growth House feeds DVN</div>
+          <div class="fw-detail-item">Every attendee is a potential concierge client</div>
+          <div class="fw-detail-item">The event is the brand — DVN is the backend</div>
+          <div class="fw-detail-item">Methodology proven at events becomes productized</div>
+          <div class="fw-detail-item">Jesse's network + Ken's = DVN's entire market</div>
+        </div>
+        <div class="fw-detail-col">
+          <div class="fw-detail-label">DVN feeds Ken</div>
+          <div class="fw-detail-item">DVN revenue reduces retainer dependence over time</div>
+          <div class="fw-detail-item">Deryl's growing brand validates the partnership story</div>
+          <div class="fw-detail-item">DVN clients bring opportunities into Ken's ecosystem</div>
+          <div class="fw-detail-item">The system Ken helped build serves people like Ken</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROLE CLARITY -->
+  <div class="section">
+    <div class="sec-label">The role — precisely defined</div>
+    <div class="sec-title">The connective tissue<br><em>is a philosophy.</em></div>
+    <p class="sec-body">The person at the center of all three levels doesn't belong to any one of them. They belong to the thread that connects them — Fellowship of Minds. The belief that human connection and AI capability are not opposites. That the most powerful thing technology can do is make genuine presence more accessible, not obsolete. That grounding people in themselves, in each other, and in something larger than the transaction is the work that matters most right now.<br><br>That's not a support role. That's the infrastructure role. And it's the one being built.</p>
+    <div class="role-box">
+      <div class="role-box-label">My Role — The Intersection</div>
+      <div class="role-box-title">The person who sees<br><em>all three boards.</em></div>
+      <div class="role-box-body">Ken's world is one board. Growth House is another. DVN Concierge is a third. Most people can see one clearly. A few can manage two. The person who can run operations across all three — and recognize when a move in one creates an opportunity in another — is rare. That's the role. That's what's being built.</div>
+      <div class="role-items">
+        <div class="role-item">
+          <div class="role-item-label">In Ken's World</div>
+          <div class="role-item-text">Life Operator. The person who handles everything so Ken can focus on everything that matters. Proactive, invisible when things are working, essential when they're not.</div>
+        </div>
+        <div class="role-item">
+          <div class="role-item-label">In Growth House</div>
+          <div class="role-item-text">Co-Producer becoming Facilitator becoming Architect. Building the operational and experiential infrastructure that lets Jesse's vision scale without losing its integrity.</div>
+        </div>
+        <div class="role-item">
+          <div class="role-item-label">In DVN Concierge</div>
+          <div class="role-item-text">Founder. The business that proves the methodology can scale — and generates the financial independence that makes Phase Two possible.</div>
+        </div>
+        <div class="role-item">
+          <div class="role-item-label">Across All Three</div>
+          <div class="role-item-text">The node. The person who hears something in Ken's world and knows it matters in Growth House. Who sees something at the event and knows it's a business opportunity. Intelligence flows through this role.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE BUILD TIMELINE -->
+  <div class="section">
+    <div class="sec-label">The build — how it unfolds</div>
+    <div class="sec-title">Phase One through<br><em>Phase Four.</em></div>
+    <p class="sec-body">Each phase builds the foundation for the next. The timeline isn't rigid — it's directional. What matters is that every action taken in Phase One is doing double and triple duty across all three worlds simultaneously.</p>
+    <div class="build-timeline">
+      <div class="bt-item">
+        <div class="bt-left"><div class="bt-when">June 2026</div><div class="bt-who">Ken + Jesse</div></div>
+        <div class="bt-right"><div class="bt-title">Foundation locks in across both worlds</div><div class="bt-body">Ken's agent is live. Event Operations role begins. DVN Concierge entity forms in Puerto Rico. The three boards are all active simultaneously from day one.</div></div>
+      </div>
+      <div class="bt-item">
+        <div class="bt-left"><div class="bt-when">Oct 2026</div><div class="bt-who">All Three</div></div>
+        <div class="bt-right"><div class="bt-title">First full event cycle + first DVN clients</div><div class="bt-body">October Growth House runs cleanly. First DVN Concierge clients come from the Growth House network and Ken's introductions. The flywheel completes its first full rotation.</div></div>
+      </div>
+      <div class="bt-item">
+        <div class="bt-left"><div class="bt-when">2027</div><div class="bt-who">Jesse + DVN</div></div>
+        <div class="bt-right"><div class="bt-title">Co-Producer role + DVN scales</div><div class="bt-body">Growth House creative conversation opens up. DVN Concierge has 3–5 active retainer clients. Spanish fluency operational. First facilitation moments inside the room.</div></div>
+      </div>
+      <div class="bt-item">
+        <div class="bt-left"><div class="bt-when">2028 +</div><div class="bt-who">All Three</div></div>
+        <div class="bt-right"><div class="bt-title">The system is self-sustaining</div><div class="bt-body">DVN revenue covers personal expenses independently. Growth House Architect role is earned. Ken's case study is the proof of concept that sells DVN to every UHNW client in Ken's network. The North Star becomes legible.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NORTH STAR -->
+  <div class="section">
+    <div class="sec-label">The long game</div>
+    <div class="north-star-box">
+      <div class="ns-label">North Star</div>
+      <div class="ns-quote">"Build the skills, the money, and the character — then go back and give it."</div>
+      <div class="ns-body">Every part of this architecture points at the same thing. Ken gives access to a world Deryl couldn't reach alone. Jesse gives a platform to prove a methodology. DVN Concierge gives financial independence. The skills compound. The character is forged in the doing. <em>The intersection is where all three accelerate each other — and where the mission becomes real.</em></div>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <span class="pg-footer-text">Deryl VanNostrand · The Intersection · Document 03 · Confidential</span>
+    <a class="pg-footer-link" href="index.html">← Back to Overview</a>
+  </div>
+</div>
+</body>
+</html>

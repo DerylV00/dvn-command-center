@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ken Architecture — Deryl VanNostrand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;scroll-behavior:smooth;}
+:root{
+  --fire:#e84c00;--ember:#ff7b35;--gold:#c9973a;
+  --ink:#1a1510;--bg:#0f0d0a;
+  --paper:#faf7f0;--paper2:#f0ead8;
+  --muted:#6b6355;--muted2:#8a7f6e;
+  --rule:#d4c9a8;--rule2:#e0d8c4;
+}
+body{background:#e0d8c8;color:var(--ink);font-family:'Barlow',sans-serif;font-weight:400;line-height:1.6;padding:40px 20px 80px;}
+
+/* PAGE WRAPPER */
+.page{width:100%;max-width:860px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);box-shadow:0 8px 48px rgba(0,0,0,0.14);position:relative;overflow:hidden;}
+.page::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--fire),var(--ember),var(--gold));}
+
+/* BACK NAV */
+.back-nav{padding:16px 48px;background:var(--bg);display:flex;align-items:center;gap:12px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted2);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color 0.15s;}
+.back-link:hover{color:var(--fire);}
+.back-link::before{content:'←';}
+.back-divider{font-size:9px;color:rgba(212,201,168,0.2);}
+.back-current{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--fire);}
+
+/* COVER */
+.cover{background:var(--bg);padding:56px 60px 44px;position:relative;overflow:hidden;}
+.cover::after{content:'01';position:absolute;right:-10px;bottom:-20px;font-family:'Playfair Display',serif;font-size:220px;font-weight:900;color:rgba(232,76,0,0.04);line-height:1;pointer-events:none;}
+.cover-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--fire);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.cover-eyebrow::before{content:'';width:28px;height:2px;background:var(--fire);}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(40px,5.5vw,64px);font-weight:900;color:#f0ead8;line-height:0.95;letter-spacing:-0.02em;margin-bottom:8px;}
+.cover-title em{font-style:italic;color:var(--fire);}
+.cover-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(240,234,216,0.4);margin-bottom:40px;}
+.cover-meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;gap:0;}
+.cover-meta-cell{padding:0 20px 0 0;}
+.cover-meta-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:4px;}
+.cover-meta-value{font-size:13px;font-weight:500;color:rgba(255,255,255,0.75);}
+
+/* SECTION */
+.section{padding:36px 60px;border-bottom:1px solid var(--rule2);}
+.section:last-child{border-bottom:none;}
+.sec-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--fire);display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--rule2);}
+.sec-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:16px;line-height:1.15;letter-spacing:-0.01em;}
+.sec-title em{font-style:italic;color:var(--fire);}
+.sec-body{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;}
+.sec-body strong{color:var(--ink);font-weight:600;}
+
+/* DECLARATION */
+.declaration{background:linear-gradient(135deg,#1a1510,#1f180a);padding:24px 28px;border-left:4px solid var(--fire);margin:16px 0;}
+.declaration p{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(240,234,216,0.82);line-height:1.65;}
+.declaration p em{color:var(--ember);}
+
+/* METRICS STRIP */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin:16px 0;}
+.metric{background:var(--paper2);padding:18px 16px;text-align:center;}
+.metric-val{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;font-style:italic;color:var(--fire);line-height:1;}
+.metric-lbl{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+
+/* SCHEDULE GRID */
+.schedule-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin:16px 0;}
+.sched-block{background:var(--paper);padding:22px 24px;}
+.sched-block.dark{background:var(--bg);}
+.sched-block.accent{background:linear-gradient(135deg,#1a0e04,#241508);}
+.sched-block.green{background:#1a2e1a;}
+.sched-tag{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--fire);margin-bottom:8px;}
+.sched-block.dark .sched-tag{color:var(--ember);}
+.sched-block.accent .sched-tag{color:var(--gold);}
+.sched-block.green .sched-tag{color:#6ab46a;}
+.sched-day{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:14px;}
+.sched-block.dark .sched-day,.sched-block.accent .sched-day,.sched-block.green .sched-day{color:#f0ead8;}
+.time-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;margin-top:12px;}
+.sched-block.dark .time-label{color:var(--muted2);}
+.time-item{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--muted);line-height:1.5;padding:3px 0;}
+.sched-block.dark .time-item,.sched-block.accent .time-item,.sched-block.green .time-item{color:var(--muted2);}
+.time-dot{width:4px;height:4px;background:var(--fire);border-radius:50%;flex-shrink:0;margin-top:5px;}
+.sched-block.dark .time-dot{background:var(--ember);}
+.sched-block.accent .time-dot{background:var(--gold);}
+.sched-block.green .time-dot{background:#6ab46a;}
+
+/* TIMELINE */
+.timeline{margin:16px 0;}
+.tl-item{display:grid;grid-template-columns:100px 1fr;gap:0;border-bottom:1px solid var(--rule2);}
+.tl-item:last-child{border-bottom:none;}
+.tl-left{padding:20px 20px 20px 0;border-right:1px solid var(--rule2);}
+.tl-when{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--fire);line-height:1.4;}
+.tl-right{padding:20px 0 20px 24px;}
+.tl-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.tl-body{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* SESSION BOX */
+.session-box{border:1px solid var(--rule);margin:16px 0;}
+.session-header{background:var(--bg);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.session-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#f0ead8;}
+.session-tag{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--fire);border:1px solid rgba(232,76,0,0.3);padding:3px 10px;}
+.session-body{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.session-col{padding:20px 24px;}
+.session-col:first-child{border-right:1px solid var(--rule2);}
+.session-col-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.session-item{font-size:12px;color:var(--muted);padding:5px 0;border-bottom:1px solid var(--rule2);display:flex;gap:8px;line-height:1.5;}
+.session-item:last-child{border-bottom:none;}
+.session-dot{width:4px;height:4px;background:var(--fire);border-radius:50%;flex-shrink:0;margin-top:5px;}
+
+/* POC ROW */
+.poc-row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:0;margin:16px 0;}
+.poc-box{background:var(--paper2);border:1px solid var(--rule);padding:20px;text-align:center;}
+.poc-box.center{background:var(--bg);}
+.poc-label{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--fire);margin-bottom:6px;}
+.poc-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.2;}
+.poc-box.center .poc-title{color:#f0ead8;}
+.poc-body{font-size:11px;color:var(--muted);line-height:1.55;}
+.poc-box.center .poc-body{color:var(--muted2);}
+.poc-arrow{text-align:center;padding:0 8px;font-size:18px;color:var(--rule);}
+
+/* TRACKING GRID */
+.track-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin:16px 0;}
+.track-col{background:var(--paper);padding:20px 22px;}
+.track-col.highlight{background:var(--bg);}
+.track-col-label{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.track-col.highlight .track-col-label{color:var(--muted2);}
+.track-col-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:12px;}
+.track-col.highlight .track-col-name{color:#f0ead8;}
+.track-col-sub{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:var(--fire);margin-bottom:10px;}
+.track-item{font-size:11px;color:var(--muted);line-height:1.5;padding:3px 0;border-bottom:1px solid var(--rule2);}
+.track-col.highlight .track-item{color:var(--muted2);border-bottom-color:rgba(255,255,255,0.05);}
+.track-item:last-child{border-bottom:none;}
+
+/* PAGE FOOTER */
+.pg-footer{background:var(--bg);padding:16px 60px;display:flex;justify-content:space-between;align-items:center;}
+.pg-footer-text{font-family:'Barlow Condensed',sans-serif;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);}
+.pg-footer-link{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--fire);text-decoration:none;}
+.pg-footer-link:hover{color:var(--ember);}
+
+@media(max-width:700px){
+  body{padding:20px 12px 60px;}
+  .cover,.section{padding-left:24px;padding-right:24px;}
+  .back-nav{padding:14px 24px;}
+  .cover-meta{grid-template-columns:1fr 1fr;}
+  .metrics{grid-template-columns:1fr 1fr;}
+  .schedule-grid,.session-body,.poc-row{grid-template-columns:1fr;}
+  .poc-arrow{transform:rotate(90deg);}
+  .session-col:first-child{border-right:none;border-bottom:1px solid var(--rule2);}
+  .track-grid{grid-template-columns:1fr;}
+  .tl-item{grid-template-columns:80px 1fr;}
+  .pg-footer{padding:14px 24px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="back-nav">
+    <a class="back-link" href="index.html">Life Architecture</a>
+    <span class="back-divider">·</span>
+    <span class="back-current">Document 01 — Ken</span>
+  </div>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eyebrow">Document 01 · The Ken Architecture</div>
+    <div class="cover-title">Life <em>Operator.</em></div>
+    <div class="cover-sub">The operating manual for Phase One — live from June 1st, 2026.</div>
+    <div class="cover-meta">
+      <div class="cover-meta-cell"><div class="cover-meta-label">Rate</div><div class="cover-meta-value">$5,000 / month</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">Starts</div><div class="cover-meta-value">June 1, 2026</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">Location</div><div class="cover-meta-value">Puerto Rico</div></div>
+      <div class="cover-meta-cell"><div class="cover-meta-label">Term</div><div class="cover-meta-value">Indefinite</div></div>
+    </div>
+  </div>
+
+  <!-- DECLARATION -->
+  <div class="section">
+    <div class="sec-label">What I'm stepping into</div>
+    <div class="sec-title">This isn't a role<br><em>I'm applying for.</em></div>
+    <p class="sec-body">This is a structure I've thought through, designed, and am committing to. I'm not showing up to ask what Ken needs. I'm showing up with a clear picture of what I'm going to do, how the week runs, what gets built, and what Ken can count on from me — starting before I even land.</p>
+    <div class="declaration">
+      <p>Atlas was built before arrival — loaded with Ken's LinkedIn, his books, his mental models, his personality profile. The system knew him before day one. That's not an assistant. That's a different category entirely. And it compounds every week.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="metric-val">5</div><div class="metric-lbl">days per week with Ken</div></div>
+      <div class="metric"><div class="metric-val">3</div><div class="metric-lbl">nights bartending Condado</div></div>
+      <div class="metric"><div class="metric-val">2×</div><div class="metric-lbl">monthly growth sessions</div></div>
+      <div class="metric"><div class="metric-val">∞</div><div class="metric-lbl">data logged to the agent</div></div>
+    </div>
+  </div>
+
+  <!-- WEEKLY STRUCTURE -->
+  <div class="section">
+    <div class="sec-label">The weekly architecture</div>
+    <div class="sec-title">Every part of the week<br><em>is working.</em></div>
+    <p class="sec-body">Monday through Friday is dedicated to Ken. Thursday through Saturday nights I'm bartending in Condado — but that's not a side hustle. That's intelligence gathering inside the exact network Ken runs with. Every part of the week feeds the mission.</p>
+    <div class="schedule-grid">
+      <div class="sched-block">
+        <div class="sched-tag">Mon – Fri · Morning</div>
+        <div class="sched-day">Body &amp;<br>Nutrition</div>
+        <div class="time-label">Cooking &amp; nutrition</div>
+        <div class="time-item"><div class="time-dot"></div><span>Meal prep for the day, macro-tracked</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Supplement protocol managed</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Grocery planning and ordering</span></div>
+        <div class="time-label">Training together</div>
+        <div class="time-item"><div class="time-dot"></div><span>Strength, mobility, conditioning</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Hip mobility &amp; intentional movement</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Energy &amp; readiness logged to agent</span></div>
+      </div>
+      <div class="sched-block dark">
+        <div class="sched-tag">Mon – Fri · Daytime</div>
+        <div class="sched-day">Ops &amp;<br>Logistics</div>
+        <div class="time-label">House &amp; project management</div>
+        <div class="time-item"><div class="time-dot"></div><span>Point of contact for all contractors</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Renovation progress tracked &amp; reported</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Weekly status update to Ken — clean, concise</span></div>
+        <div class="time-label">Operations</div>
+        <div class="time-item"><div class="time-dot"></div><span>Errands, vendor calls, scheduling</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Cleaning &amp; home environment</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Anything that costs Ken cognitive energy</span></div>
+      </div>
+      <div class="sched-block green">
+        <div class="sched-tag">Daily · Embedded</div>
+        <div class="sched-day">Systems<br>Building</div>
+        <div class="time-label">Agent &amp; tracking</div>
+        <div class="time-item"><div class="time-dot"></div><span>Health logs: weight, macros, energy, clarity</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Ken's voice notes processed into Notion</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Agent learns him — pattern by pattern</span></div>
+        <div class="time-label">Feedback loop</div>
+        <div class="time-item"><div class="time-dot"></div><span>I notice — I log — I bring it to the session</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Agent surfaces patterns, I interpret them</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Ken gets insights, not more dashboards</span></div>
+      </div>
+      <div class="sched-block accent">
+        <div class="sched-tag">Thu – Sat · Strategic</div>
+        <div class="sched-day">Bartending<br>Condado</div>
+        <div class="time-label">Why this matters</div>
+        <div class="time-item"><div class="time-dot"></div><span>Act 60 crowd — Ken's exact network</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Investors, entrepreneurs, $100M+ exits</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>I become a node in Ken's network by proxy</span></div>
+        <div class="time-label">What I bring back</div>
+        <div class="time-item"><div class="time-dot"></div><span>Relationships, introductions, intelligence</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Real-time read on what this community needs</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Future clients for DVN Concierge</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENT BUILDOUT -->
+  <div class="section">
+    <div class="sec-label">The AI agent — how it gets built</div>
+    <div class="sec-title">Atlas is live.<br><em>And getting smarter.</em></div>
+    <p class="sec-body">Most people show up and ask what their employer needs. I show up with a system that already knows him. The agent gets built in the weeks Atlas was built before arrival — loaded with context, personality, mental models. When we start logging on day one, it already has a baseline.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-when">Complete —<br>June 1</div></div>
+        <div class="tl-right"><div class="tl-title">Agent built — Atlas live</div><div class="tl-body">MMP, Gene Keys, 16P, books, mental models, LinkedIn all loaded. Ken's exact words from the May calls are the first accountability anchors. Atlas is running in Telegram before day one.</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-when">June 2026<br>Live</div></div>
+        <div class="tl-right"><div class="tl-title">Live tracking begins</div><div class="tl-body">Daily logs start: weight, macros, energy (1–10), clarity (1–10), sleep quality, workout completion. Ken drops voice notes throughout the day — talking journal style. Everything processed into Notion.</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-when">Month 1</div></div>
+        <div class="tl-right"><div class="tl-title">Pattern recognition activates</div><div class="tl-body">With 30 days of data, the agent starts seeing correlations. What kinds of days produce high clarity. What drains energy. One insight delivered at the right moment — not a dashboard.</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-when">Month 2–3</div></div>
+        <div class="tl-right"><div class="tl-title">Purpose discovery layer</div><div class="tl-body">Weekly reflection prompt added — one question, voice-noted back. Agent builds a longitudinal picture. I bring synthesized patterns to the Monday session. Identity work starts happening naturally.</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-when">August —<br>October 2026</div></div>
+        <div class="tl-right"><div class="tl-title">October Immersion — the milestone</div><div class="tl-body">Ken speaks in a room of his peers. One named, honest change in one wheel dimension. Live Atlas demonstration in Telegram. Two slots offered to the right people. The Red-to-Orange move happens here.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROWTH SESSION -->
+  <div class="section">
+    <div class="sec-label">The growth session</div>
+    <div class="sec-title">Every two weeks.<br><em>One hour. I direct it.</em></div>
+    <p class="sec-body">This is not a status update. Biweekly sessions force depth — you only come if you have something real. I run these. I prepare them. I bring what I've noticed in the data, in the house, in the patterns. Ken responds. We calibrate. This is where the mentorship compounds.</p>
+    <div class="session-box">
+      <div class="session-header">
+        <div class="session-title">The Biweekly Growth Session — Structure</div>
+        <div class="session-tag">1 Hour · I Direct</div>
+      </div>
+      <div class="session-body">
+        <div class="session-col">
+          <div class="session-col-label">What I bring</div>
+          <div class="session-item"><div class="session-dot"></div>Health &amp; energy pattern summary from the agent</div>
+          <div class="session-item"><div class="session-dot"></div>3 things I noticed in how Ken operates this week</div>
+          <div class="session-item"><div class="session-dot"></div>House &amp; ops update — what's moving, what's blocked</div>
+          <div class="session-item"><div class="session-dot"></div>One question I want to go deeper on with him</div>
+          <div class="session-item"><div class="session-dot"></div>My own growth — what I'm working on, what's hard</div>
+        </div>
+        <div class="session-col">
+          <div class="session-col-label">What we decide</div>
+          <div class="session-item"><div class="session-dot"></div>Priority shifts for the next two weeks</div>
+          <div class="session-item"><div class="session-dot"></div>Anything Ken wants to add to the agent / system</div>
+          <div class="session-item"><div class="session-dot"></div>Feedback on what's working, what to adjust</div>
+          <div class="session-item"><div class="session-dot"></div>One thing Ken wants to explore or experiment with</div>
+          <div class="session-item"><div class="session-dot"></div>Where I'm growing into more responsibility</div>
+        </div>
+      </div>
+    </div>
+    <div class="declaration">
+      <p>Weekly would turn this into a check-in. Biweekly makes it a <em>session worth preparing for.</em> There's enough time between them to have something real to bring. That's where growth actually compounds — not in frequency, but in depth.</p>
+    </div>
+  </div>
+
+  <!-- WHAT KEN GETS -->
+  <div class="section">
+    <div class="sec-label">What Ken gets from this</div>
+    <div class="sec-title">A system that knows him.<br><em>A person who notices.</em></div>
+    <p class="sec-body">The AI is the memory. I'm the judgment. Together, they give Ken something he's never had — a continuous, intelligent feedback loop that tracks where he is, surfaces what matters, and helps him move intentionally toward who he wants to become next.</p>
+    <div class="poc-row">
+      <div class="poc-box"><div class="poc-label">Month 1–2</div><div class="poc-title">Foundation locks in</div><div class="poc-body">Friction gone. Food, training, home, contractors — all owned by me. Ken's headspace is clear. Agent is live and learning.</div></div>
+      <div class="poc-arrow">→</div>
+      <div class="poc-box center"><div class="poc-label">Month 3–4</div><div class="poc-title">Patterns emerge</div><div class="poc-body">Thirty-plus days of data. The agent sees correlations Ken can't see himself. Biweekly sessions go deeper. Purpose questions surface naturally.</div></div>
+      <div class="poc-arrow">→</div>
+      <div class="poc-box"><div class="poc-label">Month 5–6</div><div class="poc-title">Clarity compounds</div><div class="poc-body">Ken has a longitudinal record of who he is, what energizes him, what he's building toward. The next chapter becomes legible.</div></div>
+    </div>
+    <div class="sec-label" style="margin-top:24px;">What the agent tracks — daily</div>
+    <div class="track-grid">
+      <div class="track-col">
+        <div class="track-col-label">Physical</div>
+        <div class="track-col-name">Body &amp; Health</div>
+        <div class="track-col-sub">Oura · Garmin · Whoop</div>
+        <div class="track-item">Weight — logged daily</div>
+        <div class="track-item">Macros — tracked per meal</div>
+        <div class="track-item">HRV &amp; sleep quality</div>
+        <div class="track-item">Recovery score</div>
+        <div class="track-item">Workout completion &amp; output</div>
+      </div>
+      <div class="track-col highlight">
+        <div class="track-col-label">Mental &amp; Emotional</div>
+        <div class="track-col-name">Energy &amp; Clarity</div>
+        <div class="track-col-sub">Voice notes · Daily log</div>
+        <div class="track-item">Energy level — 1 to 10, daily</div>
+        <div class="track-item">Mental clarity — 1 to 10, daily</div>
+        <div class="track-item">Voice notes as talking journal</div>
+        <div class="track-item">Weekly reflection prompt</div>
+        <div class="track-item">What lit him up vs. drained him</div>
+      </div>
+      <div class="track-col">
+        <div class="track-col-label">Purpose &amp; Direction</div>
+        <div class="track-col-name">Identity &amp; Growth</div>
+        <div class="track-col-sub">Notion · Biweekly sessions</div>
+        <div class="track-item">Books &amp; mental models active now</div>
+        <div class="track-item">Goals stated in his own words</div>
+        <div class="track-item">Patterns the agent surfaces</div>
+        <div class="track-item">Questions from our sessions</div>
+        <div class="track-item">Longitudinal view of who he's becoming</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY OWN ALIGNMENT -->
+  <div class="section">
+    <div class="sec-label">My own foundation</div>
+    <div class="sec-title">I track myself<br><em>while I track him.</em></div>
+    <p class="sec-body">The same system I build for Ken, I run on myself. My command center. My health logs. My agent. My own weekly Sunday debrief to Optimus. I can't be a sharp feedback loop for someone else if I'm not running one on myself. The more dialed in I am, the more I can see in him.</p>
+    <div class="schedule-grid">
+      <div class="sched-block">
+        <div class="sched-tag">Personal · Daily</div>
+        <div class="sched-day">My Own<br>Tracking</div>
+        <div class="time-label">Daily</div>
+        <div class="time-item"><div class="time-dot"></div><span>Health log: energy, clarity, macros, sleep</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Voice notes into my own agent</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>What I noticed and learned today</span></div>
+      </div>
+      <div class="sched-block dark">
+        <div class="sched-tag">Growth · Active</div>
+        <div class="sched-day">Skills I'm<br>Building</div>
+        <div class="time-label">Active development</div>
+        <div class="time-item"><div class="time-dot"></div><span>Spanish — 10hrs/week minimum</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>AI agent architecture &amp; Notion systems</span></div>
+        <div class="time-item"><div class="time-dot"></div><span>Leadership, facilitation, session design</span></div>
+      </div>
+    </div>
+    <div class="declaration">
+      <p>Ken said it himself — the tools he has don't drive behavior change, they just become noise. My job is to be the layer between the data and the decision. <em>That only works if I'm sharp, grounded, and running the same process on myself.</em></p>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <span class="pg-footer-text">Deryl VanNostrand · The Ken Architecture · Document 01 · Confidential</span>
+    <a class="pg-footer-link" href="index.html">← Back to Overview</a>
+  </div>
+</div>
+</body>
+</html>

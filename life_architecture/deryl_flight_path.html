@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DVN — Flight Path</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* BASE */
+  --bg:#0a0e1a;
+  --bg2:#0f1525;
+  --bg3:#141c2f;
+  --bg4:#1a2340;
+  --line:rgba(255,255,255,.08);
+  --line2:rgba(255,255,255,.16);
+  --ink:#eef0f8;
+  --ink2:#8b92b0;
+  --ink3:#4a5070;
+
+  /* LIGHTHOUSE FLOORS — vivid */
+  --ir:#2a2830;       --ir-t:#6b6880;
+  --red:#d63b2a;      --red-b:#ff5f4a;    --red-glow:rgba(214,59,42,.25);
+  --orange:#d4701e;   --orange-b:#ff9440;  --orange-glow:rgba(212,112,30,.2);
+  --yellow:#c49a10;   --yellow-b:#ffc738;  --yellow-glow:rgba(196,154,16,.2);
+  --green:#1a8f52;    --green-b:#3de885;   --green-glow:rgba(26,143,82,.22);
+  --teal:#0f7b8a;     --teal-b:#2dd8ea;    --teal-glow:rgba(15,123,138,.2);
+
+  /* GENIUS */
+  --blaze:#d4701e;    --blaze-b:#ff9440;
+  --gift:#1a8f52;     --gift-b:#3de885;
+  --discord:#d63b2a;  --discord-b:#ff5f4a;
+  --siddhi:#5a48cc;   --siddhi-b:#a096f0;
+
+  /* ACCENT */
+  --sage:#3de885;
+  --fire:#ff5f4a;
+}
+
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--bg);color:var(--ink);
+  font-size:14px;line-height:1.65;min-height:100vh;
+}
+
+/* ── NAV ── */
+.nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(10,14,26,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  height:54px;display:flex;align-items:center;
+  padding:0 20px;gap:16px;
+}
+.nav-brand{
+  font-family:'Syne',sans-serif;
+  font-size:18px;color:var(--sage);letter-spacing:-.01em;
+  white-space:nowrap;
+}
+.nav-tabs{display:flex;gap:2px;flex:1;justify-content:center}
+.nt{
+  padding:6px 14px;border-radius:8px;border:none;
+  background:none;color:var(--ink3);cursor:pointer;
+  font-family:'Syne',sans-serif;font-size:11px;
+  font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  transition:all .18s;white-space:nowrap;
+}
+.nt:hover{color:var(--ink2);background:var(--bg3)}
+.nt.on{color:var(--sage);background:rgba(61,232,133,.12);border:1px solid rgba(61,232,133,.2)}
+.nav-badge{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--sage);background:rgba(61,232,133,.12);
+  border:1px solid rgba(61,232,133,.22);
+  padding:4px 10px;border-radius:20px;white-space:nowrap;
+}
+
+/* ── WRAP ── */
+.wrap{max-width:800px;margin:0 auto;padding:22px 18px 80px}
+.panel{display:none}.panel.on{display:block}
+
+/* ── HERO ── */
+.hero{
+  border-radius:14px;padding:26px 28px;margin-bottom:6px;
+  background:linear-gradient(130deg,#0e2918 0%,#091f12 60%,#050f09 100%);
+  border:1px solid rgba(61,232,133,.18);
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(61,232,133,.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-bar{width:3px;min-height:40px;background:var(--sage);border-radius:2px;flex-shrink:0;margin-top:2px}
+.hero-inner{display:flex;gap:18px;align-items:flex-start}
+.hero-q{
+  font-family:'Syne',sans-serif;
+  font-size:20px;color:#e8f5ee;line-height:1.5;margin-bottom:6px;
+}
+.hero-sub{font-size:10px;color:rgba(61,232,133,.5);letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+
+/* ── KEY QUESTION ── */
+.keyq{
+  font-family:'Syne',sans-serif;
+  font-size:19px;text-align:center;
+  padding:18px 24px;margin:10px 0 22px;
+  border-radius:12px;
+  background:var(--bg2);
+  border:1px solid var(--line2);color:var(--ink);
+}
+
+/* ── SECTION LABEL ── */
+.sl{
+  font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ink3);padding:18px 0 10px;
+  display:flex;align-items:center;gap:12px;font-weight:600;
+}
+.sl::after{content:'';flex:1;height:1px;background:var(--line)}
+
+/* ── FLOOR CARDS ── */
+.fc{
+  border-radius:12px;overflow:hidden;margin-bottom:5px;cursor:pointer;
+  border:1px solid var(--line);background:var(--bg2);
+  transition:border-color .18s,transform .12s;
+}
+.fc:hover{transform:translateX(3px)}
+.fh{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.fdot{
+  width:16px;height:16px;border-radius:50%;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.15);
+}
+.fmeta{flex:1}
+.flvl{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px;font-weight:600}
+.ftitle{font-size:15px;font-weight:700;letter-spacing:-.02em}
+.ftag{
+  font-size:9px;padding:4px 11px;border-radius:20px;
+  font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+}
+.fchev{color:var(--ink3);font-size:16px;transition:transform .2s;flex-shrink:0}
+.fb{display:none;padding:2px 18px 20px;border-top:1px solid var(--line)}
+.fb.on{display:block}
+
+/* ── GRID ── */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:14px 0 10px}
+.fi{
+  background:var(--bg3);padding:13px 14px;border-radius:9px;
+  border:1px solid var(--line);
+}
+.fi-l{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;font-weight:600}
+.fi-v{font-size:12px;color:var(--ink2);line-height:1.55}
+
+/* ── BLOCKQUOTE ── */
+.bq{
+  border-left:3px solid;padding:13px 16px;
+  border-radius:0 9px 9px 0;
+  font-family:'Syne',sans-serif;
+  font-size:14px;color:var(--ink2);
+  background:var(--bg3);margin:10px 0;line-height:1.65;
+  border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+
+/* ── MOVE ITEMS ── */
+.moves{display:flex;flex-direction:column;gap:3px;margin-top:12px}
+.mi{
+  display:flex;gap:12px;padding:10px 14px;
+  background:var(--bg3);border-radius:8px;
+  border:1px solid var(--line);
+  font-size:12px;color:var(--ink2);line-height:1.55;
+  align-items:flex-start;transition:border-color .15s;
+}
+.mi:hover{border-color:var(--line2)}
+.mn{flex-shrink:0;font-weight:800;font-size:13px;margin-top:0}
+
+/* ── GENIUS CARDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:14px}
+.gc{
+  border-radius:12px;padding:20px;border:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.gc-lbl{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px;font-weight:600}
+.gc-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px}
+.gc-body{font-size:12px;color:var(--ink2);line-height:1.65}
+.gc-body strong{color:var(--ink);font-weight:700}
+
+/* ── FREQ ROW ── */
+.fq-row{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:12px 0}
+.freq{
+  padding:18px 14px;border-radius:12px;text-align:center;
+  border:1px solid transparent;
+}
+.freq-lbl{font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px;font-weight:700}
+.freq-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px}
+.freq-word{font-size:11px;line-height:1.5;opacity:.8}
+
+/* ── WIN/LOSE ── */
+.wl{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:12px 0}
+.wl-item{padding:16px;border-radius:12px;border:1px solid transparent}
+.wl-lbl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px;font-weight:700}
+
+/* ── TRIGGERS ── */
+.trigs{display:flex;flex-direction:column;gap:4px;margin-top:12px}
+.trig{
+  display:flex;gap:14px;padding:14px 16px;
+  background:var(--bg2);border:1px solid var(--line);border-radius:12px;
+  align-items:flex-start;transition:border-color .15s;
+}
+.trig:hover{border-color:var(--line2)}
+.trig-ico{font-size:20px;flex-shrink:0}
+.trig-txt{font-size:12px;color:var(--ink2);line-height:1.6}
+.trig-txt strong{color:var(--ink);font-weight:700}
+
+/* ── DAY TABS ── */
+.dtabs{display:flex;gap:4px;margin-bottom:14px;flex-wrap:wrap}
+.dt{
+  padding:7px 16px;border-radius:20px;cursor:pointer;
+  font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;
+  background:var(--bg2);border:1px solid var(--line);
+  font-family:'Syne',sans-serif;color:var(--ink3);transition:all .18s;
+}
+.dt.on{background:var(--sage);color:#071a0e;border-color:var(--sage)}
+.dt:hover:not(.on){color:var(--ink2);border-color:var(--line2)}
+
+/* ── TIME BLOCK ── */
+.tblocks{display:flex;flex-direction:column;gap:4px}
+.tb{
+  display:flex;gap:14px;padding:13px 16px;border-radius:11px;
+  align-items:flex-start;border:1px solid var(--line);
+  background:var(--bg2);transition:border-color .15s;
+}
+.tb:hover{border-color:var(--line2)}
+.tb-t{font-size:10px;color:var(--sage);min-width:52px;padding-top:2px;font-weight:700;letter-spacing:.05em}
+.tb-name{font-size:13px;font-weight:700;margin-bottom:2px;letter-spacing:-.01em}
+.tb-d{font-size:11px;color:var(--ink3);line-height:1.5}
+.cat{
+  display:inline-block;font-size:9px;padding:3px 9px;
+  border-radius:20px;margin-top:5px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+}
+
+/* ── PULSE ── */
+.pulse-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:14px}
+.popts{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:14px}
+.po{
+  padding:13px 16px;border:1px solid var(--line);border-radius:11px;
+  cursor:pointer;font-size:12px;background:var(--bg2);
+  color:var(--ink2);text-align:left;font-family:'Syne',sans-serif;
+  transition:all .18s;line-height:1.5;font-weight:400;
+}
+.po:hover{border-color:var(--line2);color:var(--ink);background:var(--bg3)}
+.pr{
+  background:var(--bg3);border-radius:12px;padding:18px;
+  border:1px solid var(--line);display:none;
+}
+.pr-t{font-size:14px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em}
+.pr-b{font-size:12px;color:var(--ink2);line-height:1.65}
+
+/* ── VISION TIMELINE ── */
+.varc{position:relative;padding-left:30px}
+.vline{position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--line2);border-radius:1px}
+.vi{position:relative;margin-bottom:26px}
+.vdot{
+  position:absolute;left:-24px;top:6px;
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 4px rgba(10,14,26,.8);
+}
+.vdi{width:8px;height:8px;border-radius:50%}
+.vhor{font-size:9px;text-transform:uppercase;letter-spacing:.16em;margin-bottom:4px;font-weight:700}
+.vtitle{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px}
+.vbody{font-size:12px;color:var(--ink2);line-height:1.65}
+.vtags{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.vtag{font-size:9px;padding:3px 10px;border-radius:20px;font-weight:700;letter-spacing:.04em}
+
+/* ── MASTERMIND ── */
+.mm{
+  border-radius:14px;padding:22px 24px;margin-top:26px;
+  background:linear-gradient(130deg,rgba(90,72,204,.18) 0%,var(--bg2) 100%);
+  border:1px solid rgba(160,150,240,.2);
+}
+.mm-l{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;font-weight:700}
+.mm-q{
+  font-family:'Syne',sans-serif;
+  font-size:16px;color:var(--ink2);line-height:1.7;
+}
+
+/* ── OPT ITEMS ── */
+.oitems{display:flex;flex-direction:column;gap:4px}
+.oi{
+  display:flex;gap:14px;padding:13px 16px;
+  background:var(--bg2);border:1px solid var(--line);border-radius:11px;
+  transition:border-color .15s;
+}
+.oi:hover{border-color:var(--line2)}
+.oi-ico{font-size:19px;flex-shrink:0;margin-top:1px}
+.oi-t{font-size:12px;color:var(--ink2);line-height:1.55}
+.oi-t strong{color:var(--ink);font-weight:700}
+.oi-f{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink3);margin-top:4px;font-weight:700}
+
+/* ── ANCHORS ── */
+.anch{
+  border-left:3px solid var(--sage);padding:12px 16px;
+  border-radius:0 9px 9px 0;
+  font-family:'Syne',sans-serif;
+  font-size:13px;color:var(--ink2);
+  background:var(--bg2);margin-bottom:4px;line-height:1.65;
+  border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.anch strong{color:var(--sage);font-style:normal;font-weight:700}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--bg2);border-top:1px solid var(--line);
+  padding:16px 24px;display:flex;justify-content:space-between;
+}
+footer span{font-size:10px;color:var(--ink3);letter-spacing:.04em;font-weight:600}
+
+@media(max-width:580px){
+  .g2,.fg,.fq-row,.wl,.popts{grid-template-columns:1fr}
+  .nav-tabs{display:none}
+  .wrap{padding:14px 12px 60px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">DVN Flight Path</div>
+  <div class="nav-tabs">
+    <button class="nt on" onclick="show('lighthouse',this)">Lighthouse</button>
+    <button class="nt" onclick="show('genius',this)">Genius</button>
+    <button class="nt" onclick="show('daily',this)">Daily Flow</button>
+    <button class="nt" onclick="show('pulse',this)">Pulse Check</button>
+    <button class="nt" onclick="show('vision',this)">The Vision</button>
+    <button class="nt" onclick="show('optimus',this)">Optimus</button>
+  </div>
+  <div class="nav-badge">Active · May 2026</div>
+</nav>
+
+<div class="wrap">
+
+<!-- ══ LIGHTHOUSE ══ -->
+<div class="panel on" id="p-lighthouse">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-bar"></div>
+      <div>
+        <div class="hero-q">"Show up fully. Stay at the edge. Find the sacred in the ordinary."</div>
+        <div class="hero-sub">Deryl VanNostrand · Blaze Genius · Gene Key 13 · Red Lighthouse · Puerto Rico 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="keyq">How can this only be done with me?</div>
+  <div class="sl">Your flight path through the lighthouse</div>
+
+  <!-- INFRARED -->
+  <div class="fc" onclick="flip('ir')" style="opacity:.65">
+    <div class="fh">
+      <div class="fdot" style="background:var(--ir-t)"></div>
+      <div class="fmeta">
+        <div class="flvl">Below visible · Victim</div>
+        <div class="ftitle" style="color:var(--ir-t)">Infrared — Negative cash flow</div>
+      </div>
+      <span class="ftag" style="background:rgba(107,104,128,.12);color:var(--ir-t)">Not here</span>
+      <span class="fchev">›</span>
+    </div>
+    <div class="fb" id="fb-ir">
+      <div class="bq" style="border-color:var(--ir-t)">The risk — not the reality. One disruption to the Ken engagement without a second client sends you here. This is why October matters and why the second client conversation starts November, not January.</div>
+      <div class="moves">
+        <div class="mi"><span class="mn" style="color:var(--ir-t)">1</span>Measure the money. Know your one number.</div>
+        <div class="mi"><span class="mn" style="color:var(--ir-t)">2</span>Commit to conduct. Serve someone already in flow.</div>
+        <div class="mi"><span class="mn" style="color:var(--ir-t)">3</span>Do your duty. Make it bigger than you.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RED — CURRENT -->
+  <div class="fc" onclick="flip('red')" style="border-color:rgba(214,59,42,.35)">
+    <div class="fh" style="background:rgba(214,59,42,.06)">
+      <div class="fdot" style="background:var(--red-b);box-shadow:0 0 10px var(--red-glow),0 0 0 3px rgba(255,95,74,.2)"></div>
+      <div class="fmeta">
+        <div class="flvl" style="color:var(--red-b)">Red · Survivor · You Are Here</div>
+        <div class="ftitle">May 2026 — The Proof of Concept</div>
+      </div>
+      <span class="ftag" style="background:var(--red-glow);color:var(--red-b)">◉ Live</span>
+      <span class="fchev" style="color:var(--red-b)">›</span>
+    </div>
+    <div class="fb on" id="fb-red">
+      <div class="fg">
+        <div class="fi" style="border-color:rgba(214,59,42,.2)"><div class="fi-l" style="color:var(--red-b)">Reality</div><div class="fi-v">One client. $5k/month. Floor stable — not yet compounding.</div></div>
+        <div class="fi" style="border-color:rgba(214,59,42,.2)"><div class="fi-l" style="color:var(--red-b)">The Trampoline</div><div class="fi-v">You can go high — but without a 2nd client, you bounce straight back.</div></div>
+        <div class="fi" style="border-color:rgba(214,59,42,.2)"><div class="fi-l" style="color:var(--red-b)">The Blaze risk</div><div class="fi-v">"Busy making connections but when you get home — alone." Know this pattern.</div></div>
+        <div class="fi" style="border-color:rgba(214,59,42,.2)"><div class="fi-l" style="color:var(--red-b)">Red ≠ Failure</div><div class="fi-v">At 26, this architecture built, before June 1st — this is exactly where you should be.</div></div>
+      </div>
+      <div class="bq" style="border-color:var(--red-b)">You are building the proof of concept that Orange requires. Ken is the ladder. October is the first rung.</div>
+      <div class="sl" style="padding-top:10px">The three steps out of Red</div>
+      <div class="moves">
+        <div class="mi" style="border-color:rgba(214,59,42,.2)"><span class="mn" style="color:var(--red-b)">1</span><div><strong style="color:var(--ink)">Pinpoint your passion</strong> — Men at the fulfillment question. You light up in rooms where something real opens up. Design everything around that moment.</div></div>
+        <div class="mi" style="border-color:rgba(214,59,42,.2)"><span class="mn" style="color:var(--red-b)">2</span><div><strong style="color:var(--ink)">Set your standards</strong> — Only work with people doing the real inner work. Every session recorded. Sunday debrief never skipped. Spanish 10hrs/week is a standard, not an aspiration.</div></div>
+        <div class="mi" style="border-color:rgba(214,59,42,.2)"><span class="mn" style="color:var(--red-b)">3</span><div><strong style="color:var(--ink)">Follow the flow</strong> — Ken's network. October Immersion. The Act 60 bartending shifts. The flow is already there. Tap it.</div></div>
+      </div>
+      <div class="sl" style="padding-top:10px">The language shift — say this instead</div>
+      <div class="moves">
+        <div class="mi"><span class="mn" style="color:var(--red-b)">✗</span><span style="color:var(--ink3)">"I'm building an AI life coaching system"</span></div>
+        <div class="mi" style="background:rgba(61,232,133,.07);border-color:rgba(61,232,133,.25)"><span class="mn" style="color:var(--sage)">✓</span><span style="color:var(--ink)">"I spent four months inside a $100M+ exit's life and produced something specific. Here's what changed."</span></div>
+        <div class="mi"><span class="mn" style="color:var(--red-b)">✗</span><span style="color:var(--ink3)">"I need clients"</span></div>
+        <div class="mi" style="background:rgba(61,232,133,.07);border-color:rgba(61,232,133,.25)"><span class="mn" style="color:var(--sage)">✓</span><span style="color:var(--ink)">"I'm taking two people from this community through the same process starting January."</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORANGE -->
+  <div class="fc" onclick="flip('orange')">
+    <div class="fh">
+      <div class="fdot" style="background:var(--orange-b)"></div>
+      <div class="fmeta">
+        <div class="flvl" style="color:var(--orange-b)">Orange · Worker</div>
+        <div class="ftitle">Target — Q1 2027</div>
+      </div>
+      <span class="ftag" style="background:var(--orange-glow);color:var(--orange-b)">Next floor</span>
+      <span class="fchev">›</span>
+    </div>
+    <div class="fb" id="fb-orange">
+      <div class="fg">
+        <div class="fi"><div class="fi-l" style="color:var(--orange-b)">What changes</div><div class="fi-v">3 clients simultaneously. No longer chasing. The ladder begins compounding.</div></div>
+        <div class="fi"><div class="fi-l" style="color:var(--orange-b)">The math</div><div class="fi-v">3 × $5k = $15k/month. Fixed costs ~$3k. Real runway begins here.</div></div>
+        <div class="fi"><div class="fi-l" style="color:var(--orange-b)">Timeline</div><div class="fi-v">October → 2 slots offered. November → onboard. Q1 2027 → Orange stable.</div></div>
+        <div class="fi"><div class="fi-l" style="color:var(--orange-b)">Blaze path</div><div class="fi-v">"Fit people into your program rather than working around them." — Hamilton</div></div>
+      </div>
+      <div class="bq" style="border-color:var(--orange-b)">Clark Kent time: cooking, cleaning, ops, bartending. Superman time: Monday sessions, AI build, methodology, Immersion prep. Know the ratio. Protect it.</div>
+    </div>
+  </div>
+
+  <!-- YELLOW -->
+  <div class="fc" onclick="flip('yellow')">
+    <div class="fh">
+      <div class="fdot" style="background:var(--yellow-b)"></div>
+      <div class="fmeta">
+        <div class="flvl" style="color:var(--yellow-b)">Yellow · Player</div>
+        <div class="ftitle">Horizon — End of 2027</div>
+      </div>
+      <span class="ftag" style="background:var(--yellow-glow);color:var(--yellow-b)">Building toward</span>
+      <span class="fchev">›</span>
+    </div>
+    <div class="fb" id="fb-yellow">
+      <div class="fg">
+        <div class="fi"><div class="fi-l" style="color:var(--yellow-b)">What changes</div><div class="fi-v">Clear identity. People find you. Atlas running with wearable data. 3–5 clients.</div></div>
+        <div class="fi"><div class="fi-l" style="color:var(--yellow-b)">The challenge</div><div class="fi-v">Everything still revolves around you. The octopus effect. You stop, the money stops.</div></div>
+      </div>
+      <div class="bq" style="border-color:var(--yellow-b)">Three steps: Identify your identity → Master your market → Monetize your moment. You stop chasing the ball. Others pass it to you.</div>
+      <div class="moves">
+        <div class="mi"><span class="mn" style="color:var(--yellow-b)">→</span>Oura API by Aug 2026 — nudges become biomarker-informed</div>
+        <div class="mi"><span class="mn" style="color:var(--yellow-b)">→</span>Calendar API by Oct 2026 — Atlas sees Ken's week before it starts</div>
+        <div class="mi"><span class="mn" style="color:var(--yellow-b)">→</span>Tier 2 remote model tested — agent daily, monthly video per client</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GREEN -->
+  <div class="fc" onclick="flip('green')">
+    <div class="fh">
+      <div class="fdot" style="background:var(--green-b)"></div>
+      <div class="fmeta">
+        <div class="flvl" style="color:var(--green-b)">Green · Performer</div>
+        <div class="ftitle">The Vision — 2028+</div>
+      </div>
+      <span class="ftag" style="background:var(--green-glow);color:var(--green-b)">Long arc</span>
+      <span class="fchev">›</span>
+    </div>
+    <div class="fb" id="fb-green">
+      <div class="bq" style="border-color:var(--green-b)">The enterprise works without you. Other facilitators trained in your methodology. Growth House as the distribution channel. The methodology has its own identity — larger than you individually.</div>
+      <div class="moves">
+        <div class="mi"><span class="mn" style="color:var(--green-b)">→</span>Methodology licensed — you provide the architecture, they provide the presence</div>
+        <div class="mi"><span class="mn" style="color:var(--green-b)">→</span>Growth House April + October as the annual synchronization rhythm</div>
+        <div class="mi"><span class="mn" style="color:var(--green-b)">→</span>Young men's program seeds here — everything learned, brought to who they were becoming</div>
+        <div class="mi"><span class="mn" style="color:var(--green-b)">→</span>Technical partner for Ken's full vision — cameras, wearables, environmental integration</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ GENIUS ══ -->
+<div class="panel" id="p-genius">
+  <div class="sl" style="padding-top:0">Your operating system</div>
+  <div class="g2">
+    <div class="gc" style="background:linear-gradient(135deg,rgba(212,112,30,.15) 0%,var(--bg2) 100%);border-color:rgba(255,148,64,.2)">
+      <div class="gc-lbl">MMP · Confirmed Aug 2023</div>
+      <div class="gc-name" style="color:var(--orange-b)">Blaze Genius</div>
+      <div class="gc-body">People smart. Summer energy. Natural question: <strong>WHO?</strong><br><br>You create leverage through <strong>magnification</strong> — not multiplication.<br><br><span style="color:var(--sage);font-weight:700">"How can this only be done with me?"</span></div>
+    </div>
+    <div class="gc" style="background:linear-gradient(135deg,rgba(26,143,82,.15) 0%,var(--bg2) 100%);border-color:rgba(61,232,133,.2)">
+      <div class="gc-lbl">Gene Key 13 · Prosperity Sequence</div>
+      <div class="gc-name" style="color:var(--green-b)">Discernment</div>
+      <div class="gc-body"><span style="color:var(--ink2);font-weight:500">"I unlock my prosperity through my Gift of Discernment. I undermine it through the Shadow of Discord."</span><br><br>The operating system underneath the Blaze genius. Not decorative — functional.</div>
+    </div>
+  </div>
+
+  <div class="sl">Gene Key 13 — the three frequencies</div>
+  <div class="fq-row">
+    <div class="freq" style="background:rgba(214,59,42,.14);border-color:rgba(255,95,74,.25)">
+      <div class="freq-lbl" style="color:var(--discord-b)">Shadow</div>
+      <div class="freq-name" style="color:var(--discord-b)">Discord</div>
+      <div class="freq-word" style="color:rgba(255,95,74,.75)">Inner fragmentation. Static instead of signal. Discernment goes offline.</div>
+    </div>
+    <div class="freq" style="background:rgba(26,143,82,.14);border-color:rgba(61,232,133,.25)">
+      <div class="freq-lbl" style="color:var(--gift-b)">Gift</div>
+      <div class="freq-name" style="color:var(--gift-b)">Discernment</div>
+      <div class="freq-word" style="color:rgba(61,232,133,.75)">Hearing beneath what's said. Feeling the shape of a conversation before it's spoken.</div>
+    </div>
+    <div class="freq" style="background:rgba(90,72,204,.14);border-color:rgba(160,150,240,.25)">
+      <div class="freq-lbl" style="color:var(--siddhi-b)">Siddhi</div>
+      <div class="freq-name" style="color:var(--siddhi-b)">Empathy</div>
+      <div class="freq-word" style="color:rgba(160,150,240,.75)">Emerges from living the lower frequencies fully. Not a goal to chase.</div>
+    </div>
+  </div>
+
+  <div class="sl">Winning vs losing formula</div>
+  <div class="wl">
+    <div class="wl-item" style="background:rgba(26,143,82,.12);border-color:rgba(61,232,133,.22)">
+      <div class="wl-lbl" style="color:var(--gift-b)">✓ Winning — Magnification</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.65">Listening at depth in the Monday session. Crafting Atlas from lived observation. Being fully present in Ken's world. Bartending as active intelligence gathering. Facilitating October Immersion.</div>
+    </div>
+    <div class="wl-item" style="background:rgba(214,59,42,.1);border-color:rgba(255,95,74,.22)">
+      <div class="wl-lbl" style="color:var(--discord-b)">✗ Losing — Calculation</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.65">3+ hours heads-down in technical build with no human contact. Trying to multiply before magnifying. Being everything to everyone. Performing presence instead of being present.</div>
+    </div>
+  </div>
+
+  <div class="sl">The four Discord triggers — know these before you hit them</div>
+  <div class="trigs">
+    <div class="trig"><div class="trig-ico">💰</div><div><div class="trig-txt"><strong>Financial anxiety.</strong> Money pressure pulls you out of presence into calculation. The numbers live in Optimus — not your head — for exactly this reason.</div></div></div>
+    <div class="trig"><div class="trig-ico">🏝️</div><div><div class="trig-txt"><strong>Isolation too long.</strong> More than 2–3 days without genuine conversation and Discord creeps in. Bartending in Condado is nervous system maintenance, not just income.</div></div></div>
+    <div class="trig"><div class="trig-ico">⚙️</div><div><div class="trig-txt"><strong>Building without a human in sight.</strong> Long technical sessions with no clear human application activate the losing formula. The Blaze flame needs to see the WHO at the end of the WHAT.</div></div></div>
+    <div class="trig"><div class="trig-ico">🎭</div><div><div class="trig-txt"><strong>Performing instead of being present.</strong> Facilitating Ken's session from behind a professional persona. The methodology only works when you're actually in it.</div></div></div>
+  </div>
+
+  <div class="bq" style="border-color:var(--sage);margin-top:14px;font-style:normal;font-family:'Syne',sans-serif;font-size:13px">The moat: Atlas without you is a journaling app. The methodology without Blaze + Gene Key 13 Discernment is generic. The combination — you, the agent, the framework, the relationship — that's what can only be done by you.</div>
+</div>
+
+<!-- ══ DAILY FLOW ══ -->
+<div class="panel" id="p-daily">
+  <div class="sl" style="padding-top:0">Your daily rhythm — 30-hour work routine</div>
+  <div class="dtabs">
+    <button class="dt on" onclick="day('mon',this)">Monday</button>
+    <button class="dt" onclick="day('tue',this)">Tuesday</button>
+    <button class="dt" onclick="day('wed',this)">Wednesday</button>
+    <button class="dt" onclick="day('thu',this)">Thursday</button>
+    <button class="dt" onclick="day('fri',this)">Friday</button>
+  </div>
+
+  <div id="d-mon" class="tblocks">
+    <div class="tb" style="background:rgba(26,143,82,.1);border-color:rgba(61,232,133,.2)"><div class="tb-t">6:00am</div><div><div class="tb-name">Train alongside Ken</div><div class="tb-d">Body first. Stairmaster, mobility, strength. Your discipline and his accountability running in parallel.</div><span class="cat" style="background:rgba(61,232,133,.18);color:var(--green-b)">Health</span></div></div>
+    <div class="tb"><div class="tb-t">7:00am</div><div><div class="tb-name">Cook + meal prep</div><div class="tb-d">Ken's nutrition runs without him thinking about it. Friction removed before 8am.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(90,72,204,.09);border-color:rgba(160,150,240,.18)"><div class="tb-t">8:00am</div><div><div class="tb-name">Reflection + visualization</div><div class="tb-d">One quiet moment before the day. Optimus morning check-in: energy, clarity, one thing on your mind.</div><span class="cat" style="background:rgba(160,150,240,.18);color:var(--siddhi-b)">Inner Life</span></div></div>
+    <div class="tb" style="background:rgba(212,112,30,.1);border-color:rgba(255,148,64,.2)"><div class="tb-t">9:00am</div><div><div class="tb-name">Ken — Monday session</div><div class="tb-d">The anchor of the engagement. Wheel baseline, weekly intention, open calibration. Record every session.</div><span class="cat" style="background:rgba(255,148,64,.18);color:var(--orange-b)">Ken · Atlas</span></div></div>
+    <div class="tb"><div class="tb-t">12:00pm</div><div><div class="tb-name">House ops + contractors</div><div class="tb-d">Primary POC for all contractors. Progress logged, issues surfaced with solutions. Ken never touches this.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(15,123,138,.1);border-color:rgba(45,216,234,.18)"><div class="tb-t">2:00pm</div><div><div class="tb-name">AI build + Atlas development</div><div class="tb-d">Max 2 hours before checking in with a human. 1hr relationship per 4hrs system — protect this ratio.</div><span class="cat" style="background:rgba(45,216,234,.18);color:var(--teal-b)">Build</span></div></div>
+    <div class="tb" style="background:rgba(196,154,16,.09);border-color:rgba(255,199,56,.18)"><div class="tb-t">4:00pm</div><div><div class="tb-name">Spanish</div><div class="tb-d">2 hours minimum. Tracked weekly toward 10hr total. Non-negotiable standard.</div><span class="cat" style="background:rgba(255,199,56,.18);color:var(--yellow-b)">Growth</span></div></div>
+  </div>
+
+  <div id="d-tue" class="tblocks" style="display:none">
+    <div class="tb" style="background:rgba(26,143,82,.1);border-color:rgba(61,232,133,.2)"><div class="tb-t">6:00am</div><div><div class="tb-name">Train</div><div class="tb-d">Alongside Ken or solo. Body first, always.</div><span class="cat" style="background:rgba(61,232,133,.18);color:var(--green-b)">Health</span></div></div>
+    <div class="tb"><div class="tb-t">7:00am</div><div><div class="tb-name">Cook + clean</div><div class="tb-d">Ken's nutrition and environment maintained without his involvement.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(90,72,204,.09);border-color:rgba(160,150,240,.18)"><div class="tb-t">8:00am</div><div><div class="tb-name">Reflection + Optimus voice note</div><div class="tb-d">Quiet before the operational day. Drop one Ken observation to Optimus.</div><span class="cat" style="background:rgba(160,150,240,.18);color:var(--siddhi-b)">Inner Life</span></div></div>
+    <div class="tb"><div class="tb-t">9:00am</div><div><div class="tb-name">Contractors + renovation</div><div class="tb-d">Full ownership. Ken receives a summary with solutions, never a problem to solve.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(15,123,138,.1);border-color:rgba(45,216,234,.18)"><div class="tb-t">12:00pm</div><div><div class="tb-name">AI build</div><div class="tb-d">Agent development. What can Atlas do that it can't yet?</div><span class="cat" style="background:rgba(45,216,234,.18);color:var(--teal-b)">Build</span></div></div>
+    <div class="tb" style="background:rgba(196,154,16,.09);border-color:rgba(255,199,56,.18)"><div class="tb-t">2:00pm</div><div><div class="tb-name">Spanish</div><div class="tb-d">Structured study and conversation practice.</div><span class="cat" style="background:rgba(255,199,56,.18);color:var(--yellow-b)">Growth</span></div></div>
+  </div>
+
+  <div id="d-wed" class="tblocks" style="display:none">
+    <div class="tb" style="background:rgba(26,143,82,.1);border-color:rgba(61,232,133,.2)"><div class="tb-t">6:00am</div><div><div class="tb-name">Train</div><div class="tb-d">Full session. Neck mobility, stairmaster, strength.</div><span class="cat" style="background:rgba(61,232,133,.18);color:var(--green-b)">Health</span></div></div>
+    <div class="tb"><div class="tb-t">7:00am</div><div><div class="tb-name">Cook + clean</div><div class="tb-d">Mid-week prep. House maintained.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(90,72,204,.09);border-color:rgba(160,150,240,.18)"><div class="tb-t">8:00am</div><div><div class="tb-name">Reflection + whiteboard</div><div class="tb-d">Brainstorm if something is alive. Dump everything. Find the pattern. Name one move.</div><span class="cat" style="background:rgba(160,150,240,.18);color:var(--siddhi-b)">Inner Life</span></div></div>
+    <div class="tb" style="background:rgba(15,123,138,.1);border-color:rgba(45,216,234,.18)"><div class="tb-t">9:00am</div><div><div class="tb-name">Deep AI build block</div><div class="tb-d">3 hours max. No human contact by noon? Stop and call someone. That's the Discord check.</div><span class="cat" style="background:rgba(45,216,234,.18);color:var(--teal-b)">Build</span></div></div>
+    <div class="tb"><div class="tb-t">12:00pm</div><div><div class="tb-name">House + handy work</div><div class="tb-d">Renovation support. Anything contractors left this week.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(196,154,16,.09);border-color:rgba(255,199,56,.18)"><div class="tb-t">2:00pm</div><div><div class="tb-name">Spanish + Ken midweek ops</div><div class="tb-d">Language practice, then any Ken tasks that emerged.</div><span class="cat" style="background:rgba(255,199,56,.18);color:var(--yellow-b)">Growth</span></div></div>
+  </div>
+
+  <div id="d-thu" class="tblocks" style="display:none">
+    <div class="tb" style="background:rgba(26,143,82,.1);border-color:rgba(61,232,133,.2)"><div class="tb-t">6:00am</div><div><div class="tb-name">Full training session</div><div class="tb-d">Bar night tonight — body needs to be ready first.</div><span class="cat" style="background:rgba(61,232,133,.18);color:var(--green-b)">Health</span></div></div>
+    <div class="tb"><div class="tb-t">7:00am</div><div><div class="tb-name">Cook + clean</div><div class="tb-d">Ken's week supported. House set.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(15,123,138,.1);border-color:rgba(45,216,234,.18)"><div class="tb-t">9:00am</div><div><div class="tb-name">AI build</div><div class="tb-d">Continue agent work. Test what Atlas surfaced this week.</div><span class="cat" style="background:rgba(45,216,234,.18);color:var(--teal-b)">Build</span></div></div>
+    <div class="tb" style="background:rgba(212,112,30,.1);border-color:rgba(255,148,64,.2)"><div class="tb-t">11:00am</div><div><div class="tb-name">Ken ops</div><div class="tb-d">Outstanding tasks. Prep Friday's Atlas reflection question for Ken.</div><span class="cat" style="background:rgba(255,148,64,.18);color:var(--orange-b)">Ken</span></div></div>
+    <div class="tb" style="background:rgba(196,154,16,.09);border-color:rgba(255,199,56,.18)"><div class="tb-t">1:00pm</div><div><div class="tb-name">Spanish + prep</div><div class="tb-d">Language practice before the shift.</div><span class="cat" style="background:rgba(255,199,56,.18);color:var(--yellow-b)">Growth</span></div></div>
+    <div class="tb" style="background:rgba(214,59,42,.1);border-color:rgba(255,95,74,.2)"><div class="tb-t">Evening</div><div><div class="tb-name">Bartending — Condado</div><div class="tb-d">Not a job. Active listening. Gene Key 13 Discernment in practice. Log one Act 60 pattern to Optimus before sleep.</div><span class="cat" style="background:rgba(255,95,74,.18);color:var(--red-b)">Network · Intel</span></div></div>
+  </div>
+
+  <div id="d-fri" class="tblocks" style="display:none">
+    <div class="tb" style="background:rgba(26,143,82,.1);border-color:rgba(61,232,133,.2)"><div class="tb-t">6:00am</div><div><div class="tb-name">Solo training</div><div class="tb-d">Ken's protected day. Your practice, your discipline.</div><span class="cat" style="background:rgba(61,232,133,.18);color:var(--green-b)">Health</span></div></div>
+    <div class="tb"><div class="tb-t">7:00am</div><div><div class="tb-name">Cook + clean</div><div class="tb-d">House prepped for the weekend.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(90,72,204,.09);border-color:rgba(160,150,240,.18)"><div class="tb-t">8:00am</div><div><div class="tb-name">Deep reflection</div><div class="tb-d">Week review. What mattered? What pattern appeared? Whiteboard photographed.</div><span class="cat" style="background:rgba(160,150,240,.18);color:var(--siddhi-b)">Inner Life</span></div></div>
+    <div class="tb" style="background:rgba(15,123,138,.1);border-color:rgba(45,216,234,.18)"><div class="tb-t">9:00am</div><div><div class="tb-name">Deep build block</div><div class="tb-d">Methodology development. Replication model. Most creative AI work of the week.</div><span class="cat" style="background:rgba(45,216,234,.18);color:var(--teal-b)">Build</span></div></div>
+    <div class="tb"><div class="tb-t">12:00pm</div><div><div class="tb-name">House + handy work</div><div class="tb-d">Renovation. Anything outstanding from contractors.</div><span class="cat" style="background:var(--bg3);color:var(--ink3)">Ops</span></div></div>
+    <div class="tb" style="background:rgba(196,154,16,.09);border-color:rgba(255,199,56,.18)"><div class="tb-t">2:00pm</div><div><div class="tb-name">Spanish push</div><div class="tb-d">End of week. Hit the 10-hour target. Optimus asks Sunday: "How many hours?"</div><span class="cat" style="background:rgba(255,199,56,.18);color:var(--yellow-b)">Growth</span></div></div>
+    <div class="tb" style="background:rgba(212,112,30,.1);border-color:rgba(255,148,64,.2)"><div class="tb-t">Auto</div><div><div class="tb-name">Atlas sends Ken his Friday reflection question</div><div class="tb-d">One question tied to his week's intention. He responds or doesn't. Atlas logs both as signal.</div><span class="cat" style="background:rgba(255,148,64,.18);color:var(--orange-b)">Ken · Atlas</span></div></div>
+  </div>
+</div>
+
+<!-- ══ PULSE CHECK ══ -->
+<div class="panel" id="p-pulse">
+  <div class="sl" style="padding-top:0">Weekly genius check</div>
+  <div class="pulse-title">In the last 48 hours, most of your time went toward...</div>
+  <div class="popts">
+    <button class="po" onclick="pulse('p1')">Building systems and agent files with no human contact</button>
+    <button class="po" onclick="pulse('p2')">Real conversations — Ken sessions, bartending, genuine exchange</button>
+    <button class="po" onclick="pulse('p3')">Logistics and operational tasks for Ken</button>
+    <button class="po" onclick="pulse('p4')">Scattered — multiple things, nothing completed</button>
+  </div>
+  <div class="pr" id="pr-p1" style="border-color:rgba(214,59,42,.35)">
+    <div class="pr-t" style="color:var(--red-b)">⚡ Losing formula risk — calculation activating</div>
+    <div class="pr-b">Blaze dims without human contact. The agent is the tool — you are the product. One conversation in the next 2 hours. The technical build is always stronger when you're in flow first.</div>
+  </div>
+  <div class="pr" id="pr-p2" style="border-color:rgba(26,143,82,.35)">
+    <div class="pr-t" style="color:var(--green-b)">✓ Winning formula — Discernment available</div>
+    <div class="pr-b">This is the genius operating. What did you hear underneath what was said? Drop it to Optimus. That observation is more valuable than any build session.</div>
+  </div>
+  <div class="pr" id="pr-p3" style="border-color:rgba(212,112,30,.35)">
+    <div class="pr-t" style="color:var(--orange-b)">→ Clark Kent time — necessary, watch the ratio</div>
+    <div class="pr-b">This is part of the engagement and it's real. The question is the weekly ratio: how much was Clark Kent vs Superman? 3+ days operational without a depth conversation — recalibrate.</div>
+  </div>
+  <div class="pr" id="pr-p4" style="border-color:rgba(214,59,42,.35)">
+    <div class="pr-t" style="color:var(--red-b)">⚡ Discord active — return to this moment</div>
+    <div class="pr-b">Scattered energy is the Discord shadow. One question: what is actually in front of you right now — not everything, just what's in front of you? Name it. Give it to Optimus. Then do the one thing.</div>
+  </div>
+
+  <div class="sl">The daily three — every morning via Telegram</div>
+  <div class="oitems">
+    <div class="oi"><div class="oi-ico">①</div><div><div class="oi-t"><strong>Energy today</strong> — 1 to 10. Not performance. The actual felt sense in your body.</div><div class="oi-f">Every morning · Telegram → Optimus</div></div></div>
+    <div class="oi"><div class="oi-ico">②</div><div><div class="oi-t"><strong>Clarity today</strong> — 1 to 10. Is Discernment available? Can you hear beneath the surface right now?</div><div class="oi-f">Every morning · feeds pattern data</div></div></div>
+    <div class="oi"><div class="oi-ico">③</div><div><div class="oi-t"><strong>One thing on your mind that shouldn't be</strong> — name it. Give it to Optimus. Once named and held, it stops living in your head rent-free.</div><div class="oi-f">Every morning · frees presence for Ken</div></div></div>
+  </div>
+
+  <div class="sl">Sunday debrief — most important 10 minutes of the week</div>
+  <div class="moves">
+    <div class="mi"><span class="mn" style="color:var(--sage)">→</span>What did you observe about Ken this week that the voice notes don't capture?</div>
+    <div class="mi"><span class="mn" style="color:var(--sage)">→</span>Your four dimensions — one sentence each: Health · Financial · Relationships · Inner Life</div>
+    <div class="mi"><span class="mn" style="color:var(--sage)">→</span>What did you learn about the methodology? What would you do differently?</div>
+    <div class="mi"><span class="mn" style="color:var(--sage)">→</span>Spanish hours this week — the number, not an estimate.</div>
+    <div class="mi"><span class="mn" style="color:var(--sage)">→</span>One thing you want Optimus to hold going into next week.</div>
+  </div>
+</div>
+
+<!-- ══ VISION ══ -->
+<div class="panel" id="p-vision">
+  <div class="sl" style="padding-top:0">The long arc — what you're actually building</div>
+  <div class="varc">
+    <div class="vline"></div>
+    <div class="vi">
+      <div class="vdot" style="border-color:var(--red-b)"><div class="vdi" style="background:var(--red-b)"></div></div>
+      <div class="vhor" style="color:var(--red-b)">Now · June 2026</div>
+      <div class="vtitle">Ken — Member 1. Puerto Rico. The proof of concept.</div>
+      <div class="vbody">Four months inside a $100M+ exit's life. The methodology running live. Atlas calibrating weekly. The only goal: by October, Ken says honestly his life is meaningfully different — and points to something specific.</div>
+      <div class="vtags">
+        <span class="vtag" style="background:var(--red-glow);color:var(--red-b)">Red → Orange</span>
+        <span class="vtag" style="background:var(--bg3);color:var(--ink3)">Ken engagement</span>
+        <span class="vtag" style="background:var(--bg3);color:var(--ink3)">Atlas live</span>
+      </div>
+    </div>
+    <div class="vi">
+      <div class="vdot" style="border-color:var(--orange-b)"><div class="vdi" style="background:var(--orange-b)"></div></div>
+      <div class="vhor" style="color:var(--orange-b)">October 2026 · Growth House Immersion</div>
+      <div class="vtitle">The presentation. The live demonstration. The invitation.</div>
+      <div class="vbody">Ken speaks — his story, his words, what changed. You show Atlas in Telegram: 60 seconds, one real nudge using his exact words. "I'm taking two people starting January. If something landed, find me before you leave." Two slots. The right people raise their hand.</div>
+      <div class="vtags">
+        <span class="vtag" style="background:var(--orange-glow);color:var(--orange-b)">October milestone</span>
+        <span class="vtag" style="background:var(--bg3);color:var(--ink3)">Wearable data integrated</span>
+      </div>
+    </div>
+    <div class="vi">
+      <div class="vdot" style="border-color:var(--orange-b)"><div class="vdi" style="background:var(--orange-b)"></div></div>
+      <div class="vhor" style="color:var(--orange-b)">Nov 2026 — 2027 · Orange Floor</div>
+      <div class="vtitle">Three clients. The methodology replicating. The ladder begins.</div>
+      <div class="vbody">Ken continues. Two new Immersion members onboarded. System runs on three people simultaneously. Tier 2 remote model tested. First permanent housing in Puerto Rico. Act 60 residency research begins.</div>
+      <div class="vtags">
+        <span class="vtag" style="background:var(--orange-glow);color:var(--orange-b)">Orange floor stable</span>
+        <span class="vtag" style="background:var(--bg3);color:var(--ink3)">$15k+/month</span>
+      </div>
+    </div>
+    <div class="vi">
+      <div class="vdot" style="border-color:var(--yellow-b)"><div class="vdi" style="background:var(--yellow-b)"></div></div>
+      <div class="vhor" style="color:var(--yellow-b)">2027 · Yellow Player</div>
+      <div class="vtitle">Clear identity. People find you. The methodology has a name.</div>
+      <div class="vbody">You stop chasing. Others pass you the ball. Growth House April and October as the synchronization rhythm. The young men's program seeds here — the long vision starts to take form.</div>
+      <div class="vtags">
+        <span class="vtag" style="background:var(--yellow-glow);color:var(--yellow-b)">Yellow player</span>
+        <span class="vtag" style="background:var(--bg3);color:var(--ink3)">Methodology has identity</span>
+      </div>
+    </div>
+    <div class="vi">
+      <div class="vdot" style="border-color:var(--green-b)"><div class="vdi" style="background:var(--green-b)"></div></div>
+      <div class="vhor" style="color:var(--green-b)">2028 · Green Performer</div>
+      <div class="vtitle">The methodology licensed. The enterprise works without you.</div>
+      <div class="vbody">Other facilitators trained in your framework. Growth House integration — methodology offered within Immersion as a formal track. Ken introduces it — not as a pitch, as a result. You become the conductor, not the player.</div>
+      <div class="vtags">
+        <span class="vtag" style="background:var(--green-glow);color:var(--green-b)">Green performer</span>
+        <span class="vtag" style="background:var(--bg3);color:var(--ink3)">Licensed methodology</span>
+      </div>
+    </div>
+    <div class="vi">
+      <div class="vdot" style="border-color:var(--teal-b)"><div class="vdi" style="background:var(--teal-b)"></div></div>
+      <div class="vhor" style="color:var(--teal-b)">5-Year Vision · The Long Arc</div>
+      <div class="vtitle">The young men. The mastermind. The legacy.</div>
+      <div class="vbody">Five years sitting with powerful men at the fulfillment question. Everything learned — taken into a room of young men at the beginning. 17, 22, 25. Building the inner life alongside the outer one before the gap opens. Speaking across the world. The lighthouse illuminating others.</div>
+      <div class="vtags">
+        <span class="vtag" style="background:var(--teal-glow);color:var(--teal-b)">Young men's events</span>
+        <span class="vtag" style="background:var(--bg3);color:var(--ink3)">Speaking globally</span>
+        <span class="vtag" style="background:var(--bg3);color:var(--ink3)">The mastermind</span>
+      </div>
+    </div>
+  </div>
+  <div class="mm">
+    <div class="mm-l">Napoleon Hill · The Mastermind Principle + Definite Chief Aim</div>
+    <div class="mm-q">"When two or more minds come together in complete harmony toward a definite chief aim — a third mind emerges, greater than either individual." The men's circle at Immersion is the medium expression. The young men's program is the long expression. The aim underneath both: help men find their depth before they lose decades living on the surface.</div>
+  </div>
+</div>
+
+<!-- ══ OPTIMUS ══ -->
+<div class="panel" id="p-optimus">
+  <div class="sl" style="padding-top:0">What Optimus sends you</div>
+  <div class="oitems">
+    <div class="oi"><div class="oi-ico">☀️</div><div><div class="oi-t"><strong>Every morning:</strong> "What is the one thing that matters most today for Ken's journey? And for your own?"</div><div class="oi-f">Daily · before the day starts</div></div></div>
+    <div class="oi"><div class="oi-ico">🔥</div><div><div class="oi-t"><strong>Blaze check:</strong> 3+ hours heads-down with no human contact — "When did you last talk to someone today?"</div><div class="oi-f">Pattern trigger</div></div></div>
+    <div class="oi"><div class="oi-ico">⚡</div><div><div class="oi-t"><strong>Discord shadow:</strong> Scattered, reactive voice notes — "What is actually in front of you right now — not everything, just what's in front of you?"</div><div class="oi-f">Pattern trigger</div></div></div>
+    <div class="oi"><div class="oi-ico">📅</div><div><div class="oi-t"><strong>Monday start:</strong> "What is the one thing that, if it happens this week, makes everything else secondary?"</div><div class="oi-f">Every Monday</div></div></div>
+    <div class="oi"><div class="oi-ico">🌿</div><div><div class="oi-t"><strong>Sunday:</strong> "How are you? Before the Ken observations — your four dimensions this week. One sentence each."</div><div class="oi-f">Weekly · before Ken observations</div></div></div>
+    <div class="oi"><div class="oi-ico">📊</div><div><div class="oi-t"><strong>Monthly:</strong> "What is meaningfully different about Ken's life? One named, honest change — not 'he's doing better.'"</div><div class="oi-f">30-day mark · the only metric that matters</div></div></div>
+    <div class="oi"><div class="oi-ico">🌙</div><div><div class="oi-t"><strong>After every bar shift:</strong> "One observation about the Act 60 community tonight. Not names — the pattern. What fulfillment question showed up?"</div><div class="oi-f">Thu/Fri · intelligence gathering</div></div></div>
+  </div>
+
+  <div class="sl">Ken's accountability anchors — Atlas holds these. His exact words.</div>
+  <div class="anch"><strong>"I want to focus more on being human</strong> rather than being a billionaire. I have ambitions to fix my personal self and life."</div>
+  <div class="anch">"Is my life <strong>meaningfully different</strong> now than it was back then? And not really."</div>
+  <div class="anch">"<strong>How does it drive actionable change</strong> — not just become another noisy signal nobody looks at?"</div>
+  <div class="anch">"The relationships in my life are <strong>the most important thing</strong> to me."</div>
+  <div class="anch">"I naturally just <strong>do stuff that's in front of me.</strong> I have the money and time to do whatever I want — so I should be doing more of those things."</div>
+  <div class="anch">"Let's make a habit — even when we're in person, <strong>let's record all the meetings</strong> so you can keep feeding it in."</div>
+
+  <div class="sl">Atlas + Optimus — the division of labor</div>
+  <div class="wl">
+    <div class="wl-item" style="background:rgba(26,143,82,.12);border-color:rgba(61,232,133,.22)">
+      <div class="wl-lbl" style="color:var(--gift-b)">Atlas — Ken's agent</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.65">Holds Ken's patterns, language, behavioral history. Delivers one nudge at the right moment using his exact words. Gets smarter every session. The memory layer.</div>
+    </div>
+    <div class="wl-item" style="background:rgba(15,123,138,.1);border-color:rgba(45,216,234,.2)">
+      <div class="wl-lbl" style="color:var(--teal-b)">Optimus — Deryl's agent</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.65">Holds Deryl's four dimensions, methodology learnings, financial baseline, Blaze flow indicators. The parallel build — same system on yourself. The integrity layer.</div>
+    </div>
+  </div>
+  <div class="bq" style="border-color:var(--ink3);font-style:normal;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--ink);margin-top:12px">The agent holds the memory. You provide the presence. That division of labor must stay clear.</div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <span>Deryl VanNostrand · Inner Circle Energy Solutions LLC · May 2026</span>
+  <span>Optimus — private</span>
+</footer>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo(0,0);
+}
+function flip(id){
+  document.getElementById('fb-'+id).classList.toggle('on');
+}
+function day(id,btn){
+  document.querySelectorAll('[id^="d-"]').forEach(d=>{d.style.display='none'});
+  const el=document.getElementById('d-'+id);
+  el.style.cssText='display:flex;flex-direction:column;gap:4px';
+  document.querySelectorAll('.dt').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+}
+function pulse(id){
+  document.querySelectorAll('.pr').forEach(r=>r.style.display='none');
+  document.getElementById('pr-'+id).style.display='block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Architecture — Deryl VanNostrand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;scroll-behavior:smooth;}
+:root{
+  --fire:#e84c00;--ember:#ff7b35;--gold:#c9973a;
+  --ink:#1a1510;--ink2:#0f0d0a;
+  --paper:#faf7f0;--paper2:#f0ead8;
+  --muted:#6b6355;--muted2:#8a7f6e;
+  --rule:#d4c9a8;--rule2:#e0d8c4;
+  --green:#4a7a4a;
+}
+body{
+  background:#111008;
+  color:var(--paper);
+  font-family:'Barlow',sans-serif;
+  font-weight:300;
+  line-height:1.7;
+  min-height:100vh;
+}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(15,13,10,0.97);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(212,201,168,0.12);
+  height:52px;display:flex;align-items:center;
+  padding:0 48px;justify-content:space-between;
+}
+.nav-brand{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:0.3em;
+  text-transform:uppercase;color:var(--fire);
+  display:flex;align-items:center;gap:10px;
+}
+.nav-brand::before{content:'';display:block;width:20px;height:2px;background:var(--fire);}
+.nav-links{display:flex;gap:0;}
+.nav-link{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--muted2);
+  text-decoration:none;padding:0 16px;height:52px;
+  display:flex;align-items:center;
+  border-bottom:2px solid transparent;
+  transition:all 0.15s;
+}
+.nav-link:hover{color:var(--paper);border-bottom-color:var(--fire);}
+
+/* ── HERO ── */
+.hero{
+  position:relative;
+  padding:100px 64px 80px;
+  max-width:1100px;margin:0 auto;
+  overflow:hidden;
+}
+.hero::before{
+  content:'DVN';
+  position:absolute;right:-40px;top:40px;
+  font-family:'Playfair Display',serif;
+  font-size:280px;font-weight:900;
+  color:rgba(232,76,0,0.04);
+  line-height:1;pointer-events:none;
+  letter-spacing:-0.05em;
+}
+.hero-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:0.35em;
+  text-transform:uppercase;color:var(--fire);
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:24px;
+  opacity:0;animation:fadeUp 0.5s 0.1s ease forwards;
+}
+.hero-eyebrow::before{content:'';width:32px;height:2px;background:var(--fire);}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(52px,7vw,88px);
+  font-weight:900;line-height:0.95;
+  letter-spacing:-0.03em;
+  color:var(--paper);margin-bottom:6px;
+  opacity:0;animation:fadeUp 0.5s 0.2s ease forwards;
+}
+.hero-title em{font-style:italic;color:var(--fire);}
+.hero-sub{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-size:20px;
+  color:rgba(240,234,216,0.45);
+  margin-bottom:48px;
+  opacity:0;animation:fadeUp 0.5s 0.3s ease forwards;
+}
+.hero-north-star{
+  background:rgba(232,76,0,0.07);
+  border-left:3px solid var(--fire);
+  padding:20px 28px;
+  max-width:680px;
+  opacity:0;animation:fadeUp 0.5s 0.4s ease forwards;
+}
+.hero-north-star-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:8px;font-weight:700;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--fire);margin-bottom:8px;
+}
+.hero-north-star-text{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-size:17px;
+  color:rgba(240,234,216,0.8);line-height:1.6;
+}
+
+/* ── DIVIDER ── */
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,var(--fire),var(--gold),rgba(212,201,168,0.15),transparent);
+  margin:0 64px;
+}
+
+/* ── SECTION LABEL ── */
+.section-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:8px;font-weight:700;letter-spacing:0.35em;
+  text-transform:uppercase;color:var(--fire);
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:32px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(212,201,168,0.12);}
+
+/* ── CARDS GRID ── */
+.cards-wrap{max-width:1100px;margin:0 auto;padding:64px 64px;}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:rgba(212,201,168,0.08);}
+
+.arch-card{
+  background:#161208;
+  padding:40px 36px;
+  text-decoration:none;
+  display:block;
+  position:relative;overflow:hidden;
+  transition:background 0.2s;
+  border-top:3px solid transparent;
+}
+.arch-card:hover{background:#1e180e;}
+.arch-card.fire{border-top-color:var(--fire);}
+.arch-card.gold{border-top-color:var(--gold);}
+.arch-card.ember{border-top-color:var(--ember);}
+
+.arch-card::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,201,168,0.08),transparent);
+}
+
+.card-num{
+  font-family:'Playfair Display',serif;
+  font-size:64px;font-weight:900;font-style:italic;
+  line-height:1;
+  margin-bottom:16px;
+  opacity:0.12;
+}
+.arch-card.fire .card-num{color:var(--fire);}
+.arch-card.gold .card-num{color:var(--gold);}
+.arch-card.ember .card-num{color:var(--ember);}
+
+.card-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:8px;font-weight:700;letter-spacing:0.28em;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.arch-card.fire .card-eyebrow{color:var(--fire);}
+.arch-card.gold .card-eyebrow{color:var(--gold);}
+.arch-card.ember .card-eyebrow{color:var(--ember);}
+
+.card-title{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;
+  color:var(--paper);line-height:1.15;
+  margin-bottom:16px;letter-spacing:-0.01em;
+}
+.card-title em{font-style:italic;}
+.arch-card.fire .card-title em{color:var(--fire);}
+.arch-card.gold .card-title em{color:var(--gold);}
+.arch-card.ember .card-title em{color:var(--ember);}
+
+.card-body{
+  font-size:13px;color:var(--muted2);
+  line-height:1.75;margin-bottom:28px;
+}
+
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;}
+.card-tag{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:8px;font-weight:700;letter-spacing:0.12em;
+  text-transform:uppercase;padding:3px 10px;
+  border:1px solid rgba(212,201,168,0.15);
+  color:var(--muted2);
+}
+
+.card-cta{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.arch-card.fire .card-cta{color:var(--fire);}
+.arch-card.gold .card-cta{color:var(--gold);}
+.arch-card.ember .card-cta{color:var(--ember);}
+.card-cta::after{
+  content:'→';
+  transition:transform 0.2s;
+}
+.arch-card:hover .card-cta::after{transform:translateX(4px);}
+
+/* ── FLYWHEEL SECTION ── */
+.flywheel-wrap{
+  max-width:1100px;margin:0 auto;
+  padding:0 64px 80px;
+}
+.flywheel-box{
+  background:#0f0d0a;
+  border:1px solid rgba(212,201,168,0.08);
+  border-top:3px solid var(--gold);
+  padding:48px 56px;
+}
+.flywheel-title{
+  font-family:'Playfair Display',serif;
+  font-size:32px;font-weight:700;
+  color:var(--paper);margin-bottom:8px;
+  letter-spacing:-0.01em;
+}
+.flywheel-title em{font-style:italic;color:var(--gold);}
+.flywheel-sub{
+  font-size:14px;color:var(--muted2);
+  line-height:1.75;max-width:680px;
+  margin-bottom:40px;
+}
+
+.flywheel-nodes{
+  display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;
+  align-items:center;gap:0;
+  margin-bottom:40px;
+}
+.fw-node{
+  background:#161208;
+  border:1px solid rgba(212,201,168,0.1);
+  padding:20px 16px;text-align:center;
+}
+.fw-node-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:7px;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;margin-bottom:6px;
+}
+.fw-node:nth-child(1) .fw-node-label{color:var(--fire);}
+.fw-node:nth-child(3) .fw-node-label{color:var(--ember);}
+.fw-node:nth-child(5) .fw-node-label{color:var(--gold);}
+.fw-node:nth-child(7) .fw-node-label{color:#6ab46a;}
+.fw-node-name{
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-weight:700;
+  color:var(--paper);line-height:1.2;
+}
+.fw-arrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;color:rgba(212,201,168,0.2);
+  text-align:center;padding:0 8px;
+}
+
+.flywheel-body{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:1px;background:rgba(212,201,168,0.08);
+}
+.fw-col{background:#0f0d0a;padding:24px 28px;}
+.fw-col-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:8px;font-weight:700;letter-spacing:0.25em;
+  text-transform:uppercase;margin-bottom:12px;
+}
+.fw-col:nth-child(1) .fw-col-label{color:var(--fire);}
+.fw-col:nth-child(2) .fw-col-label{color:var(--ember);}
+.fw-col:nth-child(3) .fw-col-label{color:var(--gold);}
+.fw-col-item{
+  font-size:12px;color:var(--muted2);
+  line-height:1.6;padding:6px 0;
+  border-bottom:1px solid rgba(212,201,168,0.05);
+  display:flex;gap:8px;align-items:flex-start;
+}
+.fw-col-item:last-child{border-bottom:none;}
+.fw-col-item::before{content:'→';color:var(--muted);font-size:10px;margin-top:2px;flex-shrink:0;}
+
+/* ── NORTH STAR FOOTER ── */
+.ns-wrap{
+  max-width:1100px;margin:0 auto;
+  padding:0 64px 80px;
+}
+.ns-box{
+  background:linear-gradient(135deg,#1a0e04,#0f0a04);
+  border-left:4px solid var(--fire);
+  padding:36px 48px;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:48px;
+}
+.ns-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:8px;font-weight:700;letter-spacing:0.3em;
+  text-transform:uppercase;color:var(--fire);margin-bottom:10px;
+}
+.ns-text{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-size:22px;
+  color:rgba(240,234,216,0.85);line-height:1.5;
+}
+.ns-date{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--muted2);
+  text-align:right;
+}
+.ns-date span{display:block;font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);font-style:italic;font-weight:400;letter-spacing:0;margin-top:4px;}
+
+/* ── FOOTER ── */
+footer{
+  background:#0a0806;border-top:1px solid rgba(212,201,168,0.08);
+  padding:20px 64px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.footer-brand{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:var(--fire);}
+.footer-meta{font-family:'Barlow Condensed',sans-serif;font-size:8px;letter-spacing:0.15em;color:var(--muted);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 24px;}
+  .hero{padding:64px 24px 48px;}
+  .divider{margin:0 24px;}
+  .cards-wrap,.flywheel-wrap,.ns-wrap{padding-left:24px;padding-right:24px;}
+  .cards-grid{grid-template-columns:1fr;}
+  .flywheel-nodes{grid-template-columns:1fr;gap:8px;}
+  .fw-arrow{transform:rotate(90deg);}
+  .flywheel-body{grid-template-columns:1fr;}
+  .ns-box{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:8px;padding:16px 24px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">DVN · Life Architecture</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#fellowship">Fellowship</a>
+    <a class="nav-link" href="#docs">Documents</a>
+    <a class="nav-link" href="#flywheel">The Flywheel</a>
+    <a class="nav-link" href="ken_architecture.html">Ken</a>
+    <a class="nav-link" href="growth_house_architecture.html">Growth House</a>
+    <a class="nav-link" href="intersection.html">Intersection</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Deryl VanNostrand · Life Architecture · Summer 2026</div>
+  <h1 class="hero-title">The <em>Architecture.</em></h1>
+  <div class="hero-sub">The philosophy, the methodology, and the path — built at the intersection of human depth and AI capability.</div>
+  <div class="hero-north-star">
+    <div class="hero-north-star-label">Fellowship of Minds · North Star</div>
+    <div class="hero-north-star-text">"Ground people in their presence, their internal intelligence, and their connection to each other — using the most capable tools available to extend the reach of genuine human touch."</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FELLOWSHIP OF MINDS -->
+<section class="cards-wrap" id="fellowship" style="padding-bottom:0;">
+  <div class="section-label">Fellowship of Minds · The Philosophy Underneath</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;">
+    <div style="background:#0f0d0a;border-left:4px solid var(--fire);padding:40px 44px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--fire);margin-bottom:16px;">The Middle Ground</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#f0ead8;line-height:1.25;margin-bottom:16px;">Human depth.<br><em>AI capability.</em><br>Neither one without the other.</div>
+      <div style="font-size:14px;color:var(--muted2);line-height:1.8;">Fellowship of Minds exists at the intersection of human presence and artificial intelligence. Not AI replacing human connection — and not resisting AI to "keep things human." The specific, rare position of someone who uses the most sophisticated tools available to extend genuine human touch, not replace it.<br><br>The agent holds the memory so that the person can be fully present. Discernment cannot be automated. The technology makes it more accessible.</div>
+    </div>
+    <div style="background:#161208;padding:40px 44px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">The Mission</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#f0ead8;line-height:1.25;margin-bottom:16px;">Ground people in themselves.<br><em>Their presence.<br>Their own intelligence.</em></div>
+      <div style="font-size:14px;color:var(--muted2);line-height:1.8;">The most powerful men have the most sophisticated tools — and still find themselves asking whether their life is meaningfully different than it was six months ago. Not because they lack information. Because they lack infrastructure for their inner life.<br><br>Fellowship of Minds builds that infrastructure. The methodology, the agent, the depth session, the community — all of it is in service of one thing: helping people come home to themselves.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-bottom:40px;">
+    <div style="background:#0f0d0a;padding:32px 36px;border-top:2px solid var(--fire);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--fire);margin-bottom:10px;">Level One · Individual</div>
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#f0ead8;margin-bottom:10px;">The Life Architecture<br><em>Methodology</em></div>
+      <div style="font-size:13px;color:var(--muted2);line-height:1.75;">One person. One agent. One weekly session. Atlas holds the memory. The life architect provides the presence. The person comes home to themselves — week by week, month by month, through lived data, not theory.</div>
+    </div>
+    <div style="background:#0f0d0a;padding:32px 36px;border-top:2px solid var(--ember);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ember);margin-bottom:10px;">Level Two · Community</div>
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#f0ead8;margin-bottom:10px;">Growth House<br><em>Immersion</em></div>
+      <div style="font-size:13px;color:var(--muted2);line-height:1.75;">The mastermind container. Men in real rooms, with real accountability, toward real aims. Napoleon Hill's third mind — what emerges when two or more minds meet in complete harmony toward a definite chief aim. Not networking. Fellowship.</div>
+    </div>
+    <div style="background:#0f0d0a;padding:32px 36px;border-top:2px solid var(--gold);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Level Three · Generational</div>
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#f0ead8;margin-bottom:10px;">The Young Men's<br><em>Program</em></div>
+      <div style="font-size:13px;color:var(--muted2);line-height:1.75;">Everything learned from sitting with powerful men at the fulfillment question — carried into rooms of young men at the beginning. So the gap never opens. So they don't arrive at 55 wondering where the decades went. The transmission.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CARDS -->
+<section class="cards-wrap" id="docs">
+
+  <!-- LIGHTHOUSE STRIP -->
+  <div style="margin-bottom:40px;">
+    <div class="section-label">The Structure · How It All Connects</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:16px;">
+      <div style="background:#0f0d0a;border:1px solid rgba(107,100,90,.2);border-radius:6px;padding:14px 12px;text-align:center;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#4a4540;margin:0 auto 7px;"></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#4a4540;margin-bottom:3px;">Infrared</div>
+        <div style="font-size:10px;color:#3a3530;line-height:1.4;">Survival. Negative cash flow.</div>
+      </div>
+      <div style="background:rgba(232,76,0,.08);border:1px solid rgba(232,76,0,.3);border-radius:6px;padding:14px 12px;text-align:center;position:relative;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#ff5f4a;margin:0 auto 7px;box-shadow:0 0 8px rgba(255,95,74,.5),0 0 0 2px rgba(255,95,74,.15);"></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#ff5f4a;margin-bottom:3px;">Red · Now</div>
+        <div style="font-size:10px;color:rgba(255,95,74,.7);line-height:1.4;">One client. Ken. The proof of concept.</div>
+        <div style="position:absolute;top:6px;right:6px;font-size:7px;background:rgba(255,95,74,.18);color:#ff5f4a;padding:1px 5px;border-radius:8px;font-weight:700;letter-spacing:.06em;">◉ HERE</div>
+      </div>
+      <div style="background:#0f0d0a;border:1px solid rgba(255,148,64,.15);border-radius:6px;padding:14px 12px;text-align:center;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#ff9440;margin:0 auto 7px;"></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#ff9440;margin-bottom:3px;">Orange · Q1 2027</div>
+        <div style="font-size:10px;color:rgba(255,148,64,.6);line-height:1.4;">3 clients. Methodology replicates.</div>
+      </div>
+      <div style="background:#0f0d0a;border:1px solid rgba(255,199,56,.1);border-radius:6px;padding:14px 12px;text-align:center;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#ffc738;margin:0 auto 7px;"></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#ffc738;margin-bottom:3px;">Yellow · 2027</div>
+        <div style="font-size:10px;color:rgba(255,199,56,.6);line-height:1.4;">Clear identity. People find you.</div>
+      </div>
+      <div style="background:#0f0d0a;border:1px solid rgba(74,122,74,.15);border-radius:6px;padding:14px 12px;text-align:center;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#4fd98a;margin:0 auto 7px;"></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#4fd98a;margin-bottom:3px;">Green · 2028+</div>
+        <div style="font-size:10px;color:rgba(79,217,138,.6);line-height:1.4;">Enterprise. Young men. Legacy.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <a href="deryl_flight_path.html" style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:#4fd98a;color:#071a0e;padding:10px 20px;border-radius:4px;text-decoration:none;">Open Full Flight Path →</a>
+      <a href="deryl_life_architecture.html" style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(232,76,0,.3);color:var(--fire);padding:10px 20px;border-radius:4px;text-decoration:none;">The Methodology →</a>
+    </div>
+  </div>
+
+  <div class="section-label">The Four Documents</div>
+  <div class="cards-grid" style="grid-template-columns:1fr 1fr;">
+
+    <!-- KEN -->
+    <a class="arch-card fire" href="ken_architecture.html">
+      <div class="card-num">01</div>
+      <div class="card-eyebrow">The Ken Architecture</div>
+      <h2 class="card-title">Life <em>Operator.</em></h2>
+      <p class="card-body">Contract executed. Engagement live June 1st. The weekly structure, the Monday depth session, the agent buildout, and what Ken gets from four months of genuine presence. The operating manual for Phase One — and the proof of concept October requires.</p>
+      <div class="card-tags">
+        <span class="card-tag">$5,000 / month</span>
+        <span class="card-tag">Live · June 2026</span>
+        <span class="card-tag">Atlas Running</span>
+        <span class="card-tag">Puerto Rico</span>
+      </div>
+      <div class="card-cta">Open Document</div>
+    </a>
+
+    <!-- GROWTH HOUSE -->
+    <a class="arch-card gold" href="growth_house_architecture.html">
+      <div class="card-num">02</div>
+      <div class="card-eyebrow">The Growth House Architecture</div>
+      <h2 class="card-title">Co-<em>Producer.</em></h2>
+      <p class="card-body">The arc alongside Jesse. From Director of Event Operations to Co-Producer to Lead Facilitator to Growth House Architect. The four phases, what's being built in parallel, and the long-game equity in the methodology.</p>
+      <div class="card-tags">
+        <span class="card-tag">Jesse</span>
+        <span class="card-tag">Apr & Oct Events</span>
+        <span class="card-tag">Facilitation</span>
+        <span class="card-tag">Methodology</span>
+      </div>
+      <div class="card-cta">Open Document</div>
+    </a>
+
+    <!-- INTERSECTION -->
+    <a class="arch-card ember" href="intersection.html">
+      <div class="card-num">03</div>
+      <div class="card-eyebrow">The Intersection</div>
+      <h2 class="card-title">The <em>Flywheel.</em></h2>
+      <p class="card-body">Where Ken and Growth House meet. DVN Concierge as the connective tissue. The role that sits at the center of both worlds — and why building them together is more powerful than building either alone.</p>
+      <div class="card-tags">
+        <span class="card-tag">DVN Concierge</span>
+        <span class="card-tag">Network Effect</span>
+        <span class="card-tag">Role Clarity</span>
+        <span class="card-tag">The System</span>
+      </div>
+      <div class="card-cta">Open Document</div>
+    </a>
+
+    <!-- METHODOLOGY -->
+    <a class="arch-card fire" href="deryl_life_architecture.html">
+      <div class="card-num">04</div>
+      <div class="card-eyebrow">The Methodology</div>
+      <h2 class="card-title">The <em>System.</em></h2>
+      <p class="card-body">What life architecture actually is, how it works, and why it only works with the right person running it. Built from the inside of a live engagement — not a pitch for one. Raw, honest, and written from the position of someone who has already started. The October leave-behind.</p>
+      <div class="card-tags">
+        <span class="card-tag">Blaze Genius</span>
+        <span class="card-tag">Gene Key 13</span>
+        <span class="card-tag">Atlas + Optimus</span>
+        <span class="card-tag">October 2026</span>
+      </div>
+      <div class="card-cta">Open Document</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FLYWHEEL -->
+<section class="flywheel-wrap" id="flywheel">
+  <div class="flywheel-box">
+    <div class="section-label">How it all connects</div>
+    <div class="flywheel-title">Not three worlds.<br><em>One lighthouse.</em></div>
+    <p class="flywheel-sub">Ken's network is Growth House's client base. Growth House events are where the methodology gets proven publicly. The methodology is what becomes DVN Concierge. And the young men's program is what all of it builds toward. Every part feeds every other part — the person sitting at the center sees all of it at once and uses the lighthouse map to stay oriented on the journey.</p>
+
+    <div class="flywheel-nodes">
+      <div class="fw-node">
+        <div class="fw-node-label">Ken's World</div>
+        <div class="fw-node-name">9-Figure<br>Network</div>
+      </div>
+      <div class="fw-arrow">→</div>
+      <div class="fw-node">
+        <div class="fw-node-label">Growth House</div>
+        <div class="fw-node-name">Immersion<br>Events</div>
+      </div>
+      <div class="fw-arrow">→</div>
+      <div class="fw-node">
+        <div class="fw-node-label">DVN Concierge</div>
+        <div class="fw-node-name">Service<br>Business</div>
+      </div>
+      <div class="fw-arrow">→</div>
+      <div class="fw-node">
+        <div class="fw-node-label">The Long Arc</div>
+        <div class="fw-node-name">Young Men's<br>Program</div>
+      </div>
+    </div>
+
+    <div class="flywheel-body">
+      <div class="fw-col">
+        <div class="fw-col-label">Ken feeds Growth House</div>
+        <div class="fw-col-item">Ken's peer network = warm intro to every Act 60 holder in PR</div>
+        <div class="fw-col-item">Ken is Client Zero — the proof of concept for the methodology</div>
+        <div class="fw-col-item">Ken's credibility opens rooms Deryl couldn't access alone</div>
+        <div class="fw-col-item">Growth House events happen in Ken's backyard</div>
+      </div>
+      <div class="fw-col">
+        <div class="fw-col-label">Growth House feeds DVN</div>
+        <div class="fw-col-item">Every immersion attendee is a potential concierge client</div>
+        <div class="fw-col-item">The event is the brand — DVN Concierge is the backend</div>
+        <div class="fw-col-item">Methodology proven at events becomes productized service</div>
+        <div class="fw-col-item">Jesse's network + Ken's network = DVN's entire addressable market</div>
+      </div>
+      <div class="fw-col">
+        <div class="fw-col-label">DVN feeds Ken</div>
+        <div class="fw-col-item">DVN revenue reduces dependence on monthly retainer over time</div>
+        <div class="fw-col-item">Deryl's growing brand validates the partnership story</div>
+        <div class="fw-col-item">DVN clients bring opportunities back into Ken's ecosystem</div>
+        <div class="fw-col-item">The system Ken helped build serves people like Ken</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NORTH STAR -->
+<div class="ns-wrap">
+  <div class="ns-box">
+    <div>
+      <div class="ns-label">The Long Game</div>
+      <div class="ns-text">"Show up fully. Stay at the edge. Find the sacred in the ordinary."</div>
+    </div>
+    <div class="ns-date">
+      Phase One Active
+      <span>June 2026</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">DVN · Life Architecture</div>
+  <div class="footer-meta">Deryl VanNostrand · May 2026 · Confidential</div>
+</footer>
+
+</body>
+</html>
