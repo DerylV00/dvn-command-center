@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOM Institute — Fellowship of Minds</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0d1220;--bg3:#121929;--bg4:#1a2338;
+  --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);
+  --ink:#eef0f8;--ink2:#8b92b0;--ink3:#4a5070;
+  --sage:#3de885;--sage-dim:rgba(61,232,133,.12);--sage-line:rgba(61,232,133,.2);
+  --red-b:#ff5f4a;--red-dim:rgba(255,95,74,.12);
+  --orange-b:#ff9440;--orange-dim:rgba(255,148,64,.12);
+  --yellow-b:#ffc738;--yellow-dim:rgba(255,199,56,.12);
+  --green-b:#3de885;--green-dim:rgba(61,232,133,.12);
+  --teal-b:#2dd8ea;--teal-dim:rgba(45,216,234,.12);
+  --siddhi-b:#a096f0;--siddhi-dim:rgba(160,150,240,.12);
+  --gold:#c4a23a;--gold-dim:rgba(196,162,58,.12);
+}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.65;min-height:100vh}
+
+/* ── NAV ── */
+.nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(8,11,18,.94);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+  height:52px;display:flex;align-items:center;padding:0 40px;gap:16px;
+}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-emblem{
+  width:28px;height:28px;border:1px solid rgba(61,232,133,.3);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.nav-emblem svg{width:14px;height:14px;stroke:var(--sage);stroke-width:1.2;fill:none}
+.nav-name{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--sage);letter-spacing:.08em}
+.nav-divider{width:1px;height:16px;background:var(--line2)}
+.nav-doc{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+.nav-links{display:flex;gap:2px;margin-left:auto}
+.nl{padding:5px 12px;border-radius:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--ink3);background:none;border:none;cursor:pointer;font-family:'Syne',sans-serif;transition:all .15s;text-decoration:none;display:block}
+.nl:hover{color:var(--ink2);background:var(--bg3)}
+.nav-badge{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow-b);background:var(--yellow-dim);border:1px solid rgba(255,199,56,.22);padding:3px 10px;border-radius:20px;white-space:nowrap}
+
+/* ── COVER ── */
+.cover{
+  min-height:90vh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 80px 80px;position:relative;overflow:hidden;
+}
+.cover-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 30%,rgba(196,162,58,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 80%,rgba(61,232,133,.05) 0%,transparent 50%),
+    radial-gradient(ellipse 80% 40% at 50% 0%,rgba(255,199,56,.04) 0%,transparent 60%);
+}
+.cover-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:80px 80px;
+}
+.cover-inner{position:relative;z-index:1;max-width:900px}
+.cover-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--yellow-b);font-weight:700;margin-bottom:32px;
+  background:var(--yellow-dim);border:1px solid rgba(255,199,56,.2);
+  padding:6px 16px;border-radius:20px;
+}
+.cover-eyebrow::before{content:'◈';font-size:10px}
+.cover-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(64px,10vw,120px);
+  font-weight:300;line-height:.92;letter-spacing:-.02em;
+  color:var(--ink);margin-bottom:6px;
+}
+.cover-title em{font-style:italic;color:var(--yellow-b)}
+.cover-subtitle{
+  font-size:clamp(18px,2.5vw,26px);font-weight:400;
+  color:var(--ink2);margin-bottom:48px;line-height:1.4;
+  max-width:560px;
+}
+.cover-meta{
+  display:grid;grid-template-columns:repeat(4,auto);gap:0;
+  border-top:1px solid var(--line2);padding-top:28px;
+  width:fit-content;gap:48px;
+}
+.cm-l{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;font-weight:700}
+.cm-v{font-size:15px;font-weight:700;color:var(--ink)}
+
+/* ── WRAP ── */
+.wrap{max-width:900px;margin:0 auto;padding:0 80px 80px}
+
+/* ── SECTION ── */
+.section{padding:72px 0 0}
+.sec-eyebrow{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.sec-eyebrow::after{content:'';flex:1;height:1px;background:var(--line)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;letter-spacing:-.01em;line-height:1.05;margin-bottom:20px}
+.sec-title em{font-style:italic;color:var(--yellow-b)}
+.sec-body{font-size:14px;color:var(--ink2);line-height:1.8;max-width:660px;margin-bottom:28px}
+.sec-body strong{color:var(--ink);font-weight:700}
+
+/* ── STATEMENT ── */
+.statement{
+  border-left:3px solid var(--yellow-b);padding:18px 22px;
+  background:var(--yellow-dim);border-radius:0 10px 10px 0;
+  margin:24px 0;
+  border-top:1px solid rgba(255,199,56,.15);
+  border-right:1px solid rgba(255,199,56,.15);
+  border-bottom:1px solid rgba(255,199,56,.15);
+}
+.statement-text{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--ink);line-height:1.6;font-weight:400}
+.statement-attr{font-size:9px;color:var(--yellow-b);margin-top:8px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+
+/* ── PRODUCT SUITE ── */
+.products{display:flex;flex-direction:column;gap:3px;margin:24px 0}
+.product{
+  display:grid;grid-template-columns:60px 1fr auto;
+  gap:0;border-radius:12px;overflow:hidden;
+  border:1px solid var(--line);background:var(--bg2);
+  transition:border-color .2s,transform .15s;cursor:default;
+}
+.product:hover{border-color:var(--line2);transform:translateX(4px)}
+.product-num{
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;
+  color:var(--ink3);border-right:1px solid var(--line);
+  background:var(--bg3);
+}
+.product-body{padding:20px 24px}
+.product-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+.product-name{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.product-desc{font-size:12px;color:var(--ink2);line-height:1.6}
+.product-stage{
+  display:flex;align-items:center;padding:0 20px;
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  white-space:nowrap;border-left:1px solid var(--line);
+}
+
+/* ── HNI PATHWAY ── */
+.hni-path{display:grid;grid-template-columns:1fr 40px 1fr 40px 1fr;gap:0;margin:24px 0;align-items:center}
+.hni-node{border-radius:12px;padding:24px 20px;border:1px solid;text-align:center}
+.hni-arrow{display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:20px;font-weight:700}
+.hni-n{font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.hni-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;margin-bottom:8px}
+.hni-body{font-size:11px;color:var(--ink2);line-height:1.6}
+
+/* ── REFRAME ── */
+.reframe{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:24px 0}
+.rf-side{padding:24px 26px;border-radius:12px;border:1px solid}
+.rf-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.rf-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.35;margin-bottom:10px}
+.rf-body{font-size:12px;color:var(--ink2);line-height:1.65}
+
+/* ── TECH ARCH ── */
+.arch-visual{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:12px;padding:32px;margin:24px 0;
+}
+.arch-row{display:flex;gap:3px;margin-bottom:3px;align-items:stretch}
+.arch-box{
+  flex:1;padding:16px 18px;border-radius:8px;border:1px solid var(--line);
+  background:var(--bg3);
+}
+.arch-box.master{
+  background:linear-gradient(135deg,rgba(196,162,58,.15) 0%,var(--bg3) 100%);
+  border-color:rgba(196,162,58,.25);
+}
+.arch-box-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+.arch-box-name{font-size:14px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em}
+.arch-box-desc{font-size:11px;color:var(--ink2);line-height:1.5}
+.arch-connector{display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:18px;padding:0 4px}
+
+/* ── LIGHTHOUSE TIMELINE ── */
+.lh-path{display:flex;flex-direction:column;gap:3px;margin:24px 0}
+.lh-item{
+  display:flex;gap:0;border-radius:10px;overflow:hidden;
+  border:1px solid var(--line);
+}
+.lh-floor{
+  width:140px;flex-shrink:0;display:flex;flex-direction:column;
+  align-items:flex-start;justify-content:center;padding:18px 20px;
+  border-right:1px solid var(--line);
+}
+.lh-dot{width:12px;height:12px;border-radius:50%;margin-bottom:8px}
+.lh-floor-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:2px}
+.lh-floor-name{font-size:12px;color:var(--ink2)}
+.lh-body{flex:1;padding:18px 22px;background:var(--bg2)}
+.lh-title{font-size:14px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em}
+.lh-desc{font-size:12px;color:var(--ink2);line-height:1.6}
+.lh-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.lh-tag{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:700;letter-spacing:.04em}
+.lh-item.current{border-color:rgba(255,95,74,.35)}
+.lh-item.current .lh-body{background:rgba(255,95,74,.05)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--line);padding:20px 80px;display:flex;justify-content:space-between;align-items:center;margin-top:60px}
+footer span{font-size:10px;color:var(--ink3);letter-spacing:.06em;font-weight:600}
+
+@media(max-width:640px){
+  .cover{padding:0 20px 48px;min-height:70vh}
+  .wrap{padding:0 20px 48px}
+  .cover-meta{grid-template-columns:1fr 1fr;gap:24px}
+  .hni-path{grid-template-columns:1fr;gap:4px}
+  .hni-arrow{display:none}
+  .reframe,.arch-row{grid-template-columns:1fr;flex-direction:column}
+  .nav-links{display:none}
+  .product{grid-template-columns:48px 1fr}
+  .product-stage{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-emblem">
+      <svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><circle cx="9" cy="9" r="3"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="9" y1="12" x2="9" y2="16"/><line x1="2" y1="9" x2="6" y2="9"/><line x1="12" y1="9" x2="16" y2="9"/></svg>
+    </div>
+    <span class="nav-name">Fellowship of Minds</span>
+  </div>
+  <div class="nav-divider"></div>
+  <span class="nav-doc">FOM Institute</span>
+  <div class="nav-links">
+    <a class="nl" href="deryl_life_architecture.html">Methodology</a>
+    <a class="nl" href="deryl_flight_path.html">Flight Path</a>
+    <a class="nl" href="life_arch_index.html">Index</a>
+  </div>
+  <div class="nav-badge">Yellow Level Vision</div>
+</nav>
+
+<!-- ── COVER ── -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-inner">
+    <div class="cover-eyebrow">Fellowship of Minds · The Institute</div>
+    <div class="cover-title">FOM<br><em>Institute.</em></div>
+    <div class="cover-subtitle">The front door of Fellowship of Minds as an actual institute. Not just a philosophy — a product architecture, a pathway, and a global vision.</div>
+    <div class="cover-meta">
+      <div><div class="cm-l">Stage</div><div class="cm-v">Yellow Level Vision</div></div>
+      <div><div class="cm-l">Built on</div><div class="cm-v">Red → Orange proof</div></div>
+      <div><div class="cm-l">First client</div><div class="cm-v">Ken Wilkins</div></div>
+      <div><div class="cm-l">First milestone</div><div class="cm-v">October 2026</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ══ SECTION 0 — WHAT IT IS ══ -->
+<div class="section">
+  <div class="sec-eyebrow">What FOM Institute is</div>
+  <div class="sec-title">The institute where<br><em>human depth meets AI.</em></div>
+  <div class="sec-body">Fellowship of Minds is the philosophy. FOM Institute is what it becomes when it has a front door — a named, structured entity offering a defined suite of products to a specific kind of person. The HNI (High Net-worth Individual) who has solved the financial question and is standing at the threshold of the fulfillment one.<br><br>The institute does not replace the human relationship. It <strong>magnifies it.</strong> Every product in the suite is designed around the same principle: AI extends human presence. It never substitutes for it. The person at the center of FOM Institute is not a platform. They are a Blaze Genius with Gene Key 13 Discernment — and everything the institute offers flows from that specific combination.</div>
+
+  <div class="statement">
+    <div class="statement-text">"The middle ground between human depth and artificial intelligence. Grounding people in their presence, their internal intelligence, and their connection to each other — using the most capable tools available to extend the reach of genuine human touch."</div>
+    <div class="statement-attr">FOM Institute · The operating principle</div>
+  </div>
+</div>
+
+<!-- ══ SECTION 1 — PRODUCT SUITE ══ -->
+<div class="section">
+  <div class="sec-eyebrow">The product suite · Five offerings</div>
+  <div class="sec-title">Package. Price. Promote.<br><em>Inline with genius.</em></div>
+  <div class="sec-body">MMP Chapter 5 is clear: Blaze creates leverage through magnification. The path from Orange to Yellow is packaging what you've proven so that the same value can reach more people without requiring more of you. These five offerings are the packaging.</div>
+
+  <div class="products">
+    <div class="product">
+      <div class="product-num" style="color:var(--red-b)">01</div>
+      <div class="product-body">
+        <div class="product-label" style="color:var(--red-b)">The Foundation · Red Level</div>
+        <div class="product-name">Personal Agent</div>
+        <div class="product-desc">Atlas — the individual AI knowledge base built entirely from the client's own words. Behavioral observations, session recordings, personality profiles, voice notes. Delivers one nudge per day at the right moment using their exact language. Runs 24/7 between sessions. Gets smarter every month. <strong>The memory layer that makes presence scalable.</strong></div>
+      </div>
+      <div class="product-stage" style="color:var(--red-b);background:var(--red-dim);border-color:rgba(255,95,74,.15)">Live · Ken</div>
+    </div>
+
+    <div class="product">
+      <div class="product-num" style="color:var(--orange-b)">02</div>
+      <div class="product-body">
+        <div class="product-label" style="color:var(--orange-b)">The Relationship · Orange Level</div>
+        <div class="product-name">Mentorship</div>
+        <div class="product-desc">The depth relationship. Weekly Monday session — 60 to 90 minutes, structured, Deryl runs it. The Blaze Genius with Gene Key 13 Discernment in full expression: listening beneath what's being said, catching the gap between stated values and actual calendar, facilitating the moment where something real opens up. <strong>This is what cannot be automated.</strong></div>
+      </div>
+      <div class="product-stage" style="color:var(--orange-b);background:var(--orange-dim);border-color:rgba(255,148,64,.15)">Active · Q1 2027</div>
+    </div>
+
+    <div class="product">
+      <div class="product-num" style="color:var(--yellow-b)">03</div>
+      <div class="product-body">
+        <div class="product-label" style="color:var(--yellow-b)">The Methodology · Yellow Level</div>
+        <div class="product-name">Life Architecture</div>
+        <div class="product-desc">The documented, proven system. Wheel dimensions, weekly rhythm, five-lens extraction, depth session structure, the agent architecture. Packaged well enough to describe, demonstrate, and charge for without starting from scratch with each client. <strong>The October leave-behind becomes the product specification.</strong></div>
+      </div>
+      <div class="product-stage" style="color:var(--yellow-b);background:var(--yellow-dim);border-color:rgba(255,199,56,.15)">2027</div>
+    </div>
+
+    <div class="product">
+      <div class="product-num" style="color:var(--green-b)">04</div>
+      <div class="product-body">
+        <div class="product-label" style="color:var(--green-b)">The Community · Green Level</div>
+        <div class="product-name">Growth House Immersion</div>
+        <div class="product-desc">The mastermind container at scale. FOM Institute as the formal methodology track within Growth House Immersion. Men in real rooms, with real accountability, using real shared frameworks. Napoleon Hill's third mind — what emerges when multiple people are aligned around a definite chief aim. <strong>The community expression of the institute.</strong></div>
+      </div>
+      <div class="product-stage" style="color:var(--green-b);background:var(--green-dim);border-color:rgba(61,232,133,.15)">2028+</div>
+    </div>
+
+    <div class="product">
+      <div class="product-num" style="color:var(--teal-b)">05</div>
+      <div class="product-body">
+        <div class="product-label" style="color:var(--teal-b)">The Legacy · Global Level</div>
+        <div class="product-name">Global Institute</div>
+        <div class="product-desc">FOM Institute as a licensed methodology, training other facilitators, operating in multiple cities, building events for young men emerging into leadership. AI-assisted vision boarding. Wheel of Life as a global tool. The long-arc vision that everything being built right now is laying the foundation for. <strong>The transmission across the generation.</strong></div>
+      </div>
+      <div class="product-stage" style="color:var(--teal-b);background:var(--teal-dim);border-color:rgba(45,216,234,.15)">2030+</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 2 — HNI PATHWAY ══ -->
+<div class="section">
+  <div class="sec-eyebrow">The HNI pathway · How a client moves through the institute</div>
+  <div class="sec-title">Individual.<br><em>Community. Generational.</em></div>
+  <div class="sec-body">Every HNI client enters at the Individual level — one person, one agent, one weekly session. As the methodology proves itself, they become part of a community. And as the community matures, it becomes the source of the transmission that reaches the next generation. This is the three-level arc Fellowship of Minds has always described — now mapped as an actual client journey.</div>
+
+  <div class="hni-path">
+    <div class="hni-node" style="background:var(--red-dim);border-color:rgba(255,95,74,.25)">
+      <div class="hni-n" style="color:var(--red-b)">Level One</div>
+      <div class="hni-title" style="color:var(--red-b)">Individual</div>
+      <div class="hni-body">One person. One agent. One life architect. Weekly Monday session. Daily Atlas nudge. The system learns who they are over months — not weeks. This is where the relationship is built and the result is produced.</div>
+    </div>
+    <div class="hni-arrow">→</div>
+    <div class="hni-node" style="background:var(--orange-dim);border-color:rgba(255,148,64,.25)">
+      <div class="hni-n" style="color:var(--orange-b)">Level Two</div>
+      <div class="hni-title" style="color:var(--orange-b)">Community</div>
+      <div class="hni-body">The Growth House Immersion circle. Men who've done the individual work coming into genuine fellowship. Mastermind sessions. Shared language and shared frameworks. The third mind that emerges when two or more aligned minds meet.</div>
+    </div>
+    <div class="hni-arrow">→</div>
+    <div class="hni-node" style="background:var(--green-dim);border-color:rgba(61,232,133,.25)">
+      <div class="hni-n" style="color:var(--green-b)">Level Three</div>
+      <div class="hni-title" style="color:var(--green-b)">Generational</div>
+      <div class="hni-body">What these men learned — transmitted to young men at the beginning of their journey. The next generation of leaders who build the inner life alongside the outer one before the gap opens. The fellowship completes itself here.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 3 — THE REFRAME ══ -->
+<div class="section">
+  <div class="sec-eyebrow">The pricing reframe · MMP Chapter 5 applied</div>
+  <div class="sec-title">Not dollars.<br><em>Change in quality of life.</em></div>
+  <div class="sec-body">Chapter 5 is clear: package, price, and promote value inline with your genius. For Blaze Genius, value is not measured in hours or deliverables. It's measured in the specific, named change in a person's actual life. This reframe governs how FOM Institute talks about every engagement.</div>
+
+  <div class="reframe">
+    <div class="rf-side" style="background:rgba(255,95,74,.08);border-color:rgba(255,95,74,.2)">
+      <div class="rf-label" style="color:var(--red-b)">Old frame — Extraction</div>
+      <div class="rf-text" style="color:rgba(255,95,74,.7)">"What can I do for you?"</div>
+      <div class="rf-body">Service provider language. Positions you as a vendor. The client evaluates hours and deliverables. Invites comparison with cheaper options. Reduces the relationship to a transaction. This is how assistants get hired and replaced.</div>
+    </div>
+    <div class="rf-side" style="background:var(--sage-dim);border-color:var(--sage-line)">
+      <div class="rf-label" style="color:var(--sage)">New frame — Presence</div>
+      <div class="rf-text" style="color:var(--sage)">"Who can I be and become for you?"</div>
+      <div class="rf-body">Life architect language. Positions you as a presence, not a service. The client evaluates change in quality of life, time reclaimed, and progress in each wheel dimension. Invites partnership, not procurement. This is how the relationship compounds.</div>
+    </div>
+  </div>
+
+  <div class="reframe" style="margin-top:3px">
+    <div class="rf-side" style="background:rgba(255,95,74,.08);border-color:rgba(255,95,74,.2)">
+      <div class="rf-label" style="color:var(--red-b)">Old value unit</div>
+      <div class="rf-text" style="color:rgba(255,95,74,.7)">"$5,000 per month"</div>
+      <div class="rf-body">A fee for time. The conversation is about whether you're worth the number. Invites negotiation, comparison, and doubt. Positions you in a market of similar services.</div>
+    </div>
+    <div class="rf-side" style="background:var(--sage-dim);border-color:var(--sage-line)">
+      <div class="rf-label" style="color:var(--sage)">New value unit</div>
+      <div class="rf-text" style="color:var(--sage)">"Named change in each wheel dimension"</div>
+      <div class="rf-body">A result. The conversation is about what specifically changed in Health, Relationships, Inner Life, Experiences. Invites reflection and ownership. Positions you in a market of one — because nobody else has the methodology, the agent, and this specific relationship.</div>
+    </div>
+  </div>
+
+  <div class="statement" style="margin-top:20px">
+    <div class="statement-text">"Lean into the edge in each wheel dimension. Confidence level in each house. The value is not time — it is the specific, documented movement from where they were to where they are now."</div>
+    <div class="statement-attr">MMP Chapter 5 + Life Architecture Methodology — applied</div>
+  </div>
+</div>
+
+<!-- ══ SECTION 4 — TECHNICAL ARCHITECTURE ══ -->
+<div class="section">
+  <div class="sec-eyebrow">The technical architecture · How the system scales</div>
+  <div class="sec-title">One agent per person.<br><em>One master layer above.</em></div>
+  <div class="sec-body">You asked the right question: how do you scale so that all agents are connected to one main agent that listens across all profiles, analyzes patterns, gives insight, and knows every person? This is the FOM Institute technical architecture. Here is how it works — and when each layer becomes relevant.</div>
+
+  <div class="arch-visual">
+    <!-- Master layer -->
+    <div class="arch-row">
+      <div class="arch-box master" style="flex:1">
+        <div class="arch-box-label" style="color:var(--gold)">Master Layer · Stage 3 (2027+)</div>
+        <div class="arch-box-name" style="color:var(--gold)">FOM Orchestration Agent</div>
+        <div class="arch-box-desc">Read access across all client profiles. Surfaces patterns across the cohort — what themes are emerging, what common edges are appearing. Informs how the methodology evolves. Does NOT replace individual agents — it sits above them as an intelligence layer. This requires a vector database + Claude API. Buildable by August 2027.</div>
+      </div>
+    </div>
+    <!-- Connector -->
+    <div style="display:flex;justify-content:center;padding:8px 0;color:var(--ink3);font-size:20px">↕</div>
+    <!-- Individual agents -->
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:rgba(61,232,133,.2)">
+        <div class="arch-box-label" style="color:var(--sage)">Client 1 · Live Now</div>
+        <div class="arch-box-name">Atlas — Ken</div>
+        <div class="arch-box-desc">Full knowledge base. Weekly sessions. Oura API by August 2026. The proof of concept.</div>
+      </div>
+      <div class="arch-connector">+</div>
+      <div class="arch-box" style="border-color:rgba(255,148,64,.15)">
+        <div class="arch-box-label" style="color:var(--orange-b)">Client 2 · Nov 2026</div>
+        <div class="arch-box-name">Atlas — [Name]</div>
+        <div class="arch-box-desc">October Immersion slot 1. Same architecture. Different knowledge base. Same methodology.</div>
+      </div>
+      <div class="arch-connector">+</div>
+      <div class="arch-box" style="border-color:rgba(255,148,64,.15)">
+        <div class="arch-box-label" style="color:var(--orange-b)">Client 3 · Nov 2026</div>
+        <div class="arch-box-name">Atlas — [Name]</div>
+        <div class="arch-box-desc">October Immersion slot 2. Tier 2 remote model tested. Monthly video, daily agent.</div>
+      </div>
+    </div>
+    <!-- Connector -->
+    <div style="display:flex;justify-content:center;padding:8px 0;color:var(--ink3);font-size:20px">↕</div>
+    <!-- Optimus -->
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:rgba(45,216,234,.2)">
+        <div class="arch-box-label" style="color:var(--teal-b)">The Parallel Build · Always Running</div>
+        <div class="arch-box-name" style="color:var(--teal-b)">Optimus — Deryl</div>
+        <div class="arch-box-desc">The integrity layer. The methodology only has authority if the person running it is doing the work on themselves. Optimus tracks Deryl's four dimensions, Blaze flow indicators, methodology learnings, and the Sunday debrief every week. You cannot teach what you haven't embodied.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-body" style="margin-top:16px">The partnership question — <em>"Does the future mean a partnership with a bigger AI company?"</em> — is the right long-range orientation. Build the human methodology proof first. Prove the result with Ken. Prove the replication with October. Prove the system with three clients. When the methodology is documented and the results are real, the partnership options open. You negotiate from proof, not from potential.</div>
+</div>
+
+<!-- ══ SECTION 5 — LIGHTHOUSE TIMELINE ══ -->
+<div class="section">
+  <div class="sec-eyebrow">The lighthouse path · When FOM Institute emerges</div>
+  <div class="sec-title">Built floor by floor.<br><em>Not jumped to.</em></div>
+  <div class="sec-body">FOM Institute is not a startup you launch from Red level. It is what emerges naturally when the methodology is proven, documented, and replicating. Each lighthouse floor is a prerequisite for the next. The institute has a front door at Yellow. Everything before that is building the proof that earns the right to open it.</div>
+
+  <div class="lh-path">
+    <div class="lh-item current">
+      <div class="lh-floor" style="background:var(--red-dim)">
+        <div class="lh-dot" style="background:var(--red-b);box-shadow:0 0 8px rgba(255,95,74,.5)"></div>
+        <div class="lh-floor-label" style="color:var(--red-b)">Red · Now</div>
+        <div class="lh-floor-name" style="color:rgba(255,95,74,.6)">Survivor</div>
+      </div>
+      <div class="lh-body">
+        <div class="lh-title">The proof of concept · Ken · Puerto Rico</div>
+        <div class="lh-desc">One client. The methodology running live. Atlas calibrating weekly. The only goal: by October, Ken says honestly his life is meaningfully different. This result is the entire foundation of FOM Institute. Without it, nothing above exists.</div>
+        <div class="lh-tags">
+          <span class="lh-tag" style="background:var(--red-dim);color:var(--red-b)">◉ Active · June 2026</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">$5k/month</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">Atlas live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lh-item">
+      <div class="lh-floor" style="background:var(--orange-dim)">
+        <div class="lh-dot" style="background:var(--orange-b)"></div>
+        <div class="lh-floor-label" style="color:var(--orange-b)">Orange · Q1 2027</div>
+        <div class="lh-floor-name" style="color:rgba(255,148,64,.6)">Worker</div>
+      </div>
+      <div class="lh-body">
+        <div class="lh-title">Methodology replicates · Three clients · FOM Institute named</div>
+        <div class="lh-desc">October Immersion slots filled. Three clients running simultaneously. Orange floor stable at $15k+/month. The methodology is documented enough to teach. FOM Institute gets its first formal identity — a name, a URL, a one-page description. The product suite exists on paper.</div>
+        <div class="lh-tags">
+          <span class="lh-tag" style="background:var(--orange-dim);color:var(--orange-b)">Nov 2026 → Q1 2027</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">$15k+/month</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lh-item">
+      <div class="lh-floor" style="background:var(--yellow-dim)">
+        <div class="lh-dot" style="background:var(--yellow-b)"></div>
+        <div class="lh-floor-label" style="color:var(--yellow-b)">Yellow · 2027</div>
+        <div class="lh-floor-name" style="color:rgba(255,199,56,.6)">Player</div>
+      </div>
+      <div class="lh-body">
+        <div class="lh-title">FOM Institute has a front door · People find you</div>
+        <div class="lh-desc">Clear identity in the market. The life architect with a proven methodology. FOM Institute as the named entity. SaaS product architecture in design. Master orchestration agent in development. Parallel avenues running — individual engagements, community sessions, licensed methodology. People pass you the ball.</div>
+        <div class="lh-tags">
+          <span class="lh-tag" style="background:var(--yellow-dim);color:var(--yellow-b)">End of 2027</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">Institute front door</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">SaaS in design</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lh-item">
+      <div class="lh-floor" style="background:var(--green-dim)">
+        <div class="lh-dot" style="background:var(--green-b)"></div>
+        <div class="lh-floor-label" style="color:var(--green-b)">Green · 2028+</div>
+        <div class="lh-floor-name" style="color:rgba(61,232,133,.6)">Performer</div>
+      </div>
+      <div class="lh-body">
+        <div class="lh-title">Enterprise · Licensed methodology · Young men's program</div>
+        <div class="lh-desc">Other facilitators trained in the FOM methodology. Growth House integration. The institute operates without Deryl running every engagement. Young men's events seeded. AI partnership conversations beginning. The enterprise works. The transmission begins.</div>
+        <div class="lh-tags">
+          <span class="lh-tag" style="background:var(--green-dim);color:var(--green-b)">2028+</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">Licensed</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">Young men</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">AI partnership</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lh-item">
+      <div class="lh-floor" style="background:var(--teal-dim)">
+        <div class="lh-dot" style="background:var(--teal-b)"></div>
+        <div class="lh-floor-label" style="color:var(--teal-b)">Global · 2030+</div>
+        <div class="lh-floor-name" style="color:rgba(45,216,234,.6)">Legacy</div>
+      </div>
+      <div class="lh-body">
+        <div class="lh-title">Global institute · Next generation of leaders · The transmission</div>
+        <div class="lh-desc">FOM Institute as a global entity. AI assists young men in bringing positive-sum, sustainable visions to reality. Vision boards built through the system. Wheel of Life as a global tool. The young men who received the transmission become the next facilitators. The fellowship regenerates itself.</div>
+        <div class="lh-tags">
+          <span class="lh-tag" style="background:var(--teal-dim);color:var(--teal-b)">2030+</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">Global</span>
+          <span class="lh-tag" style="background:var(--bg3);color:var(--ink3)">Positive-sum · Closed loop</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <span>Fellowship of Minds · FOM Institute · Deryl VanNostrand · May 2026</span>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+    <a href="../index.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(61,232,133,.7);border:1px solid rgba(61,232,133,.2);padding:6px 12px;border-radius:4px;text-decoration:none;">← Home</a>
+    <a href="life_arch_index.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:4px;text-decoration:none;">All Documents</a>
+    <a href="deryl_flight_path.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:4px;text-decoration:none;">Flight Path →</a>
+    <a href="deryl_life_architecture.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);padding:6px 12px;border-radius:4px;text-decoration:none;">Methodology →</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DVN — Vision Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,600;1,200;1,300;1,600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Syne',sans-serif}
+
+/* ── PANELS ── */
+.board{
+  width:100%;height:100vh;
+  overflow-y:scroll;overflow-x:hidden;
+  scroll-snap-type:y mandatory;
+  scrollbar-width:none;
+}
+.board::-webkit-scrollbar{display:none}
+.panel{
+  width:100%;height:100vh;min-height:100vh;
+  scroll-snap-align:start;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:flex-start;
+  padding:80px;
+}
+
+/* ── NAV DOTS ── */
+.nav-dots{
+  position:fixed;right:28px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:10px;z-index:1000;
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.25);cursor:pointer;
+  transition:all .3s;border:1px solid rgba(255,255,255,.2);
+}
+.dot.active{background:rgba(255,255,255,.9);transform:scale(1.4)}
+.dot:hover{background:rgba(255,255,255,.6)}
+
+/* ── PANEL COUNTER ── */
+.counter{
+  position:fixed;left:28px;bottom:28px;z-index:1000;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);font-weight:600;font-family:'Syne',sans-serif;
+}
+.counter span{color:rgba(255,255,255,.7)}
+
+/* ── SCROLL HINT ── */
+.scroll-hint{
+  position:fixed;right:50px;bottom:28px;z-index:1000;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);display:flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-weight:600;
+}
+.scroll-hint::after{content:'↓';font-size:14px;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+/* ══════════════════════════════════════════
+   PANEL 0 — OPENING
+══════════════════════════════════════════ */
+#p0{
+  background:#050508;
+  justify-content:center;align-items:center;text-align:center;
+}
+#p0 .bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 50%,rgba(196,162,58,.12) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 80%,rgba(61,232,133,.06) 0%,transparent 50%),
+    radial-gradient(ellipse 30% 30% at 80% 20%,rgba(255,95,74,.05) 0%,transparent 50%);
+}
+#p0 .stars{position:absolute;inset:0;overflow:hidden}
+#p0 .star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.8}}
+#p0 .inner{position:relative;z-index:1;max-width:800px}
+#p0 .eyebrow{font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:rgba(196,162,58,.7);margin-bottom:32px;font-weight:700}
+#p0 .title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(72px,12vw,140px);
+  font-weight:200;line-height:.88;letter-spacing:-.03em;
+  color:#f0ead8;margin-bottom:24px;
+}
+#p0 .title em{font-style:italic;color:rgba(196,162,58,.9)}
+#p0 .sub{
+  font-size:16px;color:rgba(240,234,216,.45);font-weight:400;
+  line-height:1.6;max-width:480px;margin:0 auto 48px;
+}
+#p0 .begin-btn{
+  display:inline-block;padding:14px 36px;
+  border:1px solid rgba(196,162,58,.35);border-radius:4px;
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;
+  color:rgba(196,162,58,.8);cursor:pointer;background:none;font-family:'Syne',sans-serif;
+  transition:all .25s;
+}
+#p0 .begin-btn:hover{background:rgba(196,162,58,.08);border-color:rgba(196,162,58,.6);color:rgba(196,162,58,1)}
+
+/* ══════════════════════════════════════════
+   PANEL 1 — THE MAN
+══════════════════════════════════════════ */
+#p1{background:#0a0e1a}
+#p1 .bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 90% 50%,rgba(255,95,74,.08) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 0% 0%,rgba(255,95,74,.04) 0%,transparent 50%);
+}
+#p1 .content{position:relative;z-index:1;max-width:900px}
+#p1 .panel-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--red,#ff5f4a);margin-bottom:24px;font-weight:700;display:flex;align-items:center;gap:12px}
+#p1 .panel-label::after{content:'';flex:0 0 60px;height:1px;background:rgba(255,95,74,.3)}
+#p1 .title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(48px,7vw,88px);font-weight:200;
+  line-height:.95;letter-spacing:-.02em;color:#eef0f8;margin-bottom:32px;
+}
+#p1 .title em{font-style:italic;color:#ff5f4a}
+#p1 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:32px}
+#p1 .card{padding:18px 16px;background:rgba(255,95,74,.07);border:1px solid rgba(255,95,74,.15);border-radius:8px}
+#p1 .card-l{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,95,74,.6);margin-bottom:6px;font-weight:700}
+#p1 .card-v{font-size:14px;font-weight:700;color:#eef0f8;line-height:1.3}
+#p1 .north-star{
+  border-left:3px solid rgba(255,95,74,.5);padding:16px 20px;
+  background:rgba(255,95,74,.06);border-radius:0 8px 8px 0;
+  border-top:1px solid rgba(255,95,74,.1);border-right:1px solid rgba(255,95,74,.1);border-bottom:1px solid rgba(255,95,74,.1);
+}
+#p1 .north-star-text{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;color:#eef0f8;line-height:1.5}
+#p1 .north-star-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,95,74,.6);margin-top:8px;font-weight:700}
+
+/* ══════════════════════════════════════════
+   PANEL 2 — FELLOWSHIP OF MINDS
+══════════════════════════════════════════ */
+#p2{background:#060d0f}
+#p2 .bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 40%,rgba(61,232,133,.09) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 10% 70%,rgba(61,232,133,.05) 0%,transparent 50%);
+}
+#p2 .content{position:relative;z-index:1;max-width:940px}
+#p2 .panel-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#3de885;margin-bottom:24px;font-weight:700;display:flex;align-items:center;gap:12px}
+#p2 .panel-label::after{content:'';flex:0 0 60px;height:1px;background:rgba(61,232,133,.3)}
+#p2 .title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6.5vw,82px);font-weight:200;line-height:.95;letter-spacing:-.02em;color:#eef0f8;margin-bottom:32px}
+#p2 .title em{font-style:italic;color:#3de885}
+#p2 .levels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:28px}
+#p2 .level{padding:24px 20px;border-radius:10px;border:1px solid}
+#p2 .level-n{font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+#p2 .level-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;margin-bottom:8px;line-height:1.2}
+#p2 .level-body{font-size:12px;line-height:1.65;color:rgba(238,240,248,.6)}
+#p2 .statement{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(16px,2vw,22px);color:rgba(61,232,133,.8);
+  line-height:1.55;padding:16px 0;border-top:1px solid rgba(61,232,133,.15);
+}
+
+/* ══════════════════════════════════════════
+   PANEL 3 — LIGHTHOUSE / MMP
+══════════════════════════════════════════ */
+#p3{background:#09080a}
+#p3 .bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 50% 80% at 15% 50%,rgba(255,199,56,.07) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 20%,rgba(255,148,64,.05) 0%,transparent 50%),
+    radial-gradient(ellipse 40% 40% at 60% 90%,rgba(61,232,133,.04) 0%,transparent 50%);
+}
+#p3 .content{position:relative;z-index:1;width:100%;max-width:960px}
+#p3 .panel-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#ffc738;margin-bottom:24px;font-weight:700;display:flex;align-items:center;gap:12px}
+#p3 .panel-label::after{content:'';flex:0 0 60px;height:1px;background:rgba(255,199,56,.3)}
+#p3 .title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6.5vw,82px);font-weight:200;line-height:.95;letter-spacing:-.02em;color:#eef0f8;margin-bottom:32px}
+#p3 .title em{font-style:italic;color:#ffc738}
+#p3 .floors{display:flex;flex-direction:column;gap:3px}
+#p3 .floor{display:flex;gap:0;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+#p3 .floor-side{width:120px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:14px 16px;border-right:1px solid rgba(255,255,255,.07)}
+#p3 .floor-dot{width:10px;height:10px;border-radius:50%;margin-bottom:7px}
+#p3 .floor-label{font-size:8px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:2px}
+#p3 .floor-body{flex:1;padding:14px 18px;background:rgba(255,255,255,.02)}
+#p3 .floor-title{font-size:13px;font-weight:700;margin-bottom:3px}
+#p3 .floor-desc{font-size:11px;color:rgba(238,240,248,.5);line-height:1.5}
+#p3 .floor-tag{font-size:8px;padding:2px 7px;border-radius:20px;font-weight:700;margin-top:6px;display:inline-block}
+#p3 .floor.here{border-color:rgba(255,95,74,.35)}
+#p3 .floor.here .floor-body{background:rgba(255,95,74,.05)}
+#p3 .key-q{
+  margin-top:20px;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(15px,2vw,20px);color:rgba(255,199,56,.7);
+  text-align:center;padding:14px;border:1px solid rgba(255,199,56,.12);border-radius:8px;
+  background:rgba(255,199,56,.03);
+}
+
+/* ══════════════════════════════════════════
+   PANEL 4 — PEACEFUL WARRIOR / SATORI
+══════════════════════════════════════════ */
+#p4{background:#080510}
+#p4 .bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%,rgba(160,150,240,.08) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 80% 10%,rgba(160,150,240,.05) 0%,transparent 50%);
+}
+#p4 .content{position:relative;z-index:1;max-width:960px}
+#p4 .panel-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#a096f0;margin-bottom:24px;font-weight:700;display:flex;align-items:center;gap:12px}
+#p4 .panel-label::after{content:'';flex:0 0 60px;height:1px;background:rgba(160,150,240,.3)}
+#p4 .title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6.5vw,82px);font-weight:200;line-height:.95;letter-spacing:-.02em;color:#eef0f8;margin-bottom:28px}
+#p4 .title em{font-style:italic;color:#a096f0}
+#p4 .satori-box{
+  background:rgba(160,150,240,.07);border:1px solid rgba(160,150,240,.2);
+  border-radius:12px;padding:28px;margin-bottom:20px;
+}
+#p4 .satori-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:#a096f0;margin-bottom:12px}
+#p4 .satori-body{font-size:13px;color:rgba(238,240,248,.65);line-height:1.75}
+#p4 .seven-bodies{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:20px}
+#p4 .body-item{padding:12px 14px;background:rgba(160,150,240,.06);border:1px solid rgba(160,150,240,.12);border-radius:8px;text-align:center}
+#p4 .body-label{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(160,150,240,.6);margin-bottom:4px;font-weight:700}
+#p4 .body-name{font-size:13px;font-weight:700;color:#eef0f8}
+#p4 .reframes{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+#p4 .rf{padding:16px 18px;border-radius:8px;border:1px solid rgba(160,150,240,.15);background:rgba(160,150,240,.04)}
+#p4 .rf-old{font-size:12px;color:rgba(238,240,248,.3);margin-bottom:4px;text-decoration:line-through}
+#p4 .rf-new{font-family:'Cormorant Garamond',serif;font-size:17px;color:#a096f0;font-weight:300}
+
+/* ══════════════════════════════════════════
+   PANEL 5 — THE FRAMEWORKS
+══════════════════════════════════════════ */
+#p5{background:#0a0806}
+#p5 .bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 60% at 30% 40%,rgba(196,162,58,.08) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 40% at 80% 70%,rgba(255,148,64,.05) 0%,transparent 50%);
+}
+#p5 .content{position:relative;z-index:1;width:100%;max-width:960px}
+#p5 .panel-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#c4a23a;margin-bottom:24px;font-weight:700;display:flex;align-items:center;gap:12px}
+#p5 .panel-label::after{content:'';flex:0 0 60px;height:1px;background:rgba(196,162,58,.3)}
+#p5 .title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6.5vw,82px);font-weight:200;line-height:.95;letter-spacing:-.02em;color:#eef0f8;margin-bottom:28px}
+#p5 .title em{font-style:italic;color:#c4a23a}
+#p5 .frameworks{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+#p5 .fw{border-radius:12px;padding:24px;border:1px solid;position:relative;overflow:hidden}
+#p5 .fw::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;opacity:.06;pointer-events:none}
+#p5 .fw-n{font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+#p5 .fw-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:6px}
+#p5 .fw-tag{font-size:10px;font-weight:700;margin-bottom:12px;display:inline-block;padding:3px 10px;border-radius:20px}
+#p5 .fw-body{font-size:12px;line-height:1.7;color:rgba(238,240,248,.55)}
+#p5 .fw-body strong{color:rgba(238,240,248,.9);font-weight:700}
+#p5 .fw-moat{
+  margin-top:20px;padding:18px 20px;border-radius:10px;
+  background:rgba(196,162,58,.07);border:1px solid rgba(196,162,58,.18);
+}
+#p5 .fw-moat-text{font-family:'Cormorant Garamond',serif;font-size:17px;color:rgba(196,162,58,.9);line-height:1.55;font-weight:300}
+#p5 .fw-moat-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(196,162,58,.5);margin-top:8px;font-weight:700}
+
+/* ══════════════════════════════════════════
+   PANEL 6 — THE VISION
+══════════════════════════════════════════ */
+#p6{background:#040809;justify-content:center;align-items:center;text-align:center}
+#p6 .bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 50%,rgba(45,216,234,.06) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 20%,rgba(61,232,133,.04) 0%,transparent 50%),
+    radial-gradient(ellipse 30% 30% at 80% 80%,rgba(196,162,58,.04) 0%,transparent 50%);
+}
+#p6 .grid-lines{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:120px 120px;
+}
+#p6 .content{position:relative;z-index:1;max-width:800px}
+#p6 .panel-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#2dd8ea;margin-bottom:28px;font-weight:700;justify-content:center;display:flex;align-items:center;gap:12px}
+#p6 .title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,8vw,100px);font-weight:200;line-height:.92;letter-spacing:-.02em;color:#eef0f8;margin-bottom:20px}
+#p6 .title em{font-style:italic;color:#2dd8ea}
+#p6 .arc{display:flex;gap:20px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
+#p6 .arc-item{text-align:center}
+#p6 .arc-year{font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:4px}
+#p6 .arc-name{font-size:13px;font-weight:700;color:#eef0f8;margin-bottom:2px}
+#p6 .arc-connector{color:rgba(255,255,255,.2);font-size:18px;display:flex;align-items:center;padding-top:10px}
+#p6 .big-statement{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(18px,2.5vw,28px);color:rgba(238,240,248,.7);
+  line-height:1.5;margin-bottom:28px;max-width:640px;margin-left:auto;margin-right:auto;
+}
+#p6 .ns{
+  display:inline-block;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(45,216,234,.7);font-weight:700;
+  border:1px solid rgba(45,216,234,.2);padding:8px 20px;border-radius:20px;
+  background:rgba(45,216,234,.06);
+}
+
+/* ══════════════════════════════════════════
+   PANEL 7 — CLOSE
+══════════════════════════════════════════ */
+#p7{background:#050508;justify-content:center;align-items:center;text-align:center}
+#p7 .bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(196,162,58,.07) 0%,transparent 60%)}
+#p7 .content{position:relative;z-index:1}
+#p7 .emblem{
+  width:80px;height:80px;border:1px solid rgba(196,162,58,.3);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 32px;
+}
+#p7 .emblem svg{width:40px;height:40px;stroke:rgba(196,162,58,.7);stroke-width:1;fill:none}
+#p7 .title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,72px);font-weight:200;letter-spacing:-.02em;color:#f0ead8;margin-bottom:12px}
+#p7 .title em{font-style:italic;color:rgba(196,162,58,.9)}
+#p7 .sub{font-size:13px;color:rgba(240,234,216,.4);line-height:1.7;max-width:440px;margin:0 auto 36px}
+#p7 .links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#p7 .link{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
+  color:rgba(196,162,58,.7);text-decoration:none;
+  border:1px solid rgba(196,162,58,.2);padding:10px 20px;border-radius:4px;
+  background:rgba(196,162,58,.05);transition:all .2s;
+}
+#p7 .link:hover{background:rgba(196,162,58,.12);color:rgba(196,162,58,1);border-color:rgba(196,162,58,.4)}
+</style>
+</head>
+<body>
+
+<div class="nav-dots" id="navDots">
+  <div class="dot active" onclick="goTo(0)" title="Open"></div>
+  <div class="dot" onclick="goTo(1)" title="The Man"></div>
+  <div class="dot" onclick="goTo(2)" title="Fellowship"></div>
+  <div class="dot" onclick="goTo(3)" title="Lighthouse"></div>
+  <div class="dot" onclick="goTo(4)" title="Peaceful Warrior"></div>
+  <div class="dot" onclick="goTo(5)" title="Frameworks"></div>
+  <div class="dot" onclick="goTo(6)" title="The Vision"></div>
+  <div class="dot" onclick="goTo(7)" title="Close"></div>
+</div>
+
+<div class="counter"><span id="curPanel">01</span> / 08</div>
+<div class="scroll-hint">scroll</div>
+
+<div class="board" id="board">
+
+<!-- ═══════ PANEL 0 — OPENING ═══════ -->
+<div class="panel" id="p0">
+  <div class="bg"></div>
+  <div class="stars" id="stars"></div>
+  <div class="inner">
+    <div class="eyebrow">Fellowship of Minds · Vision Board · 2026 — 2031</div>
+    <div class="title">A Life<br><em>By Design.</em></div>
+    <div class="sub">The philosophy, the frameworks, the path, and the vision — held in one place. Open this when you need to remember what you're building and why.</div>
+    <button class="begin-btn" onclick="goTo(1)">Enter →</button>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 1 — THE MAN ═══════ -->
+<div class="panel" id="p1">
+  <div class="bg"></div>
+  <div class="content">
+    <div class="panel-label">01 — The Man</div>
+    <div class="title">Deryl<br><em>VanNostrand.</em></div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-l">Genius</div>
+        <div class="card-v">Blaze · WHO first · Magnification</div>
+      </div>
+      <div class="card">
+        <div class="card-l">Gene Key 13</div>
+        <div class="card-v">Discernment · The Guide · Empathy</div>
+      </div>
+      <div class="card">
+        <div class="card-l">Personality</div>
+        <div class="card-v">ENFJ-A · Protagonist · 83% Extraverted</div>
+      </div>
+      <div class="card">
+        <div class="card-l">Lighthouse</div>
+        <div class="card-v">Red · Live · Puerto Rico · June 2026</div>
+      </div>
+    </div>
+    <div class="north-star">
+      <div class="north-star-text">"Show up fully. Stay at the edge. Find the sacred in the ordinary."</div>
+      <div class="north-star-label">North Star · Fixed Point · Non-Negotiable</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 2 — FELLOWSHIP ═══════ -->
+<div class="panel" id="p2">
+  <div class="bg"></div>
+  <div class="content">
+    <div class="panel-label">02 — Fellowship of Minds</div>
+    <div class="title">The middle<br>ground between<br><em>human and machine.</em></div>
+    <div class="levels">
+      <div class="level" style="background:rgba(255,95,74,.07);border-color:rgba(255,95,74,.2)">
+        <div class="level-n" style="color:#ff5f4a">Level One · Individual</div>
+        <div class="level-title" style="color:#ff5f4a">Life Architecture<br>Methodology</div>
+        <div class="level-body">One person. One agent. One weekly session. Atlas holds the memory. The life architect provides the presence. The person comes home to themselves.</div>
+      </div>
+      <div class="level" style="background:rgba(255,148,64,.07);border-color:rgba(255,148,64,.2)">
+        <div class="level-n" style="color:#ff9440">Level Two · Community</div>
+        <div class="level-title" style="color:#ff9440">Growth House<br>Immersion</div>
+        <div class="level-body">The mastermind container. Men in real rooms with real accountability. Napoleon Hill's third mind — what emerges when aligned minds meet toward a definite chief aim.</div>
+      </div>
+      <div class="level" style="background:rgba(61,232,133,.07);border-color:rgba(61,232,133,.2)">
+        <div class="level-n" style="color:#3de885">Level Three · Generational</div>
+        <div class="level-title" style="color:#3de885">Young Men's<br>Program</div>
+        <div class="level-body">Everything learned from powerful men at the fulfillment question — carried into rooms of young men at the beginning. So the gap never opens.</div>
+      </div>
+    </div>
+    <div class="statement">"Ground people in their presence, their internal intelligence, and their connection to each other — using the most capable tools available to extend the reach of genuine human touch."</div>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 3 — LIGHTHOUSE ═══════ -->
+<div class="panel" id="p3">
+  <div class="bg"></div>
+  <div class="content">
+    <div class="panel-label">03 — The Lighthouse · MMP</div>
+    <div class="title">Five floors.<br><em>One journey.</em></div>
+    <div class="floors">
+      <div class="floor here">
+        <div class="floor-side" style="background:rgba(255,95,74,.08)">
+          <div class="floor-dot" style="background:#ff5f4a;box-shadow:0 0 8px rgba(255,95,74,.5)"></div>
+          <div class="floor-label" style="color:#ff5f4a">Red · Now</div>
+          <div class="floor-body-l" style="font-size:10px;color:rgba(255,95,74,.5)">Survivor</div>
+        </div>
+        <div class="floor-body">
+          <div class="floor-title">Ken · Puerto Rico · The proof of concept</div>
+          <div class="floor-desc">One client. $5k/month. Atlas live. October Immersion is the first rung. By October, Ken says his life is meaningfully different — and points to something specific.</div>
+          <span class="floor-tag" style="background:rgba(255,95,74,.15);color:#ff5f4a">◉ Active · June 2026</span>
+        </div>
+      </div>
+      <div class="floor">
+        <div class="floor-side" style="background:rgba(255,148,64,.06)">
+          <div class="floor-dot" style="background:#ff9440"></div>
+          <div class="floor-label" style="color:#ff9440">Orange · Q1 2027</div>
+          <div class="floor-body-l" style="font-size:10px;color:rgba(255,148,64,.5)">Worker</div>
+        </div>
+        <div class="floor-body">
+          <div class="floor-title">Three clients · $15k+/month · FOM Institute named</div>
+          <div class="floor-desc">October slots filled. Methodology replicates. The ladder begins compounding. FOM Institute gets its first formal identity.</div>
+          <span class="floor-tag" style="background:rgba(255,148,64,.1);color:#ff9440">Nov 2026 → Q1 2027</span>
+        </div>
+      </div>
+      <div class="floor">
+        <div class="floor-side" style="background:rgba(255,199,56,.05)">
+          <div class="floor-dot" style="background:#ffc738"></div>
+          <div class="floor-label" style="color:#ffc738">Yellow · 2027</div>
+          <div class="floor-body-l" style="font-size:10px;color:rgba(255,199,56,.5)">Player</div>
+        </div>
+        <div class="floor-body">
+          <div class="floor-title">FOM Institute front door · People find you</div>
+          <div class="floor-desc">Clear identity. Documented methodology. SaaS product in design. Parallel avenues running. You stop chasing — others pass you the ball.</div>
+          <span class="floor-tag" style="background:rgba(255,199,56,.08);color:#ffc738">End of 2027</span>
+        </div>
+      </div>
+      <div class="floor">
+        <div class="floor-side" style="background:rgba(61,232,133,.05)">
+          <div class="floor-dot" style="background:#3de885"></div>
+          <div class="floor-label" style="color:#3de885">Green · 2028+</div>
+          <div class="floor-body-l" style="font-size:10px;color:rgba(61,232,133,.5)">Performer</div>
+        </div>
+        <div class="floor-body">
+          <div class="floor-title">Licensed methodology · Enterprise · Young men</div>
+          <div class="floor-desc">Other facilitators. Growth House as distribution. The enterprise works without you running every engagement. Young men's program begins.</div>
+          <span class="floor-tag" style="background:rgba(61,232,133,.08);color:#3de885">2028+</span>
+        </div>
+      </div>
+    </div>
+    <div class="key-q">How can this only be done with me?</div>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 4 — PEACEFUL WARRIOR ═══════ -->
+<div class="panel" id="p4">
+  <div class="bg"></div>
+  <div class="content">
+    <div class="panel-label">04 — The Peaceful Warrior</div>
+    <div class="title">Be the action.<br><em>Drop the doer.</em></div>
+    <div class="satori-box">
+      <div class="satori-title">Satori — The Warrior State of Being</div>
+      <div class="satori-body">The mind is free of thought. Pure awareness. The body is active, sensitive, relaxed. Emotions are open and free. This is the internal state from which Discernment operates. The Monday session only works when you are actually in Satori — not managing the session, being in it. This is cultivated daily. It cannot be performed.<br><br><strong style="color:rgba(238,240,248,.85)">"When you sit, sit. When you stand, stand. Whatever you do — don't wobble."</strong></div>
+    </div>
+    <div class="seven-bodies">
+      <div class="body-item"><div class="body-label">Body 1</div><div class="body-name">Physical</div></div>
+      <div class="body-item"><div class="body-label">Body 2</div><div class="body-name">Mental</div></div>
+      <div class="body-item"><div class="body-label">Body 3</div><div class="body-name">Emotional</div></div>
+      <div class="body-item"><div class="body-label">Body 4</div><div class="body-name">Spiritual</div></div>
+      <div class="body-item"><div class="body-label">Body 5</div><div class="body-name">Social</div></div>
+      <div class="body-item"><div class="body-label">Body 6</div><div class="body-name">Environmental</div></div>
+      <div class="body-item"><div class="body-label">Body 7</div><div class="body-name">Experiential</div></div>
+      <div class="body-item" style="background:rgba(160,150,240,.12);border-color:rgba(160,150,240,.25)"><div class="body-label" style="color:#a096f0">The Whole</div><div class="body-name" style="color:#a096f0">Human Being</div></div>
+    </div>
+    <div class="reframes">
+      <div class="rf"><div class="rf-old">"What can I do for you?"</div><div class="rf-new" style="color:#a096f0">"Who can I be and become for you?"</div></div>
+      <div class="rf"><div class="rf-old">Value in dollars</div><div class="rf-new" style="color:#a096f0">Value in change in quality of life, time saved, and progress in each wheel dimension</div></div>
+      <div class="rf"><div class="rf-old">Goal-seeking in the external world</div><div class="rf-new" style="color:#a096f0">The same sharp attention — turned inward</div></div>
+      <div class="rf"><div class="rf-old">Urges matter</div><div class="rf-new" style="color:#a096f0">Urges arise. Actions are chosen. Awareness is everything.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 5 — FRAMEWORKS ═══════ -->
+<div class="panel" id="p5">
+  <div class="bg"></div>
+  <div class="content">
+    <div class="panel-label">05 — The Frameworks</div>
+    <div class="title">One architecture.<br><em>Four lenses.</em></div>
+    <div class="frameworks">
+      <div class="fw" style="background:rgba(255,148,64,.07);border-color:rgba(255,148,64,.2)">
+        <div class="fw::before" style="background:#ff9440"></div>
+        <div class="fw-n" style="color:#ff9440">MMP · Roger Hamilton</div>
+        <div class="fw-name" style="color:#ff9440">Blaze Genius</div>
+        <div class="fw-tag" style="background:rgba(255,148,64,.15);color:#ff9440">WHO before HOW</div>
+        <div class="fw-body">People smart. Summer energy. Winning formula: <strong>magnification</strong> — growing relationships so the same value reaches more people. Losing formula: calculation — trying to multiply before magnifying. The question before every decision: <strong>"How can this only be done with me?"</strong> Parallel avenues running. Multiple lanes to lean into.</div>
+      </div>
+      <div class="fw" style="background:rgba(61,232,133,.07);border-color:rgba(61,232,133,.2)">
+        <div class="fw-n" style="color:#3de885">Gene Keys · Richard Rudd</div>
+        <div class="fw-name" style="color:#3de885">Gene Key 13</div>
+        <div class="fw-tag" style="background:rgba(61,232,133,.12);color:#3de885">Discord → Discernment → Empathy</div>
+        <div class="fw-body">I unlock my prosperity through Discernment. I undermine it through Discord. Discernment means <strong>hearing beneath what's being said</strong> — the hesitation after a confident answer, the topic that keeps almost appearing, the sentence Ken started and redirected. This cannot be automated. It has to be lived into.</div>
+      </div>
+      <div class="fw" style="background:rgba(160,150,240,.07);border-color:rgba(160,150,240,.2)">
+        <div class="fw-n" style="color:#a096f0">Myers-Briggs · ENFJ-A</div>
+        <div class="fw-name" style="color:#a096f0">The Protagonist</div>
+        <div class="fw-tag" style="background:rgba(160,150,240,.12);color:#a096f0">83% Extraverted · 79% Assertive</div>
+        <div class="fw-body">Sees potential in people before they see it in themselves. Leads from confidence, not fear. Shadow: waiting until perfect before shipping — name this when it appears. Shadow: overextending, carrying what isn't yours. <strong>Ship before ready. Set the boundary. Name the conflict.</strong></div>
+      </div>
+      <div class="fw" style="background:rgba(196,162,58,.07);border-color:rgba(196,162,58,.2)">
+        <div class="fw-n" style="color:#c4a23a">Simon Sinek · Start With Why</div>
+        <div class="fw-name" style="color:#c4a23a">WHY → HOW → WHAT</div>
+        <div class="fw-tag" style="background:rgba(196,162,58,.12);color:#c4a23a">Inside-Out Always</div>
+        <div class="fw-body">WHY: I believe people are more powerful when connected to something real — land, community, each other, themselves. <strong>Everything built exists to deepen those connections.</strong> Apply to every major decision: does this start from belief or product? Product without belief is noise.</div>
+      </div>
+    </div>
+    <div class="fw-moat">
+      <div class="fw-moat-text">"Five authors. One hundred years of thinking. One signal: you are wired to lead people toward a shared future through genuine presence and deep listening. Trust it completely."</div>
+      <div class="fw-moat-label">The convergence of all four frameworks</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 6 — THE VISION ═══════ -->
+<div class="panel" id="p6">
+  <div class="bg"></div>
+  <div class="grid-lines"></div>
+  <div class="content">
+    <div class="panel-label">06 — The Vision</div>
+    <div class="title">Five years.<br><em>The transmission.</em></div>
+    <div class="arc">
+      <div class="arc-item">
+        <div class="arc-year" style="color:#ff5f4a">2026</div>
+        <div class="arc-name">Ken · Puerto Rico</div>
+      </div>
+      <div class="arc-connector">→</div>
+      <div class="arc-item">
+        <div class="arc-year" style="color:#ff9440">October 2026</div>
+        <div class="arc-name">Immersion</div>
+      </div>
+      <div class="arc-connector">→</div>
+      <div class="arc-item">
+        <div class="arc-year" style="color:#ffc738">2027</div>
+        <div class="arc-name">FOM Institute</div>
+      </div>
+      <div class="arc-connector">→</div>
+      <div class="arc-item">
+        <div class="arc-year" style="color:#3de885">2028</div>
+        <div class="arc-name">Enterprise</div>
+      </div>
+      <div class="arc-connector">→</div>
+      <div class="arc-item">
+        <div class="arc-year" style="color:#2dd8ea">2031+</div>
+        <div class="arc-name">Young Men · Global</div>
+      </div>
+    </div>
+    <div class="big-statement">"I am going to spend the next five years sitting with men who have built everything the world told them to build — and found that something essential is missing. And then I am going to carry everything I learned into rooms of young men who are at the beginning."</div>
+    <div class="ns">Fellowship of Minds · The Definite Chief Aim</div>
+  </div>
+</div>
+
+<!-- ═══════ PANEL 7 — CLOSE ═══════ -->
+<div class="panel" id="p7">
+  <div class="bg"></div>
+  <div class="content">
+    <div class="emblem">
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16"/><circle cx="20" cy="20" r="7"/><line x1="20" y1="4" x2="20" y2="13"/><line x1="20" y1="27" x2="20" y2="36"/><line x1="4" y1="20" x2="13" y2="20"/><line x1="27" y1="20" x2="36" y2="20"/></svg>
+    </div>
+    <div class="title">Show up.<br><em>Stay at the edge.</em></div>
+    <div class="sub">"Find the sacred in the ordinary." The vision is clear. The map is built. The methodology is live. The only thing left is the one thing that was always the point — being fully present in the life you're building.</div>
+    <div class="links">
+      <a class="link" href="../index.html">← Home</a>
+      <a class="link" href="deryl_flight_path.html">Flight Path →</a>
+      <a class="link" href="deryl_life_architecture.html">Methodology →</a>
+      <a class="link" href="fom_institute.html">FOM Institute →</a>
+      <a class="link" href="MMP_BLAZE_ARCHITECTURE.html">Blaze Architecture →</a>
+      <a class="link" href="life_arch_index.html">All Documents →</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /board -->
+
+<script>
+// Generate stars
+const starsEl = document.getElementById('stars');
+for(let i=0;i<120;i++){
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random()*2+0.5;
+  s.style.cssText = `
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;top:${Math.random()*100}%;
+    --d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// Scroll tracking
+const board = document.getElementById('board');
+const panels = document.querySelectorAll('.panel');
+const dots = document.querySelectorAll('.dot');
+const curEl = document.getElementById('curPanel');
+let current = 0;
+
+function goTo(n){
+  panels[n].scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+board.addEventListener('scroll',()=>{
+  const scrollTop = board.scrollTop;
+  const h = board.clientHeight;
+  let idx = Math.round(scrollTop/h);
+  idx = Math.max(0,Math.min(panels.length-1,idx));
+  if(idx !== current){
+    current = idx;
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+    curEl.textContent = String(idx+1).padStart(2,'0');
+    // Hide scroll hint after first scroll
+    if(idx>0) document.querySelector('.scroll-hint').style.opacity='0';
+  }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'||e.key==='PageDown') goTo(Math.min(current+1,panels.length-1));
+  if(e.key==='ArrowUp'||e.key==='PageUp') goTo(Math.max(current-1,0));
+});
+</script>
+
+</body>
+</html>

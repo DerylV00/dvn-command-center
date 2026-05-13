@@ -481,7 +481,7 @@ body { background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,168
 }
 </style>
 </head>
-<body>
+<body><div style="position:sticky;top:0;z-index:200;height:48px;background:rgba(7,8,14,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(240,98,42,.15);display:flex;align-items:center;padding:0 40px;gap:12px;font-family:Syne,sans-serif;">  <span style="font-family:Cormorant Garamond,serif;font-style:italic;font-size:17px;color:rgba(240,98,42,.9);">Growth House</span>  <span style="font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.12em;text-transform:uppercase;font-weight:700;">· Immersion Suite</span>  <a href="../index.html" style="margin-left:auto;font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:rgba(46,255,140,.7);border:1px solid rgba(46,255,140,.18);padding:5px 12px;border-radius:4px;text-decoration:none;">← Home</a>  <a href="index.html" style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:rgba(240,98,42,.7);border:1px solid rgba(240,98,42,.18);padding:5px 12px;border-radius:4px;text-decoration:none;">Suite Hub</a></div>
 
 <!-- NAV -->
 <nav class="nav">
@@ -911,5 +911,5 @@ const obs = new IntersectionObserver(entries=>{
 },{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
-</body>
+<div style="border-top:1px solid rgba(240,98,42,.15);padding:16px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:rgba(240,98,42,.04);margin-top:0;">  <span style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.08em;font-weight:600;font-family:Syne,sans-serif;">Growth House · October 2026 · Deryl VanNostrand</span>  <div style="display:flex;gap:6px;flex-wrap:wrap;">    <a href="../index.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(46,255,140,.8);border:1px solid rgba(46,255,140,.2);padding:6px 12px;border-radius:4px;text-decoration:none;font-family:Syne,sans-serif;">← Home</a>    <a href="index.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(240,98,42,.8);border:1px solid rgba(240,98,42,.2);padding:6px 12px;border-radius:4px;text-decoration:none;font-family:Syne,sans-serif;">← Suite Hub</a>    <a href="../life_architecture/october_onepager.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(212,168,50,.8);border:1px solid rgba(212,168,50,.2);padding:6px 12px;border-radius:4px;text-decoration:none;font-family:Syne,sans-serif;">October Offer →</a>    <a href="../life_architecture/life_arch_index.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.08);padding:6px 12px;border-radius:4px;text-decoration:none;font-family:Syne,sans-serif;">All Documents</a>  </div></div></body>
 </html>

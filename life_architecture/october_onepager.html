@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Architecture — The Offer · Deryl VanNostrand</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f6f2eb;--bg2:#ede8de;--bg3:#e3ddd1;--bg4:#d8d0c0;
+  --ink:#14120e;--ink2:#4a4438;--ink3:#8a8070;
+  --line:rgba(20,18,14,.08);--line2:rgba(20,18,14,.16);
+  --gold:#8a6a10;--gold-dim:rgba(138,106,16,.08);--gold-line:rgba(138,106,16,.2);
+  --fire:#c04820;--fire-dim:rgba(192,72,32,.08);
+  --sage:#2a6a3a;--sage-dim:rgba(42,106,58,.08);
+  --warrior:#2a5a8a;--warrior-dim:rgba(42,90,138,.08);
+}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
+
+/* COVER — full page print-ready */
+.page{max-width:860px;margin:0 auto;padding:80px 80px 64px}
+
+/* HEADER */
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:56px;padding-bottom:28px;border-bottom:1px solid var(--line2)}
+.header-brand{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.header-date{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+
+/* HERO */
+.hero-eye{font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:20px;display:inline-flex;align-items:center;gap:8px;background:var(--gold-dim);border:1px solid var(--gold-line);padding:5px 14px;border-radius:20px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7vw,80px);font-weight:300;line-height:.9;letter-spacing:-.02em;margin-bottom:24px}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:15px;color:var(--ink2);line-height:1.75;max-width:580px;margin-bottom:48px}
+.hero-sub strong{color:var(--ink)}
+
+/* DIVIDER */
+.div{height:1px;background:var(--line2);margin:40px 0}
+
+/* THE WHAT */
+.section-eye{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.section-eye::after{content:'';flex:1;height:1px;background:var(--line2)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,40px);font-weight:300;line-height:1.05;margin-bottom:14px}
+.section-title em{font-style:italic;color:var(--gold)}
+.section-body{font-size:13px;color:var(--ink2);line-height:1.85;max-width:640px;margin-bottom:20px}
+.section-body strong{color:var(--ink);font-weight:700}
+
+/* THREE LAYERS */
+.layers{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:20px 0}
+.layer{padding:20px;border:1px solid var(--line2);background:var(--bg2)}
+.layer-num{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;font-weight:700}
+.layer-title{font-size:15px;font-weight:700;margin-bottom:8px}
+.layer-body{font-size:12px;color:var(--ink2);line-height:1.6}
+
+/* WHAT YOU RECEIVE */
+.receive{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:20px 0}
+.r-item{padding:16px 20px;background:var(--bg2);border:1px solid var(--line2);display:flex;gap:14px;align-items:flex-start}
+.r-icon{font-size:18px;flex-shrink:0;margin-top:2px}
+.r-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.r-desc{font-size:11px;color:var(--ink2);line-height:1.55}
+
+/* INVESTMENT */
+.invest-box{background:var(--ink);color:#f0ead8;padding:32px 36px;margin:20px 0;position:relative;overflow:hidden}
+.invest-box::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(196,162,58,.12) 0%,transparent 60%)}
+.invest-eye{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(196,162,58,.7);font-weight:700;margin-bottom:12px}
+.invest-amount{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#f0ead8;line-height:1;margin-bottom:8px}
+.invest-period{font-size:13px;color:rgba(240,234,216,.5);margin-bottom:16px}
+.invest-includes{display:flex;gap:8px;flex-wrap:wrap}
+.invest-tag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:4px 10px;border:1px solid rgba(196,162,58,.3);color:rgba(196,162,58,.8);border-radius:3px}
+
+/* TIMELINE */
+.timeline{display:flex;gap:0;margin:20px 0;border:1px solid var(--line2);overflow:hidden}
+.tl-item{flex:1;padding:16px 18px;border-right:1px solid var(--line2);background:var(--bg2)}
+.tl-item:last-child{border-right:none}
+.tl-when{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+.tl-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.tl-body{font-size:11px;color:var(--ink2);line-height:1.5}
+
+/* QUOTE */
+.quote{border-left:3px solid var(--gold);padding:14px 18px;background:var(--gold-dim);margin:20px 0;border-radius:0 6px 6px 0}
+.quote-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--ink);line-height:1.55}
+.quote-attr{font-size:9px;color:var(--gold);margin-top:6px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+
+/* ABOUT */
+.about-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start;margin:20px 0}
+.about-img{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--bg3));border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold)}
+.about-name{font-size:18px;font-weight:700;margin-bottom:4px}
+.about-role{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+.about-body{font-size:12px;color:var(--ink2);line-height:1.7}
+
+/* CTA */
+.cta{background:var(--bg2);border:1px solid var(--line2);padding:28px 32px;margin:20px 0;text-align:center}
+.cta-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:8px}
+.cta-title em{font-style:italic;color:var(--gold)}
+.cta-body{font-size:13px;color:var(--ink2);margin-bottom:16px}
+.cta-note{font-size:11px;color:var(--ink3);font-style:italic}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--line2);padding:20px 0 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:40px}
+.footer-left{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.footer-links{display:flex;gap:6px}
+.fl{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink3);text-decoration:none;padding:5px 10px;border:1px solid var(--line2);border-radius:3px}
+
+@media(max-width:640px){
+  .page{padding:40px 20px}
+  .layers,.receive{grid-template-columns:1fr}
+  .timeline{flex-direction:column}
+  .tl-item{border-right:none;border-bottom:1px solid var(--line2)}
+  .about-row{grid-template-columns:1fr}
+  .header{flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <div class="header-brand">Fellowship of Minds · Life Architecture</div>
+    <div class="header-date">October 2026 · Private</div>
+  </div>
+
+  <div class="hero-eye">◈ The Engagement · One Person · One Agent · One Session</div>
+  <div class="hero-title">Life<br><em>Architecture.</em></div>
+  <div class="hero-sub">A private engagement for <strong>one person</strong> who has built everything the world told them to build — and is ready to go deeper. Not a coaching program. Not a productivity system. A methodology for living your actual life with the same precision you built your success.</div>
+
+  <div class="div"></div>
+
+  <div class="section-eye">What this is</div>
+  <div class="section-title">The middle ground between<br><em>human depth and AI capability.</em></div>
+  <div class="section-body">Most people at your level have <strong>information without direction</strong> — three wearables generating data that never changes behavior. Or they have <strong>direction without memory</strong> — coaches whose insights evaporate between sessions. Life Architecture solves both simultaneously. One life architect in your environment. One AI agent built entirely from your words. Weekly sessions that compound over a four-month arc.</div>
+
+  <div class="layers">
+    <div class="layer">
+      <div class="layer-num" style="color:var(--fire)">Layer 1 · The Foundation</div>
+      <div class="layer-title">Physical presence</div>
+      <div class="layer-body">Living in your environment. Cooking, training, ops, contractor management. Friction removed before the day begins. Headspace cleared for what actually matters.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-num" style="color:var(--warrior)">Layer 2 · The Agent</div>
+      <div class="layer-title">Atlas — the memory</div>
+      <div class="layer-body">An AI knowledge base built entirely from your exact words. Reflects your specific patterns back to you. One nudge. Right moment. Your language. Not generic advice.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-num" style="color:var(--gold)">Layer 3 · The Depth</div>
+      <div class="layer-title">The Monday session</div>
+      <div class="layer-body">Weekly 60–90 minute structured session. Eight wheel dimensions tracked. Pattern review. Open calibration. This is where the compound interest builds.</div>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <div class="section-eye">What you receive</div>
+  <div class="section-title">Four months.<br><em>Eight dimensions.</em></div>
+
+  <div class="receive">
+    <div class="r-item">
+      <div class="r-icon">🗓</div>
+      <div><div class="r-title">Weekly Monday Session</div><div class="r-desc">60–90 minutes. Wheel dimension check-in. Pattern review from the prior week. One open calibration question. Every session recorded and fed to Atlas.</div></div>
+    </div>
+    <div class="r-item">
+      <div class="r-icon">🤖</div>
+      <div><div class="r-title">Atlas — Your Personal Agent</div><div class="r-desc">Built from your voice notes and sessions. One nudge per day via Telegram — your exact words, reflected back at the right moment. Gets smarter every week.</div></div>
+    </div>
+    <div class="r-item">
+      <div class="r-icon">🏡</div>
+      <div><div class="r-title">Physical Presence</div><div class="r-desc">Life architect in your environment Tue–Fri. Cooking, training, operational layer. The friction removed that keeps you from being fully present in your own life.</div></div>
+    </div>
+    <div class="r-item">
+      <div class="r-icon">📊</div>
+      <div><div class="r-title">Eight Wheel Dimensions</div><div class="r-desc">Health · Relationships · Inner Life · Experiences · Financial · Career/Mission · Community · Fun/Play. Tracked weekly. Patterns surfaced monthly. Edge questions calibrated to your actual life.</div></div>
+    </div>
+    <div class="r-item">
+      <div class="r-icon">🔍</div>
+      <div><div class="r-title">Behavioral Pattern Analysis</div><div class="r-desc">Monthly pattern review. What Atlas noticed across 30 days of your voice notes and observations. The gap between who you say you are and how you actually live — named clearly.</div></div>
+    </div>
+    <div class="r-item">
+      <div class="r-icon">🎯</div>
+      <div><div class="r-title">90-Day Arc Review</div><div class="r-desc">Where you were in June vs. September. Dimension by dimension. What changed, what's still at the edge, what the next season asks of you. The proof the methodology works.</div></div>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <div class="section-eye">The investment</div>
+  <div class="invest-box">
+    <div class="invest-eye">Monthly Retainer · Private Engagement</div>
+    <div class="invest-amount">$5,000</div>
+    <div class="invest-period">per month · minimum four months · Agudeza LLC → Inner Circle Energy Solutions LLC</div>
+    <div class="invest-includes">
+      <span class="invest-tag">Weekly sessions</span>
+      <span class="invest-tag">Atlas agent built</span>
+      <span class="invest-tag">Physical presence</span>
+      <span class="invest-tag">Daily nudges</span>
+      <span class="invest-tag">Monthly pattern review</span>
+      <span class="invest-tag">90-day arc review</span>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <div class="section-eye">The four-month arc</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-when">Month 1 · Foundation</div>
+      <div class="tl-title">Observation only</div>
+      <div class="tl-body">No systems imposed. Two weeks of watching, listening, noticing. Atlas built from your exact words. Active dimensions chosen together after the first session.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-when">Month 2 · Calibration</div>
+      <div class="tl-title">Patterns surface</div>
+      <div class="tl-body">Atlas nudge timing calibrated to how you actually respond. Edge questions sharpened to your specific dimensions. Weekly rhythm established and tested.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-when">Month 3 · Depth</div>
+      <div class="tl-title">The compound effect</div>
+      <div class="tl-body">Sessions go deeper because the history is there. Atlas surfaces patterns across 60 days of data. The gap between stated and lived starts to close.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-when">Month 4 · Integration</div>
+      <div class="tl-title">The arc review</div>
+      <div class="tl-body">Where you were in month one vs. now. What changed in each dimension. What the data shows. The conversation about what comes next.</div>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <div class="quote">
+    <div class="quote-text">"I want to focus more on being human rather than being a billionaire. The question is — is my life meaningfully different now? And not really."</div>
+    <div class="quote-attr">The question Life Architecture is built to answer</div>
+  </div>
+
+  <div class="div"></div>
+
+  <div class="section-eye">About Deryl</div>
+  <div class="about-row">
+    <div class="about-img">DV</div>
+    <div>
+      <div class="about-name">Deryl VanNostrand</div>
+      <div class="about-role">Life Architect · Fellowship of Minds</div>
+      <div class="about-body">Built the first Life Architecture engagement alongside a 9-figure entrepreneur in Puerto Rico from June–October 2026. Designed Atlas — a proprietary AI agent architecture that builds a personalized knowledge base from the client's exact words and delivers one behavioral nudge per day. Trained in the MMP Millionaire Master Plan (Blaze Genius), the Way of the Peaceful Warrior, and the Way of the Superior Man. The methodology operates at the intersection of human depth and AI capability — the specific position where genuine presence and sophisticated tools extend each other's reach.<br><br>October 2026: taking two people through this process starting January 2027.</div>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <div class="cta">
+    <div class="cta-title">Two slots.<br><em>January 2027.</em></div>
+    <div class="cta-body">The engagement requires physical presence in Puerto Rico or a primary residence location agreed upon at onboarding. This is not a remote coaching program.</div>
+    <div class="cta-note">"If something landed tonight — find me before you leave."</div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Deryl VanNostrand · Inner Circle Energy Solutions LLC · October 2026</div>
+    <div class="footer-links">
+      <a href="../index.html" class="fl" style="color:rgba(42,106,58,.8);border-color:rgba(42,106,58,.2)">← Home</a>
+      <a href="life_arch_index.html" class="fl">All Documents</a>
+      <a href="deryl_life_architecture.html" class="fl">Methodology</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

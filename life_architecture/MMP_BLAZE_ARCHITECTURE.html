@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMP Blaze Architecture — Deryl VanNostrand</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080a0f;--bg2:#0d1018;--bg3:#131620;--bg4:#1a1e2a;
+  --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);
+  --ink:#eef0f8;--ink2:#8b92b0;--ink3:#4a5070;
+  --blaze:#ff9440;--blaze-dim:rgba(255,148,64,.12);--blaze-line:rgba(255,148,64,.2);
+  --red:#ff5f4a;--red-dim:rgba(255,95,74,.1);
+  --green:#3de885;--green-dim:rgba(61,232,133,.1);
+  --gold:#c4a23a;--gold-dim:rgba(196,162,58,.1);
+  --siddhi:#a096f0;
+}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.65;min-height:100vh}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(8,10,15,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);height:52px;display:flex;align-items:center;padding:0 40px;gap:16px}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--blaze)}
+.nav-pills{display:flex;gap:2px;margin-left:auto}
+.np{padding:5px 13px;border-radius:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--ink3);background:none;border:none;cursor:pointer;font-family:'Syne',sans-serif;transition:all .15s;text-decoration:none;display:block}
+.np:hover{color:var(--ink2);background:var(--bg3)}
+.np.active{color:var(--blaze);background:var(--blaze-dim);border:1px solid var(--blaze-line)}
+
+/* COVER */
+.cover{min-height:85vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 80px 80px;position:relative;overflow:hidden}
+.cover-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 80% 30%,rgba(255,148,64,.09) 0%,transparent 60%),radial-gradient(ellipse 40% 50% at 10% 80%,rgba(255,95,74,.05) 0%,transparent 50%)}
+.cover-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:80px 80px}
+.cover-inner{position:relative;z-index:1;max-width:820px}
+.cover-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--blaze);font-weight:700;margin-bottom:28px;background:var(--blaze-dim);border:1px solid var(--blaze-line);padding:5px 14px;border-radius:20px}
+.cover-title{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,9vw,110px);font-weight:300;line-height:.9;letter-spacing:-.02em;color:var(--ink);margin-bottom:8px}
+.cover-title em{font-style:italic;color:var(--blaze)}
+.cover-sub{font-size:17px;font-weight:400;color:var(--ink2);margin-bottom:40px;max-width:540px;line-height:1.5}
+.cover-meta{display:flex;gap:48px;border-top:1px solid var(--line2);padding-top:24px}
+.cm-l{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;font-weight:700}
+.cm-v{font-size:14px;font-weight:700}
+
+/* PANELS */
+.panel{display:none;padding:0 0 80px}.panel.on{display:block}
+.wrap{max-width:820px;margin:0 auto;padding:0 80px}
+
+/* SECTIONS */
+.section{padding:56px 0 0}
+.sec-eye{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.sec-eye::after{content:'';flex:1;height:1px;background:var(--line)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,44px);font-weight:300;line-height:1.05;margin-bottom:16px}
+.sec-title em{font-style:italic;color:var(--blaze)}
+.sec-body{font-size:13px;color:var(--ink2);line-height:1.8;max-width:640px;margin-bottom:20px}
+.sec-body strong{color:var(--ink);font-weight:700}
+
+/* QUOTE */
+.qblock{border-left:3px solid var(--blaze);padding:14px 18px;background:var(--blaze-dim);border-radius:0 8px 8px 0;margin:16px 0;border-top:1px solid var(--blaze-line);border-right:1px solid var(--blaze-line);border-bottom:1px solid var(--blaze-line)}
+.qblock-text{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--ink);line-height:1.6;font-weight:300}
+.qblock-attr{font-size:9px;color:var(--blaze);margin-top:6px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+
+/* GENIUS GRID */
+.genius-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:20px 0}
+.gbox{padding:18px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.gbox.blaze{background:var(--blaze-dim);border-color:var(--blaze-line)}
+.gbox-q{font-size:28px;font-weight:800;margin-bottom:4px}
+.gbox-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.gbox-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.gbox-tag{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;margin-top:4px;display:inline-block}
+.gbox-lever{font-size:11px;color:var(--ink2);margin-top:6px}
+
+/* EQUATION */
+.eq-row{display:flex;align-items:center;gap:12px;padding:24px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;margin:20px 0}
+.eq-term{text-align:center;flex:1}
+.eq-term-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;font-weight:700}
+.eq-term-val{font-size:26px;font-weight:800;color:var(--blaze)}
+.eq-sym{font-size:24px;color:var(--ink3);font-weight:300}
+
+/* WIN/LOSE */
+.wl{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:20px 0}
+.wl-box{padding:20px;border-radius:10px;border:1px solid}
+.wl-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.wl-q{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:10px}
+.wl-body{font-size:12px;color:var(--ink2);line-height:1.65}
+
+/* STEP CARDS */
+.steps{display:flex;flex-direction:column;gap:4px;margin:20px 0}
+.step{border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--bg2);cursor:pointer;transition:border-color .15s}
+.step:hover{border-color:var(--line2)}
+.step-head{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.step-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0}
+.step-meta{flex:1}
+.step-level{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px;font-weight:700}
+.step-name{font-size:15px;font-weight:700}
+.step-chev{color:var(--ink3);font-size:16px;transition:transform .2s}
+.step-body{display:none;padding:2px 18px 18px}
+.step-body.on{display:block}
+.do-box{margin-bottom:10px}
+.do-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.do-items{display:flex;flex-direction:column;gap:3px}
+.do-item{display:flex;gap:10px;padding:8px 12px;border-radius:6px;font-size:12px;color:var(--ink2);line-height:1.5;align-items:flex-start}
+.do-item-n{flex-shrink:0;font-weight:800;font-size:13px}
+.case-box{background:var(--bg3);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:10px}
+.case-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;font-weight:700}
+.case-text{font-size:12px;color:var(--ink2);line-height:1.6}
+
+/* QUESTIONS */
+.questions{display:flex;flex-direction:column;gap:4px;margin:20px 0}
+.q-item{border-radius:10px;overflow:hidden;background:var(--bg2);border:1px solid var(--line);cursor:pointer;transition:border-color .15s}
+.q-item:hover{border-color:var(--line2)}
+.q-head{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.q-num{width:32px;height:32px;border-radius:50%;background:var(--blaze-dim);border:1px solid var(--blaze-line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--blaze);flex-shrink:0}
+.q-title{font-size:14px;font-weight:700;flex:1}
+.q-body{display:none;padding:2px 18px 18px}
+.q-body.on{display:block}
+.q-text{font-size:12px;color:var(--ink2);line-height:1.7}
+.q-source{font-size:12px;color:var(--ink2);line-height:1.7;border-left:2px solid var(--blaze);padding-left:12px;margin:10px 0;font-style:italic}
+.q-action{font-size:12px;color:var(--ink);font-weight:700;margin-top:8px}
+
+/* CHECKLIST */
+.cl-section{margin:20px 0;background:var(--bg2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.cl-header{padding:14px 18px;border-bottom:1px solid var(--line)}
+.cl-header-title{font-size:13px;font-weight:700}
+.cl-items{padding:4px 0}
+.cl-item{display:flex;align-items:flex-start;gap:12px;padding:10px 18px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s}
+.cl-item:last-child{border-bottom:none}
+.cl-item:hover{background:var(--bg3)}
+.cl-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--ink3);flex-shrink:0;margin-top:1px;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.cl-check.done{background:var(--green);border-color:var(--green)}
+.cl-check.done::after{content:'✓';font-size:11px;color:#071a0e;font-weight:800}
+.cl-text{font-size:12px;color:var(--ink2);line-height:1.5}
+
+/* PROMOTIONS */
+.promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:16px 0}
+.promo-box{padding:16px;border-radius:10px;border:1px solid var(--line);background:var(--bg2)}
+.promo-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;font-weight:700}
+.promo-title{font-size:14px;font-weight:700;margin-bottom:8px}
+.promo-body{font-size:12px;color:var(--ink2);line-height:1.6}
+
+/* GOLDEN THREAD */
+.gold-thread{display:flex;flex-direction:column;gap:3px;margin:16px 0}
+.gt-item{display:flex;gap:12px;padding:10px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;align-items:flex-start}
+.gt-num{width:26px;height:26px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(196,162,58,.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--gold);flex-shrink:0}
+.gt-text{font-size:12px;color:var(--ink2);line-height:1.55}
+.gt-text strong{color:var(--ink);font-weight:700}
+
+/* LANGUAGE SHIFT */
+.lang-shift{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:16px 0}
+.ls-box{padding:18px;border-radius:10px;border:1px solid}
+.ls-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.ls-old{font-size:13px;color:rgba(255,255,255,.3);text-decoration:line-through;margin-bottom:8px}
+.ls-new{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;margin-bottom:8px}
+.ls-body{font-size:11px;color:var(--ink2);line-height:1.6}
+
+/* KENT/SUPERMAN */
+.ks-split{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:16px 0}
+.ks-box{padding:18px;border-radius:10px;border:1px solid var(--line)}
+.ks-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.ks-items{display:flex;flex-direction:column;gap:3px}
+.ks-item{font-size:12px;color:var(--ink2);padding:6px 10px;background:var(--bg3);border-radius:5px}
+
+/* APPLIED */
+.applied-box{background:linear-gradient(135deg,var(--blaze-dim) 0%,var(--bg2) 100%);border:1px solid var(--blaze-line);border-radius:12px;padding:24px;margin:20px 0}
+.applied-eye{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--blaze);font-weight:700;margin-bottom:10px}
+.applied-title{font-size:18px;font-weight:700;margin-bottom:12px}
+.applied-items{display:flex;flex-direction:column;gap:3px}
+.ai{display:flex;gap:10px;font-size:12px;color:var(--ink2);padding:8px 12px;background:rgba(0,0,0,.2);border-radius:6px;align-items:flex-start}
+.ai-n{color:var(--blaze);font-weight:800;flex-shrink:0}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:18px 80px;display:flex;justify-content:space-between;margin-top:4px}
+footer span{font-size:10px;color:var(--ink3);letter-spacing:.06em;font-weight:600}
+
+@media(max-width:640px){
+  .cover{padding:0 20px 48px;min-height:70vh}
+  .wrap{padding:0 18px}
+  .cover-meta{flex-wrap:wrap;gap:20px}
+  .genius-grid,.wl,.promo-grid,.lang-shift,.ks-split{grid-template-columns:1fr}
+  .nav-pills{display:none}
+  footer{padding:14px 18px;flex-direction:column;gap:6px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">MMP Blaze Architecture</div>
+  <div class="nav-pills">
+    <button class="np active" onclick="show('who',this)">Who Is Blaze</button>
+    <button class="np" onclick="show('red',this)">Red → Orange</button>
+    <button class="np" onclick="show('orange',this)">Orange → Yellow</button>
+    <button class="np" onclick="show('questions',this)">5 Questions</button>
+    <button class="np" onclick="show('checklists',this)">Checklists</button>
+    <button class="np" onclick="show('applied',this)">Applied</button>
+  </div>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-inner">
+    <div class="cover-eyebrow">◈ Millionaire Master Plan · Roger Hamilton · Full Extraction</div>
+    <div class="cover-title">Blaze<br><em>Architecture.</em></div>
+    <div class="cover-sub">Every Blaze-specific principle, question, path, and assessment extracted from the source. Red → Orange → Yellow. Complete field guide.</div>
+    <div class="cover-meta">
+      <div><div class="cm-l">Genius</div><div class="cm-v" style="color:var(--blaze)">Blaze</div></div>
+      <div><div class="cm-l">Natural question</div><div class="cm-v">WHO</div></div>
+      <div><div class="cm-l">Leverage through</div><div class="cm-v">Magnification</div></div>
+      <div><div class="cm-l">Current level</div><div class="cm-v" style="color:var(--red)">Red · Active</div></div>
+    </div>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:center;gap:6px;padding:14px 0;border-bottom:1px solid var(--line)">
+  <button class="np active" onclick="show('who',this)" style="font-size:9px">Who Is Blaze</button>
+  <button class="np" onclick="show('red',this)" style="font-size:9px">Red → Orange</button>
+  <button class="np" onclick="show('orange',this)" style="font-size:9px">Orange → Yellow</button>
+  <button class="np" onclick="show('questions',this)" style="font-size:9px">5 Questions</button>
+  <button class="np" onclick="show('checklists',this)" style="font-size:9px">Checklists</button>
+  <button class="np" onclick="show('applied',this)" style="font-size:9px">Applied</button>
+</div>
+
+<!-- ══ WHO IS BLAZE ══ -->
+<div class="panel on" id="p-who">
+<div class="wrap">
+
+<div class="section">
+  <div class="sec-eye">The core definition · Chapter 1</div>
+  <div class="sec-title">Blaze Geniuses are<br><em>people smart.</em></div>
+  <div class="sec-body">People smart. Summer energy. Extrovert action dynamic. The natural question is always <strong>WHO.</strong> Leverage is created through <strong>magnification</strong> — not multiplication. The winning question before every decision: <em>"How can this only be done with me?"</em></div>
+
+  <div class="qblock">
+    <div class="qblock-text">"Blaze Geniuses ascend the wealth lighthouse by growing their relationships. They create leverage through magnification by asking the question: How can this only be done with me?"</div>
+    <div class="qblock-attr">Roger Hamilton · MMP Chapter 5 · Source</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">The four geniuses · How Blaze fits</div>
+  <div class="sec-title">Four questions.<br><em>One compass.</em></div>
+  <div class="genius-grid">
+    <div class="gbox">
+      <div class="gbox-q" style="color:#60a0ff">WHAT</div>
+      <div class="gbox-label" style="color:#60a0ff">Dynamo</div>
+      <div class="gbox-name">Ideas Smart</div>
+      <div class="gbox-tag" style="background:rgba(96,160,255,.12);color:#60a0ff">Innovation</div>
+      <div class="gbox-lever">Creates value through creation and new ideas</div>
+    </div>
+    <div class="gbox blaze">
+      <div class="gbox-q" style="color:var(--blaze)">WHO</div>
+      <div class="gbox-label" style="color:var(--blaze)">Blaze · You</div>
+      <div class="gbox-name">People Smart</div>
+      <div class="gbox-tag" style="background:var(--blaze-dim);color:var(--blaze)">◉ Magnification</div>
+      <div class="gbox-lever">Creates leverage through growing relationships</div>
+    </div>
+    <div class="gbox">
+      <div class="gbox-q" style="color:#3de885">WHEN</div>
+      <div class="gbox-label" style="color:#3de885">Tempo</div>
+      <div class="gbox-name">Senses Smart</div>
+      <div class="gbox-tag" style="background:rgba(61,232,133,.1);color:#3de885">Timing</div>
+      <div class="gbox-lever">Creates value through sensing the market</div>
+    </div>
+    <div class="gbox">
+      <div class="gbox-q" style="color:#a096f0">HOW</div>
+      <div class="gbox-label" style="color:#a096f0">Steel</div>
+      <div class="gbox-name">Details Smart</div>
+      <div class="gbox-tag" style="background:rgba(160,150,240,.1);color:#a096f0">Multiplication</div>
+      <div class="gbox-lever">Creates leverage through systems and scale</div>
+    </div>
+  </div>
+  <div class="sec-body" style="margin-top:4px"><strong>Blaze opposite genius = Steel.</strong> Steel is introverted, systems-focused, multiplication. Blaze is extroverted, people-focused, magnification. They complement perfectly — Blaze needs Steel to handle the numbers; Steel needs Blaze to open the flow. The life architecture methodology needs both.</div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">The wealth equation · Chapter 5</div>
+  <div class="sec-title">Value × Leverage<br><em>= Wealth.</em></div>
+  <div class="eq-row">
+    <div class="eq-term"><div class="eq-term-label">Wealth</div><div class="eq-term-val">W</div></div>
+    <div class="eq-sym">=</div>
+    <div class="eq-term"><div class="eq-term-label">Value</div><div class="eq-term-val">V</div></div>
+    <div class="eq-sym">×</div>
+    <div class="eq-term"><div class="eq-term-label">Leverage</div><div class="eq-term-val">L</div></div>
+  </div>
+  <div class="sec-body">Two types of value: <strong>Innovation</strong> (Dynamo) and <strong>Timing</strong> (Tempo). Two types of leverage: <strong>Multiplication</strong> (Steel) and <strong>Magnification</strong> (Blaze).<br><br>"Delivering more value is what it feels like when you accelerate a car by putting your foot on the gas. Leveraging your value is what it feels like when you shift up the gears."<br><br>Blaze adds value by connecting people to what they need. Blaze creates leverage by magnifying — getting the same value to reach more people through relationships without requiring more time.</div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">Winning vs losing formula</div>
+  <div class="sec-title">Magnification wins.<br><em>Calculation loses.</em></div>
+  <div class="wl">
+    <div class="wl-box" style="background:var(--green-dim);border-color:rgba(61,232,133,.22)">
+      <div class="wl-label" style="color:var(--green)">✓ Winning — Magnification</div>
+      <div class="wl-q" style="color:var(--green)">"How can this only be done with me?"</div>
+      <div class="wl-body">Growing relationships so the same value reaches more people. Going out to your network with existing products. Speaking to customers to find out what they need. Creating partnerships with others who can add value. Being the marketing partner or affiliate. Connecting the WHO.</div>
+    </div>
+    <div class="wl-box" style="background:var(--red-dim);border-color:rgba(255,95,74,.22)">
+      <div class="wl-label" style="color:var(--red)">✗ Losing — Calculation</div>
+      <div class="wl-q" style="color:var(--red)">"Blazes get stuck when they try and multiply."</div>
+      <div class="wl-body">Building systems that work without you before magnification is established. Sitting at a desk dealing with details instead of connecting. Isolated technical build with no human contact. Performing presence instead of having it. Helping everyone for free because you want to be liked.</div>
+    </div>
+  </div>
+
+  <div class="qblock" style="margin-top:4px">
+    <div class="qblock-text">"A Blaze genius trying to be everything to everybody at Orange level is like a restaurant that serves everything without ever being known for anything. Being all things to all people, standing for nothing and falling for everything, is not the way to go."</div>
+    <div class="qblock-attr">Roger Hamilton · MMP Chapter 5 · Source</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">Known Blaze Geniuses · Source</div>
+  <div class="sec-title">Who came before<br><em>on this path.</em></div>
+  <div class="sec-body">Bill Clinton, Jack Welch, Oprah Winfrey, Ellen DeGeneres, Larry King. <strong>"All of these charismatic people focused on their strengths in leadership and connections. They ignored those who criticized them for not focusing on the numbers or not planning enough. They never worried that they changed focus too often or didn't like being stuck in an office. They just got out there to make a difference through people with fun and variety — because they were best at answering the question WHO."</strong></div>
+
+  <div class="section">
+    <div class="sec-eye">Blaze business type · Chapter 6</div>
+    <div class="sec-title">Market-based.<br><em>Summer season.</em></div>
+    <div class="sec-body">"In the summer season of an industry, the point of power moves to market-based businesses. When there is so much choice of products out there, people prefer to gather around like-minded people in communities where they can hear about the latest best products."<br><br><strong>Key metrics for a Blaze market-based business:</strong> not how many products you sell — but how many customers you have and the lifetime value of all products and services you provide to each. The switching cost increases with time. The community is the moat.</div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ RED → ORANGE ══ -->
+<div class="panel" id="p-red">
+<div class="wrap">
+
+<div class="section">
+  <div class="sec-eye">The context · Chapter 4</div>
+  <div class="sec-title">Blazes need<br><em>to Glow.</em></div>
+  <div class="sec-body">"Blazes need to GLOW — that is their strength, provided they focus it at the next level." At Red level, the trampoline dynamic: you can go high but you always come back. The only way to stop bouncing is to start climbing. Three steps up the ladder.</div>
+
+  <div class="qblock">
+    <div class="qblock-text">"You may be busy making all those connections but when you get home at night and look at your negative cash flow — that doesn't stop the feeling of being really alone."</div>
+    <div class="qblock-attr">MMP · The Blaze infrared experience · Source</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">The three steps · Red → Orange (Blaze)</div>
+  <div class="sec-title">Pinpoint. Standard.<br><em>Follow the flow.</em></div>
+
+  <div class="steps">
+    <div class="step" onclick="flip('s1')">
+      <div class="step-head">
+        <div class="step-num" style="background:var(--blaze-dim);color:var(--blaze);border:1px solid var(--blaze-line)">1</div>
+        <div class="step-meta">
+          <div class="step-level" style="color:var(--blaze)">Step One · Red → Orange</div>
+          <div class="step-name">Pinpoint Your Passion</div>
+        </div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="step-body" id="s1">
+        <div class="do-box">
+          <div class="do-label" style="color:var(--red)">DO NOT</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Get distracted by what is out there, chasing the many opportunities people present to you</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Get busier delivering what they want instead of lighting your inner spark</div>
+          </div>
+        </div>
+        <div class="do-box">
+          <div class="do-label" style="color:var(--green)">DO</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Use your freedom of movement to focus on the WHO</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Connect your passion to the people you want to work with</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Use your Blaze genius to add value to THEIR flow</div>
+          </div>
+        </div>
+        <div class="case-box">
+          <div class="case-label">Lucio's Case Study · The Blaze Red-Level Path</div>
+          <div class="case-text">Lucio's passion was to entertain — hosting groups, sharing knowledge of Italian history and culture. The vision: restaurant always full, 20% profit, attracting investors, Lucio spending several nights a week entertaining. The key question: <em>"How would you feel if you were at the restaurant entertaining guests and potential partners and supporting the growth through the connections you made?"</em> His answer: <em>"I would love to do that — that's what I really enjoy."</em></div>
+        </div>
+        <div class="qblock" style="margin-top:10px">
+          <div class="qblock-text">"Passion is not a problem for Blazes at any level. Focusing on the RIGHT passion is."</div>
+          <div class="qblock-attr">MMP Chapter 4 · Source</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" onclick="flip('s2')">
+      <div class="step-head">
+        <div class="step-num" style="background:var(--blaze-dim);color:var(--blaze);border:1px solid var(--blaze-line)">2</div>
+        <div class="step-meta">
+          <div class="step-level" style="color:var(--blaze)">Step Two · Red → Orange</div>
+          <div class="step-name">Set Your Standards</div>
+        </div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="step-body" id="s2">
+        <div class="do-box">
+          <div class="do-label" style="color:var(--red)">DO NOT</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Spread yourself too thin — failing to raise standards and focus your time</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>End up with too many loose ends to tend to</div>
+          </div>
+        </div>
+        <div class="do-box">
+          <div class="do-label" style="color:var(--green)">DO</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Use your Blaze genius to invest time connecting to those who share your passion</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Understand the standards by which they connect and judge success</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Deliver value to them in a way that links THEIR flow to yours</div>
+          </div>
+        </div>
+        <div class="case-box">
+          <div class="case-label">Lucio's Numbers → People conversion</div>
+          <div class="case-text"><em>"When we worked out how many groups and themed evenings Lucio would need to reach his profit number, it was just 8 in a month. To make this process enjoyable for a Blaze, we turned his numbers into PEOPLE."</em><br><br>Lucio went to the Italian consulate and invited their members and friends. Went to tutors teaching Chinese people Italian and gave them special deals. Simple Blaze actions — they love speaking to and calling people. Now he had a focused way to do it.<br><br><strong>"Focus comes not just in what you do but also what you DON'T do. Blaze Geniuses are constantly distracted and need to learn a simple word: NO."</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" onclick="flip('s3')">
+      <div class="step-head">
+        <div class="step-num" style="background:var(--blaze-dim);color:var(--blaze);border:1px solid var(--blaze-line)">3</div>
+        <div class="step-meta">
+          <div class="step-level" style="color:var(--blaze)">Step Three · Red → Orange</div>
+          <div class="step-name">Follow the Flow</div>
+        </div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="step-body" id="s3">
+        <div class="do-box">
+          <div class="do-label" style="color:var(--red)">DO NOT</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Pay the most attention to and work with people who are shouting the loudest</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Support them by catering to their needs at the expense of your own goals</div>
+          </div>
+        </div>
+        <div class="do-box">
+          <div class="do-label" style="color:var(--green)">DO</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Pay attention to people who can help you achieve your goals by supporting what you are doing</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Share your goals and enhance their flow simultaneously</div>
+          </div>
+        </div>
+        <div class="qblock" style="margin-top:10px">
+          <div class="qblock-text">"Lucio succeeded by fitting people into his program rather than constantly trying to work around them."</div>
+          <div class="qblock-attr">MMP Chapter 4 · The Blaze Red-Level Case Study · Source</div>
+        </div>
+        <div class="case-box" style="margin-top:8px">
+          <div class="case-label">Result</div>
+          <div class="case-text">Lucio moved from Red to a strong Orange with positive cash flow. 5 months after implementing the plan, he hosted an evening for Roger and 12 friends and shared that he had hit all his targets. His words: <em>"I will only grow if I can keep enjoying evenings like these."</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">The language of flow · Chapter 4 · The most important shift</div>
+  <div class="sec-title">Requests to<br><em>Opportunities.</em></div>
+  <div class="lang-shift">
+    <div class="ls-box" style="background:var(--red-dim);border-color:rgba(255,95,74,.22)">
+      <div class="ls-label" style="color:var(--red)">Request language · Red floor</div>
+      <div class="ls-old">"I need a job"</div>
+      <div class="ls-old">"I need money"</div>
+      <div class="ls-old">"I need clients"</div>
+      <div class="ls-body" style="margin-top:8px">"Every time you make a request you are reminding yourself and others of what you don't have and giving away your power to make the change. The people you make requests to become the drivers of your future — not you."</div>
+    </div>
+    <div class="ls-box" style="background:var(--blaze-dim);border-color:var(--blaze-line)">
+      <div class="ls-label" style="color:var(--blaze)">Opportunity language · Orange floor</div>
+      <div class="ls-new" style="color:var(--blaze)">"What are the biggest problems you're facing that I can help solve?"</div>
+      <div class="ls-new" style="color:var(--blaze)">"I have an opportunity for you to get a high return on your investment — are you interested?"</div>
+      <div class="ls-body" style="margin-top:8px">"Every need you have is someone else's opportunity. When you turn your need into an opportunity, you can create a job instead of needing to find one."</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">Clark Kent vs Superman · Chapter 4</div>
+  <div class="sec-title">Buy your time.<br><em>Use it right.</em></div>
+  <div class="ks-split">
+    <div class="ks-box" style="background:var(--bg2)">
+      <div class="ks-label" style="color:var(--ink3)">Clark Kent Time · Buying the floor</div>
+      <div class="ks-items">
+        <div class="ks-item">Cooking and meal prep for Ken</div>
+        <div class="ks-item">Cleaning and house maintenance</div>
+        <div class="ks-item">Contractor management</div>
+        <div class="ks-item">Bartending in Condado (Thu–Sat)</div>
+      </div>
+    </div>
+    <div class="ks-box" style="background:var(--blaze-dim);border-color:var(--blaze-line)">
+      <div class="ks-label" style="color:var(--blaze)">Superman Time · Building the next level</div>
+      <div class="ks-items">
+        <div class="ks-item" style="color:var(--ink)">Monday sessions with Ken</div>
+        <div class="ks-item" style="color:var(--ink)">AI agent architecture build</div>
+        <div class="ks-item" style="color:var(--ink)">Methodology development</div>
+        <div class="ks-item" style="color:var(--ink)">Immersion preparation</div>
+        <div class="ks-item" style="color:var(--ink)">Spanish 10hrs/week</div>
+      </div>
+    </div>
+  </div>
+  <div class="qblock" style="margin-top:4px">
+    <div class="qblock-text">"What is the minimum time I need to spend in Clark Kent time each week, buying me the rest in Superman time to pursue my future vision?"</div>
+    <div class="qblock-attr">MMP Chapter 4 · The core Red-level question · Source</div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ ORANGE → YELLOW ══ -->
+<div class="panel" id="p-orange">
+<div class="wrap">
+
+<div class="section">
+  <div class="sec-eye">The context · Chapter 5</div>
+  <div class="sec-title">Orange to Yellow.<br><em>The Enterprise prism.</em></div>
+  <div class="sec-body">At Orange you are in positive cash flow but still chasing business. You have a strong work ethic but are wondering how to turn all this effort into a higher level of income. The shift to Yellow is from <strong>dependence to independence</strong> — from chasing the ball to choosing a position where others pass it to you.</div>
+  <div class="sec-body">Key insight from the source: <strong>All flow is made up of projects and processes.</strong> Projects grow or enhance flow. Processes maintain flow. To reach Yellow, you need to automate or outsource your processes so you can focus all your time on profitable projects — promotions.</div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">The three steps · Orange → Yellow (Blaze)</div>
+  <div class="sec-title">Identity. Market.<br><em>Monetize.</em></div>
+
+  <div class="steps">
+    <div class="step" onclick="flip('o1')">
+      <div class="step-head">
+        <div class="step-num" style="background:var(--blaze-dim);color:var(--blaze);border:1px solid var(--blaze-line)">1</div>
+        <div class="step-meta">
+          <div class="step-level" style="color:var(--blaze)">Step One · Orange → Yellow</div>
+          <div class="step-name">Identify Your Identity</div>
+        </div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="step-body" id="o1">
+        <div class="do-box">
+          <div class="do-label" style="color:var(--red)">DO NOT</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Try to be everything to everyone, saying yes to every possibility of business</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Try to serve every person you meet without a clear niche</div>
+          </div>
+        </div>
+        <div class="do-box">
+          <div class="do-label" style="color:var(--green)">DO</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Make a clear stand for who you are and who you are NOT</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>When people show up they already want to go where you want to take them</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>When people refer others it is for a specific niche</div>
+          </div>
+        </div>
+        <div class="case-box">
+          <div class="case-label">Bé's Case Study · The Blaze Orange-Level Path</div>
+          <div class="case-text">Bé was coaching women leaders in London — one of many leadership coaches chasing business, relying on word of mouth. She created a clear identity: Voice for women's leadership — not in London where competition was fierce, but in her native Czech Republic where she could stand out. Created the Global Institute for Extraordinary Women + Femina Fusion certification program.<br><br><strong>The exercise:</strong> "Imagine yourself 5 years in the future. You are being invited on stage to speak to a thousand people about your success. You are introduced with a one-paragraph bio. How would you want your bio to read?"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" onclick="flip('o2')">
+      <div class="step-head">
+        <div class="step-num" style="background:var(--blaze-dim);color:var(--blaze);border:1px solid var(--blaze-line)">2</div>
+        <div class="step-meta">
+          <div class="step-level" style="color:var(--blaze)">Step Two · Orange → Yellow</div>
+          <div class="step-name">Master Your Market</div>
+        </div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="step-body" id="o2">
+        <div class="do-box">
+          <div class="do-label" style="color:var(--red)">DO NOT</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Chase the business around you, getting distracted by the agendas and needs of others</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Have no clear milestones for you to meet</div>
+          </div>
+        </div>
+        <div class="do-box">
+          <div class="do-label" style="color:var(--green)">DO</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Strategically segment your market — know who your customers and partners are</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Be the number one solution to their needs</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Build teams to create and test products while YOU are out getting feedback</div>
+          </div>
+        </div>
+        <div class="qblock" style="margin-top:10px">
+          <div class="qblock-text">"Blazes and their fire energy are always tempted to run around trying to light their bonfire in many different places — which never works as well as focusing on ONE spot and lighting it there."</div>
+          <div class="qblock-attr">MMP Chapter 5 · Source</div>
+        </div>
+        <div class="case-box" style="margin-top:8px">
+          <div class="case-label">Bé's market segmentation</div>
+          <div class="case-text">Identified 3 levels of customer: (1) Women looking for inspiration and connection to get started, (2) Successful women looking to unite in a meaningful way, (3) Women leaders with their own networks looking for partnerships. Knowing this helped her decide on her first promotions for the Institute.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" onclick="flip('o3')">
+      <div class="step-head">
+        <div class="step-num" style="background:var(--blaze-dim);color:var(--blaze);border:1px solid var(--blaze-line)">3</div>
+        <div class="step-meta">
+          <div class="step-level" style="color:var(--blaze)">Step Three · Orange → Yellow</div>
+          <div class="step-name">Monetize Your Moment</div>
+        </div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="step-body" id="o3">
+        <div class="do-box">
+          <div class="do-label" style="color:var(--red)">DO NOT</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Focus on working hard and chasing the next customer without a clear promotion plan</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--red)">✗</span>Get caught up in trying to answer "what should I do"</div>
+          </div>
+        </div>
+        <div class="do-box">
+          <div class="do-label" style="color:var(--green)">DO</div>
+          <div class="do-items">
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Ask yourself: "Who has the right what? Who has the wood that I can turn into fire?"</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Prioritize actions so every moment of effort channels toward profitable activity</div>
+            <div class="do-item"><span class="do-item-n" style="color:var(--green)">✓</span>Bring in a Tempo genius for timing, Steel genius for details</div>
+          </div>
+        </div>
+        <div class="case-box" style="margin-top:10px">
+          <div class="case-label">Bé's first promotion</div>
+          <div class="case-text">A dozen women in a 12-month Founders Circle. A few days of phone calls to people who already knew and trusted her. Filled the mentoring circle. Then — a book on her story as a cause.<br><br><strong>"Blazers have difficulty promoting themselves but not a cause they believe in. The Institute became Bé's cause."</strong><br><br>6 months later: nationwide press, TV, panel discussions with the Prime Minister. Starting international partnerships 12 months after launch.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">The promotion anatomy · Chapter 5 Action Point</div>
+  <div class="sec-title">The golden thread<br><em>every promotion follows.</em></div>
+  <div class="gold-thread">
+    <div class="gt-item"><div class="gt-num">1</div><div class="gt-text"><strong>A compelling invitation</strong> — what is it, who will it reach, when and how</div></div>
+    <div class="gt-item"><div class="gt-num">2</div><div class="gt-text"><strong>Simple registration</strong> — automated, measurable, trackable</div></div>
+    <div class="gt-item"><div class="gt-num">3</div><div class="gt-text"><strong>Affirm</strong> — confirmation building commitment, immediate payoff</div></div>
+    <div class="gt-item"><div class="gt-num">4</div><div class="gt-text"><strong>Thoughtful preparation</strong> — building anticipation, setting expectations</div></div>
+    <div class="gt-item"><div class="gt-num">5</div><div class="gt-text"><strong>High impact delivery</strong> — exceed expectations, make a new invitation</div></div>
+    <div class="gt-item"><div class="gt-num">6</div><div class="gt-text"><strong>Easy feedback</strong> — honest reflection, quantifiable improvements</div></div>
+    <div class="gt-item"><div class="gt-num">7</div><div class="gt-text"><strong>A sincere thank you</strong> — completion, enchanted end</div></div>
+  </div>
+  <div class="sec-body" style="margin-top:16px"><strong>The October Immersion IS this promotion.</strong> The invitation: Ken speaks — his story, his words, what changed. Registration: "Find me before you leave tonight." Affirm: the one-on-one conversation afterward. High impact delivery: the live Atlas demonstration. New invitation: "I'm taking two people starting January." The golden thread, in a room of 20 men.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ 5 QUESTIONS ══ -->
+<div class="panel" id="p-questions">
+<div class="wrap">
+
+<div class="section">
+  <div class="sec-eye">Chapter 4 Action Point · Five Steps to Follow the Flow</div>
+  <div class="sec-title">Create a job.<br><em>Don't find one.</em></div>
+  <div class="sec-body">"All successful business owners or investors could start all over again if their business failed because they have built the ability to find out what people need and then deliver against that. They know this skill set is the best form of job security anyone can have today."<br><br>These five questions are asked by everyone who successfully moves from Red to Orange. The answers connect you with those already in flow.</div>
+
+  <div class="questions">
+    <div class="q-item" onclick="flipQ('q1')">
+      <div class="q-head">
+        <div class="q-num">1</div>
+        <div class="q-title">What are the criteria for the job you are going to create?</div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="q-body" id="q1">
+        <div class="q-text">Set the amount of Superman time you can put toward this goal each week. Set the specific amount of money you want to achieve in that time. Now look at your genius and the current skill sets and experience you have.</div>
+        <div class="q-source">"Write a list of the criteria you would want the job you create to meet — where you can feel confident you can add value to the people you will be approaching. What are the activities you would be energized by and confident in doing?"</div>
+        <div class="q-action">Blaze-specific activities (from source):</div>
+        <div class="do-items" style="margin-top:8px">
+          <div class="do-item"><span class="do-item-n" style="color:var(--blaze)">→</span>Being a marketing partner or affiliate — going to your network with existing products</div>
+          <div class="do-item"><span class="do-item-n" style="color:var(--blaze)">→</span>Sharing the message and meeting new customers at events or conferences</div>
+          <div class="do-item"><span class="do-item-n" style="color:var(--blaze)">→</span>Speaking to existing customers to find out what they need and want to buy</div>
+          <div class="do-item"><span class="do-item-n" style="color:var(--blaze)">→</span>Creating partnerships with others who can add value through their network or products</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-item" onclick="flipQ('q2')">
+      <div class="q-head">
+        <div class="q-num">2</div>
+        <div class="q-title">Who would you be most passionate working with on this path?</div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="q-body" id="q2">
+        <div class="q-text">What people will you have gotten to know in your future vision? What is the industry you are most passionate about? Who are the leaders in the industry you would love to work with and learn from?</div>
+        <div class="q-source">"Make a list of at least 10 people and companies. Research. Ask around. Each person you talk to will know others you may not know about. Don't assume you already know it all — go out with fresh curiosity."</div>
+        <div class="q-action">Look for those where you have a TRUSTED CONNECTION — either they know you or they know someone you know. Make sure each is in flow and making money with an opportunity to make more.</div>
+        <div class="q-source" style="margin-top:8px">"Narrow it down to the top three and focus on them. It isn't a matter of WHETHER it happens — it is just a matter of WHEN."</div>
+      </div>
+    </div>
+
+    <div class="q-item" onclick="flipQ('q3')">
+      <div class="q-head">
+        <div class="q-num">3</div>
+        <div class="q-title">What is the need they have that you can fulfill?</div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="q-body" id="q3">
+        <div class="q-text">Have a look at what opportunities each of your top three is already offering. Find out what their biggest problems and opportunities are. Find out what they need and how it links with your criteria.</div>
+        <div class="q-source">"Tell them you love what they do and are committed to being of value to support them — and willing to prove yourself. What would they love to see different in a perfect world? What are their biggest challenges? Where do they see themselves a year from now?"</div>
+        <div class="q-action">Do NOT offer solutions yet. Just listen. Then write a list of at least 3 things you believe you can help them with — and work out what that would mean to them in extra revenue or profit.</div>
+      </div>
+    </div>
+
+    <div class="q-item" onclick="flipQ('q4')">
+      <div class="q-head">
+        <div class="q-num">4</div>
+        <div class="q-title">How can you deliver value with your genius to grow their flow?</div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="q-body" id="q4">
+        <div class="q-text">The time has come to put your plan into action and put a trial in place. Narrow to ONE company. Focus all efforts on them for the trial. Be prepared to work for nothing first to prove yourself.</div>
+        <div class="q-source">"One month trial — a good start. Use your Superman time. What could you achieve in a one-month trial? How much revenue or profit will you aim to help them make? The first step is to make people know you are committed to serving them."</div>
+        <div class="q-action">"Based on your success, what level of results would you need to achieve to earn what you need to earn? Through helping them, they will help you achieve that. More often than not, people who commit to this process end up with the company deciding to find a role and pay them."</div>
+      </div>
+    </div>
+
+    <div class="q-item" onclick="flipQ('q5')">
+      <div class="q-head">
+        <div class="q-num">5</div>
+        <div class="q-title">How will they and you profit from your partnership?</div>
+        <span class="step-chev">›</span>
+      </div>
+      <div class="q-body" id="q5">
+        <div class="q-text">Every company is willing to pay something to a partner or contractor who is able to bring them new business or improve their revenues or profits.</div>
+        <div class="q-source">Revenue splits: Online businesses with electronic products — up to 70% to affiliates. Service businesses — up to 50%. Product businesses — 5–20%. Asset-based businesses (property) — far less.</div>
+        <div class="q-action">Agree on the basics: What are you going to do? What is the benefit to them? What happens if you are successful? What are you waiting for — keep yourself positive with Clark Kent time and answer these five questions to create the job that gets you on the inside.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ CHECKLISTS ══ -->
+<div class="panel" id="p-checklists">
+<div class="wrap">
+
+<div class="section">
+  <div class="sec-eye">Pre-flight checklists · Red Level</div>
+  <div class="sec-title">Pinpoint your passion.<br><em>All nine checked yes.</em></div>
+  <div class="sec-body">From the source: "When all mine are checked yes, you will have connected your personal passion and purpose to your flight path." These are the checkpoints Hamilton uses to confirm you've actually crossed from Red to Orange — not just intellectually, but in lived practice.</div>
+
+  <div class="cl-section">
+    <div class="cl-header"><div class="cl-header-title" style="color:var(--blaze)">Pinpoint Your Passion</div></div>
+    <div class="cl-items">
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have a passion board of activities, people and things that electrifies and inspires my flight path and daily life</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have a list of the companies and people I connect with who are in flow and share the same passions as me</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I ensure that I have designed my rhythm and chosen the people I work with to keep me aligned in my passion and purpose</div></div>
+    </div>
+  </div>
+
+  <div class="cl-section" style="margin-top:4px">
+    <div class="cl-header"><div class="cl-header-title" style="color:var(--blaze)">Set Your Standards</div></div>
+    <div class="cl-items">
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have a standards sheet of the new higher standards I have set and the old standards I will no longer settle for</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I seek out and surround myself with people who are living at the same standards that I have chosen for myself</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I ensure I have designed my life to suit my profile and strengths so that I stay in my flow</div></div>
+    </div>
+  </div>
+
+  <div class="cl-section" style="margin-top:4px">
+    <div class="cl-header"><div class="cl-header-title" style="color:var(--blaze)">Follow the Flow</div></div>
+    <div class="cl-items">
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have connected with companies and people in flow that I am earning positive cash flow from — earning as I learn</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I am investing my time in connecting with the people and opportunities in my chosen industry to grow my flow</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I am measuring the growth in my knowledge and network and have a clear pathway to deliver my value</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-eye">Pre-flight checklists · Orange Level</div>
+  <div class="sec-title">Identify your identity.<br><em>All nine checked yes.</em></div>
+  <div class="sec-body">These checkpoints confirm you've crossed from Orange to Yellow. From the source: "When all mine are checked yes, you will have connected your personal passion and purpose to your flight path" at Yellow level.</div>
+
+  <div class="cl-section">
+    <div class="cl-header"><div class="cl-header-title" style="color:var(--gold)">Identify Your Identity</div></div>
+    <div class="cl-items">
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have a clear path to my ideal identity with role models to follow and a clear identity today that I can express</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have a reputation in my niche as a distinct leader in my field who creates attraction in business and opportunities</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have aligned all my actions, messaging and marketing to reflect clearly my identity to my market and the world</div></div>
+    </div>
+  </div>
+
+  <div class="cl-section" style="margin-top:4px">
+    <div class="cl-header"><div class="cl-header-title" style="color:var(--gold)">Master Your Market</div></div>
+    <div class="cl-items">
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have sized my market, I know my competitors and what my unique market position and market share are and will be</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have segmented my market and design my time and business around the different needs of my customers</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have systems and a rhythm that keep me close to my customers, my competitors, and the market shapers</div></div>
+    </div>
+  </div>
+
+  <div class="cl-section" style="margin-top:4px">
+    <div class="cl-header"><div class="cl-header-title" style="color:var(--gold)">Monetize Your Moment</div></div>
+    <div class="cl-items">
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have outsourced or automated all my business processes so I can focus on profitable promotions</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have an annual schedule of promotion plans that links to my monthly profit and loss and cash flow forecasts</div></div>
+      <div class="cl-item" onclick="tick(this)"><div class="cl-check"></div><div class="cl-text">I have aligned my team and partners to a weekly rhythm of results, testing and measuring based on our promotions</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ APPLIED ══ -->
+<div class="panel" id="p-applied">
+<div class="wrap">
+
+<div class="section">
+  <div class="sec-eye">Applied to May 2026 · Deryl VanNostrand</div>
+  <div class="sec-title">The map applied<br><em>to this moment.</em></div>
+
+  <div class="applied-box">
+    <div class="applied-eye">Current position · Red Level · Active</div>
+    <div class="applied-title">Ken is the ladder. October is the first rung.</div>
+    <div class="applied-items">
+      <div class="ai"><span class="ai-n">◉</span>One client. $5k/month. Floor stable but not compounding. This is exactly right for this stage.</div>
+      <div class="ai"><span class="ai-n">→</span>Ken engagement = the "follow the flow" action — earning as you learn from a 9-figure operator</div>
+      <div class="ai"><span class="ai-n">→</span>October Immersion = the first "monetize your moment" promotion — two slots, the golden thread</div>
+      <div class="ai"><span class="ai-n">→</span>Bartending = Clark Kent time funding Superman time + active Blaze intelligence gathering</div>
+      <div class="ai"><span class="ai-n">→</span>Atlas = the magnification tool — the same value reaching Ken 24/7 without more of your time</div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:32px">
+    <div class="sec-eye">The one question · Before every decision</div>
+    <div class="qblock">
+      <div class="qblock-text">"How can this only be done with me?"</div>
+      <div class="qblock-attr">The Blaze winning formula question · Ask before every build, every offer, every session design</div>
+    </div>
+    <div class="sec-body" style="margin-top:12px">If the answer is "anyone could do this" — you're in the losing formula. If the answer is "only someone with this depth of knowing Ken, this methodology, this agent architecture, this Discernment" — you're magnifying. The moat is the combination. Not any one piece alone.</div>
+  </div>
+
+  <div class="section" style="padding-top:32px">
+    <div class="sec-eye">The October promotion mapped to the golden thread</div>
+    <div class="gold-thread">
+      <div class="gt-item"><div class="gt-num">1</div><div class="gt-text"><strong>Compelling invitation:</strong> Ken speaks — his story, his words, what changed. You demonstrate Atlas live in Telegram: 60 seconds, one real nudge.</div></div>
+      <div class="gt-item"><div class="gt-num">2</div><div class="gt-text"><strong>Simple registration:</strong> "If something landed — find me before you leave tonight." One action. Zero friction.</div></div>
+      <div class="gt-item"><div class="gt-num">3</div><div class="gt-text"><strong>Affirm:</strong> One-on-one conversation in the days after Immersion. The right people reach out.</div></div>
+      <div class="gt-item"><div class="gt-num">4</div><div class="gt-text"><strong>Preparation:</strong> The one-page offer document. What the engagement is, what it costs, what 90 days looks like.</div></div>
+      <div class="gt-item"><div class="gt-num">5</div><div class="gt-text"><strong>High impact delivery:</strong> The onboarding process. First Monday session. Atlas built and loaded before day one.</div></div>
+      <div class="gt-item"><div class="gt-num">6</div><div class="gt-text"><strong>Feedback:</strong> 90-day review. Wheel dimension check. What changed specifically. The data from Atlas.</div></div>
+      <div class="gt-item"><div class="gt-num">7</div><div class="gt-text"><strong>Thank you:</strong> The ongoing engagement. The relationship that compounds. The referral that comes naturally.</div></div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:32px">
+    <div class="sec-eye">The language shift in practice</div>
+    <div class="lang-shift">
+      <div class="ls-box" style="background:var(--red-dim);border-color:rgba(255,95,74,.22)">
+        <div class="ls-label" style="color:var(--red)">Don't say this</div>
+        <div class="ls-old">"I'm building an AI life coaching system"</div>
+        <div class="ls-old">"I need clients"</div>
+        <div class="ls-old">"Do you want to work with me?"</div>
+      </div>
+      <div class="ls-box" style="background:var(--blaze-dim);border-color:var(--blaze-line)">
+        <div class="ls-label" style="color:var(--blaze)">Say this instead</div>
+        <div class="ls-new" style="color:var(--blaze);">"I spent four months inside a $100M+ exit's life and produced something specific. Here's what changed."</div>
+        <div class="ls-new" style="color:var(--blaze);font-size:15px">"I'm taking two people from this community through the same process starting January."</div>
+        <div class="ls-new" style="color:var(--blaze);font-size:15px">"If something landed — find me before you leave."</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <span>MMP Blaze Architecture · Extracted from Roger Hamilton's Millionaire Master Plan · May 2026</span>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="../index.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(61,232,133,.7);border:1px solid rgba(61,232,133,.2);padding:6px 12px;border-radius:4px;text-decoration:none;">← Home</a>
+    <a href="life_arch_index.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(255,148,64,.7);text-decoration:none;">← All Documents</a>
+    <a href="deryl_flight_path.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(255,148,64,.7);text-decoration:none;">Flight Path →</a>
+    <a href="deryl_life_architecture.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(255,148,64,.7);text-decoration:none;">Methodology →</a>
+    <a href="DVN_Field_Notes.html" style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(255,148,64,.7);text-decoration:none;">Field Notes →</a>
+  </div>
+</footer>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.np').forEach(b=>b.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('on');
+  document.querySelectorAll('.np').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'"))
+      b.classList.add('active');
+  });
+  window.scrollTo(0,0);
+}
+function flip(id){
+  document.getElementById(id).classList.toggle('on');
+}
+function flipQ(id){
+  document.getElementById(id).classList.toggle('on');
+}
+function tick(el){
+  el.querySelector('.cl-check').classList.toggle('done');
+}
+</script>
+</body>
+</html>
