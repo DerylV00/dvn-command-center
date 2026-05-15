@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Operating Roles — Deryl VanNostrand</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0c0f18;--bg3:#111520;--bg4:#161c2a;
+  --line:rgba(255,255,255,.06);--line2:rgba(255,255,255,.12);
+  --ink:#e8eaf5;--ink2:#7880a0;--ink3:#3d4560;
+  --gold:#d4a832;--gold-d:rgba(212,168,50,.1);--gold-l:rgba(212,168,50,.25);
+  --sage:#2eff8c;--sage-d:rgba(46,255,140,.07);--sage-l:rgba(46,255,140,.2);
+  --warrior:#5a9ae0;--warrior-d:rgba(90,154,224,.1);--warrior-l:rgba(90,154,224,.25);
+  --fire:#f0622a;--fire-d:rgba(240,98,42,.08);--fire-l:rgba(240,98,42,.25);
+  --blaze:#ff8c28;--blaze-d:rgba(255,140,40,.1);--blaze-l:rgba(255,140,40,.25);
+  --purple:#a096f0;--purple-d:rgba(160,150,240,.1);--purple-l:rgba(160,150,240,.25);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
+
+.nav{position:sticky;top:0;z-index:100;height:52px;background:rgba(7,9,15,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 56px;gap:12px}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--gold)}
+.nav-links{display:flex;gap:2px;margin-left:auto}
+.nl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink3);padding:6px 12px;border-radius:4px;text-decoration:none;transition:color .15s,background .15s}
+.nl:hover{color:var(--ink2);background:var(--bg3)}
+
+/* HERO */
+.hero{padding:80px 80px 64px;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+.hero-glow{position:absolute;top:-100px;right:-60px;width:500px;height:500px;background:radial-gradient(circle,rgba(46,255,140,.05) 0%,transparent 65%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:700px}
+.hero-eye{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--sage);font-weight:700;margin-bottom:28px;display:inline-flex;align-items:center;gap:8px;background:var(--sage-d);border:1px solid var(--sage-l);padding:5px 14px;border-radius:20px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7vw,88px);font-weight:300;line-height:.92;letter-spacing:-.025em;margin-bottom:20px}
+.hero-title em{font-style:italic;color:var(--sage)}
+.hero-sub{font-size:15px;color:var(--ink2);line-height:1.75;max-width:560px}
+.hero-sub strong{color:var(--ink)}
+
+/* PRIME STRIP */
+.prime{padding:18px 80px;background:rgba(46,255,140,.03);border-bottom:1px solid var(--sage-l);display:flex;align-items:center;gap:16px}
+.prime-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);flex-shrink:0}
+.prime-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--ink2);line-height:1.5}
+.prime-text strong{color:var(--ink);font-style:normal}
+
+.wrap{max-width:1060px;margin:0 auto;padding:56px 80px 80px}
+
+/* SECTION */
+.section{margin-bottom:64px;padding-bottom:64px;border-bottom:1px solid var(--line)}
+.section:last-child{border-bottom:none;margin-bottom:0}
+.sec-eye{font-size:9px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.sec-eye::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,currentColor,transparent);opacity:.3}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,54px);font-weight:300;line-height:1;letter-spacing:-.02em;margin-bottom:16px}
+.sec-title em{font-style:italic}
+.sec-body{font-size:13px;color:var(--ink2);line-height:1.8;max-width:660px;margin-bottom:24px}
+.sec-body strong{color:var(--ink)}
+
+/* THREE LEVELS */
+.levels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin:24px 0}
+.level{padding:28px 26px;border:1px solid var(--line);position:relative;overflow:hidden}
+.level::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.level-num{font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.level-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;line-height:1;margin-bottom:10px}
+.level-name em{font-style:italic}
+.level-tag{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border:1px solid;border-radius:3px;display:inline-block;margin-bottom:12px}
+.level-body{font-size:11.5px;color:var(--ink2);line-height:1.65}
+.level-tasks{margin-top:14px;display:flex;flex-direction:column;gap:5px}
+.lt{font-size:11px;color:var(--ink2);padding-left:14px;position:relative;line-height:1.45}
+.lt::before{content:'→';position:absolute;left:0;font-size:10px}
+.lt strong{color:var(--ink)}
+
+/* CONTAINER vs ARCHITECT */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:20px 0}
+.split-cell{padding:22px 24px;border:1px solid var(--line);background:var(--bg2)}
+.sc-label{font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.sc-items{display:flex;flex-direction:column;gap:6px}
+.sc-item{font-size:12px;color:var(--ink2);padding-left:14px;position:relative;line-height:1.5}
+.sc-item::before{content:'·';position:absolute;left:4px}
+
+/* WEEK RHYTHM */
+.week{display:flex;flex-direction:column;gap:3px;margin:20px 0}
+.day{display:grid;grid-template-columns:100px 1fr;border:1px solid var(--line);background:var(--bg2);overflow:hidden}
+.day-label{padding:18px 16px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--line)}
+.day-name{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.day-type{font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;margin-top:3px;opacity:.5}
+.day-body{padding:16px 20px;display:flex;flex-direction:column;gap:6px}
+.day-block{display:flex;gap:10px;align-items:flex-start}
+.db-time{font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;min-width:60px;padding-top:2px}
+.db-text{font-size:11.5px;color:var(--ink2);line-height:1.5}
+.db-text strong{color:var(--ink)}
+
+/* GENIUS ZONE */
+.gz-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:20px 0}
+.gz-cell{padding:20px 22px;border:1px solid var(--line);background:var(--bg2)}
+.gz-label{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.gz-items{display:flex;flex-direction:column;gap:7px}
+.gz-item{font-size:12px;color:var(--ink2);padding-left:14px;position:relative;line-height:1.5}
+.gz-item::before{content:'→';position:absolute;left:0;font-size:10px}
+.gz-item strong{color:var(--ink)}
+
+/* BE/DO */
+.bedo{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:20px 0}
+.bedo-cell{padding:22px 24px}
+.bc-eye{font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.bc-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;line-height:1;margin-bottom:10px}
+.bc-title em{font-style:italic}
+.bc-body{font-size:11.5px;color:var(--ink2);line-height:1.65}
+.bc-items{margin-top:12px;display:flex;flex-direction:column;gap:5px}
+.bi{font-size:11px;color:var(--ink2);padding-left:14px;position:relative;line-height:1.45}
+.bi::before{content:'→';position:absolute;left:0;font-size:10px}
+.bi strong{color:var(--ink)}
+
+/* QUOTE */
+.kq{border:1px solid var(--sage-l);background:var(--sage-d);padding:22px 26px;margin:24px 0}
+.kq-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--ink);line-height:1.5;margin-bottom:8px}
+.kq-attr{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);font-weight:700}
+
+/* DRIP BADGE */
+.drip-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:3px;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;border:1px solid}
+
+footer{border-top:1px solid var(--line);padding:16px 80px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+footer span{font-size:10px;color:var(--ink3);letter-spacing:.06em;font-weight:600}
+.foot-links{display:flex;gap:6px}
+.fl{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink3);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:3px;transition:color .15s}
+.fl:hover{color:var(--ink2)}
+
+@media(max-width:768px){
+  .nav{padding:0 16px}.nav-links{display:none}
+  .hero{padding:48px 20px 40px}.prime{padding:14px 20px}
+  .wrap{padding:40px 20px 60px}
+  .levels{grid-template-columns:1fr}
+  .split,.gz-grid,.bedo{grid-template-columns:1fr}
+  footer{padding:14px 20px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">The Operating Roles</div>
+  <div class="nav-links">
+    <a href="life_arch_index.html" class="nl">← Architecture</a>
+    <a href="deryl_life_architecture.html" class="nl">Methodology</a>
+    <a href="projects.html" class="nl">Projects</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-eye">◈ Blaze-Star · Three Levels · Be and Do</div>
+    <div class="hero-title">The Operating<br><em>Roles.</em></div>
+    <div class="hero-sub">The ops work is the container — not the destination. <strong>Proximity to Ken is the asset.</strong> The tasks are the entry ticket. This document maps what you're actually building inside the container — and how your own week must be structured to see someone else's life clearly.</div>
+  </div>
+</div>
+
+<div class="prime">
+  <div class="prime-dot"></div>
+  <div class="prime-text"><strong>The architect cannot see someone else's life clearly if his own is not architected first.</strong> Non-negotiable.</div>
+</div>
+
+<div class="wrap">
+
+  <!-- SECTION 1 — THREE LEVELS -->
+  <div class="section">
+    <div class="sec-eye" style="color:var(--sage)">01 · The Framework · What you're actually doing</div>
+    <div class="sec-title">Three levels.<br><em>All running at once.</em></div>
+    <div class="sec-body">Every day with Ken you are operating on three levels simultaneously. Level 1 earns the trust and proximity. Level 2 is where you become irreplaceable. Level 3 is what scales beyond Ken. <strong>All three must be active — or the model breaks.</strong></div>
+
+    <div class="levels">
+
+      <div class="level" style="background:rgba(240,98,42,.05);border-color:var(--fire-l)">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--fire)"></div>
+        <div class="level-num" style="color:var(--fire)">Level 1 · The Container</div>
+        <div class="level-name">The <em>Operator.</em></div>
+        <span class="level-tag" style="color:var(--fire);border-color:var(--fire-l)">Earns trust · Earns proximity</span>
+        <div class="level-body">What Ken sees first. You execute it well — not because it's your mission, but because it builds the foundation that everything else stands on. Do it with full presence. Never resent it.</div>
+        <div class="level-tasks">
+          <div class="lt">Renovations and house management</div>
+          <div class="lt">Cooking and nutrition</div>
+          <div class="lt">Personal training</div>
+          <div class="lt">Cleaning and daily ops</div>
+          <div class="lt"><strong>Emails — draft, send, own</strong></div>
+          <div class="lt"><strong>Contractor litigation — research, draft, execute</strong></div>
+          <div class="lt">Vendor and contractor coordination</div>
+          <div class="lt">Calendar management and buffer</div>
+        </div>
+      </div>
+
+      <div class="level" style="background:rgba(90,154,224,.05);border-color:var(--warrior-l)">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--warrior)"></div>
+        <div class="level-num" style="color:var(--warrior)">Level 2 · The Gift</div>
+        <div class="level-name">The <em>Translator.</em></div>
+        <span class="level-tag" style="color:var(--warrior);border-color:var(--warrior-l)">Gene Key 13 · Discernment</span>
+        <div class="level-body">What makes you irreplaceable. Ken feels what he wants but can't build a language for it. You hear it, name it, and frame it. No VA can do this. No contractor can do this. This is Discernment activated — the gift of Gene Key 13.</div>
+        <div class="level-tasks">
+          <div class="lt"><strong>Monday session — you build the agenda, Ken shows up</strong></div>
+          <div class="lt">Naming patterns Ken can't see in himself</div>
+          <div class="lt">Translating *"I want to be more human"* into a trackable system</div>
+          <div class="lt">Surfacing Time Assassins without making it a lecture</div>
+          <div class="lt">Voice note processing — what did he actually say?</div>
+          <div class="lt">Wheel dimension observations — gap between stated and actual</div>
+          <div class="lt"><strong>Flagging the contractor call: "Is this your highest use — or mine?"</strong></div>
+        </div>
+      </div>
+
+      <div class="level" style="background:rgba(46,255,140,.04);border-color:var(--sage-l)">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--sage)"></div>
+        <div class="level-num" style="color:var(--sage)">Level 3 · The Mission</div>
+        <div class="level-name">The <em>Architect.</em></div>
+        <span class="level-tag" style="color:var(--sage);border-color:var(--sage-l)">Personal AI Architect · October proof</span>
+        <div class="level-body">The model that scales beyond Ken. You don't just execute — you design the system, build the intelligence layer, and find the right people for what you can't do. By October this becomes a real result in a real room.</div>
+        <div class="level-tasks">
+          <div class="lt">Atlas — Ken's intelligence layer, built and maintained</div>
+          <div class="lt">Supabase — all data flowing, all dimensions tracked</div>
+          <div class="lt">The Monday session as a repeatable methodology</div>
+          <div class="lt"><strong>Finding and delegating to Tempo/Steel people as needed</strong></div>
+          <div class="lt">October Growth House — the presentation is the proof of concept</div>
+          <div class="lt">The Personal AI Architect model — Ken is the pilot case</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="kq">
+      <div class="kq-text">"I'm looking for a proactive partner to help me make my life better. Sit me down at the end of the week — Ken, here's the things you wasted time on. You shouldn't be doing this anymore. Let me do that for you."</div>
+      <div class="kq-attr">Ken Wilkins · May 7, 2026</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 — CONTAINER vs ARCHITECT -->
+  <div class="section">
+    <div class="sec-eye" style="color:var(--blaze)">02 · The Distinction · Never confuse these two</div>
+    <div class="sec-title">Container<br><em>vs. Architect.</em></div>
+    <div class="sec-body">The Blaze-Star trap is falling in love with being needed — cooking great meals, fixing things, being the indispensable person in the house — and never stepping into the role that actually changes the trajectory. Know which mode you're in at all times.</div>
+
+    <div class="split">
+      <div class="split-cell" style="border-top:2px solid var(--fire)">
+        <div class="sc-label" style="color:var(--fire)">The Container — Level 1 tasks</div>
+        <div class="sc-items">
+          <div class="sc-item">Renovation work and house maintenance</div>
+          <div class="sc-item">Cooking, cleaning, grocery runs</div>
+          <div class="sc-item">Personal training sessions</div>
+          <div class="sc-item">Contractor follow-up calls</div>
+          <div class="sc-item">Routine email drafting</div>
+          <div class="sc-item">Small claims court research and filing</div>
+        </div>
+        <div style="margin-top:14px;padding:10px 12px;background:var(--fire-d);border:1px solid var(--fire-l);font-size:11px;color:var(--ink2);line-height:1.5">Do these well. Stay fully present in them. But ask yourself daily: <em>what am I building inside this container?</em></div>
+      </div>
+      <div class="split-cell" style="background:var(--sage-d);border:1px solid var(--sage-l);border-top:2px solid var(--sage)">
+        <div class="sc-label" style="color:var(--sage)">The Architect — Level 2 + 3 work</div>
+        <div class="sc-items">
+          <div class="sc-item">Noticing patterns in Ken's language and behavior</div>
+          <div class="sc-item">Building and running the Monday session</div>
+          <div class="sc-item">Translating conversations into wheel dimension data</div>
+          <div class="sc-item">Maintaining and evolving Atlas</div>
+          <div class="sc-item">Delegating what belongs to Tempo/Steel people</div>
+          <div class="sc-item">Designing the October proof-of-concept story</div>
+        </div>
+        <div style="margin-top:14px;padding:10px 12px;background:rgba(46,255,140,.08);border:1px solid var(--sage-l);font-size:11px;color:var(--ink);line-height:1.5">This is the work that scales. This is what only you can do. <em>Protect this time like maker blocks.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 — YOUR WEEK -->
+  <div class="section">
+    <div class="sec-eye" style="color:var(--warrior)">03 · The Structure · How your week actually runs</div>
+    <div class="sec-title">The Perfect<br><em>Week.</em></div>
+    <div class="sec-body">Your week must be structured around your own wheel first — then Ken's. The architect cannot see someone else's life clearly if his own is running on empty. <strong>Your morning is yours before the day is Ken's.</strong></div>
+
+    <div class="week">
+
+      <div class="day">
+        <div class="day-label" style="background:rgba(46,255,140,.05);border-right-color:var(--sage-l)">
+          <div class="day-name" style="color:var(--sage)">Morning</div>
+          <div class="day-type">Every day</div>
+        </div>
+        <div class="day-body">
+          <div class="day-block">
+            <div class="db-time" style="color:var(--sage)">Yours first</div>
+            <div class="db-text"><strong>30–45 min. Non-negotiable.</strong> Check-in logged. One wheel dimension reflected — yours, not Ken's. 10 min Spanish minimum. One thing you're <em>being</em> today, not just doing. This is the calibration window.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-label" style="background:rgba(240,98,42,.05)">
+          <div class="day-name" style="color:var(--fire)">Monday</div>
+          <div class="day-type">Sacred</div>
+        </div>
+        <div class="day-body">
+          <div class="day-block">
+            <div class="db-time" style="color:var(--fire)">Morning</div>
+            <div class="db-text"><strong>Ken session — 2 to 3 hours.</strong> You build the agenda. Ken shows up. Review last week's wheel. One dimension for deeper exploration. One behavioral pattern from the week. Intention for the week ahead. This is Level 2 + 3 in full activation.</div>
+          </div>
+          <div class="day-block">
+            <div class="db-time" style="color:var(--ink3)">Rest of day</div>
+            <div class="db-text">Level 1 ops. House, training, any contractor follow-up. Translator antenna stays on — log anything that came up in the session within the hour.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-label">
+          <div class="day-name" style="color:var(--warrior)">Tue–Wed</div>
+          <div class="day-type">Operator</div>
+        </div>
+        <div class="day-body">
+          <div class="day-block">
+            <div class="db-time" style="color:var(--warrior)">Full day</div>
+            <div class="db-text">Level 1 in full. Renovations, training, cooking, emails, contractor management, litigation. Do the work with full presence. While working — translator antenna active. Voice note anything notable within the hour. Don't let observations evaporate.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-label" style="background:rgba(160,150,240,.05)">
+          <div class="day-name" style="color:var(--purple)">Thursday</div>
+          <div class="day-type">Maker + Bar</div>
+        </div>
+        <div class="day-body">
+          <div class="day-block">
+            <div class="db-time" style="color:var(--purple)">Morning</div>
+            <div class="db-text"><strong>Architect block — 2 hrs minimum.</strong> Atlas updates. Supabase data review. Monday session prep. Spanish study. This is the protected maker time. No Level 1 tasks in this block unless urgent.</div>
+          </div>
+          <div class="day-block">
+            <div class="db-time" style="color:var(--ink3)">Evening</div>
+            <div class="db-text">Bartending shift. <strong>Investment quadrant.</strong> Act 60 network. After every shift — one voice note: "Who was interesting tonight?" That's it. The network builds one shift at a time.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-label">
+          <div class="day-name" style="color:var(--gold)">Fri–Sat</div>
+          <div class="day-type">Bar + Recovery</div>
+        </div>
+        <div class="day-body">
+          <div class="day-block">
+            <div class="db-time" style="color:var(--gold)">Evenings</div>
+            <div class="db-text">Bartending shifts. Condado network. Same rule — one voice note after each shift. Who was interesting? What was the energy? The Act 60 community is being built one conversation at a time.</div>
+          </div>
+          <div class="day-block">
+            <div class="db-time" style="color:var(--ink3)">Daytime</div>
+            <div class="db-text">Recovery and Investment quadrant. Spanish. A walk. A read. Something that fills you — not depletes you. The Blaze-Star flame needs fuel. You cannot show up for Ken fully if your tank is empty.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-label" style="background:rgba(46,255,140,.05);border-right-color:var(--sage-l)">
+          <div class="day-name" style="color:var(--sage)">Sunday</div>
+          <div class="day-type">Your wheel first</div>
+        </div>
+        <div class="day-body">
+          <div class="day-block">
+            <div class="db-time" style="color:var(--sage)">Morning</div>
+            <div class="db-text"><strong>Review your own wheel before Ken's.</strong> Energy, clarity, Spanish — did you hit it? Which of the 8 dimensions did you actually live this week — not just manage? What's one thing that was pure being, not doing? Log it. This is the data that makes you a credible architect.</div>
+          </div>
+          <div class="day-block">
+            <div class="db-time" style="color:var(--ink3)">Then</div>
+            <div class="db-text">Build Monday's Ken session agenda. One wheel dimension to explore. One pattern to surface. One intention to set. 20 minutes max prep — then it's ready.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4 — BE vs DO -->
+  <div class="section">
+    <div class="sec-eye" style="color:var(--gold)">04 · The Practice · Becoming, not just doing</div>
+    <div class="sec-title">Be <em>and</em><br>Do.</div>
+    <div class="sec-body">You said it directly: <em>"I want to become and be, not just do."</em> This is the Peaceful Warrior principle underneath everything. The warrior does not just act — he <strong>is</strong> the action. The doing flows from the being. When the being is empty, the doing is hollow.</div>
+
+    <div class="bedo">
+      <div class="bedo-cell" style="background:var(--bg2);border:1px solid var(--line);border-top:2px solid var(--ink3)">
+        <div class="bc-eye" style="color:var(--ink3)">The Doing — what fills the day</div>
+        <div class="bc-title">The <em>Tasks.</em></div>
+        <div class="bc-body" style="color:var(--ink2)">Renovations. Training. Cooking. Emails. Litigation. Bartending. Atlas builds. Session prep. All necessary. All real. But none of it answers the question of who you're becoming.</div>
+        <div class="bc-items">
+          <div class="bi">Visible. Measurable. Feels productive.</div>
+          <div class="bi">Default mode — the pull is always toward more doing.</div>
+          <div class="bi">Cannot be outsourced entirely — some is genuinely yours.</div>
+          <div class="bi"><strong>Trap: mistaking a full day for a meaningful day.</strong></div>
+        </div>
+      </div>
+      <div class="bedo-cell" style="background:var(--sage-d);border:1px solid var(--sage-l);border-top:2px solid var(--sage)">
+        <div class="bc-eye" style="color:var(--sage)">The Being — what builds the architect</div>
+        <div class="bc-title">The <em>Presence.</em></div>
+        <div class="bc-body">Grounded. Clear. Running your own wheel intentionally. Present in the room with Ken — not managing, listening. This is the state where Discernment operates. Gene Key 13 only activates when you're fully here.</div>
+        <div class="bc-items">
+          <div class="bi"><strong>Your morning 30 min — before the day belongs to Ken.</strong></div>
+          <div class="bi">The walk. The reflection. The Spanish session.</div>
+          <div class="bi">Full presence in the Monday session — not agenda management.</div>
+          <div class="bi">The moment after a shift: one honest voice note.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kq">
+      <div class="kq-text">"The warrior does not perform actions — he is the action. Drop the doer. Be the movement itself."</div>
+      <div class="kq-attr">Peaceful Warrior · The principle underneath all four frameworks</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 — BLAZE-STAR GENIUS ZONE -->
+  <div class="section">
+    <div class="sec-eye" style="color:var(--blaze)">05 · The Genius · Where you actually win</div>
+    <div class="sec-title">The Blaze-Star<br><em>Winning Formula.</em></div>
+    <div class="sec-body">You are not pure Blaze. You are Blaze-Star. The Star magnifies by <strong>shining a light on value</strong> — through personal brand, voice, and presence. You win out front. You lose in back-office execution. Here is the map.</div>
+
+    <div class="gz-grid">
+      <div class="gz-cell" style="border-top:2px solid var(--sage)">
+        <div class="gz-label" style="color:var(--sage)">Winning formula — stay here</div>
+        <div class="gz-items">
+          <div class="gz-item"><strong>Creative translation</strong> — naming what Ken feels but can't say</div>
+          <div class="gz-item"><strong>Front-facing presence</strong> — the Monday session, the October room</div>
+          <div class="gz-item"><strong>Idea generation</strong> — new frameworks, new systems, new angles</div>
+          <div class="gz-item"><strong>Human contact</strong> — bartending, Act 60, Ken's network</div>
+          <div class="gz-item"><strong>Shining a light</strong> — on Ken's progress, on the methodology, on the proof</div>
+          <div class="gz-item"><strong>Building the who</strong> — finding the right Tempo/Steel people to handle what you shouldn't</div>
+        </div>
+      </div>
+      <div class="gz-cell" style="border-top:2px solid var(--fire)">
+        <div class="gz-label" style="color:var(--fire)">Losing formula — flag and exit</div>
+        <div class="gz-items">
+          <div class="gz-item">Deep in systems all day with no human contact</div>
+          <div class="gz-item">Taking on detailed execution that belongs to a Tempo or Steel person</div>
+          <div class="gz-item">Trying to please or rescue everyone — the Star trap</div>
+          <div class="gz-item">Back-office operations without a clear exit plan</div>
+          <div class="gz-item">Days where there was no creation and no genuine connection</div>
+          <div class="gz-item">Mistaking being needed for being in your genius zone</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:16px 20px;background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--blaze);margin-top:4px">
+      <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--blaze);font-weight:700;margin-bottom:6px">The daily check</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.65">At the end of every day — one honest question: <strong style="color:var(--ink)">"Was I building the container or building the architect today?"</strong> Both have a place. Neither should dominate indefinitely.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 — THE NORTH STAR -->
+  <div class="section">
+    <div class="sec-eye" style="color:var(--gold)">06 · The Direction · What this is actually for</div>
+    <div class="sec-title">The long<br><em>arc.</em></div>
+    <div class="sec-body">Ken is the pilot. The four months between now and October are the lab. Everything you're building — the three levels, the Monday session, Atlas, the wheel tracking — becomes the proof of concept you take into the Growth House room in October. Not a pitch. A result.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin:20px 0">
+      <div style="padding:20px 22px;background:var(--bg2);border:1px solid var(--line);border-top:2px solid var(--fire)">
+        <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--fire);font-weight:700;margin-bottom:8px">Now → July</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:8px;line-height:1.1">Build the <em>container.</em></div>
+        <div style="font-size:11.5px;color:var(--ink2);line-height:1.55">Earn trust. Learn the rhythm. Absorb Level 1. Translator antenna fully on. Atlas live. Monday session locked in. Your own wheel running.</div>
+      </div>
+      <div style="padding:20px 22px;background:var(--bg2);border:1px solid var(--line);border-top:2px solid var(--warrior)">
+        <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--warrior);font-weight:700;margin-bottom:8px">July → September</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:8px;line-height:1.1">Deepen the <em>translation.</em></div>
+        <div style="font-size:11.5px;color:var(--ink2);line-height:1.55">Patterns confirmed. Wheel data showing change. Methodology refined. Ken's answer to "is my life meaningfully different?" starts becoming yes.</div>
+      </div>
+      <div style="padding:20px 22px;background:var(--sage-d);border:1px solid var(--sage-l);border-top:2px solid var(--sage)">
+        <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);font-weight:700;margin-bottom:8px">October</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:8px;line-height:1.1">The <em>proof speaks.</em></div>
+        <div style="font-size:11.5px;color:var(--ink);line-height:1.55">Growth House room. Not a service pitch. A real result, produced over four months, shared by the person who built it. Two slots. January 2027.</div>
+      </div>
+    </div>
+
+    <div class="kq">
+      <div class="kq-text">"Show up fully. Stay at the edge. Find the sacred in the ordinary."</div>
+      <div class="kq-attr">The North Star · Deryl VanNostrand</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>The Operating Roles · DVN · Ken Wilkins Partnership · May 2026</span>
+  <div class="foot-links">
+    <a href="life_arch_index.html" class="fl" style="color:rgba(46,255,140,.7);border-color:rgba(46,255,140,.2)">← Architecture</a>
+    <a href="deryl_life_architecture.html" class="fl">Methodology</a>
+    <a href="projects.html" class="fl">Projects</a>
+  </div>
+</footer>
+
+</body>
+</html>
