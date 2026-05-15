@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fellowship of Minds — Blaze Star Phase Plan</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --white: #f5f5f0;
+    --muted: #888;
+    --green: #4caf7d;
+    --blue: #4a8fb5;
+    --red: #b54a4a;
+    --purple: #8b6fbf;
+    --coral: #c97a4a;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Georgia', serif;
+    line-height: 1.6;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(10,10,10,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    gap: 16px;
+  }
+
+  .nav-logo { font-size: 12px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; flex-shrink: 0; }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-docs { display: flex; gap: 8px; flex-shrink: 0; }
+  .nav-doc-link { font-size: 10px; color: var(--muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid var(--border); padding: 5px 12px; transition: all 0.2s; white-space: nowrap; }
+  .nav-doc-link:hover { color: var(--white); border-color: var(--muted); }
+  .nav-doc-link.home { border-color: rgba(201,168,76,0.3); color: var(--gold); }
+  .nav-doc-link.home:hover { background: rgba(201,168,76,0.06); }
+
+  section { padding: 120px 64px 80px; max-width: 1200px; margin: 0 auto; }
+  section.tight { padding-top: 0; }
+
+  .hero {
+    min-height: 75vh;
+    max-width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(ellipse at center top, rgba(201,168,76,0.07) 0%, rgba(139,111,191,0.04) 40%, transparent 70%);
+  }
+
+  .hero-inner { max-width: 860px; padding: 48px; }
+
+  .tag { display: inline-block; font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 8px 20px; border-radius: 2px; margin-bottom: 40px; }
+
+  h1 { font-size: clamp(36px, 5vw, 64px); font-weight: 400; line-height: 1.1; color: var(--white); margin-bottom: 24px; letter-spacing: -0.02em; }
+  h1 em { color: var(--gold); font-style: italic; }
+  h2 { font-size: clamp(24px, 3.5vw, 40px); font-weight: 400; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.01em; }
+  h3 { font-size: 18px; font-weight: 400; margin-bottom: 10px; color: var(--white); }
+
+  .hero-sub { font-size: 17px; color: var(--muted); max-width: 620px; margin: 0 auto 48px; line-height: 1.8; }
+  .section-tag { font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .section-sub { font-size: 15px; color: var(--muted); max-width: 720px; margin-bottom: 48px; line-height: 1.8; }
+  .divider { width: 48px; height: 1px; background: var(--gold); margin: 32px 0; opacity: 0.4; }
+
+  /* GENIUS PROFILE */
+  .profile-split { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 4px; }
+  .ps-card { background: var(--card); border: 1px solid var(--border); padding: 36px 32px; }
+  .ps-card.gold { background: rgba(201,168,76,0.04); border-color: rgba(201,168,76,0.3); }
+  .ps-card.purple { background: rgba(139,111,191,0.04); border-color: rgba(139,111,191,0.25); }
+  .ps-label { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 14px; font-family: 'Courier New', monospace; }
+  .ps-card.gold .ps-label { color: var(--gold); }
+  .ps-card.purple .ps-label { color: var(--purple); }
+  .ps-title { font-size: 22px; margin-bottom: 14px; }
+  .ps-desc { font-size: 13px; color: var(--muted); line-height: 1.8; }
+  .ps-desc strong { color: var(--white); font-weight: 400; font-style: italic; }
+
+  .energy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 4px; }
+  .energy-card { background: var(--dark); border: 1px solid var(--border); padding: 28px 24px; }
+  .energy-icon { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-family: 'Courier New', monospace; }
+  .energy-title { font-size: 16px; margin-bottom: 10px; }
+  .energy-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+  .shadow-card { background: rgba(181,74,74,0.04); border: 1px solid rgba(181,74,74,0.25); padding: 32px 36px; margin-bottom: 4px; }
+  .shadow-label { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--red); opacity: 0.8; margin-bottom: 12px; font-family: 'Courier New', monospace; }
+  .shadow-title { font-size: 20px; margin-bottom: 12px; }
+  .shadow-desc { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 820px; }
+  .shadow-desc strong { color: var(--white); font-weight: 400; }
+
+  /* OPERATING RULES */
+  .rules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 8px; }
+  .rule-card { background: var(--card); border: 1px solid var(--border); padding: 28px 32px; display: grid; grid-template-columns: 48px 1fr; gap: 20px; align-items: start; }
+  .rule-num { font-size: 28px; color: var(--gold); opacity: 0.3; font-family: 'Courier New', monospace; line-height: 1; padding-top: 4px; }
+  .rule-title { font-size: 15px; margin-bottom: 8px; }
+  .rule-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .rule-desc strong { color: var(--gold-light); font-weight: 400; }
+
+  /* ZONE SPLIT */
+  .zone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 8px; margin-bottom: 32px; }
+  .zone-card { border: 1px solid var(--border); overflow: hidden; }
+  .zone-header { padding: 20px 28px; border-bottom: 1px solid var(--border); }
+  .zone-card.yes .zone-header { background: rgba(76,175,125,0.05); border-bottom-color: rgba(76,175,125,0.2); }
+  .zone-card.no .zone-header { background: rgba(181,74,74,0.04); border-bottom-color: rgba(181,74,74,0.2); }
+  .zone-label { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 6px; }
+  .zone-card.yes .zone-label { color: var(--green); }
+  .zone-card.no .zone-label { color: var(--red); opacity: 0.8; }
+  .zone-title { font-size: 17px; }
+  .zone-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .zone-list li { font-size: 12px; color: var(--muted); padding: 12px 28px; border-bottom: 1px solid rgba(255,255,255,0.03); line-height: 1.5; position: relative; padding-left: 44px; }
+  .zone-list li:last-child { border-bottom: none; }
+  .zone-list li::before { position: absolute; left: 28px; }
+  .zone-card.yes .zone-list li::before { content: '+'; color: var(--green); }
+  .zone-card.no .zone-list li::before { content: '–'; color: var(--red); opacity: 0.7; }
+
+  /* PHASE PLAN */
+  .phase-block { margin-bottom: 4px; }
+  .phase-top { display: grid; grid-template-columns: 200px 1fr; border: 1px solid var(--border); overflow: hidden; }
+  .phase-top.active { border-color: rgba(201,168,76,0.4); }
+  .phase-left { background: var(--card); padding: 32px 28px; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; }
+  .phase-top.active .phase-left { background: rgba(201,168,76,0.05); border-right-color: rgba(201,168,76,0.25); }
+  .phase-num { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-family: 'Courier New', monospace; }
+  .phase-top.active .phase-num { color: var(--gold); }
+  .phase-name { font-size: 20px; margin-bottom: 8px; line-height: 1.2; }
+  .phase-timing { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 16px; }
+  .phase-sprint { font-size: 11px; color: var(--muted); padding: 8px 12px; border: 1px solid var(--border); line-height: 1.4; }
+  .phase-top.active .phase-sprint { border-color: rgba(201,168,76,0.2); }
+  .phase-right { background: var(--dark); padding: 32px 36px; }
+  .phase-desc { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
+
+  .phase-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .phase-col-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-family: 'Courier New', monospace; }
+  .phase-col-label.gold { color: var(--gold); opacity: 0.8; }
+  .phase-col-label.green { color: var(--green); opacity: 0.8; }
+  .phase-col-label.red { color: var(--red); opacity: 0.8; }
+  .phase-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .phase-items li { font-size: 12px; color: var(--muted); padding-left: 14px; position: relative; line-height: 1.5; }
+  .phase-items li::before { content: '—'; position: absolute; left: 0; color: var(--border); }
+  .phase-items li.star::before { content: '★'; color: var(--gold); font-size: 9px; top: 2px; }
+  .phase-items li.go::before { content: '+'; color: var(--green); }
+  .phase-items li.stop::before { content: '✕'; color: var(--red); font-size: 9px; top: 2px; }
+
+  .phase-bottom { border: 1px solid var(--border); border-top: none; background: var(--card); padding: 20px 28px; display: flex; align-items: center; gap: 16px; }
+  .phase-top.active + .phase-bottom { border-color: rgba(201,168,76,0.2); }
+  .pb-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); white-space: nowrap; font-family: 'Courier New', monospace; }
+  .pb-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pb-tag { font-size: 11px; padding: 4px 12px; border: 1px solid var(--border); color: var(--muted); }
+  .pb-tag.gold { border-color: rgba(201,168,76,0.3); color: var(--gold-light); }
+  .pb-tag.green { border-color: rgba(76,175,125,0.25); color: var(--green); }
+
+  /* WHO DOES WHAT */
+  .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 8px; }
+  .who-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+  .who-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+  .who-card.you .who-header { background: rgba(201,168,76,0.05); border-bottom-color: rgba(201,168,76,0.2); }
+  .who-card.hire .who-header { background: rgba(74,143,181,0.04); border-bottom-color: rgba(74,143,181,0.2); }
+  .who-card.system .who-header { background: rgba(76,175,125,0.04); border-bottom-color: rgba(76,175,125,0.2); }
+  .who-badge { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 8px; display: block; }
+  .who-card.you .who-badge { color: var(--gold); }
+  .who-card.hire .who-badge { color: var(--blue); }
+  .who-card.system .who-badge { color: var(--green); }
+  .who-name { font-size: 18px; }
+  .who-body { padding: 20px 24px; }
+  .who-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .who-list li { font-size: 12px; color: var(--muted); padding-left: 16px; position: relative; line-height: 1.5; }
+  .who-list li::before { content: '—'; position: absolute; left: 0; color: var(--border); }
+
+  /* ACCOUNTABILITY */
+  .acct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 8px; }
+  .acct-card { background: var(--card); border: 1px solid var(--border); padding: 28px 32px; }
+  .acct-label { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-family: 'Courier New', monospace; }
+  .acct-title { font-size: 17px; margin-bottom: 12px; }
+  .acct-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .acct-desc strong { color: var(--white); font-weight: 400; }
+
+  /* SIGNAL TABLE */
+  .signal-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .signal-table th { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--dark); text-align: left; }
+  .signal-table td { font-size: 12px; padding: 13px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--muted); vertical-align: top; line-height: 1.6; }
+  .signal-table td:first-child { color: var(--white); width: 240px; }
+  .signal-table tr:last-child td { border-bottom: none; }
+  .signal-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .sig-warn { color: var(--red); opacity: 0.9; }
+  .sig-fix { color: var(--green); }
+
+  /* CLOSE */
+  .close-sec { text-align: center; min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%); padding: 80px 48px; }
+  .close-quote { font-size: clamp(18px, 2.2vw, 28px); font-style: italic; line-height: 1.7; max-width: 700px; margin-bottom: 40px; color: var(--muted); }
+  .close-quote em { color: var(--white); font-style: normal; }
+  .close-attr { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.6; }
+
+  footer { border-top: 1px solid var(--border); padding: 28px 48px; display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; }
+
+  @media (max-width: 960px) {
+    section { padding: 100px 24px 60px; }
+    nav { padding: 14px 20px; flex-wrap: wrap; }
+    .nav-links { display: none; }
+    .nav-docs { gap: 4px; }
+    .nav-doc-link { font-size: 9px; padding: 4px 8px; }
+    .profile-split, .rules-grid, .zone-grid, .acct-grid { grid-template-columns: 1fr; }
+    .energy-grid, .who-grid { grid-template-columns: 1fr; }
+    .phase-top { grid-template-columns: 1fr; }
+    .phase-left { border-right: none; border-bottom: 1px solid var(--border); }
+    .phase-cols { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Fellowship of Minds</span>
+  <ul class="nav-links">
+    <li><a href="#genius">Genius Profile</a></li>
+    <li><a href="#rules">Operating Rules</a></li>
+    <li><a href="#zones">Your Zones</a></li>
+    <li><a href="#phases">Phase Plan</a></li>
+    <li><a href="#who">Who Does What</a></li>
+    <li><a href="#accountability">Accountability</a></li>
+  </ul>
+  <div class="nav-docs">
+    <a href="fom_index.html" class="nav-doc-link home">⌂ Hub</a>
+    <a href="fom_agent_platform.html" class="nav-doc-link">Platform</a>
+    <a href="fom_infrastructure.html" class="nav-doc-link">Infrastructure</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="tag">Blaze Star · Phase Plan · 2026</div>
+    <h1>Build like a Star.<br>Delegate like a <em>genius</em>.</h1>
+    <p class="hero-sub">The Fellowship of Minds phase plan built specifically around the Blaze Star operating system — high intuition, deep empathy, vision-led. Every phase is designed for how you actually work, not how a Steel or Tempo would.</p>
+  </div>
+</div>
+
+<!-- SECTION 01 — GENIUS PROFILE -->
+<section id="genius">
+  <div class="section-tag">01 — Your Genius Profile</div>
+  <h2>The Blaze Star. Not a pure Blaze.</h2>
+  <p class="section-sub">Understanding the specific sub-profile matters. A pure Blaze magnifies by connecting other people. A Star magnifies differently — by shining light on value through personal brand, voice, and presence. The operating system is distinct. So is the phase plan.</p>
+
+  <div class="profile-split">
+    <div class="ps-card gold">
+      <div class="ps-label">Dynamo Energy</div>
+      <div class="ps-title">The Idea Power</div>
+      <div class="ps-desc">A constant stream of creative concepts. You see the big picture before anyone else has framed the problem. You rely heavily on intuition — and your intuition is usually right. The danger is <strong>mistaking the vision for the plan.</strong> Seeing it clearly doesn't mean the path is built. A Dynamo without a Tempo to catch the build gets a graveyard of brilliant starts.</div>
+    </div>
+    <div class="ps-card purple">
+      <div class="ps-label">Blaze Energy</div>
+      <div class="ps-title">The People Power</div>
+      <div class="ps-desc">Unlike a pure Dynamo who creates in isolation, you care deeply about how your ideas affect people. You read rooms instantly. You understand human needs before they're spoken. You naturally champion the well-being of others — which is your greatest gift and your biggest trap. <strong>Because you genuinely care, you say yes to everyone.</strong> The fix isn't caring less. It's building the structure that lets you care at scale without breaking.</div>
+    </div>
+  </div>
+
+  <div class="energy-grid">
+    <div class="energy-card">
+      <div class="energy-icon">How you magnify</div>
+      <div class="energy-title">Shining light on value</div>
+      <div class="energy-desc">A pure Blaze magnifies by connecting other people. A Star magnifies by putting their own voice, presence, and personal brand on an idea — and that light draws others in. FOM succeeds when Deryl is the visible face of it. The platform is the product. You are the proof.</div>
+    </div>
+    <div class="energy-card">
+      <div class="energy-icon">Where you win</div>
+      <div class="energy-title">Front of house, always</div>
+      <div class="energy-title" style="margin-top:0; font-size:13px; color: var(--muted);">Stars fail when they try to do detailed back-office operations. They win when they stay out in front, inspiring the team and the audience. The moment Deryl is debugging n8n workflows instead of talking to Ken, the Star is misplaced.</div>
+    </div>
+    <div class="energy-card">
+      <div class="energy-icon">Your wealth path</div>
+      <div class="energy-title">The Who over the How</div>
+      <div class="energy-desc">Like all Blaze profiles, the path to scale is finding the right people to build your ideas — not building them yourself. The question is never "how do I build this?" The question is always "who is the right person to build this, and how do I attract them into this mission?"</div>
+    </div>
+  </div>
+
+  <div class="shadow-card">
+    <div class="shadow-label">The Star's shadow — know this before Phase 1</div>
+    <div class="shadow-title">Overwhelming yourself trying to please or rescue everyone.</div>
+    <div class="shadow-desc">This isn't a productivity problem. It's an empathy problem. Because you genuinely care about every person in front of you, you say yes before you've assessed whether the yes serves the mission. You take on their energy. You feel responsible for their outcomes. The result is a Blaze Star running at 110% capacity with no margin left for the vision — and the vision is the entire point. <strong>The fix per MMP is structural, not motivational: build a team of Tempo and Steel geniuses who handle the details and grounding</strong> so you can stay in creating, leading, and caring without burning the engine.</div>
+  </div>
+</section>
+
+<!-- SECTION 02 — OPERATING RULES -->
+<section id="rules" class="tight">
+  <div class="section-tag">02 — Operating Rules for the Blaze Star</div>
+  <h2>How you build without burning.</h2>
+  <p class="section-sub">These are not generic productivity tips. These are rules derived directly from the Blaze Star operating system — the specific guardrails that keep the Star in front without getting pulled into Steel territory.</p>
+
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-num">01</div>
+      <div>
+        <div class="rule-title">Short sprints with hard deliverables</div>
+        <div class="rule-desc">Blaze Stars lose energy in long slow builds. Structure work in 2–3 week sprints with a single, visible, tangible output at the end. Not "work on the agent." <strong>Ship the Ken onboarding conversation by June 30.</strong> The deliverable is the energy source. Without it, you're running on fumes by week three.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">02</div>
+      <div>
+        <div class="rule-title">Visible momentum markers, weekly</div>
+        <div class="rule-desc">The Star's energy is sustained by seeing things move. Build a weekly visible win into every phase — something you can point to, show someone, or send in a message. Not internal progress. <strong>External, observable evidence that the mission is advancing.</strong> This is also your accountability mechanism — if there's nothing to show on Friday, the week didn't count.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">03</div>
+      <div>
+        <div class="rule-title">Explicit handoff points before boredom hits</div>
+        <div class="rule-desc">The Blaze Star doesn't burn out — they drift. Once the vision is clear and the first proof is built, the energy starts migrating to the next idea. <strong>Build handoff points into the plan before you feel the drift</strong> — not after. The moment the build phase starts, identify who takes it from there. Don't wait to feel bored. Pre-decide.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">04</div>
+      <div>
+        <div class="rule-title">Never be the one debugging infrastructure</div>
+        <div class="rule-desc">Ollama configuration, Supabase schema migrations, n8n workflow errors, Cloudflare tunnel setup — none of this is Blaze Star work. <strong>Every hour spent debugging infrastructure is an hour not spent in conversation with Ken, building the FOM narrative, or attracting the right people into the mission.</strong> The moment you're in a terminal troubleshooting a webhook, a Steel is missing from the team.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">05</div>
+      <div>
+        <div class="rule-title">External accountability loop, not internal</div>
+        <div class="rule-desc">Stars are not self-accountable by default — they're accountable to the people they care about. This is not a weakness. <strong>Wire your accountability to a real human who will notice and name it</strong> when you drift. Ken is a candidate. Jesse Ray is a candidate. The FOM agent you're building is ultimately a candidate — because you built it, you care about it, and you don't want it to catch your own drift.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">06</div>
+      <div>
+        <div class="rule-title">The mission speaks — not the technology</div>
+        <div class="rule-desc">When Deryl talks about FOM, it cannot lead with infrastructure. Stars sell through story and presence. <strong>The conversation with Ken is about what his life looks like in 90 days — not about Base.44 or Supabase schemas.</strong> The technology is invisible. The transformation is the pitch. This applies to every relationship in the FOM build: Jesse, future community licenses, future investors.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 03 — YOUR ZONES -->
+<section id="zones" class="tight">
+  <div class="section-tag">03 — Your Zones</div>
+  <h2>What is Deryl's work. What is not.</h2>
+  <p class="section-sub">The biggest risk for a Blaze Star building a platform is scope creep into the wrong genius zone. This is the explicit line — drawn before the build starts so it doesn't get redrawn under pressure.</p>
+
+  <div class="zone-grid">
+    <div class="zone-card yes">
+      <div class="zone-header">
+        <div class="zone-label">Your zone — do this</div>
+        <div class="zone-title">Creating, leading, and caring</div>
+      </div>
+      <ul class="zone-list">
+        <li>The relationship with Ken — every conversation, check-in, and deepening moment</li>
+        <li>The FOM narrative — how it's framed, what it means, who it's for</li>
+        <li>Onboarding conversations — you are the voice that opens the door</li>
+        <li>Jesse Ray relationship — becoming the named co-producer of Growth House</li>
+        <li>Vision documents — the platform overview, the pitch, the story arc</li>
+        <li>Attracting the right Steel or Tempo into the build — your presence does this</li>
+        <li>Deciding what gets built next — the architect role, not the builder role</li>
+        <li>Growing the Ozark Independent as the Star's public channel</li>
+        <li>Bartending at Buddy's — the relationship-first lead gen engine</li>
+        <li>Feedback on what the agent says — you define the voice, not the code</li>
+      </ul>
+    </div>
+    <div class="zone-card no">
+      <div class="zone-header">
+        <div class="zone-label">Not your zone — delegate or defer</div>
+        <div class="zone-title">Building, debugging, and maintaining</div>
+      </div>
+      <ul class="zone-list">
+        <li>Mac Mini setup, Ollama installation, and local server configuration</li>
+        <li>n8n workflow building and debugging</li>
+        <li>Supabase schema design and database migrations</li>
+        <li>Telegram bot webhook code — the actual Node.js implementation</li>
+        <li>Cloudflare Tunnel configuration and maintenance</li>
+        <li>Mem0 or Zep memory layer integration</li>
+        <li>API routing logic between local and cloud models</li>
+        <li>Bug fixing when the system breaks at 2am</li>
+        <li>Version control, GitHub repo management, deployment pipelines</li>
+        <li>Cost monitoring dashboards and infrastructure optimization</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 04 — PHASE PLAN -->
+<section id="phases" class="tight">
+  <div class="section-tag">04 — The Phase Plan</div>
+  <h2>Four phases. Built for the Star.</h2>
+  <p class="section-sub">Each phase has a Blaze Star role (what Deryl does), a Steel/Tempo role (what someone else does), a sprint deliverable (the visible win), and a handoff signal (when to transition). No phase lasts longer than 8 weeks before a visible output.</p>
+
+  <!-- PHASE 0 -->
+  <div class="phase-block">
+    <div class="phase-top active">
+      <div class="phase-left">
+        <div>
+          <div class="phase-num">Phase 0</div>
+          <div class="phase-name">Prove it on yourself</div>
+          <div class="phase-timing">Now → June 30, 2026</div>
+        </div>
+        <div class="phase-sprint">Sprint output: Deryl's personal agent running daily for 30 days. One documented insight per week.</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-desc">The Star builds credibility through lived experience, not theory. Before you can sell Ken on what his agent will do for his life, you need to know what yours has done for yours. This phase is Deryl running his own agent in Base.44 — every day, for 30 days. Not to build the perfect system. To feel what the accountability loop actually does. To notice what the pattern interrupt catches. To collect the language that makes it real when you talk to Ken.</div>
+        <div class="phase-cols">
+          <div>
+            <div class="phase-col-label gold">Deryl's work (Star zone)</div>
+            <ul class="phase-items">
+              <li class="star">Use the agent every morning — no exceptions</li>
+              <li class="star">Write down what it catches, what it misses</li>
+              <li class="star">Frame the 3 most powerful moments in plain language</li>
+              <li class="star">Tell one person per week what you're building and why</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label green">Base.44 handles</div>
+            <ul class="phase-items">
+              <li class="go">Agent hosting and infrastructure</li>
+              <li class="go">Context loading — all 5 frameworks</li>
+              <li class="go">Conversation interface</li>
+              <li class="go">Zero setup required — Deryl never touches a terminal</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label red">Do not do in Phase 0</div>
+            <ul class="phase-items">
+              <li class="stop">Buy the Mac Mini yet — premature</li>
+              <li class="stop">Design the community agent schema</li>
+              <li class="stop">Build anything for Ken yet</li>
+              <li class="stop">Pitch FOM publicly before the proof is personal</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-bottom">
+      <span class="pb-label">Handoff signal</span>
+      <div class="pb-tags">
+        <span class="pb-tag gold">30 days of daily use complete</span>
+        <span class="pb-tag gold">3 documented insights ready to share with Ken</span>
+        <span class="pb-tag">Energy is high — not depleted</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase-block" style="margin-top: 4px;">
+    <div class="phase-top active">
+      <div class="phase-left">
+        <div>
+          <div class="phase-num">Phase 1</div>
+          <div class="phase-name">Ken Wilkins pilot</div>
+          <div class="phase-timing">June → September 2026</div>
+        </div>
+        <div class="phase-sprint">Sprint output: Ken's agent live, running weekly accountability loop. One documented outcome by Aug 1.</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-desc">The Star's superpower is the relationship. The Ken pilot is not a product launch — it is a deepening of one of the highest-leverage relationships in Deryl's world. The onboarding conversation is the Star's moment: listening, reflecting, asking the right question, and making Ken feel genuinely seen. The agent then holds what you gathered. You don't configure it — you inform it through conversation and let the system capture the intelligence.</div>
+        <div class="phase-cols">
+          <div>
+            <div class="phase-col-label gold">Deryl's work (Star zone)</div>
+            <ul class="phase-items">
+              <li class="star">The onboarding conversation with Ken — 60–90 min</li>
+              <li class="star">Weekly check-in call — what did the agent catch?</li>
+              <li class="star">Refining how the agent speaks — voice and tone feedback</li>
+              <li class="star">Documenting Ken's experience in his words</li>
+              <li class="star">Deepening the relationship through the process</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label green">Base.44 + tech handles</div>
+            <ul class="phase-items">
+              <li class="go">Ken's agent build in Base.44</li>
+              <li class="go">Framework loading — MMP, Gene Keys, WHY</li>
+              <li class="go">Wheel of Life intake from onboarding conversation</li>
+              <li class="go">Weekly check-in automation</li>
+              <li class="go">Goal log and pattern detection</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label red">Do not do in Phase 1</div>
+            <ul class="phase-items">
+              <li class="stop">Build the Mac Mini stack yet</li>
+              <li class="stop">Open the community layer</li>
+              <li class="stop">Pitch FOM to anyone outside Ken and Jesse</li>
+              <li class="stop">Add a third personal agent client</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-bottom">
+      <span class="pb-label">Handoff signal</span>
+      <div class="pb-tags">
+        <span class="pb-tag gold">Ken has used the agent for 30+ days</span>
+        <span class="pb-tag gold">One documented outcome Ken would share publicly</span>
+        <span class="pb-tag">Agent voice feels right — not generic</span>
+        <span class="pb-tag">Mac Mini procurement begins</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase-block" style="margin-top: 4px;">
+    <div class="phase-top">
+      <div class="phase-left">
+        <div>
+          <div class="phase-num">Phase 2</div>
+          <div class="phase-name">Community layer — Growth House</div>
+          <div class="phase-timing">August → October 2026</div>
+        </div>
+        <div class="phase-sprint">Sprint output: GH member system live with persistent agent per member. Oct Immersion — room is ready before anyone arrives.</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-desc">This is where the Star's presence becomes a platform. The Growth House community agent doesn't get pitched — it gets demonstrated. Jesse sees the member intelligence system operating. He sees what the room knows before it fills. Deryl's role in this phase is the same as Phase 1: the relationship, the narrative, and the feedback on what the agent says. The Mac Mini infrastructure is live — built and maintained by someone else.</div>
+        <div class="phase-cols">
+          <div>
+            <div class="phase-col-label gold">Deryl's work (Star zone)</div>
+            <ul class="phase-items">
+              <li class="star">Relationship with Jesse — co-producer path</li>
+              <li class="star">Member onboarding conversations — the Star opens every door</li>
+              <li class="star">Pre-event intelligence review — know the room</li>
+              <li class="star">Facilitate with the data — this is the Star's moment</li>
+              <li class="star">Document what the community agent makes possible</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label green">Steel/Tempo hire handles</div>
+            <ul class="phase-items">
+              <li class="go">Mac Mini procurement, setup, Ollama install</li>
+              <li class="go">n8n community agent workflow build</li>
+              <li class="go">Local Supabase / Postgres deployment</li>
+              <li class="go">Cloudflare Tunnel and Telegram webhook</li>
+              <li class="go">Ongoing maintenance and uptime</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label red">Do not do in Phase 2</div>
+            <ul class="phase-items">
+              <li class="stop">Configure the Mac Mini yourself</li>
+              <li class="stop">Manage n8n workflows — that's the hire's job</li>
+              <li class="stop">Launch the generational layer yet</li>
+              <li class="stop">Open FOM to more than 20 members total</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-bottom">
+      <span class="pb-label">Handoff signal</span>
+      <div class="pb-tags">
+        <span class="pb-tag gold">October Immersion runs on the system</span>
+        <span class="pb-tag gold">Jesse sees what the intelligence layer makes possible</span>
+        <span class="pb-tag">At least one member says "this felt designed for me"</span>
+        <span class="pb-tag green">Phase 3 pricing model drafted</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase-block" style="margin-top: 4px;">
+    <div class="phase-top">
+      <div class="phase-left">
+        <div>
+          <div class="phase-num">Phase 3</div>
+          <div class="phase-name">Fellowship of Minds SaaS</div>
+          <div class="phase-timing">2027</div>
+        </div>
+        <div class="phase-sprint">Sprint output: All three tiers live. Personal SaaS open. Community license sold to first org. Family office retainer scoped.</div>
+      </div>
+      <div class="phase-right">
+        <div class="phase-desc">The Star goes fully public. FOM is not just Ken's agent and Growth House's system — it is a named, positioned platform with Deryl as the face of it. The Ozark Independent carries the story. The bartending relationships at Buddy's generate the early adopter pipeline. The platform was proven one person at a time and now the Star uses their voice and presence to show what's possible at scale. The Steel team runs the product. Deryl runs the mission.</div>
+        <div class="phase-cols">
+          <div>
+            <div class="phase-col-label gold">Deryl's work (Star zone)</div>
+            <ul class="phase-items">
+              <li class="star">Public voice — Ozark Independent, video, presence</li>
+              <li class="star">First community license relationships</li>
+              <li class="star">Family office retainer conversations</li>
+              <li class="star">The FOM story — told in Deryl's voice, always</li>
+              <li class="star">Attracting the next layer of talent into the mission</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label green">Team handles</div>
+            <ul class="phase-items">
+              <li class="go">Hybrid routing architecture build</li>
+              <li class="go">SaaS onboarding infrastructure</li>
+              <li class="go">Community license deployment for new orgs</li>
+              <li class="go">Platform maintenance and iteration</li>
+              <li class="go">Customer success for personal agent subscribers</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label red">Never do in Phase 3</div>
+            <ul class="phase-items">
+              <li class="stop">Get pulled back into infrastructure</li>
+              <li class="stop">Manage individual client agent configs</li>
+              <li class="stop">Run customer support directly</li>
+              <li class="stop">Say yes to every org that wants a community license</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-bottom">
+      <span class="pb-label">Handoff signal</span>
+      <div class="pb-tags">
+        <span class="pb-tag gold">First community license revenue received</span>
+        <span class="pb-tag gold">Personal SaaS has 10+ subscribers</span>
+        <span class="pb-tag green">Steel team running without daily Deryl input</span>
+        <span class="pb-tag green">Generational layer scoped for VanNostrand Family Office</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 05 — WHO DOES WHAT -->
+<section id="who" class="tight">
+  <div class="section-tag">05 — Who Does What</div>
+  <h2>The team the Star needs.</h2>
+  <p class="section-sub">Per MMP, the Blaze Star's path to scale is hiring Tempo or Steel geniuses who handle details, grounding, and execution. This is not a nice-to-have. It is the architecture. Without this team, the Star either burns out doing Steel work or the mission stalls waiting for the Star to do what they were never built to do.</p>
+
+  <div class="who-grid">
+    <div class="who-card you">
+      <div class="who-header">
+        <span class="who-badge">Blaze Star · Always</span>
+        <div class="who-name">Deryl — Vision, Voice, Relationship</div>
+      </div>
+      <div class="who-body">
+        <ul class="who-list">
+          <li>The face and voice of Fellowship of Minds — publicly and in every 1:1</li>
+          <li>Every relationship that matters — Ken, Jesse, future license clients</li>
+          <li>The narrative: what FOM is, why it exists, what it makes possible</li>
+          <li>Onboarding conversations — the Star opens every door conversationally</li>
+          <li>Feedback on agent voice, tone, and framework application</li>
+          <li>Deciding what gets built next — architect, not builder</li>
+          <li>The Ozark Independent — the public channel that carries the mission</li>
+          <li>Buddy's bartending — relationship-first lead gen for Cove & Co. and FOM</li>
+          <li>Accountability check-ins with Ken — the relationship deepens through the agent</li>
+          <li>Attracting talent — the Star's presence does this without recruiting</li>
+        </ul>
+      </div>
+    </div>
+    <div class="who-card hire">
+      <div class="who-header">
+        <span class="who-badge">Steel / Tempo hire · Phase 2</span>
+        <div class="who-name">Technical Builder — Infrastructure, Systems, Maintenance</div>
+      </div>
+      <div class="who-body">
+        <ul class="who-list">
+          <li>Mac Mini setup — Ollama, n8n, Postgres, Cloudflare Tunnel, PM2</li>
+          <li>Telegram bot code — Node.js webhook handler, message routing</li>
+          <li>n8n workflow design and ongoing maintenance</li>
+          <li>Supabase schema management and database migrations</li>
+          <li>Mem0 or Zep memory layer integration for long-term agent recall</li>
+          <li>Hybrid routing architecture when Phase 3 begins</li>
+          <li>System uptime monitoring and bug resolution</li>
+          <li>API cost tracking and optimization</li>
+          <li>New member onboarding — technical side only</li>
+          <li>Documentation of the stack so the system doesn't live in one person's head</li>
+        </ul>
+      </div>
+    </div>
+    <div class="who-card system">
+      <div class="who-header">
+        <span class="who-badge">The system · Phase 2+</span>
+        <div class="who-name">The Platform — What Runs Without Either of You</div>
+      </div>
+      <div class="who-body">
+        <ul class="who-list">
+          <li>Daily morning context delivery via Telegram — automated, zero Deryl input</li>
+          <li>Weekly check-in messages — triggered by n8n, generated by Ollama</li>
+          <li>Goal log updates — captured from member conversations automatically</li>
+          <li>Pattern flagging — keyword and language detection running always</li>
+          <li>Lighthouse level tracking — updated as members progress</li>
+          <li>Wheel of Life score updates — conversational, not form-based</li>
+          <li>Event reminders and pre-event intelligence generation</li>
+          <li>Member profile enrichment — every conversation adds data</li>
+          <li>Handoff to Claude API when task requires frontier intelligence</li>
+          <li>The system that makes FOM scalable — it runs while Deryl is at Buddy's</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 06 — ACCOUNTABILITY -->
+<section id="accountability" class="tight">
+  <div class="section-tag">06 — Accountability Architecture</div>
+  <h2>How the Star stays on mission.</h2>
+  <p class="section-sub">Stars are accountable to people they care about — not to systems or deadlines. The accountability architecture for a Blaze Star wires the commitments to real humans, not calendars. And the agent that Deryl builds is ultimately the most powerful accountability mechanism he has — because he built it, he cares about it, and it knows his patterns.</p>
+
+  <div class="acct-grid">
+    <div class="acct-card">
+      <div class="acct-label">Weekly rhythm</div>
+      <div class="acct-title">Friday visible win review</div>
+      <div class="acct-desc">Every Friday, one question: <strong>what can I point to that moved this week?</strong> Not internal progress. Not "I thought about it." Something observable — a conversation had, a document sent, a system running, an insight documented. If there's nothing to point to, the week was spent in the wrong zone. This is the Star's self-audit. Takes three minutes. Tells you everything.</div>
+    </div>
+    <div class="acct-card">
+      <div class="acct-label">Human accountability</div>
+      <div class="acct-title">Ken as the mirror</div>
+      <div class="acct-desc">The Ken pilot creates a natural accountability loop. When Deryl shows up for the weekly check-in call, <strong>he cannot show up empty-handed.</strong> The agent is running or it isn't. The loop is working or it isn't. Ken's experience is the evidence. This is the Blaze Star's most powerful accountability mechanism — caring about the outcome for someone else. It activates the deep empathy that is your greatest strength.</div>
+    </div>
+    <div class="acct-card">
+      <div class="acct-label">Phase gate accountability</div>
+      <div class="acct-title">No phase skipping</div>
+      <div class="acct-desc">The Blaze Star's shadow is the shiny next thing pulling them out of phase before the current one compounds. The phase gates are the guardrail. <strong>Phase 2 does not open until the Phase 1 handoff signals are met.</strong> Not "mostly met." Met. The Mac Mini doesn't get ordered until Ken has 30 days on the agent. The community layer doesn't open until Ken's outcome is documented. These are hard stops — not suggestions.</div>
+    </div>
+    <div class="acct-card">
+      <div class="acct-label">The agent as mirror</div>
+      <div class="acct-title">Deryl's agent catches Deryl</div>
+      <div class="acct-desc">The personal agent running in Base.44 is not just a product prototype. <strong>It is Deryl's accountability partner.</strong> It knows the Blaze Star's specific drift patterns — the language of avoidance, the signal of overcommitment, the moment energy migrates before the current phase is done. The agent that Deryl builds for others first works on Deryl. This is how the Star proves the product — by living in it.</div>
+    </div>
+  </div>
+
+  <!-- SHADOW SIGNAL TABLE -->
+  <div class="section-tag" style="margin-top: 48px; margin-bottom: 16px;">Blaze Star drift signals — what the agent watches for</div>
+  <div style="background: var(--card); border: 1px solid var(--border); overflow: hidden;">
+    <table class="signal-table">
+      <thead>
+        <tr>
+          <th>Signal in language or behavior</th>
+          <th>What it means</th>
+          <th>What the agent (or Ken) says back</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>"I've been thinking about a new angle for this..."</td>
+          <td><span class="sig-warn">Phase drift — energy migrating before current phase is done</span></td>
+          <td><span class="sig-fix">What's the status of your Phase [X] handoff signals? Let's close that first.</span></td>
+        </tr>
+        <tr>
+          <td>"I said yes to [person] because they really needed it"</td>
+          <td><span class="sig-warn">Shadow activation — empathy override of mission boundaries</span></td>
+          <td><span class="sig-fix">Which zone does this yes live in — your zone or someone else's? What did it cost the mission?</span></td>
+        </tr>
+        <tr>
+          <td>Three days without a visible win to point to</td>
+          <td><span class="sig-warn">Wrong zone — likely doing Steel work or in analysis without output</span></td>
+          <td><span class="sig-fix">What's the one thing you could complete and ship today that someone else could see?</span></td>
+        </tr>
+        <tr>
+          <td>"I'm going to figure out how to set up the n8n workflow"</td>
+          <td><span class="sig-warn">Steel territory — Blaze Star entering the wrong genius zone</span></td>
+          <td><span class="sig-fix">Who is the right person to build this? How do you attract them? That's your actual job right now.</span></td>
+        </tr>
+        <tr>
+          <td>Energy feels flat or obligatory — not fired up</td>
+          <td><span class="sig-warn">Rescue mode — carrying too many people's outcomes</span></td>
+          <td><span class="sig-fix">Who are you trying to rescue right now? What would it look like to care about them without owning their outcome?</span></td>
+        </tr>
+        <tr>
+          <td>"I just need to finish this one thing before I can move forward"</td>
+          <td><span class="sig-warn">Overcomplication — creating false prerequisites to avoid the scary next step</span></td>
+          <td><span class="sig-fix">What is the scary next step actually? The prerequisite is usually a story. The step is usually a conversation.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<div class="close-sec">
+  <div class="tag">The Blaze Star Operating System</div>
+  <p class="close-quote">"Stars fail when they try to do the detailed back-office work. They win when they stay out in front — <em>inspiring the team and the audience.</em> The mission is the magnet. The presence is the proof. The system runs the rest."</p>
+  <div class="divider" style="margin: 32px auto;"></div>
+  <div class="close-attr">Fellowship of Minds · Blaze Star Phase Plan · 2026</div>
+</div>
+
+<footer>
+  <span>FELLOWSHIP OF MINDS — BLAZE STAR PHASE PLAN</span>
+  <span>PREPARED BY DERYL VANNOSTRAND · MAY 2026</span>
+</footer>
+
+</body>
+</html>
