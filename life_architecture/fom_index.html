@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fellowship of Minds — Document Hub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --white: #f5f5f0;
+    --muted: #888;
+    --green: #4caf7d;
+    --blue: #4a8fb5;
+    --purple: #8b6fbf;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Georgia', serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  nav {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,10,10,0.98);
+  }
+
+  .nav-logo { font-size: 13px; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; }
+  .nav-date { font-size: 11px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+
+  .hero {
+    text-align: center;
+    padding: 100px 64px 64px;
+    background: radial-gradient(ellipse at center top, rgba(201,168,76,0.07) 0%, transparent 55%);
+  }
+
+  .tag { display: inline-block; font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 8px 20px; border-radius: 2px; margin-bottom: 36px; }
+
+  h1 { font-size: clamp(32px, 5vw, 60px); font-weight: 400; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.02em; }
+  h1 em { color: var(--gold); font-style: italic; }
+
+  .hero-sub { font-size: 16px; color: var(--muted); max-width: 580px; margin: 0 auto; line-height: 1.8; }
+
+  .divider { width: 48px; height: 1px; background: var(--gold); margin: 48px auto; opacity: 0.35; }
+
+  /* DOCUMENT CARDS */
+  .docs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; max-width: 1100px; margin: 0 auto 2px; padding: 0 64px; }
+
+  .doc-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; text-decoration: none; display: flex; flex-direction: column; transition: border-color 0.2s; position: relative; }
+  .doc-card:hover { border-color: rgba(201,168,76,0.35); }
+  .doc-card:hover .doc-arrow { opacity: 1; transform: translateX(4px); }
+
+  .doc-card.d1 { border-top: 2px solid var(--gold); }
+  .doc-card.d2 { border-top: 2px solid var(--blue); }
+  .doc-card.d3 { border-top: 2px solid var(--purple); }
+  .doc-card.d4 { border-top: 2px solid var(--green); }
+
+  .doc-top { padding: 36px 36px 28px; flex: 1; }
+  .doc-num { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; font-family: 'Courier New', monospace; }
+  .doc-card.d1 .doc-num { color: var(--gold); opacity: 0.7; }
+  .doc-card.d2 .doc-num { color: var(--blue); opacity: 0.7; }
+  .doc-card.d3 .doc-num { color: var(--purple); opacity: 0.7; }
+  .doc-card.d4 .doc-num { color: var(--green); opacity: 0.7; }
+  .doc-title { font-size: 22px; margin-bottom: 12px; color: var(--white); line-height: 1.2; }
+  .doc-sub { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+
+  .doc-sections { display: flex; flex-wrap: wrap; gap: 6px; }
+  .doc-section { font-size: 10px; padding: 3px 10px; border: 1px solid var(--border); color: var(--muted); letter-spacing: 0.05em; }
+
+  .doc-bottom { padding: 16px 36px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.01); }
+  .doc-cta { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .doc-card.d1 .doc-cta { color: var(--gold); }
+  .doc-card.d2 .doc-cta { color: var(--blue); }
+  .doc-card.d3 .doc-cta { color: var(--purple); }
+  .doc-card.d4 .doc-cta { color: var(--green); }
+  .doc-arrow { font-size: 16px; opacity: 0.3; transition: all 0.2s; }
+  .doc-card.d1 .doc-arrow { color: var(--gold); }
+  .doc-card.d2 .doc-arrow { color: var(--blue); }
+  .doc-card.d3 .doc-arrow { color: var(--purple); }
+  .doc-card.d4 .doc-arrow { color: var(--green); }
+
+  /* FLOW MAP */
+  .flow-section { max-width: 1100px; margin: 0 auto; padding: 48px 64px; }
+  .flow-label { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; text-align: center; }
+
+  .flow-map { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; }
+  .flow-node { background: var(--dark); border: 1px solid var(--border); padding: 14px 20px; text-align: center; min-width: 140px; }
+  .flow-node.gold { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.04); }
+  .flow-node.blue { border-color: rgba(74,143,181,0.3); background: rgba(74,143,181,0.04); }
+  .flow-node.purple { border-color: rgba(139,111,191,0.3); background: rgba(139,111,191,0.04); }
+  .flow-node.green { border-color: rgba(76,175,125,0.3); background: rgba(76,175,125,0.04); }
+  .flow-node-num { font-size: 9px; letter-spacing: 0.3em; color: var(--muted); margin-bottom: 4px; font-family: 'Courier New', monospace; }
+  .flow-node.gold .flow-node-num { color: var(--gold); opacity: 0.7; }
+  .flow-node.blue .flow-node-num { color: var(--blue); opacity: 0.7; }
+  .flow-node.purple .flow-node-num { color: var(--purple); opacity: 0.7; }
+  .flow-node.green .flow-node-num { color: var(--green); opacity: 0.7; }
+  .flow-node-name { font-size: 13px; color: var(--white); }
+  .flow-arrow { font-size: 16px; color: var(--gold); opacity: 0.25; padding: 0 10px; }
+
+  /* STATUS */
+  .status-strip { max-width: 1100px; margin: 0 auto 2px; padding: 0 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+  .status-card { background: var(--dark); border: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .status-dot.active { background: var(--green); box-shadow: 0 0 6px rgba(76,175,125,0.4); }
+  .status-dot.building { background: var(--gold); }
+  .status-dot.upcoming { background: var(--border); }
+  .status-info { }
+  .status-name { font-size: 12px; color: var(--white); margin-bottom: 2px; }
+  .status-state { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 24px 64px; display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+  .footer-left { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+  .footer-right { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+
+  @media (max-width: 800px) {
+    nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
+    .docs-grid, .flow-section, .status-strip { padding-left: 24px; padding-right: 24px; }
+    .docs-grid, .status-strip { grid-template-columns: 1fr; }
+    .flow-map { flex-direction: column; gap: 2px; }
+    .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Fellowship of Minds</span>
+  <span class="nav-date">Document Hub · May 2026</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="tag">Internal Document Suite · 2026</div>
+  <h1>Fellowship of Minds<br><em>Operating Documents</em></h1>
+  <p class="hero-sub">Four connected documents covering the full platform — from vision and agent architecture to infrastructure, tools, and the Blaze Star phase plan for the build.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- STATUS STRIP -->
+<div class="status-strip">
+  <div class="status-card">
+    <div class="status-dot active"></div>
+    <div class="status-info">
+      <div class="status-name">Personal agents</div>
+      <div class="status-state">Live — Deryl + Ken</div>
+    </div>
+  </div>
+  <div class="status-card">
+    <div class="status-dot building"></div>
+    <div class="status-info">
+      <div class="status-name">Community agent</div>
+      <div class="status-state">Building — Phase 2</div>
+    </div>
+  </div>
+  <div class="status-card">
+    <div class="status-dot upcoming"></div>
+    <div class="status-info">
+      <div class="status-name">Mac Mini stack</div>
+      <div class="status-state">Upcoming — Aug 2026</div>
+    </div>
+  </div>
+  <div class="status-card">
+    <div class="status-dot upcoming"></div>
+    <div class="status-info">
+      <div class="status-name">FOM SaaS launch</div>
+      <div class="status-state">Phase 3 — 2027</div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 2px;"></div>
+
+<!-- DOCUMENT CARDS -->
+<div class="docs-grid">
+
+  <a href="fom_agent_platform.html" class="doc-card d1">
+    <div class="doc-top">
+      <div class="doc-num">Document 01</div>
+      <div class="doc-title">AI Agent Intelligence Platform</div>
+      <div class="doc-sub">The full platform vision — three-layer architecture (individual, community, generational), personal agent spec, market research, competitor landscape, build options, phased roadmap, and business model. Primary audience: Ken Wilkins.</div>
+      <div class="doc-sections">
+        <span class="doc-section">Vision</span>
+        <span class="doc-section">Architecture</span>
+        <span class="doc-section">Personal Agent</span>
+        <span class="doc-section">Market Research</span>
+        <span class="doc-section">Infrastructure</span>
+        <span class="doc-section">Phases</span>
+        <span class="doc-section">Business Model</span>
+        <span class="doc-section">Database Schema</span>
+      </div>
+    </div>
+    <div class="doc-bottom">
+      <span class="doc-cta">Open Platform Overview</span>
+      <span class="doc-arrow">→</span>
+    </div>
+  </a>
+
+  <a href="fom_infrastructure.html" class="doc-card d2">
+    <div class="doc-top">
+      <div class="doc-num">Document 02</div>
+      <div class="doc-title">Infrastructure Deep Dive</div>
+      <div class="doc-sub">Full reference document on every infrastructure option — Base.44, Mac Mini + Ollama, and hybrid routing. Includes data flow diagrams, decision matrix, 12-month cost analysis, privacy architecture, phased rollout, and the complete tools landscape covering Ollama, OpenClaw, and Antigravity. Audience: all three — Deryl, Ken, technical hire.</div>
+      <div class="doc-sections">
+        <span class="doc-section">Three Options</span>
+        <span class="doc-section">Data Flow Diagrams</span>
+        <span class="doc-section">Decision Matrix</span>
+        <span class="doc-section">Cost Analysis</span>
+        <span class="doc-section">Recommended Stack</span>
+        <span class="doc-section">Privacy Architecture</span>
+        <span class="doc-section">Phased Rollout</span>
+        <span class="doc-section">Tools Landscape</span>
+      </div>
+    </div>
+    <div class="doc-bottom">
+      <span class="doc-cta">Open Infrastructure Dive</span>
+      <span class="doc-arrow">→</span>
+    </div>
+  </a>
+
+  <a href="fom_genius_phase_plan.html" class="doc-card d4">
+    <div class="doc-top">
+      <div class="doc-num">Document 03</div>
+      <div class="doc-title">Blaze Star Phase Plan</div>
+      <div class="doc-sub">The build plan designed specifically around the Blaze Star operating system — high intuition, deep empathy, vision-led. Covers the Star profile, shadow patterns, operating rules, zone boundaries (what Deryl does vs. what gets delegated), four phased sprints with handoff signals, who does what, accountability architecture, and the drift signal table. Audience: Deryl — this is the operating document.</div>
+      <div class="doc-sections">
+        <span class="doc-section">Genius Profile</span>
+        <span class="doc-section">Operating Rules</span>
+        <span class="doc-section">Your Zones</span>
+        <span class="doc-section">Phase Plan</span>
+        <span class="doc-section">Who Does What</span>
+        <span class="doc-section">Accountability</span>
+        <span class="doc-section">Drift Signals</span>
+      </div>
+    </div>
+    <div class="doc-bottom">
+      <span class="doc-cta">Open Phase Plan</span>
+      <span class="doc-arrow">→</span>
+    </div>
+  </a>
+
+  <div class="doc-card d3" style="opacity: 0.45; cursor: default;">
+    <div class="doc-top">
+      <div class="doc-num">Document 04 — Coming</div>
+      <div class="doc-title">Growth House Community Agent</div>
+      <div class="doc-sub">The full community layer build spec — member intelligence architecture, privacy-first data design, event facilitation system, between-event coaching protocols, and the expansion path from Growth House to Fellowship of Minds community licensing. Will be built once the Ken pilot is underway and the community layer design is locked.</div>
+      <div class="doc-sections">
+        <span class="doc-section">Community Intelligence</span>
+        <span class="doc-section">Privacy Architecture</span>
+        <span class="doc-section">Event Design</span>
+        <span class="doc-section">Member Protocols</span>
+        <span class="doc-section">Licensing Model</span>
+      </div>
+    </div>
+    <div class="doc-bottom">
+      <span class="doc-cta" style="color: var(--muted);">In development</span>
+      <span class="doc-arrow" style="color: var(--muted);">—</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- FLOW MAP -->
+<div class="flow-section">
+  <div class="flow-label">How the documents connect</div>
+  <div class="flow-map">
+    <div class="flow-node gold">
+      <div class="flow-node-num">Doc 01</div>
+      <div class="flow-node-name">Platform Vision</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node blue">
+      <div class="flow-node-num">Doc 02</div>
+      <div class="flow-node-name">Infrastructure</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">
+      <div class="flow-node-num">Doc 03</div>
+      <div class="flow-node-name">Phase Plan</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node purple">
+      <div class="flow-node-num">Doc 04</div>
+      <div class="flow-node-name">Community Agent</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-left">Fellowship of Minds · Internal Document Suite · 2026</span>
+  <span class="footer-right">Prepared by Deryl VanNostrand</span>
+</footer>
+
+</body>
+</html>
