@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fellowship of Minds — Infrastructure Deep Dive</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --white: #f5f5f0;
+    --muted: #888;
+    --green: #4caf7d;
+    --blue: #4a8fb5;
+    --red: #b54a4a;
+    --purple: #8b6fbf;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Georgia', serif;
+    line-height: 1.6;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(10,10,10,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-logo { font-size: 13px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; }
+  .nav-back { font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--border); padding: 6px 16px; transition: all 0.2s; }
+  .nav-back:hover { color: var(--white); border-color: var(--muted); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+
+  section { padding: 120px 64px 80px; max-width: 1200px; margin: 0 auto; }
+  section.tight { padding-top: 0; }
+
+  .hero {
+    min-height: 70vh;
+    max-width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(ellipse at center top, rgba(74,143,181,0.07) 0%, transparent 60%);
+  }
+
+  .hero-inner { max-width: 860px; padding: 48px; }
+
+  .tag { display: inline-block; font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 8px 20px; border-radius: 2px; margin-bottom: 40px; }
+  .tag.blue { color: var(--blue); border-color: rgba(74,143,181,0.3); }
+
+  h1 { font-size: clamp(36px, 5vw, 62px); font-weight: 400; line-height: 1.1; color: var(--white); margin-bottom: 24px; letter-spacing: -0.02em; }
+  h1 em { color: var(--gold); font-style: italic; }
+  h2 { font-size: clamp(24px, 3.5vw, 40px); font-weight: 400; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.01em; }
+  h3 { font-size: 18px; font-weight: 400; margin-bottom: 10px; color: var(--white); }
+
+  .hero-sub { font-size: 17px; color: var(--muted); max-width: 640px; margin: 0 auto 48px; line-height: 1.8; }
+  .section-tag { font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .section-sub { font-size: 15px; color: var(--muted); max-width: 680px; margin-bottom: 48px; line-height: 1.8; }
+  .divider { width: 48px; height: 1px; background: var(--gold); margin: 32px 0; opacity: 0.4; }
+
+  /* VERDICT BANNER */
+  .verdict { background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.3); padding: 36px 40px; margin-bottom: 2px; }
+  .verdict-label { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .verdict-text { font-size: 16px; color: var(--white); line-height: 1.8; max-width: 900px; }
+  .verdict-text strong { color: var(--gold); font-style: italic; font-weight: 400; }
+
+  /* OPTION CARDS — FULL WIDTH DEEP DIVE */
+  .option-block { margin-bottom: 4px; }
+  .option-header { display: grid; grid-template-columns: 260px 1fr; border: 1px solid var(--border); overflow: hidden; }
+  .option-header.featured { border-color: rgba(201,168,76,0.35); }
+  .option-left { background: var(--card); padding: 36px 32px; border-right: 1px solid var(--border); }
+  .option-header.featured .option-left { background: rgba(201,168,76,0.05); border-right-color: rgba(201,168,76,0.25); }
+  .option-badge { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; display: block; }
+  .option-header.featured .option-badge { color: var(--gold); }
+  .option-name { font-size: 22px; margin-bottom: 6px; }
+  .option-tagline { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+  .score-block { display: flex; flex-direction: column; gap: 10px; }
+  .score-row { display: flex; align-items: center; gap: 10px; }
+  .score-label { font-size: 11px; color: var(--muted); width: 72px; flex-shrink: 0; }
+  .score-bar { flex: 1; height: 2px; background: var(--border); }
+  .score-fill { height: 100%; }
+  .score-fill.green { background: var(--green); }
+  .score-fill.gold { background: var(--gold); opacity: 0.8; }
+  .score-fill.red { background: var(--red); opacity: 0.8; }
+  .score-fill.blue { background: var(--blue); opacity: 0.8; }
+  .option-right { background: var(--dark); padding: 36px 40px; }
+  .option-desc { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
+
+  .option-body { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; border: 1px solid var(--border); border-top: none; }
+  .option-body.two { grid-template-columns: repeat(2, 1fr); }
+  .ob-card { background: var(--card); padding: 28px; }
+  .ob-card.dark { background: var(--dark); }
+  .ob-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; font-family: 'Courier New', monospace; }
+  .ob-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .ob-list li { font-size: 12px; color: var(--muted); padding-left: 16px; position: relative; line-height: 1.5; }
+  .ob-list li::before { content: '—'; position: absolute; left: 0; color: var(--border); }
+  .ob-list li.pro::before { content: '+'; color: var(--green); }
+  .ob-list li.con::before { content: '–'; color: var(--red); }
+  .ob-list li.gold::before { content: '◆'; color: var(--gold); font-size: 8px; top: 3px; }
+  .ob-list li span { color: var(--white); }
+
+  /* COMPONENT STACK */
+  .stack-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .stack-table th { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--dark); }
+  .stack-table td { font-size: 12px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--muted); vertical-align: top; line-height: 1.6; }
+  .stack-table td:first-child { color: var(--white); font-family: 'Courier New', monospace; font-size: 11px; width: 180px; }
+  .stack-table td.role { color: var(--gold); opacity: 0.8; font-size: 11px; width: 160px; }
+  .stack-table tr:last-child td { border-bottom: none; }
+  .stack-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* DIAGRAM — DATA FLOW */
+  .diagram-wrap { background: var(--card); border: 1px solid var(--border); padding: 48px; margin-top: 8px; overflow-x: auto; }
+  .diagram-title { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; font-family: 'Courier New', monospace; opacity: 0.8; }
+
+  .flow-diagram { display: flex; flex-direction: column; gap: 0; }
+  .flow-row { display: flex; align-items: center; gap: 0; margin-bottom: 2px; }
+  .flow-node { background: var(--dark); border: 1px solid var(--border); padding: 16px 20px; min-width: 160px; text-align: center; }
+  .flow-node.gold { background: rgba(201,168,76,0.06); border-color: rgba(201,168,76,0.3); }
+  .flow-node.green { background: rgba(76,175,125,0.06); border-color: rgba(76,175,125,0.25); }
+  .flow-node.blue { background: rgba(74,143,181,0.06); border-color: rgba(74,143,181,0.25); }
+  .flow-node.purple { background: rgba(139,111,191,0.06); border-color: rgba(139,111,191,0.25); }
+  .flow-node-label { font-size: 12px; color: var(--white); margin-bottom: 3px; }
+  .flow-node-sub { font-size: 10px; color: var(--muted); }
+  .flow-arrow { font-size: 18px; color: var(--gold); opacity: 0.4; padding: 0 12px; flex-shrink: 0; }
+  .flow-arrow.down { transform: rotate(90deg); }
+  .flow-divider { width: 100%; height: 1px; background: var(--border); margin: 20px 0; opacity: 0.5; }
+
+  .flow-grid { display: grid; gap: 2px; }
+  .flow-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .flow-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .flow-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+  .flow-connector { display: flex; justify-content: center; padding: 8px 0; }
+  .flow-connector-line { width: 1px; height: 24px; background: var(--border); }
+  .flow-connector-wide { display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 0; }
+  .flow-connector-wide-item { display: flex; justify-content: center; }
+  .flow-connector-wide-item .flow-connector-line { }
+
+  /* DECISION MATRIX */
+  .decision-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .decision-table th { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--dark); text-align: left; }
+  .decision-table th:first-child { width: 220px; }
+  .decision-table td { font-size: 12px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: top; line-height: 1.6; color: var(--muted); }
+  .decision-table td:first-child { color: var(--white); font-size: 13px; }
+  .decision-table tr:last-child td { border-bottom: none; }
+  .decision-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .rec { display: inline-block; font-size: 10px; padding: 2px 10px; letter-spacing: 0.1em; }
+  .rec.yes { background: rgba(76,175,125,0.12); color: var(--green); border: 1px solid rgba(76,175,125,0.25); }
+  .rec.no { background: rgba(181,74,74,0.1); color: var(--red); border: 1px solid rgba(181,74,74,0.2); }
+  .rec.partial { background: rgba(201,168,76,0.08); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); }
+
+  /* COST TABLE */
+  .cost-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 8px; margin-bottom: 32px; }
+  .cost-card { background: var(--card); border: 1px solid var(--border); padding: 28px; }
+  .cost-card.featured { background: rgba(201,168,76,0.04); border-color: rgba(201,168,76,0.3); }
+  .cost-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .cost-card.featured .cost-label { color: var(--gold); }
+  .cost-name { font-size: 16px; margin-bottom: 16px; }
+  .cost-items { display: flex; flex-direction: column; gap: 8px; }
+  .cost-item { display: flex; justify-content: space-between; font-size: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .cost-item:last-child { border-bottom: none; }
+  .cost-item-label { color: var(--muted); }
+  .cost-item-val { color: var(--white); font-family: 'Courier New', monospace; }
+  .cost-item-val.green { color: var(--green); }
+  .cost-item-val.red { color: var(--red); }
+  .cost-total { display: flex; justify-content: space-between; font-size: 13px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .cost-total-label { color: var(--muted); }
+  .cost-total-val { color: var(--gold); font-family: 'Courier New', monospace; font-size: 15px; }
+
+  /* RECOMMENDED ARCHITECTURE */
+  .rec-block { background: rgba(201,168,76,0.04); border: 1px solid rgba(201,168,76,0.3); padding: 40px; margin-top: 2px; }
+  .rec-title { font-size: 22px; margin-bottom: 16px; }
+  .rec-desc { font-size: 14px; color: var(--muted); line-height: 1.8; max-width: 860px; margin-bottom: 24px; }
+  .rec-layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .rec-layer { background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 20px; }
+  .rec-layer-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .rec-layer-name { font-size: 15px; margin-bottom: 8px; }
+  .rec-layer-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* PRIVACY SECTION */
+  .privacy-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 8px; }
+  .privacy-card { background: var(--card); border: 1px solid var(--border); padding: 28px 32px; }
+  .privacy-card.warn { border-color: rgba(181,74,74,0.3); background: rgba(181,74,74,0.04); }
+  .privacy-card.safe { border-color: rgba(76,175,125,0.3); background: rgba(76,175,125,0.04); }
+  .privacy-head { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px; }
+  .privacy-card.warn .privacy-head { color: var(--red); opacity: 0.8; }
+  .privacy-card.safe .privacy-head { color: var(--green); opacity: 0.8; }
+  .privacy-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .privacy-list li { font-size: 12px; color: var(--muted); padding-left: 16px; position: relative; line-height: 1.5; }
+  .privacy-list li::before { content: '—'; position: absolute; left: 0; }
+  .privacy-card.warn .privacy-list li::before { color: var(--red); opacity: 0.6; }
+  .privacy-card.safe .privacy-list li::before { color: var(--green); opacity: 0.6; }
+
+  /* PHASE ROLLOUT */
+  .rollout-grid { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; }
+  .rollout-row { display: grid; grid-template-columns: 140px 100px 1fr; background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+  .rollout-phase { background: var(--border); padding: 20px 24px; display: flex; align-items: center; }
+  .rollout-phase span { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-family: 'Courier New', monospace; }
+  .rollout-phase.gold-phase { background: rgba(201,168,76,0.1); }
+  .rollout-phase.gold-phase span { color: var(--gold); }
+  .rollout-stack { background: rgba(255,255,255,0.02); padding: 20px 20px; display: flex; align-items: center; border-right: 1px solid var(--border); }
+  .rollout-stack span { font-size: 11px; color: var(--muted); font-family: 'Courier New', monospace; line-height: 1.5; }
+  .rollout-body { padding: 20px 28px; }
+  .rollout-title { font-size: 14px; color: var(--white); margin-bottom: 5px; }
+  .rollout-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* TOOLS LANDSCAPE */
+  .landscape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 8px; margin-bottom: 4px; }
+  .landscape-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+  .landscape-card.relevant { border-color: rgba(201,168,76,0.35); }
+  .landscape-card.watch { border-color: rgba(74,143,181,0.3); }
+  .landscape-card.different { border-color: var(--border); }
+  .lc-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+  .lc-badge { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 10px; display: block; }
+  .landscape-card.relevant .lc-badge { color: var(--gold); }
+  .landscape-card.watch .lc-badge { color: var(--blue); }
+  .landscape-card.different .lc-badge { color: var(--muted); }
+  .lc-name { font-size: 20px; margin-bottom: 4px; }
+  .lc-category { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .lc-body { padding: 20px 24px; }
+  .lc-what { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+  .lc-verdict { font-size: 12px; padding: 10px 14px; border-left: 2px solid var(--border); margin-bottom: 16px; color: var(--muted); line-height: 1.6; }
+  .landscape-card.relevant .lc-verdict { border-left-color: var(--gold); }
+  .landscape-card.watch .lc-verdict { border-left-color: var(--blue); }
+  .lc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .lc-tag { font-size: 10px; padding: 3px 10px; border: 1px solid var(--border); color: var(--muted); letter-spacing: 0.05em; }
+  .lc-tag.gold { border-color: rgba(201,168,76,0.3); color: var(--gold-light); }
+  .lc-tag.blue { border-color: rgba(74,143,181,0.3); color: var(--blue); }
+
+  .compare-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .compare-table th { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--dark); text-align: left; }
+  .compare-table td { font-size: 12px; padding: 13px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: top; line-height: 1.5; color: var(--muted); }
+  .compare-table td:first-child { color: var(--white); font-size: 13px; width: 200px; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .ct-yes { color: var(--green); }
+  .ct-no { color: var(--red); }
+  .ct-partial { color: var(--gold); }
+
+  .ecosystem-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 4px; }
+  .es-card { background: var(--dark); border: 1px solid var(--border); padding: 20px 22px; }
+  .es-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; font-family: 'Courier New', monospace; }
+  .es-name { font-size: 14px; color: var(--white); margin-bottom: 6px; }
+  .es-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* CLOSE */
+  .close-sec { text-align: center; min-height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(ellipse at center, rgba(74,143,181,0.05) 0%, transparent 70%); padding: 80px 48px; }
+  .close-quote { font-size: clamp(18px, 2vw, 26px); font-style: italic; line-height: 1.6; max-width: 680px; margin-bottom: 40px; color: var(--muted); }
+  .close-attr { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.6; }
+
+  footer { border-top: 1px solid var(--border); padding: 28px 48px; display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; }
+
+  @media (max-width: 960px) {
+    section { padding: 100px 24px 60px; }
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .option-header { grid-template-columns: 1fr; }
+    .option-left { border-right: none; border-bottom: 1px solid var(--border); }
+    .option-body, .option-body.two { grid-template-columns: 1fr; }
+    .flow-grid.cols-4, .flow-grid.cols-3, .flow-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .cost-grid, .rec-layers, .privacy-grid { grid-template-columns: 1fr; }
+    .rollout-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Fellowship of Minds</span>
+  <ul class="nav-links">
+    <li><a href="#options">Options</a></li>
+    <li><a href="#diagrams">Data Flow</a></li>
+    <li><a href="#decision">Decision Matrix</a></li>
+    <li><a href="#cost">Cost Analysis</a></li>
+    <li><a href="#recommended">Recommendation</a></li>
+    <li><a href="#privacy">Privacy</a></li>
+    <li><a href="#rollout">Rollout</a></li>
+    <li><a href="#landscape">Tools Landscape</a></li>
+  </ul>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <a href="fom_index.html" style="font-size:10px;color:var(--gold);text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.3);padding:5px 12px;white-space:nowrap;">⌂ Hub</a>
+    <a href="fom_agent_platform.html" style="font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--border);padding:5px 12px;white-space:nowrap;">Platform</a>
+    <a href="fom_genius_phase_plan.html" style="font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--border);padding:5px 12px;white-space:nowrap;">Phase Plan</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="tag blue">Infrastructure Deep Dive — Section 05</div>
+    <h1>How the engine<br>actually <em>runs</em></h1>
+    <p class="hero-sub">A full reference document covering every infrastructure option for the Fellowship of Minds agent platform — with architecture diagrams, cost analysis, privacy architecture, and a clear recommendation for each layer of the system.</p>
+  </div>
+</div>
+
+<!-- VERDICT UP FRONT -->
+<section>
+  <div class="verdict">
+    <div class="verdict-label">Bottom line — read this first</div>
+    <div class="verdict-text">
+      The personal agent layer (Deryl + Ken) runs on <strong>Base.44 now</strong> — the right tool for building and learning. The community layer (Growth House members) requires a <strong>Mac Mini running locally</strong> the moment it holds sensitive member data — cloud hosting is not acceptable for a private group. The full platform at scale runs a <strong>hybrid architecture</strong>: local for daily ops, routing, and privacy-sensitive data; frontier AI (Claude API) called only for high-intelligence tasks like deck work, research synthesis, and pattern analysis. This document explains each option in full so every decision is understood — not just followed.
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 01 — THREE OPTIONS DEEP DIVE -->
+<section id="options" class="tight">
+  <div class="section-tag">01 — The Three Options</div>
+  <h2>Each option in full.</h2>
+  <p class="section-sub">Every infrastructure path is documented here — what it is, how it works, what it costs, what it can and cannot do, and which layer of Fellowship of Minds it serves.</p>
+
+  <!-- OPTION A: BASE.44 -->
+  <div class="option-block">
+    <div class="option-header">
+      <div class="option-left">
+        <span class="option-badge">Option A · Current stack</span>
+        <div class="option-name">Base.44</div>
+        <div class="option-tagline">Cloud-hosted super agent platform. API-billed. Fully managed. Zero setup required.</div>
+        <div class="score-block">
+          <div class="score-row"><span class="score-label">Cost</span><div class="score-bar"><div class="score-fill red" style="width:22%"></div></div></div>
+          <div class="score-row"><span class="score-label">Control</span><div class="score-bar"><div class="score-fill gold" style="width:38%"></div></div></div>
+          <div class="score-row"><span class="score-label">Privacy</span><div class="score-bar"><div class="score-fill red" style="width:30%"></div></div></div>
+          <div class="score-row"><span class="score-label">Ease</span><div class="score-bar"><div class="score-fill green" style="width:97%"></div></div></div>
+          <div class="score-row"><span class="score-label">AI Power</span><div class="score-bar"><div class="score-fill blue" style="width:82%"></div></div></div>
+          <div class="score-row"><span class="score-label">Scalability</span><div class="score-bar"><div class="score-fill gold" style="width:55%"></div></div></div>
+        </div>
+      </div>
+      <div class="option-right">
+        <div class="option-desc">Base.44 is a cloud-hosted super agent platform that lets you build, configure, and communicate with AI agents without managing any infrastructure. You define the agent's context, frameworks, and behavior — Base.44 handles everything underneath. All model inference runs through their API stack, billed per usage. Data lives on their servers. Agents are configured through their interface and can be connected to external tools via integrations. This is where the personal agents for Deryl and Ken are being built right now. It is the fastest way to learn how agents think, how context shapes behavior, and how to communicate to them effectively. It is not where the community layer lives long-term.</div>
+      </div>
+    </div>
+    <div class="option-body">
+      <div class="ob-card">
+        <div class="ob-label">What it does well</div>
+        <ul class="ob-list">
+          <li class="pro"><span>Zero infrastructure</span> — start building agent logic immediately</li>
+          <li class="pro"><span>Best learning environment</span> — see how context shapes behavior in real time</li>
+          <li class="pro"><span>Frontier AI models</span> — access to the best intelligence available</li>
+          <li class="pro"><span>Personal agent phase</span> — ideal for Deryl + Ken while iterating fast</li>
+          <li class="pro"><span>Agent communication</span> — teaches you how to write for agents, what context matters</li>
+          <li class="pro"><span>Rapid prototyping</span> — test framework loading, accountability logic, pattern detection</li>
+        </ul>
+      </div>
+      <div class="ob-card">
+        <div class="ob-label">Hard limits</div>
+        <ul class="ob-list">
+          <li class="con">Credits accumulate fast at scale — not sustainable for community layer</li>
+          <li class="con">All data lives in Base.44's cloud — not acceptable for sensitive member profiles</li>
+          <li class="con">You don't own the infrastructure — if pricing changes, you have no leverage</li>
+          <li class="con">Cannot run always-on background workflows without persistent cost</li>
+          <li class="con">IP dependency risk — platform controls the agent runtime, not you</li>
+          <li class="con">Limited ability to self-host or migrate if platform relationship changes</li>
+        </ul>
+      </div>
+      <div class="ob-card">
+        <div class="ob-label">Best used for</div>
+        <ul class="ob-list">
+          <li class="gold">Phase 0 — Deryl personal agent build and learning</li>
+          <li class="gold">Phase 1 — Ken pilot agent while iterating the framework</li>
+          <li class="gold">Prototyping agent logic before committing to local infrastructure</li>
+          <li class="gold">Understanding how to structure context for long-term memory agents</li>
+          <li>NOT for community layer — data sensitivity is a hard stop</li>
+          <li>NOT for always-on daily ops at scale — cost compounds</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION B: MAC MINI + OLLAMA -->
+  <div class="option-block" style="margin-top: 4px;">
+    <div class="option-header featured">
+      <div class="option-left">
+        <span class="option-badge">Option B · Recommended for community</span>
+        <div class="option-name">Mac Mini + Ollama</div>
+        <div class="option-tagline">Local LLM host. Always-on. Zero per-inference cost. Your data never leaves the machine.</div>
+        <div class="score-block">
+          <div class="score-row"><span class="score-label">Cost</span><div class="score-bar"><div class="score-fill green" style="width:92%"></div></div></div>
+          <div class="score-row"><span class="score-label">Control</span><div class="score-bar"><div class="score-fill green" style="width:97%"></div></div></div>
+          <div class="score-row"><span class="score-label">Privacy</span><div class="score-bar"><div class="score-fill green" style="width:99%"></div></div></div>
+          <div class="score-row"><span class="score-label">Ease</span><div class="score-bar"><div class="score-fill gold" style="width:48%"></div></div></div>
+          <div class="score-row"><span class="score-label">AI Power</span><div class="score-bar"><div class="score-fill gold" style="width:58%"></div></div></div>
+          <div class="score-row"><span class="score-label">Scalability</span><div class="score-bar"><div class="score-fill blue" style="width:75%"></div></div></div>
+        </div>
+      </div>
+      <div class="option-right">
+        <div class="option-desc">A Mac Mini M2 (or M4) running Ollama is a local AI inference server. Ollama is open-source software that lets you download and run large language models directly on the machine — no cloud, no API bills, no data leaving your network. The Mac Mini runs 24/7, operates as a server, and hosts n8n for workflow automation alongside the local models. This is the critical infrastructure for the community layer — because the moment you're holding sensitive member profiles, Goal logs, shadow patterns, and Wheel of Life data for a private group, that data cannot live on someone else's servers. One-time hardware cost. Zero ongoing inference cost. Full ownership. The tradeoff is model quality — local models (Llama 3.1, Mistral, Qwen) are excellent but not at frontier level. The solution: route simple, repetitive tasks to local, and call the Claude API only for tasks that actually need frontier intelligence.</div>
+      </div>
+    </div>
+    <div class="option-body">
+      <div class="ob-card">
+        <div class="ob-label">Hardware recommendation</div>
+        <ul class="ob-list">
+          <li class="gold"><span>Mac Mini M2 Pro</span> — 16GB unified memory, 512GB SSD (~$700 refurb)</li>
+          <li class="gold"><span>Mac Mini M4 Pro</span> — 24GB unified memory, new (~$1,399) — future-proof</li>
+          <li><span>16GB minimum</span> — runs Llama 3.1 8B comfortably, 16GB Mistral compressed</li>
+          <li><span>24GB+</span> — runs Llama 3.1 70B quantized, significantly stronger output</li>
+          <li>Ethernet connection recommended — not WiFi — for stable always-on uptime</li>
+          <li>External SSD optional for model storage if 512GB fills up</li>
+        </ul>
+      </div>
+      <div class="ob-card">
+        <div class="ob-label">Software stack on the machine</div>
+        <ul class="ob-list">
+          <li class="gold"><span>Ollama</span> — local LLM inference server, runs Llama / Mistral / Qwen</li>
+          <li class="gold"><span>n8n</span> — workflow automation engine, visual drag-and-drop agent logic</li>
+          <li class="gold"><span>Supabase local</span> or <span>PostgreSQL</span> — member database, all profile data</li>
+          <li><span>Node.js</span> — runtime for Telegram bot webhook handling</li>
+          <li><span>Cloudflare Tunnel</span> — secure public URL for Telegram webhooks, no port exposure</li>
+          <li><span>PM2</span> — process manager, keeps everything running after restart</li>
+        </ul>
+      </div>
+      <div class="ob-card">
+        <div class="ob-label">What local models handle</div>
+        <ul class="ob-list">
+          <li class="pro">Daily morning context messages — structured, templated, low complexity</li>
+          <li class="pro">Weekly check-in generation — reads database, formats accountability message</li>
+          <li class="pro">Goal log updates — captures commitments from conversation</li>
+          <li class="pro">Pattern flagging — keyword and phrase detection in member messages</li>
+          <li class="pro">Event reminders and scheduling — n8n handles trigger logic</li>
+          <li class="pro">Member profile updates — structured data entry from conversation</li>
+          <li class="con">Deep framework synthesis — route to Claude API</li>
+          <li class="con">Novel pattern detection requiring judgment — route to Claude API</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION C: HYBRID -->
+  <div class="option-block" style="margin-top: 4px;">
+    <div class="option-header">
+      <div class="option-left">
+        <span class="option-badge">Option C · Phase 3 — Full scale</span>
+        <div class="option-name">Hybrid Routing</div>
+        <div class="option-tagline">Local for ops. Frontier AI for intelligence. Intelligent routing decides which engine handles each task.</div>
+        <div class="score-block">
+          <div class="score-row"><span class="score-label">Cost</span><div class="score-bar"><div class="score-fill gold" style="width:62%"></div></div></div>
+          <div class="score-row"><span class="score-label">Control</span><div class="score-bar"><div class="score-fill green" style="width:85%"></div></div></div>
+          <div class="score-row"><span class="score-label">Privacy</span><div class="score-bar"><div class="score-fill gold" style="width:70%"></div></div></div>
+          <div class="score-row"><span class="score-label">Ease</span><div class="score-bar"><div class="score-fill red" style="width:42%"></div></div></div>
+          <div class="score-row"><span class="score-label">AI Power</span><div class="score-bar"><div class="score-fill green" style="width:98%"></div></div></div>
+          <div class="score-row"><span class="score-label">Scalability</span><div class="score-bar"><div class="score-fill green" style="width:95%"></div></div></div>
+        </div>
+      </div>
+      <div class="option-right">
+        <div class="option-desc">The hybrid architecture is what the full platform runs at scale. The Mac Mini handles all daily operations — check-ins, reminders, pattern flagging, database reads and writes, Telegram message routing. The Claude API (or GPT-4o) is called selectively for tasks that actually require frontier intelligence — deep research synthesis, complex pattern analysis, framework integration across multiple dimensions, deck and document generation. n8n is the routing brain: it classifies incoming requests, decides which engine handles them, and orchestrates the result back to the member. The result is near-zero marginal cost for daily ops, full frontier power when it matters, and complete ownership of the infrastructure that holds member data.</div>
+      </div>
+    </div>
+    <div class="option-body two">
+      <div class="ob-card">
+        <div class="ob-label">Routing logic — local vs cloud</div>
+        <ul class="ob-list">
+          <li class="gold"><span>Local (Ollama):</span> check-ins, reminders, goal logging, profile updates, pattern keyword flags, event messages, structured templates</li>
+          <li class="gold"><span>Cloud API:</span> framework synthesis, novel insight generation, complex pattern analysis, document and deck creation, strategic recommendations</li>
+          <li>Routing trigger: task complexity score + data sensitivity flag</li>
+          <li>Sensitive member data never leaves the Mac Mini — only anonymized task context goes to cloud API</li>
+          <li>n8n workflow classifies each incoming message in under 200ms before routing</li>
+          <li>Fallback: if cloud API is unavailable, local handles with reduced depth — never fails silently</li>
+        </ul>
+      </div>
+      <div class="ob-card">
+        <div class="ob-label">Why this wins at scale</div>
+        <ul class="ob-list">
+          <li class="pro">Daily ops cost approaches zero — Ollama runs inference for free</li>
+          <li class="pro">Frontier AI only fires when it earns its cost — ROI per API call is high</li>
+          <li class="pro">All sensitive data stays on your hardware — privacy by architecture</li>
+          <li class="pro">You own the routing logic — as models improve, you swap them without rebuilding</li>
+          <li class="pro">n8n gives visual workflow editing — non-technical team members can adjust flows</li>
+          <li class="pro">Scales horizontally — add a second Mac Mini for redundancy if needed</li>
+          <li class="con">Routing logic adds initial build complexity — takes 2–4 weeks to architect properly</li>
+          <li class="con">Requires someone who understands n8n and can maintain workflows</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 02 — DATA FLOW DIAGRAMS -->
+<section id="diagrams" class="tight">
+  <div class="section-tag">02 — Data Flow Architecture</div>
+  <h2>How information moves through each system.</h2>
+  <p class="section-sub">Visual maps of how data flows from a member message through to an agent response — for each infrastructure option. Understanding the flow reveals why the community layer requires local hosting.</p>
+
+  <!-- DIAGRAM: BASE.44 FLOW -->
+  <div class="diagram-wrap" style="margin-bottom: 4px;">
+    <div class="diagram-title">Option A — Base.44 cloud flow</div>
+    <div class="flow-grid cols-2" style="gap:2px; margin-bottom: 16px;">
+      <div class="flow-node" style="text-align:left; padding: 20px 24px;">
+        <div class="flow-node-label" style="font-size:13px; margin-bottom:6px;">Member sends message via Telegram</div>
+        <div class="flow-node-sub">→ Webhook fires to Base.44 cloud servers</div>
+      </div>
+      <div class="flow-node blue" style="text-align:left; padding: 20px 24px;">
+        <div class="flow-node-label" style="font-size:13px; margin-bottom:6px;">Base.44 cloud processes the request</div>
+        <div class="flow-node-sub">Agent context loaded from their servers · Model inference runs in cloud · Member data stored externally</div>
+      </div>
+    </div>
+    <div class="flow-grid cols-2" style="gap:2px;">
+      <div class="flow-node green" style="text-align:left; padding: 20px 24px;">
+        <div class="flow-node-label" style="font-size:13px; margin-bottom:6px;">Response returned to member</div>
+        <div class="flow-node-sub">Telegram delivers agent reply · Credit consumed per token · Interaction logged on Base.44 servers</div>
+      </div>
+      <div class="flow-node" style="text-align:left; padding: 20px 24px; border-color: rgba(181,74,74,0.3); background: rgba(181,74,74,0.04);">
+        <div class="flow-node-label" style="font-size:13px; margin-bottom:6px; color: #b54a4a;">Data residency: Base.44 servers</div>
+        <div class="flow-node-sub">Member profiles, goal logs, pattern data, Wheel of Life scores — all stored externally. Acceptable for personal agents. Not acceptable for private community data.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIAGRAM: MAC MINI FLOW -->
+  <div class="diagram-wrap" style="margin-bottom: 4px;">
+    <div class="diagram-title">Option B — Mac Mini local flow</div>
+    <div class="flow-grid cols-4" style="gap:2px; margin-bottom: 16px;">
+      <div class="flow-node" style="text-align:left; padding:16px 18px;">
+        <div class="flow-node-label">Member → Telegram</div>
+        <div class="flow-node-sub">Sends message to bot</div>
+      </div>
+      <div class="flow-node blue" style="text-align:left; padding:16px 18px;">
+        <div class="flow-node-label">Cloudflare Tunnel</div>
+        <div class="flow-node-sub">Secure webhook to Mac Mini. No port exposure.</div>
+      </div>
+      <div class="flow-node gold" style="text-align:left; padding:16px 18px;">
+        <div class="flow-node-label">n8n on Mac Mini</div>
+        <div class="flow-node-sub">Receives webhook. Reads member profile from local Postgres.</div>
+      </div>
+      <div class="flow-node purple" style="text-align:left; padding:16px 18px;">
+        <div class="flow-node-label">Ollama on Mac Mini</div>
+        <div class="flow-node-sub">Local model generates response. Zero API cost. Zero data egress.</div>
+      </div>
+    </div>
+    <div class="flow-grid cols-2" style="gap:2px;">
+      <div class="flow-node green" style="text-align:left; padding:20px 24px;">
+        <div class="flow-node-label" style="font-size:13px; margin-bottom:6px;">n8n routes response back</div>
+        <div class="flow-node-sub">Telegram API called to deliver reply. Goal log updated in local Postgres. Pattern flag written if detected. No data ever left the machine.</div>
+      </div>
+      <div class="flow-node" style="text-align:left; padding:20px 24px; border-color: rgba(76,175,125,0.3); background: rgba(76,175,125,0.04);">
+        <div class="flow-node-label" style="font-size:13px; margin-bottom:6px; color: #4caf7d;">Data residency: your Mac Mini</div>
+        <div class="flow-node-sub">All member data lives on hardware you own, in your physical location. No external server touches it. This is the only acceptable architecture for sensitive community member profiles.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIAGRAM: HYBRID FLOW -->
+  <div class="diagram-wrap">
+    <div class="diagram-title">Option C — Hybrid routing flow</div>
+    <div class="flow-grid cols-3" style="gap:2px; margin-bottom: 16px;">
+      <div class="flow-node" style="text-align:left; padding:16px 18px;">
+        <div class="flow-node-label">Member → Telegram</div>
+        <div class="flow-node-sub">Message arrives at bot webhook</div>
+      </div>
+      <div class="flow-node gold" style="text-align:left; padding:16px 18px;">
+        <div class="flow-node-label">n8n Router (Mac Mini)</div>
+        <div class="flow-node-sub">Classifies task: simple ops vs. intelligence-heavy. Reads member profile locally. Assigns routing path.</div>
+      </div>
+      <div class="flow-node" style="text-align:left; padding:16px 18px; border-color: rgba(139,111,191,0.3); background: rgba(139,111,191,0.04);">
+        <div class="flow-node-label" style="color: #8b6fbf;">Two paths available</div>
+        <div class="flow-node-sub">Complexity score determines which engine fires next.</div>
+      </div>
+    </div>
+    <div class="flow-grid cols-2" style="gap:2px; margin-bottom: 2px;">
+      <div class="flow-node purple" style="text-align:left; padding:20px 24px;">
+        <div class="flow-node-label" style="font-size:13px; margin-bottom:6px;">Path A — Local (Ollama)</div>
+        <div class="flow-node-sub">Check-ins · Reminders · Goal logging · Profile updates · Pattern keyword flags · Event messages<br><br>Cost: $0 per inference. Data: never leaves Mac Mini. Speed: under 3 seconds for most tasks.</div>
+      </div>
+      <div class="flow-node blue" style="text-align:left; padding:20px 24px;">
+        <div class="flow-node-label" style="font-size:13px; margin-bottom:6px;">Path B — Claude API</div>
+        <div class="flow-node-sub">Framework synthesis · Deep pattern analysis · Research · Document generation · Strategic recommendations<br><br>Cost: per token, selective use. Data sent: anonymized task context only — never raw member data.</div>
+      </div>
+    </div>
+    <div class="flow-node green" style="text-align:left; padding:20px 24px; border-top: none;">
+      <div class="flow-node-label" style="font-size:13px; margin-bottom:6px;">n8n assembles and delivers response</div>
+      <div class="flow-node-sub">Response from either path routed back through n8n → Telegram delivery → database update → next trigger scheduled. Member never knows which engine handled the request. The intelligence is seamless.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 03 — DECISION MATRIX -->
+<section id="decision" class="tight">
+  <div class="section-tag">03 — Decision Matrix</div>
+  <h2>Which option for which layer.</h2>
+  <p class="section-sub">The right infrastructure choice depends on the specific job being done. This matrix maps every key requirement to the option that serves it best — so every decision has a clear rationale.</p>
+
+  <div style="background: var(--card); border: 1px solid var(--border); overflow: hidden;">
+    <table class="decision-table">
+      <thead>
+        <tr>
+          <th>Requirement</th>
+          <th>Base.44</th>
+          <th>Mac Mini + Ollama</th>
+          <th>Hybrid</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Personal agent — Deryl (Phase 0)</td>
+          <td><span class="rec yes">Yes — ideal</span></td>
+          <td><span class="rec partial">Possible</span></td>
+          <td><span class="rec partial">Overkill now</span></td>
+        </tr>
+        <tr>
+          <td>Personal agent — Ken pilot (Phase 1)</td>
+          <td><span class="rec yes">Yes — ideal</span></td>
+          <td><span class="rec partial">Possible</span></td>
+          <td><span class="rec partial">Overkill now</span></td>
+        </tr>
+        <tr>
+          <td>Community agent — Growth House members</td>
+          <td><span class="rec no">No — data risk</span></td>
+          <td><span class="rec yes">Yes — required</span></td>
+          <td><span class="rec yes">Yes — at scale</span></td>
+        </tr>
+        <tr>
+          <td>Sensitive member profile storage</td>
+          <td><span class="rec no">No — cloud</span></td>
+          <td><span class="rec yes">Yes — local only</span></td>
+          <td><span class="rec yes">Yes — local only</span></td>
+        </tr>
+        <tr>
+          <td>Always-on daily check-ins and reminders</td>
+          <td><span class="rec no">No — cost scales</span></td>
+          <td><span class="rec yes">Yes — free</span></td>
+          <td><span class="rec yes">Yes — free</span></td>
+        </tr>
+        <tr>
+          <td>Deep framework synthesis (MMP + Gene Keys)</td>
+          <td><span class="rec yes">Yes — frontier AI</span></td>
+          <td><span class="rec partial">Partial — local model</span></td>
+          <td><span class="rec yes">Yes — Claude API</span></td>
+        </tr>
+        <tr>
+          <td>Pattern detection and shadow naming</td>
+          <td><span class="rec yes">Yes — frontier AI</span></td>
+          <td><span class="rec partial">Partial — keyword flags</span></td>
+          <td><span class="rec yes">Yes — routed to API</span></td>
+        </tr>
+        <tr>
+          <td>Generational agent — family office</td>
+          <td><span class="rec no">No — data risk</span></td>
+          <td><span class="rec yes">Yes — local</span></td>
+          <td><span class="rec yes">Yes — recommended</span></td>
+        </tr>
+        <tr>
+          <td>n8n workflow automation (Gmail, Notion, FUB)</td>
+          <td><span class="rec no">No — not supported</span></td>
+          <td><span class="rec yes">Yes — runs on Mac Mini</span></td>
+          <td><span class="rec yes">Yes — same</span></td>
+        </tr>
+        <tr>
+          <td>No ongoing per-inference cost</td>
+          <td><span class="rec no">No — billed always</span></td>
+          <td><span class="rec yes">Yes — free after hardware</span></td>
+          <td><span class="rec partial">Partial — local is free</span></td>
+        </tr>
+        <tr>
+          <td>IP ownership — you own the agent runtime</td>
+          <td><span class="rec no">No — platform owned</span></td>
+          <td><span class="rec yes">Yes — fully owned</span></td>
+          <td><span class="rec yes">Yes — fully owned</span></td>
+        </tr>
+        <tr>
+          <td>Fast prototyping — build and test today</td>
+          <td><span class="rec yes">Yes — instant</span></td>
+          <td><span class="rec partial">2–3 days setup</span></td>
+          <td><span class="rec no">No — weeks to architect</span></td>
+        </tr>
+        <tr>
+          <td>SaaS platform at 100+ members</td>
+          <td><span class="rec no">No — cost prohibitive</span></td>
+          <td><span class="rec partial">Partial — model limits</span></td>
+          <td><span class="rec yes">Yes — designed for this</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 04 — COST ANALYSIS -->
+<section id="cost" class="tight">
+  <div class="section-tag">04 — Cost Analysis</div>
+  <h2>The real numbers over 12 months.</h2>
+  <p class="section-sub">Infrastructure cost at different scales — personal agent, community layer, and full platform. Numbers are estimates based on typical usage patterns for accountability and coaching agent workloads.</p>
+
+  <div class="cost-grid">
+    <div class="cost-card">
+      <div class="cost-label">Option A</div>
+      <div class="cost-name">Base.44 Cloud</div>
+      <div class="cost-items">
+        <div class="cost-item">
+          <span class="cost-item-label">Personal agents (2 users)</span>
+          <span class="cost-item-val">~$80/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Community (20 members)</span>
+          <span class="cost-item-val red">~$800/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Community (100 members)</span>
+          <span class="cost-item-val red">~$4,000/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Hardware</span>
+          <span class="cost-item-val green">$0</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Setup time</span>
+          <span class="cost-item-val green">Hours</span>
+        </div>
+      </div>
+      <div class="cost-total">
+        <span class="cost-total-label">Year 1 at 20 members</span>
+        <span class="cost-total-val">~$9,600</span>
+      </div>
+    </div>
+
+    <div class="cost-card featured">
+      <div class="cost-label">Option B — Recommended</div>
+      <div class="cost-name">Mac Mini + Ollama</div>
+      <div class="cost-items">
+        <div class="cost-item">
+          <span class="cost-item-label">Hardware (M2 Pro refurb)</span>
+          <span class="cost-item-val">~$700 one-time</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Inference cost (any scale)</span>
+          <span class="cost-item-val green">$0/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Electricity (24/7)</span>
+          <span class="cost-item-val">~$8/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Cloudflare Tunnel</span>
+          <span class="cost-item-val green">$0 (free tier)</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">n8n (self-hosted)</span>
+          <span class="cost-item-val green">$0</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Supabase (local/free tier)</span>
+          <span class="cost-item-val green">$0–$25/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Setup time</span>
+          <span class="cost-item-val">2–3 days</span>
+        </div>
+      </div>
+      <div class="cost-total">
+        <span class="cost-total-label">Year 1 at any member count</span>
+        <span class="cost-total-val">~$1,100</span>
+      </div>
+    </div>
+
+    <div class="cost-card">
+      <div class="cost-label">Option C</div>
+      <div class="cost-name">Hybrid Routing</div>
+      <div class="cost-items">
+        <div class="cost-item">
+          <span class="cost-item-label">Hardware (Mac Mini)</span>
+          <span class="cost-item-val">~$700 one-time</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Local inference (Ollama)</span>
+          <span class="cost-item-val green">$0/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Claude API (selective)</span>
+          <span class="cost-item-val">~$50–200/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">n8n + infra</span>
+          <span class="cost-item-val green">$0–25/mo</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-item-label">Setup time</span>
+          <span class="cost-item-val">2–4 weeks</span>
+        </div>
+      </div>
+      <div class="cost-total">
+        <span class="cost-total-label">Year 1 at 20 members</span>
+        <span class="cost-total-val">~$2,300</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 05 — RECOMMENDED ARCHITECTURE -->
+<section id="recommended" class="tight">
+  <div class="section-tag">05 — Recommended Architecture</div>
+  <h2>The full system as it should be built.</h2>
+  <p class="section-sub">Not a single option — a phased architecture that uses each tool for what it does best, migrates intelligently as the platform grows, and arrives at full ownership with no legacy debt.</p>
+
+  <div class="rec-block">
+    <div class="rec-title">The Fellowship of Minds infrastructure recommendation</div>
+    <div class="rec-desc">
+      Base.44 is the right tool right now — for learning, prototyping, and running the personal agent pilots for Deryl and Ken. Do not migrate away from it until the agent logic is proven and the community layer is ready to deploy. When the community layer opens — the moment Growth House member data starts flowing — a Mac Mini goes live and all sensitive data routes through it exclusively. The hybrid routing architecture is the destination: local for everything that can run locally, frontier AI called surgically for what only frontier AI can do. This is the architecture that makes Fellowship of Minds a defensible SaaS platform with owned infrastructure, owned IP, and zero dependence on any single vendor's pricing decisions.
+    </div>
+    <div class="rec-layers">
+      <div class="rec-layer">
+        <div class="rec-layer-label">Now — Phase 0 + 1</div>
+        <div class="rec-layer-name">Base.44 personal agents</div>
+        <div class="rec-layer-desc">Build Deryl and Ken's agents. Learn what context matters. Prove the framework loading, accountability loop, and pattern detection. Document everything that works for the blueprint.</div>
+      </div>
+      <div class="rec-layer">
+        <div class="rec-layer-label">Phase 2 — Community opens</div>
+        <div class="rec-layer-name">Mac Mini goes live</div>
+        <div class="rec-layer-desc">Mac Mini M2 Pro deployed. Ollama running Llama 3.1. n8n handling all Growth House member workflows. Supabase local for all member data. Personal agents optionally migrate here too.</div>
+      </div>
+      <div class="rec-layer">
+        <div class="rec-layer-label">Phase 3 — SaaS scale</div>
+        <div class="rec-layer-name">Full hybrid routing</div>
+        <div class="rec-layer-desc">n8n routing brain classifies every request. Local handles ops. Claude API fires for intelligence-heavy tasks. Sensitive data never leaves the hardware. Platform scales without linearly scaling cost.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL STACK TABLE -->
+  <div class="section-tag" style="margin-top: 48px; margin-bottom: 16px;">Complete recommended tech stack</div>
+  <div style="background: var(--card); border: 1px solid var(--border); overflow: hidden;">
+    <table class="stack-table">
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>Role</th>
+          <th>Why this one</th>
+          <th>Phase</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Base.44</td>
+          <td class="role">Personal agent builder</td>
+          <td>Best environment for learning agent logic and communication. Zero infrastructure. Frontier AI. Iterate fast.</td>
+          <td style="color: var(--gold); font-size:11px;">Phase 0–1</td>
+        </tr>
+        <tr>
+          <td>Telegram Bot API</td>
+          <td class="role">Member interface</td>
+          <td>No app required. Already on every phone. Proven with Growth House. Supports webhooks, inline buttons, rich text. Free.</td>
+          <td style="color: var(--gold); font-size:11px;">All phases</td>
+        </tr>
+        <tr>
+          <td>Supabase</td>
+          <td class="role">Member database</td>
+          <td>Postgres with real-time subscriptions. Free tier generous. Row-level security for privacy. Can be self-hosted on Mac Mini for full data ownership.</td>
+          <td style="color: var(--gold); font-size:11px;">All phases</td>
+        </tr>
+        <tr>
+          <td>n8n (self-hosted)</td>
+          <td class="role">Workflow automation + routing</td>
+          <td>Visual drag-and-drop agent orchestration. Connects Gmail, Notion, Follow Up Boss, Telegram. Runs on Mac Mini. Free to self-host. The central nervous system of the platform.</td>
+          <td style="color: var(--gold); font-size:11px;">Phase 2+</td>
+        </tr>
+        <tr>
+          <td>Ollama</td>
+          <td class="role">Local LLM inference</td>
+          <td>Runs Llama 3.1, Mistral, Qwen locally. Zero inference cost. No data egress. Runs on Mac Mini 24/7. Best local model for structured task generation.</td>
+          <td style="color: var(--gold); font-size:11px;">Phase 2+</td>
+        </tr>
+        <tr>
+          <td>Mac Mini M2 Pro</td>
+          <td class="role">Always-on server</td>
+          <td>Low power draw (~25W). Silent. Runs 24/7. Hosts Ollama + n8n + Postgres + Node.js simultaneously. ~$700 refurb. Purpose-built for this stack.</td>
+          <td style="color: var(--gold); font-size:11px;">Phase 2+</td>
+        </tr>
+        <tr>
+          <td>Cloudflare Tunnel</td>
+          <td class="role">Secure public endpoint</td>
+          <td>Creates a secure tunnel from the Mac Mini to a public URL — no port forwarding, no exposed IP. Required for Telegram webhooks to reach the local machine. Free.</td>
+          <td style="color: var(--gold); font-size:11px;">Phase 2+</td>
+        </tr>
+        <tr>
+          <td>Claude API (Anthropic)</td>
+          <td class="role">Frontier AI — selective</td>
+          <td>Called only for tasks requiring frontier intelligence. Framework synthesis, deep pattern analysis, strategic recommendations, document generation. Sonnet 4 for cost-performance balance.</td>
+          <td style="color: var(--gold); font-size:11px;">Phase 3</td>
+        </tr>
+        <tr>
+          <td>PM2</td>
+          <td class="role">Process manager</td>
+          <td>Keeps Ollama, n8n, and Node.js running after reboots. Monitors health. Restarts crashed processes automatically. Free. Essential for always-on reliability.</td>
+          <td style="color: var(--gold); font-size:11px;">Phase 2+</td>
+        </tr>
+        <tr>
+          <td>Mem0 or Zep</td>
+          <td class="role">Long-term agent memory</td>
+          <td>Persistent memory layer that stores conversation context across sessions. The agent remembers what was said last week, last month. Can run locally. Critical for voice fingerprinting and shadow pattern accumulation.</td>
+          <td style="color: var(--gold); font-size:11px;">Phase 2+</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 06 — PRIVACY ARCHITECTURE -->
+<section id="privacy" class="tight">
+  <div class="section-tag">06 — Privacy Architecture</div>
+  <h2>Why the community layer cannot run on cloud.</h2>
+  <p class="section-sub">The community agent holds some of the most sensitive personal data that exists — shadow patterns, mental models, family dynamics, financial psychology, relationship struggles. The architecture must reflect that weight.</p>
+
+  <div class="privacy-grid">
+    <div class="privacy-card warn">
+      <div class="privacy-head">What must never go to a cloud server</div>
+      <ul class="privacy-list">
+        <li>Member shadow patterns and identified behavioral regressions</li>
+        <li>Wheel of Life scores — these reveal the full map of where someone is struggling</li>
+        <li>Gene Keys shadow activations — deeply personal, not for external logging</li>
+        <li>Goal log — commitments made, commitments missed, renegotiated timelines</li>
+        <li>Pattern log — specific language signals that triggered agent concern</li>
+        <li>Family dynamics, relationship struggles, financial psychology data</li>
+        <li>Anything a member shared in the trust of a private coaching conversation</li>
+        <li>Telegram IDs linked to full identity profiles — PII linkage</li>
+      </ul>
+    </div>
+    <div class="privacy-card safe">
+      <div class="privacy-head">What the local architecture guarantees</div>
+      <ul class="privacy-list">
+        <li>All member data stored on hardware you physically own and control</li>
+        <li>No third-party server ever receives raw member profile data</li>
+        <li>Supabase local instance — database never touches Supabase's cloud servers</li>
+        <li>Ollama inference — no data sent to any external API during local model use</li>
+        <li>When Claude API is called — only anonymized task context is sent, never member PII</li>
+        <li>Cloudflare Tunnel — encrypts transit, does not store or log message content</li>
+        <li>You can tell members: your data lives on our hardware, nowhere else</li>
+        <li>If platform shuts down — data is yours, on your machine, always recoverable</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="verdict" style="margin-top: 4px;">
+    <div class="verdict-label">The principle</div>
+    <div class="verdict-text">A private high-trust community operates on one rule: what is shared in the room stays in the room. The infrastructure must enforce that rule technically — not just promise it contractually. <strong>Local hosting is not a preference — it is a requirement.</strong> The moment member data is on someone else's server, you have made a promise you cannot keep.</div>
+  </div>
+</section>
+
+<!-- SECTION 07 — PHASED ROLLOUT -->
+<section id="rollout" class="tight">
+  <div class="section-tag">07 — Phased Infrastructure Rollout</div>
+  <h2>What gets built, when, and in what order.</h2>
+  <p class="section-sub">Infrastructure migration done wrong creates debt. Done right, each phase transitions cleanly to the next — with nothing rebuilt unnecessarily and no data lost in transition.</p>
+
+  <div class="rollout-grid">
+    <div class="rollout-row">
+      <div class="rollout-phase gold-phase"><span>Phase 0<br>Now</span></div>
+      <div class="rollout-stack"><span>Base.44<br>Telegram<br>Supabase cloud</span></div>
+      <div class="rollout-body">
+        <div class="rollout-title">Personal agents live — Deryl + Ken</div>
+        <div class="rollout-desc">Base.44 hosts both personal agents. Supabase cloud stores profile data for two people — acceptable at this scale and sensitivity. Full framework context loaded. Accountability loop running. Weekly check-ins active. Every pattern detected and every interaction documented becomes the blueprint for the community layer build.</div>
+      </div>
+    </div>
+    <div class="rollout-row">
+      <div class="rollout-phase gold-phase"><span>Phase 1<br>Jun–Sep 2026</span></div>
+      <div class="rollout-stack"><span>Base.44<br>Telegram<br>Supabase cloud<br>+ Mac Mini ordered</span></div>
+      <div class="rollout-body">
+        <div class="rollout-title">Mac Mini procurement and local setup begins</div>
+        <div class="rollout-desc">Mac Mini M2 Pro ordered. Ollama installed and first models downloaded. n8n installed and tested. Cloudflare Tunnel configured. Local Supabase or Postgres instance stood up. Community agent schema built locally. All of this happens in parallel with the Ken pilot — Mac Mini is ready before community data flows.</div>
+      </div>
+    </div>
+    <div class="rollout-row">
+      <div class="rollout-phase gold-phase"><span>Phase 2<br>Aug 2026</span></div>
+      <div class="rollout-stack"><span>Mac Mini live<br>Ollama<br>n8n<br>Local Postgres<br>Cloudflare</span></div>
+      <div class="rollout-body">
+        <div class="rollout-title">Community layer deploys — Growth House members</div>
+        <div class="rollout-desc">Mac Mini is the live server. All Growth House member data flows exclusively to local Postgres. Telegram bot webhook points to Cloudflare Tunnel → Mac Mini → n8n → Ollama. Member onboarding begins conversationally. Pre-event intelligence builds through August and September. October Puerto Rico Immersion — the room is ready before anyone arrives. Personal agents for Deryl and Ken optionally migrate to local at this point.</div>
+      </div>
+    </div>
+    <div class="rollout-row">
+      <div class="rollout-phase"><span>Phase 3<br>2027</span></div>
+      <div class="rollout-stack"><span>Full hybrid<br>n8n router<br>Ollama local<br>Claude API<br>selective</span></div>
+      <div class="rollout-body">
+        <div class="rollout-title">Hybrid routing architecture — full SaaS platform</div>
+        <div class="rollout-desc">n8n routing brain classifies every incoming request. Simple ops: local Ollama, zero cost. Intelligence-heavy tasks: Claude API, selective and earned. All sensitive data: never leaves the Mac Mini. New members onboard through the same Telegram interface. Community licenses sold to mastermind organizers. Personal SaaS subscriptions open. The platform that was proven one person at a time now scales — with owned infrastructure, owned IP, and a cost structure that doesn't destroy margin as the member count grows.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 08 — TOOLS LANDSCAPE -->
+<section id="landscape" class="tight">
+  <div class="section-tag">08 — Tools Landscape</div>
+  <h2>What every tool actually is.</h2>
+  <p class="section-sub">Three names come up constantly in conversations about AI infrastructure — Ollama, Clawd/OpenClaw, and Antigravity. They are completely different categories of tool. Understanding what each one is — and is not — prevents expensive misrouting of energy and money.</p>
+
+  <div class="landscape-grid">
+
+    <!-- OLLAMA -->
+    <div class="landscape-card relevant">
+      <div class="lc-header">
+        <span class="lc-badge">Core infrastructure · Use this</span>
+        <div class="lc-name">Ollama</div>
+        <div class="lc-category">Local model runner · Open source · Free</div>
+      </div>
+      <div class="lc-body">
+        <div class="lc-what">Ollama is the engine that lets you run AI models on your own machine instead of paying a cloud provider per token. Think of it as Docker for AI — you pull a model with one command and Ollama handles everything underneath: memory management, GPU acceleration, quantization, and serving. Once running, it exposes a local API at localhost:11434 that n8n, your Telegram bot, and any other tool can call exactly like they'd call OpenAI — but nothing leaves your machine and every inference costs zero dollars.</div>
+        <div class="lc-verdict">This is a core piece of the FOM infrastructure stack. It lives on the Mac Mini and handles all daily ops — check-ins, reminders, pattern flagging, goal logging — at zero marginal cost per run. It is not a platform you interact with directly. It is the engine underneath your agent.</div>
+        <div class="lc-tags">
+          <span class="lc-tag gold">Runs on Mac Mini</span>
+          <span class="lc-tag gold">Zero inference cost</span>
+          <span class="lc-tag gold">Data never leaves machine</span>
+          <span class="lc-tag gold">Phase 2+ stack</span>
+          <span class="lc-tag">Llama 3.1 · Mistral · Qwen</span>
+          <span class="lc-tag">OpenAI-compatible API</span>
+          <span class="lc-tag">GPU + CPU inference</span>
+          <span class="lc-tag">16GB RAM minimum</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPENCLAW / CLAWD -->
+    <div class="landscape-card watch">
+      <div class="lc-header">
+        <span class="lc-badge">Watch · Not ready for sensitive data</span>
+        <div class="lc-name">OpenClaw</div>
+        <div class="lc-category">Formerly Clawd / Clawdbot · Open source · Autonomous agent</div>
+      </div>
+      <div class="lc-body">
+        <div class="lc-what">OpenClaw started in November 2025 as a weekend project called Clawd — a playful nod to Anthropic's Claude. Anthropic filed a trademark complaint, it was renamed Moltbot for three days, then became OpenClaw. It is a free, open-source autonomous agent that connects LLMs to your real operating system. It can read and write files, run shell commands, browse websites, send emails, and control APIs. Unlike a chatbot that explains how to do something, OpenClaw actually does it. It exploded to 145,000+ GitHub stars in under three months.</div>
+        <div class="lc-verdict">Interesting category, but not ready for FOM community data. Security researchers have already found critical vulnerabilities including a remote code execution flaw. Its broad system access is exactly what makes it powerful — and exactly what makes it risky when holding sensitive member profiles, shadow pattern logs, and family office data. Worth watching as it matures. Not in the stack today.</div>
+        <div class="lc-tags">
+          <span class="lc-tag blue">145K+ GitHub stars</span>
+          <span class="lc-tag blue">Autonomous task execution</span>
+          <span class="lc-tag blue">File · shell · browser · email</span>
+          <span class="lc-tag">Security vulnerabilities found</span>
+          <span class="lc-tag">Not for sensitive data yet</span>
+          <span class="lc-tag">Rapid community growth</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANTIGRAVITY -->
+    <div class="landscape-card different">
+      <div class="lc-header">
+        <span class="lc-badge">Different category · Developer tool</span>
+        <div class="lc-name">Antigravity</div>
+        <div class="lc-category">Google · Agent-first IDE · Free preview · Nov 2025</div>
+      </div>
+      <div class="lc-body">
+        <div class="lc-what">Antigravity is Google's agent-first IDE — a development environment for building software. Released in November 2025 alongside Gemini 3, it is a heavily modified fork of VS Code. Instead of writing code line by line, you issue high-level directives and autonomous agents plan, code, test, and verify entire features across your editor, terminal, and browser. Multiple agents can work in parallel. It supports Gemini 3 Pro, Claude Sonnet 4.6, and OpenAI models. Currently free in public preview.</div>
+        <div class="lc-verdict">Antigravity is a tool you would use to build FOM — not a tool that runs inside FOM. A technical developer or technical hire would use Antigravity to write the Telegram bot code, the n8n integrations, and the Supabase schema faster than they could manually. It is not a coaching agent platform. It does not hold member data. It does not run check-ins. The category is completely different. Knowing this distinction saves significant confusion.</div>
+        <div class="lc-tags">
+          <span class="lc-tag">Build tool · not a runtime</span>
+          <span class="lc-tag">Gemini 3 Pro + Claude 4.6</span>
+          <span class="lc-tag">Multi-agent parallel execution</span>
+          <span class="lc-tag">Free public preview</span>
+          <span class="lc-tag">Use to BUILD FOM · not run it</span>
+          <span class="lc-tag">macOS · Windows · Linux</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="section-tag" style="margin-top: 48px; margin-bottom: 16px;">Side by side — what each tool actually does for FOM</div>
+  <div style="background: var(--card); border: 1px solid var(--border); overflow: hidden; margin-bottom: 4px;">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>Ollama</th>
+          <th>OpenClaw</th>
+          <th>Antigravity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>What category is it?</td>
+          <td>Local AI model runner</td>
+          <td>Autonomous task agent</td>
+          <td>Agentic developer IDE</td>
+        </tr>
+        <tr>
+          <td>Is it part of the FOM stack?</td>
+          <td><span class="ct-yes">Yes — core infrastructure</span></td>
+          <td><span class="ct-no">Not yet — security risks</span></td>
+          <td><span class="ct-partial">Optionally — build tool only</span></td>
+        </tr>
+        <tr>
+          <td>Does it run AI inference?</td>
+          <td><span class="ct-yes">Yes — locally, for free</span></td>
+          <td><span class="ct-yes">Yes — calls API or local model</span></td>
+          <td><span class="ct-yes">Yes — Gemini 3 / Claude / GPT</span></td>
+        </tr>
+        <tr>
+          <td>Can it hold member data safely?</td>
+          <td><span class="ct-yes">Yes — fully local</span></td>
+          <td><span class="ct-no">No — broad system access risk</span></td>
+          <td><span class="ct-no">No — it's a build tool</span></td>
+        </tr>
+        <tr>
+          <td>Does it run check-ins and reminders?</td>
+          <td><span class="ct-yes">Yes — via n8n calling Ollama API</span></td>
+          <td><span class="ct-partial">Could be configured to</span></td>
+          <td><span class="ct-no">No — wrong category</span></td>
+        </tr>
+        <tr>
+          <td>Who interacts with it?</td>
+          <td>n8n and your bot code — invisible to members</td>
+          <td>You directly — issues commands to it</td>
+          <td>Developer building the platform</td>
+        </tr>
+        <tr>
+          <td>Cost model</td>
+          <td><span class="ct-yes">Free after hardware ($700)</span></td>
+          <td>Free but API costs for model use</td>
+          <td><span class="ct-yes">Free in preview — paid tiers coming</span></td>
+        </tr>
+        <tr>
+          <td>Privacy for sensitive community data</td>
+          <td><span class="ct-yes">Maximum — fully local</span></td>
+          <td><span class="ct-no">Not ready — vulnerabilities found</span></td>
+          <td><span class="ct-no">N/A — not a data storage tool</span></td>
+        </tr>
+        <tr>
+          <td>When does FOM use it?</td>
+          <td>Phase 2+ — daily ops engine on Mac Mini</td>
+          <td>Watch for Phase 3+ maturity</td>
+          <td>If/when a developer joins to build faster</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BROADER ECOSYSTEM -->
+  <div class="section-tag" style="margin-top: 48px; margin-bottom: 16px;">Other tools in the ecosystem worth knowing</div>
+  <div class="ecosystem-strip">
+    <div class="es-card">
+      <div class="es-label">Local model UI</div>
+      <div class="es-name">LM Studio</div>
+      <div class="es-desc">Desktop GUI for running local models. Better visual interface than Ollama's CLI. Good for testing models before deploying them to the Mac Mini stack. Not a server — a personal tool.</div>
+    </div>
+    <div class="es-card">
+      <div class="es-label">Workflow automation</div>
+      <div class="es-name">n8n</div>
+      <div class="es-desc">The orchestration layer. Visual drag-and-drop workflows connecting Telegram, Supabase, Ollama, Gmail, Notion, Follow Up Boss. Runs on Mac Mini. The nervous system of the FOM platform.</div>
+    </div>
+    <div class="es-card">
+      <div class="es-label">Agent memory</div>
+      <div class="es-name">Mem0 / Zep</div>
+      <div class="es-desc">Persistent memory layers that give agents long-term recall across sessions. The agent remembers what Ken said three weeks ago. Can run locally. Critical for voice fingerprinting and pattern accumulation over time.</div>
+    </div>
+    <div class="es-card">
+      <div class="es-label">Coding IDE</div>
+      <div class="es-name">Cursor / Windsurf</div>
+      <div class="es-desc">AI-assisted code editors — predecessors to Antigravity. A technical hire building FOM's Telegram bot and n8n integrations would use one of these. Not part of the FOM platform runtime. Build tools only.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- CLOSE -->
+<div class="close-sec">
+  <div class="tag blue">Infrastructure is not the product. Intelligence is.</div>
+  <p class="close-quote">"The best infrastructure is the kind members never think about — because it works, it protects them, and it gets smarter over time without asking them to do anything differently."</p>
+  <div class="divider" style="margin: 32px auto;"></div>
+  <div class="close-attr">Fellowship of Minds · Infrastructure Architecture · 2026</div>
+</div>
+
+<footer>
+  <span>FELLOWSHIP OF MINDS — INFRASTRUCTURE DEEP DIVE</span>
+  <span>PREPARED BY DERYL VANNOSTRAND · MAY 2026</span>
+</footer>
+
+</body>
+</html>
