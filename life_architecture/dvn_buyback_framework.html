@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buy Back Your Time — DVN Operating Framework</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0c0f18;--bg3:#111520;--bg4:#161c2a;
+  --line:rgba(255,255,255,.06);--line2:rgba(255,255,255,.12);
+  --ink:#e8eaf5;--ink2:#7880a0;--ink3:#3d4560;
+  --gold:#d4a832;--gold-d:rgba(212,168,50,.1);--gold-l:rgba(212,168,50,.25);
+  --sage:#2eff8c;--sage-d:rgba(46,255,140,.07);--sage-l:rgba(46,255,140,.2);
+  --warrior:#5a9ae0;--warrior-d:rgba(90,154,224,.1);--warrior-l:rgba(90,154,224,.25);
+  --fire:#f0622a;--fire-d:rgba(240,98,42,.1);--fire-l:rgba(240,98,42,.25);
+  --blaze:#ff8c28;--blaze-d:rgba(255,140,40,.1);--blaze-l:rgba(255,140,40,.25);
+  --purple:#a096f0;--purple-d:rgba(160,150,240,.1);--purple-l:rgba(160,150,240,.25);
+  --red:#ef4444;--red-d:rgba(239,68,68,.08);
+  --orange:#fb923c;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
+
+.nav{position:sticky;top:0;z-index:100;height:52px;background:rgba(7,9,15,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 56px;gap:12px}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--gold)}
+.nav-links{display:flex;gap:2px;margin-left:auto}
+.nl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink3);padding:6px 12px;border-radius:4px;text-decoration:none;transition:color .15s,background .15s}
+.nl:hover{color:var(--ink2);background:var(--bg3)}
+.nl.active{color:var(--gold);border:1px solid var(--gold-l)}
+
+.hero{padding:80px 80px 64px;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+.hero-glow{position:absolute;top:-100px;right:-60px;width:500px;height:500px;background:radial-gradient(circle,rgba(212,168,50,.07) 0%,transparent 65%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:700px}
+.hero-eye{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:28px;display:inline-flex;align-items:center;gap:8px;background:var(--gold-d);border:1px solid var(--gold-l);padding:5px 14px;border-radius:20px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7vw,88px);font-weight:300;line-height:.92;letter-spacing:-.025em;margin-bottom:20px}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:15px;color:var(--ink2);line-height:1.75;max-width:540px}
+.hero-sub strong{color:var(--ink)}
+
+.prime{padding:20px 80px;background:rgba(212,168,50,.04);border-bottom:1px solid var(--gold-l);display:flex;align-items:center;gap:16px}
+.prime-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.prime-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--ink2);line-height:1.5}
+.prime-text strong{color:var(--ink);font-style:normal}
+
+.wrap{max-width:1000px;margin:0 auto;padding:56px 80px 80px}
+
+.section{margin-bottom:56px;padding-bottom:56px;border-bottom:1px solid var(--line)}
+.section:last-child{border-bottom:none}
+.sec-eye{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.sec-eye::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gold-l),transparent)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1;letter-spacing:-.02em;margin-bottom:16px}
+.sec-title em{font-style:italic;color:var(--gold)}
+.sec-body{font-size:13px;color:var(--ink2);line-height:1.75;max-width:640px;margin-bottom:20px}
+
+.dark-box{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--gold);padding:20px 24px;margin:16px 0}
+.db-label{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.db-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--ink);line-height:1.5;margin-bottom:8px}
+.db-sub{font-size:11.5px;color:var(--ink2);line-height:1.6}
+
+/* DRIP MATRIX */
+.drip-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:16px 0}
+.drip-cell{padding:20px 22px;border:1px solid}
+.drip-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.drip-title{font-size:15px;font-weight:700;margin-bottom:6px}
+.drip-body{font-size:11.5px;color:var(--ink2);line-height:1.55}
+
+/* ASSASSINS TABLE */
+.rt{width:100%;border-collapse:collapse;margin:16px 0}
+.rt td,.rt th{padding:11px 14px;border:1px solid var(--line);font-size:11.5px;vertical-align:top}
+.rt th{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink3);background:var(--bg2)}
+.rt-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+
+/* LADDER */
+.ladder{display:flex;flex-direction:column;gap:3px;margin:16px 0}
+.rung{display:grid;grid-template-columns:64px 1fr;border:1px solid var(--line);background:var(--bg2);overflow:hidden}
+.rung-num{display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;border-right:1px solid var(--line)}
+.rung-body{padding:14px 16px}
+.rung-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.rung-desc{font-size:11.5px;color:var(--ink2);line-height:1.5}
+
+/* LEVELS */
+.levels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin:16px 0}
+.level{padding:18px 20px;border:1px solid var(--line);background:var(--bg2)}
+.level-num{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.level-title{font-size:14px;font-weight:700;margin-bottom:6px}
+.level-body{font-size:11.5px;color:var(--ink2);line-height:1.5}
+
+/* PILLARS */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:16px 0}
+.pillar{padding:14px 16px;background:var(--bg2);border:1px solid var(--line)}
+.pillar-num{font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.pillar-body{font-size:11px;color:var(--ink2);line-height:1.45}
+
+/* SIGNAL PHRASES */
+.signals{display:flex;flex-direction:column;gap:3px;margin:16px 0}
+.signal{display:grid;grid-template-columns:140px 1fr 1fr;border:1px solid var(--line);background:var(--bg2)}
+.sig-name{padding:14px;border-right:1px solid var(--line);display:flex;align-items:center}
+.sig-phrase{padding:14px;border-right:1px solid var(--line);font-size:11.5px;font-style:italic;color:var(--ink2)}
+.sig-q{padding:14px;font-size:11px;color:var(--ink2)}
+
+/* INTEGRATION TABLE */
+.int-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin:16px 0}
+.int-cell{padding:16px 18px;background:var(--bg2);border:1px solid var(--line)}
+.int-fw{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.int-items{display:flex;flex-direction:column;gap:4px}
+.int-item{font-size:11px;color:var(--ink2);padding-left:12px;position:relative;line-height:1.4}
+.int-item::before{content:'→';position:absolute;left:0;color:var(--gold);font-size:10px}
+
+/* QUOTE */
+.kq{border:1px solid var(--gold-l);background:var(--gold-d);padding:20px 24px;margin:24px 0}
+.kq-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--ink);line-height:1.5;margin-bottom:8px}
+.kq-attr{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+
+footer{border-top:1px solid var(--line);padding:16px 80px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+footer span{font-size:10px;color:var(--ink3);letter-spacing:.06em;font-weight:600}
+.foot-links{display:flex;gap:6px}
+.fl{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink3);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:3px;transition:color .15s}
+.fl:hover{color:var(--ink2)}
+
+@media(max-width:768px){
+  .nav{padding:0 16px}.nav-links{display:none}
+  .hero{padding:48px 20px 40px}.prime{padding:14px 20px}
+  .wrap{padding:40px 20px 60px}
+  .drip-grid{grid-template-columns:1fr}
+  .levels{grid-template-columns:1fr}
+  .pillars{grid-template-columns:1fr 1fr}
+  .int-grid{grid-template-columns:1fr}
+  footer{padding:14px 20px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">Buy Back Your Time</div>
+  <div class="nav-links">
+    <a href="../index.html" class="nl">← Home</a>
+    <a href="life_arch_index.html" class="nl">Life Architecture</a>
+    <a href="deryl_life_architecture.html" class="nl">Methodology</a>
+    <a href="MMP_BLAZE_ARCHITECTURE.html" class="nl">Blaze</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-eye">◈ Dan Martell · Base Operating Framework · All Agents</div>
+    <div class="hero-title">Buy Back<br><em>Your Time.</em></div>
+    <div class="hero-sub">One of the four foundational frameworks of this operating system — alongside the Millionaire Master Plan, the Peaceful Warrior, and the Way of the Superior Man. Every agent — Optimus, Atlas, and any system built forward — <strong>operates from this language.</strong></div>
+  </div>
+</div>
+
+<div class="prime">
+  <div class="prime-dot"></div>
+  <div class="prime-text"><strong>The Prime Directive:</strong> "Don't hire to grow your business. Hire to buy back your time — then use that time to do the work only you can do." — Dan Martell</div>
+</div>
+
+<div class="wrap">
+
+  <!-- BUYBACK RATE -->
+  <div class="section">
+    <div class="sec-eye">01 · The Foundation · Know Your Number</div>
+    <div class="sec-title">The Buyback<br><em>Rate.</em></div>
+    <div class="sec-body">Every task is a financial decision once you know your number. Spending three hours on a task you could pay someone else $15/hr to do is not productivity. It is a measurable loss.</div>
+    <div class="dark-box">
+      <div class="db-label">The Formula</div>
+      <div class="db-text">Annual income target ÷ 2,000 hours ÷ 4 = your Buyback Rate per hour</div>
+      <div class="db-sub">The ÷4 ensures you only buy back at 25% of your earning rate — preserving margin. The formula forces the question: what is my time actually worth, and am I spending it accordingly?</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:16px 0">
+      <div style="padding:16px 20px;background:var(--bg2);border:1px solid var(--line);border-top:2px solid var(--sage)">
+        <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);font-weight:700;margin-bottom:6px">Deryl · Current</div>
+        <div style="font-size:22px;font-weight:800;color:var(--sage);margin-bottom:4px">~$7.50/hr</div>
+        <div style="font-size:11.5px;color:var(--ink2)">Based on $5k/month. This number climbs fast as the Personal AI Architect model scales. Every system built now accelerates it.</div>
+      </div>
+      <div style="padding:16px 20px;background:var(--bg2);border:1px solid var(--line);border-top:2px solid var(--gold)">
+        <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px">Ken · Current</div>
+        <div style="font-size:22px;font-weight:800;color:var(--gold);margin-bottom:4px">$200+/hr</div>
+        <div style="font-size:11.5px;color:var(--ink2)">Every hour Deryl absorbs = hundreds of dollars of Ken's Production time freed. Deryl IS Ken's Buyback play. This is the entire frame of the engagement.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRIP MATRIX -->
+  <div class="section">
+    <div class="sec-eye">02 · The Map · Where is your time living?</div>
+    <div class="sec-title">The DRIP<br><em>Matrix.</em></div>
+    <div class="sec-body">Four quadrants defined by two axes: energy (draining vs. filling) and skill level (low vs. high). Plot every task. Then empty the wrong quadrants systematically.</div>
+    <div class="drip-grid">
+      <div class="drip-cell" style="background:var(--red-d);border-color:rgba(239,68,68,.2);border-top:3px solid var(--red)">
+        <div class="drip-label" style="color:var(--red)">DELEGATION · Low skill, draining</div>
+        <div class="drip-title">Delete it. Delegate it. Now.</div>
+        <div class="drip-body">This is where you start. The quick wins. Outsource for your Buyback Rate or less and immediately free time for higher-value work. Don't wait until you have the perfect person.</div>
+      </div>
+      <div class="drip-cell" style="background:var(--purple-d);border-color:var(--purple-l);border-top:3px solid var(--purple)">
+        <div class="drip-label" style="color:var(--purple)">REPLACEMENT · High skill, draining</div>
+        <div class="drip-title">Build a system or a person.</div>
+        <div class="drip-body">Where successful operators get permanently stuck. You're good at it — but it costs you. The only way out is the Replacement Ladder. Atlas was built specifically to absorb this quadrant for Ken.</div>
+      </div>
+      <div class="drip-cell" style="background:var(--warrior-d);border-color:var(--warrior-l);border-top:3px solid var(--warrior)">
+        <div class="drip-label" style="color:var(--warrior)">INVESTMENT · Low skill, energizing</div>
+        <div class="drip-title">Learn. Experiment. Don't monetize yet.</div>
+        <div class="drip-body">Spanish. New relationships. Deferred experiences. The Thailand vision. This quadrant seeds what Production becomes in two to three years. Protect it as learning time, not idle time.</div>
+      </div>
+      <div class="drip-cell" style="background:var(--sage-d);border-color:var(--sage-l);border-top:3px solid var(--sage)">
+        <div class="drip-label" style="color:var(--sage)">PRODUCTION · High skill, energizing</div>
+        <div class="drip-title">Protect this at all costs.</div>
+        <div class="drip-body">This is the zone. Every system, every hire, every delegation exists to create more time here. For Deryl: deep presence, facilitation, listening. For Ken: strategy, relationships, Growth House vision.</div>
+      </div>
+    </div>
+    <div class="kq" style="margin-top:8px">
+      <div class="kq-text">"$100M companies were not built on $10 tasks."</div>
+      <div class="kq-attr">Dan Martell · Buy Back Your Time</div>
+    </div>
+  </div>
+
+  <!-- 5 TIME ASSASSINS -->
+  <div class="section">
+    <div class="sec-eye">03 · The Enemies · What steals time before you notice</div>
+    <div class="sec-title">The 5 Time<br><em>Assassins.</em></div>
+    <div class="sec-body">These are the patterns that drain your time before you realize it. Optimus and Atlas flag them by name the moment a signal phrase appears. One flag, one question, then move on.</div>
+    <table class="rt">
+      <thead><tr><th>Assassin</th><th>What it looks like</th><th>Signal phrase</th><th>The one question</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="rt-label" style="color:var(--red)">Seagulling</span></td>
+          <td style="font-size:11px;color:var(--ink2)">Swooping in on someone else's task, taking over, flying away. Looks like helping. Creates dependency.</td>
+          <td style="font-size:11.5px;font-style:italic;color:var(--ink2)">"I just handled it myself."</td>
+          <td style="font-size:11px;color:var(--ink2)">What would have happened if you hadn't stepped in?</td>
+        </tr>
+        <tr>
+          <td><span class="rt-label" style="color:var(--gold)">Whirlwind</span></td>
+          <td style="font-size:11px;color:var(--ink2)">So consumed by urgent reactive tasks that important work never gets scheduled. Always busy, never moving.</td>
+          <td style="font-size:11.5px;font-style:italic;color:var(--ink2)">"I've been slammed all week."</td>
+          <td style="font-size:11px;color:var(--ink2)">How much of that was in your Production quadrant?</td>
+        </tr>
+        <tr>
+          <td><span class="rt-label" style="color:var(--purple)">Perfectionism</span></td>
+          <td style="font-size:11px;color:var(--ink2)">Doing it yourself because no one else will do it right. Really means: haven't built the playbook or hired correctly.</td>
+          <td style="font-size:11.5px;font-style:italic;color:var(--ink2)">"It's just faster if I do it."</td>
+          <td style="font-size:11px;color:var(--ink2)">What's the cost of that at your Buyback Rate?</td>
+        </tr>
+        <tr>
+          <td><span class="rt-label" style="color:var(--warrior)">Bottlenecking</span></td>
+          <td style="font-size:11px;color:var(--ink2)">Every decision requires your approval. Nothing moves without you. The team waits constantly.</td>
+          <td style="font-size:11.5px;font-style:italic;color:var(--ink2)">"I need to be on that call."</td>
+          <td style="font-size:11px;color:var(--ink2)">What outcome were you protecting — can that be set in advance?</td>
+        </tr>
+        <tr>
+          <td><span class="rt-label" style="color:var(--sage)">Nostalgia</span></td>
+          <td style="font-size:11px;color:var(--ink2)">Staying in tasks you used to be great at but have outgrown. Comfortable. Safe. Below your current level.</td>
+          <td style="font-size:11.5px;font-style:italic;color:var(--ink2)">"I actually enjoy doing this part."</td>
+          <td style="font-size:11px;color:var(--ink2)">Is this the highest and best use of you right now?</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3 TRADES -->
+  <div class="section">
+    <div class="sec-eye">04 · The Levels · What kind of trader are you?</div>
+    <div class="sec-title">The Only 3<br><em>Trades.</em></div>
+    <div class="sec-body">Most people — even business owners — are permanently stuck at Level 1. The pivot to Level 2 is where time freedom actually begins. Level 3 is the destination.</div>
+    <div class="levels">
+      <div class="level" style="border-top:3px solid var(--ink3)">
+        <div class="level-num" style="color:var(--ink3)">Level 1 · Employee</div>
+        <div class="level-title">Trading TIME for money</div>
+        <div class="level-body">Hours in = dollars out. Ceiling is fixed. No leverage. The more you do, the more is expected. This is the default — and it's a trap.</div>
+      </div>
+      <div class="level" style="border-top:3px solid var(--gold)">
+        <div class="level-num" style="color:var(--gold)">Level 2 · Entrepreneur</div>
+        <div class="level-title">Trading MONEY for time</div>
+        <div class="level-body">You invest money to free your hours. This is the pivot. It feels counterintuitive — spending to get time back. But this is where leverage begins.</div>
+      </div>
+      <div class="level" style="border-top:3px solid var(--sage)">
+        <div class="level-num" style="color:var(--sage)">Level 3 · Empire Builder</div>
+        <div class="level-title">Trading MONEY for more money</div>
+        <div class="level-body">Systems and people work while you sleep. You are no longer trading time for anything. This is the destination. Ken is here. Deryl is building toward it.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPLACEMENT LADDER -->
+  <div class="section">
+    <div class="sec-eye">05 · The Handoff · You cannot skip rungs</div>
+    <div class="sec-title">The Replacement<br><em>Ladder.</em></div>
+    <div class="sec-body">Every task you want to remove yourself from has four rungs. Skip a rung and it breaks. This is the architecture for every delegation — from contractor handoffs to Atlas absorbing Ken's behavioral tracking.</div>
+    <div class="ladder">
+      <div class="rung">
+        <div class="rung-num" style="background:rgba(239,68,68,.12);color:var(--red)">1</div>
+        <div class="rung-body"><div class="rung-title">I do, I teach</div><div class="rung-desc">Do the task. Document it while doing it. No skipping — you must understand it fully before you can transfer it. This rung is where the playbook gets written.</div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-num" style="background:rgba(251,146,60,.12);color:var(--orange)">2</div>
+        <div class="rung-body"><div class="rung-title">I do, they watch</div><div class="rung-desc">They shadow you. They see how you make decisions — not just what steps you follow. Context transfers here, not just process.</div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-num" style="background:rgba(212,168,50,.12);color:var(--gold)">3</div>
+        <div class="rung-body"><div class="rung-title">They do, I guide</div><div class="rung-desc">They execute. You correct and refine. You're still in it — but not doing it. This rung is where most handoffs stall. Push through it.</div></div>
+      </div>
+      <div class="rung">
+        <div class="rung-num" style="background:rgba(46,255,140,.12);color:var(--sage)">4</div>
+        <div class="rung-body"><div class="rung-title">They do, I review</div><div class="rung-desc">They own it. You check outcomes, not process. You are free. This is the only rung that actually counts — everything else is progress toward here.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSFORMATIONAL LEADERSHIP -->
+  <div class="section">
+    <div class="sec-eye">06 · The Shift · How you lead changes everything</div>
+    <div class="sec-title">Transformational<br><em>Leadership.</em></div>
+    <div class="sec-body">The move from transactional to transformational is the shift from managing tasks to leading people. One is a ceiling. The other is a multiplier.</div>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;border:1px solid var(--line);background:var(--bg2);overflow:hidden;margin:16px 0">
+      <div style="padding:20px 24px;border-right:1px solid var(--line)">
+        <div style="font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:12px">Transactional — broken</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;color:rgba(232,234,245,.3);text-decoration:line-through">Tell HOW to do it</div>
+          <div style="font-size:13px;color:rgba(232,234,245,.3);text-decoration:line-through">Check if done your way</div>
+          <div style="font-size:13px;color:rgba(232,234,245,.3);text-decoration:line-through">Do it yourself when it's not</div>
+        </div>
+      </div>
+      <div style="padding:20px;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--gold)">→</div>
+      <div style="padding:20px 24px;background:var(--gold-d)">
+        <div style="font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px">Transformational — working</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">Set the OUTCOME</div>
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">Measure the result</div>
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">Develop the person</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:14px 18px;background:var(--bg2);border:1px solid var(--line);font-size:11.5px;color:var(--ink2);line-height:1.65">Decision fatigue is real. Every instruction you give is a decision you made for someone else — a decision you cannot use for your own highest-value work. When you lead through outcomes, your team starts asking <em>"Is there a better way?"</em> instead of <em>"How do we do this?"</em></div>
+  </div>
+
+  <!-- 7 PILLARS -->
+  <div class="section">
+    <div class="sec-eye">07 · The Life · What you're buying time back for</div>
+    <div class="sec-title">The Buyback<br><em>Life.</em></div>
+    <div class="sec-body">The Buyback Principle is not just for business. The goal of buying back your time is not more work. It is more life. Seven pillars — mirrors the eight-dimension Wheel of Life almost exactly.</div>
+    <div class="pillars">
+      <div class="pillar" style="border-top:2px solid var(--fire)"><div class="pillar-num" style="color:var(--fire)">01 · Health</div><div class="pillar-body">Foundation. Without it nothing else is possible.</div></div>
+      <div class="pillar" style="border-top:2px solid var(--warrior)"><div class="pillar-num" style="color:var(--warrior)">02 · Relationships</div><div class="pillar-body">Quality of life is quality of relationships.</div></div>
+      <div class="pillar" style="border-top:2px solid var(--sage)"><div class="pillar-num" style="color:var(--sage)">03 · Experiences</div><div class="pillar-body">What you keep deferring is what you actually want.</div></div>
+      <div class="pillar" style="border-top:2px solid var(--purple)"><div class="pillar-num" style="color:var(--purple)">04 · Inner Life</div><div class="pillar-body">The quiet center. Where meaning lives.</div></div>
+      <div class="pillar" style="border-top:2px solid var(--gold)"><div class="pillar-num" style="color:var(--gold)">05 · Financial</div><div class="pillar-body">Not the goal. The tool. Enough is enough.</div></div>
+      <div class="pillar" style="border-top:2px solid var(--blaze)"><div class="pillar-num" style="color:var(--blaze)">06 · Mission</div><div class="pillar-body">Must be chosen deliberately. Not drifted into.</div></div>
+      <div class="pillar" style="border-top:2px solid var(--gold)"><div class="pillar-num" style="color:var(--gold)">07 · Community</div><div class="pillar-body">Who you are building it with. Belonging is not optional.</div></div>
+      <div class="pillar" style="background:var(--gold-d);border:1px solid var(--gold-l)"><div class="pillar-num" style="color:var(--gold)">The Test</div><div class="pillar-body">Are you buying back time to do more work — or to actually live?</div></div>
+    </div>
+  </div>
+
+  <!-- FRAMEWORK INTEGRATION -->
+  <div class="section">
+    <div class="sec-eye">08 · The Integration · How it maps to the other frameworks</div>
+    <div class="sec-title">Four frameworks.<br><em>One operating system.</em></div>
+    <div class="sec-body">Buy Back Your Time does not compete with MMP, the Peaceful Warrior, or the Way of the Superior Man. It is the operational layer — the daily mechanics that make the vision possible.</div>
+    <div class="int-grid">
+      <div class="int-cell" style="border-top:2px solid var(--gold)">
+        <div class="int-fw" style="color:var(--gold)">Buyback Framework</div>
+        <div class="int-items">
+          <div class="int-item">Production Quadrant</div>
+          <div class="int-item">Time Assassins</div>
+          <div class="int-item">Transformational Leadership</div>
+          <div class="int-item">Buyback Life / 7 Pillars</div>
+          <div class="int-item">Replacement Ladder</div>
+        </div>
+      </div>
+      <div class="int-cell" style="border-top:2px solid var(--blaze)">
+        <div class="int-fw" style="color:var(--blaze)">MMP Equivalent</div>
+        <div class="int-items">
+          <div class="int-item">Genius Zone</div>
+          <div class="int-item">Losing Formula patterns</div>
+          <div class="int-item">Conductor-level leadership</div>
+          <div class="int-item">Lighthouse dimensions</div>
+          <div class="int-item">Replication Model</div>
+        </div>
+      </div>
+      <div class="int-cell" style="border-top:2px solid var(--warrior)">
+        <div class="int-fw" style="color:var(--warrior)">Peaceful Warrior</div>
+        <div class="int-items">
+          <div class="int-item">Being fully present in the action</div>
+          <div class="int-item">The mind creating noise</div>
+          <div class="int-item">Leading from the edge</div>
+          <div class="int-item">The ordinary made sacred</div>
+          <div class="int-item">Letting go of the doer identity</div>
+        </div>
+      </div>
+    </div>
+    <div class="kq">
+      <div class="kq-text">"If your business depends on you, you don't own a business — you have a job. And it's the worst job in the world because you're working for a lunatic."</div>
+      <div class="kq-attr">Dan Martell · Buy Back Your Time · On the Replacement imperative</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Buy Back Your Time · DVN Operating Framework · May 2026</span>
+  <div class="foot-links">
+    <a href="../index.html" class="fl" style="color:rgba(46,255,140,.7);border-color:rgba(46,255,140,.2)">← Home</a>
+    <a href="life_arch_index.html" class="fl">Architecture Index</a>
+    <a href="deryl_life_architecture.html" class="fl">Methodology</a>
+  </div>
+</footer>
+
+</body>
+</html>
