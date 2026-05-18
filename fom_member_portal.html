@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOM — Member Intelligence Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0c0f18;--bg3:#111520;--bg4:#161c2a;
+  --line:rgba(255,255,255,.06);--line2:rgba(255,255,255,.12);
+  --ink:#e8eaf5;--ink2:#7880a0;--ink3:#3d4560;
+  --gold:#d4a832;--gold-d:rgba(212,168,50,.10);--gold-l:rgba(212,168,50,.25);
+  --sage:#2eff8c;--sage-d:rgba(46,255,140,.08);--sage-l:rgba(46,255,140,.2);
+  --warrior:#5a9ae0;--warrior-d:rgba(90,154,224,.1);--warrior-l:rgba(90,154,224,.25);
+  --fire:#f0622a;--fire-d:rgba(240,98,42,.1);--fire-l:rgba(240,98,42,.25);
+  --purple:#a096f0;--purple-d:rgba(160,150,240,.1);--purple-l:rgba(160,150,240,.25);
+  --blaze:#ff8c28;--blaze-d:rgba(255,140,40,.1);--blaze-l:rgba(255,140,40,.25);
+  --teal:#2eddc8;--teal-d:rgba(46,221,200,.08);--teal-l:rgba(46,221,200,.2);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
+
+/* ── SIDEBAR ── */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.sidebar{background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-brand{padding:28px 20px 20px;border-bottom:1px solid var(--line)}
+.sb-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:var(--gold);line-height:1}
+.sb-tagline{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin-top:4px}
+.sb-member{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.sb-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--blaze));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#07090f;flex-shrink:0}
+.sb-name{font-size:12px;font-weight:700;line-height:1.2}
+.sb-role{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-top:2px}
+.sb-nav{padding:16px 12px;flex:1}
+.sb-section{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);font-weight:700;padding:0 8px;margin:16px 0 6px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:5px;cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;color:var(--ink2);font-family:'Syne',sans-serif;font-size:11px;font-weight:600}
+.sb-item:hover{background:var(--bg3);color:var(--ink)}
+.sb-item.on{background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-l)}
+.sb-icon{width:16px;text-align:center;font-size:13px;flex-shrink:0}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);margin-left:auto;flex-shrink:0}
+.sb-dot.amber{background:var(--blaze)}
+.sb-footer{padding:16px 20px;border-top:1px solid var(--line)}
+.sb-agent{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--teal-d);border:1px solid var(--teal-l);border-radius:6px;cursor:pointer}
+.sb-agent-icon{font-size:18px}
+.sb-agent-name{font-size:10px;font-weight:700;color:var(--teal)}
+.sb-agent-status{font-size:8px;color:var(--ink3);margin-top:1px}
+
+/* ── MAIN ── */
+.main{overflow-y:auto}
+.panel{display:none}.panel.on{display:block}
+
+/* ── TOPBAR ── */
+.topbar{height:52px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 36px;gap:16px;background:rgba(7,9,15,.97);backdrop-filter:blur(12px);position:sticky;top:0;z-index:50}
+.tb-title{font-size:13px;font-weight:700}
+.tb-sub{font-size:11px;color:var(--ink3);margin-left:2px}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tb-date{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.tb-badge{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--sage-d);border:1px solid var(--sage-l);color:var(--sage)}
+.tb-badge.amber{background:var(--blaze-d);border-color:var(--blaze-l);color:var(--blaze)}
+
+/* ── WRAP ── */
+.wrap{padding:36px 40px 80px;max-width:1000px}
+
+/* ── WELCOME HERO ── */
+.hero{padding:40px 40px 32px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:-100px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(212,168,50,.05) 0%,transparent 65%);pointer-events:none}
+.hero-eye{font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;background:var(--gold-d);border:1px solid var(--gold-l);padding:4px 12px;border-radius:20px;position:relative;z-index:1}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;line-height:.95;margin-bottom:12px;position:relative;z-index:1}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:13px;color:var(--ink2);line-height:1.75;max-width:560px;position:relative;z-index:1}
+.hero-stats{display:flex;gap:32px;margin-top:28px;padding-top:24px;border-top:1px solid var(--line);position:relative;z-index:1;flex-wrap:wrap}
+.hs{text-align:left}
+.hs-val{font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.hs-label{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+
+/* ── SECTION HEADER ── */
+.sec-eye{font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-eye::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gold-l),transparent)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.5vw,32px);font-weight:300;line-height:1.05;margin-bottom:6px}
+.sec-title em{font-style:italic}
+.sec-intro{font-size:12px;color:var(--ink2);line-height:1.8;max-width:620px;margin-bottom:20px}
+
+/* ── WHEEL ── */
+.wheel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:16px 0}
+.wc{padding:18px 16px;background:var(--bg2);border:1px solid var(--line);border-top:3px solid var(--line2);position:relative;cursor:pointer;transition:all .18s}
+.wc:hover{background:var(--bg3);transform:translateY(-1px)}
+.wc-dim{font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--ink3);margin-bottom:8px}
+.wc-score{font-size:32px;font-weight:800;line-height:1;margin-bottom:6px}
+.wc-bar{height:3px;background:var(--line2);border-radius:2px;margin-bottom:8px;overflow:hidden}
+.wc-fill{height:100%;border-radius:2px;transition:width .6s ease}
+.wc-trend{font-size:9px;color:var(--ink3);display:flex;align-items:center;gap:4px}
+.wc-trend.up{color:var(--sage)}
+.wc-trend.down{color:var(--fire)}
+.wc-label{font-size:11px;font-weight:700;margin-bottom:2px}
+
+/* ── INSIGHT CARDS ── */
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:16px 0}
+.ic{padding:20px;background:var(--bg2);border:1px solid var(--line);border-left:3px solid}
+.ic-eye{font-size:8px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.ic-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--ink);line-height:1.55;margin-bottom:10px}
+.ic-meta{font-size:10px;color:var(--ink3)}
+.ic-action{margin-top:12px;padding:8px 12px;background:var(--bg3);border:1px solid var(--line2);border-radius:4px;font-size:11px;color:var(--ink2);line-height:1.5}
+.ic-action strong{color:var(--ink);display:block;margin-bottom:2px}
+
+/* ── SESSION LOG ── */
+.session-list{display:flex;flex-direction:column;gap:2px;margin:16px 0}
+.sl{display:grid;grid-template-columns:80px 1fr 100px 80px;border:1px solid var(--line);background:var(--bg2);transition:background .15s;cursor:pointer}
+.sl:hover{background:var(--bg3)}
+.sl-cell{padding:12px 14px;font-size:11.5px;line-height:1.5}
+.sl-cell:not(:last-child){border-right:1px solid var(--line)}
+.sl-date{color:var(--ink3);font-size:10px;display:flex;align-items:center}
+.sl-title{font-weight:600}
+.sl-sub{font-size:10px;color:var(--ink3);margin-top:2px}
+.sl-tag{display:inline-block;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.sl-score{font-size:13px;font-weight:800;display:flex;align-items:center}
+.sl-head{background:var(--bg3);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+
+/* ── AGENT CHAT ── */
+.agent-panel{display:flex;flex-direction:column;height:calc(100vh - 52px)}
+.chat-history{flex:1;overflow-y:auto;padding:24px 32px;display:flex;flex-direction:column;gap:16px}
+.chat-msg{display:flex;gap:12px;max-width:680px}
+.chat-msg.user{flex-direction:row-reverse;margin-left:auto}
+.chat-bubble{padding:12px 16px;border-radius:6px;font-size:13px;line-height:1.65}
+.chat-msg.agent .chat-bubble{background:var(--bg3);border:1px solid var(--line2);color:var(--ink)}
+.chat-msg.user .chat-bubble{background:var(--gold-d);border:1px solid var(--gold-l);color:var(--ink)}
+.chat-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px}
+.chat-avatar.agent-av{background:var(--teal-d);border:1px solid var(--teal-l);font-size:16px}
+.chat-avatar.user-av{background:linear-gradient(135deg,var(--gold),var(--blaze));font-size:11px;font-weight:800;color:#07090f}
+.chat-name{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.chat-msg.agent .chat-name{color:var(--teal)}
+.chat-msg.user .chat-name{color:var(--gold);text-align:right}
+.chat-input-bar{padding:16px 32px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:flex-end;background:var(--bg2)}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--line2);border-radius:6px;padding:10px 14px;color:var(--ink);font-family:'Syne',sans-serif;font-size:13px;resize:none;min-height:44px;max-height:120px;outline:none;transition:border .15s}
+.chat-input:focus{border-color:var(--teal-l)}
+.chat-send{padding:10px 20px;background:var(--teal-d);border:1px solid var(--teal-l);border-radius:6px;color:var(--teal);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.08em;transition:all .15s}
+.chat-send:hover{background:var(--teal-l)}
+.chat-tools{display:flex;gap:6px;margin-bottom:6px}
+.ct{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:20px;border:1px solid var(--line2);color:var(--ink3);cursor:pointer;background:none;font-family:'Syne',sans-serif;transition:all .15s}
+.ct:hover{border-color:var(--line);color:var(--ink2)}
+.ct.active{border-color:var(--teal-l);color:var(--teal);background:var(--teal-d)}
+
+/* ── WHEEL LOG FORM ── */
+.log-form{background:var(--bg2);border:1px solid var(--line);padding:24px;margin:16px 0}
+.lf-title{font-size:13px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.lf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.lf-group{display:flex;flex-direction:column;gap:6px}
+.lf-label{font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--ink3)}
+.lf-row{display:flex;align-items:center;gap:12px}
+.lf-dim{font-size:12px;font-weight:600;width:160px;flex-shrink:0}
+.lf-slider{flex:1;-webkit-appearance:none;height:3px;border-radius:2px;background:var(--bg4);outline:none}
+.lf-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--gold);cursor:pointer}
+.lf-val{width:24px;text-align:right;font-size:13px;font-weight:800;color:var(--gold)}
+.lf-submit{padding:10px 24px;background:var(--gold-d);border:1px solid var(--gold-l);color:var(--gold);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;cursor:pointer;border-radius:4px;transition:all .15s}
+.lf-submit:hover{background:var(--gold-l)}
+.lf-note{width:100%;background:var(--bg3);border:1px solid var(--line2);padding:10px 14px;color:var(--ink);font-family:'Syne',sans-serif;font-size:12px;border-radius:4px;resize:none;height:80px;outline:none;margin-top:12px}
+
+/* ── PROFILE ── */
+.profile-grid{display:grid;grid-template-columns:260px 1fr;gap:3px;margin:16px 0}
+.pg-left{display:flex;flex-direction:column;gap:3px}
+.profile-card{padding:20px;background:var(--bg2);border:1px solid var(--line)}
+.pc-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--blaze));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#07090f;margin-bottom:12px}
+.pc-name{font-size:16px;font-weight:800;margin-bottom:2px}
+.pc-role{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.pc-stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:11px}
+.pc-stat:last-child{border:none}
+.pc-stat-label{color:var(--ink3)}
+.pc-stat-val{font-weight:700}
+.genius-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--blaze-d);border:1px solid var(--blaze-l);border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blaze);margin:8px 0}
+.profile-detail{padding:20px;background:var(--bg2);border:1px solid var(--line)}
+
+/* ── MEMBERS TABLE ── */
+.member-grid{display:flex;flex-direction:column;gap:2px;margin:16px 0}
+.mg-row{display:grid;grid-template-columns:48px 1fr 120px 100px 80px 80px;border:1px solid var(--line);background:var(--bg2);cursor:pointer;transition:background .15s}
+.mg-row:hover{background:var(--bg3)}
+.mg-cell{padding:12px 14px;font-size:11.5px;display:flex;align-items:center}
+.mg-cell:not(:last-child){border-right:1px solid var(--line)}
+.mg-head{background:var(--bg3);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.mg-num{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--ink3);justify-content:center}
+.mg-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#07090f;margin-right:10px;flex-shrink:0}
+.mg-name{font-weight:700}
+.mg-sub{font-size:9px;color:var(--ink3);margin-top:1px}
+.mg-score{font-size:14px;font-weight:800}
+.status-pill{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.pilot{background:var(--gold-d);border:1px solid var(--gold-l);color:var(--gold)}
+.pending{background:var(--bg4);border:1px solid var(--line2);color:var(--ink3)}
+.forge{background:var(--fire-d);border:1px solid var(--fire-l);color:var(--fire)}
+
+/* ── WEEKLY BRIEF ── */
+.brief-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:16px 0}
+.brief-card{padding:20px;background:var(--bg2);border:1px solid var(--line)}
+.bc-eye{font-size:8px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:10px;color:var(--ink3)}
+.bc-title{font-size:13px;font-weight:700;margin-bottom:12px}
+.bc-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:11.5px;line-height:1.5}
+.bc-item:last-child{border:none;padding-bottom:0}
+.bc-dot{width:6px;height:6px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.bc-text{color:var(--ink2)}
+.bc-text strong{color:var(--ink)}
+.handoff-alert{padding:16px 20px;background:var(--fire-d);border:1px solid var(--fire-l);margin:12px 0;display:flex;gap:14px;align-items:flex-start}
+.ha-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.ha-title{font-size:12px;font-weight:700;margin-bottom:4px;color:var(--fire)}
+.ha-body{font-size:11.5px;color:var(--ink2);line-height:1.55}
+
+/* ── CAPITAL LAYER ── */
+.cap-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin:16px 0}
+.cap-card{padding:20px;background:var(--bg2);border:1px solid var(--line);border-top:3px solid}
+.cap-eye{font-size:8px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.cap-title{font-size:15px;font-weight:700;margin-bottom:6px}
+.cap-sub{font-size:11px;color:var(--ink2);line-height:1.6;margin-bottom:14px}
+.cap-tag{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:20px;display:inline-block}
+
+/* ── UTILS ── */
+.mt16{margin-top:16px}
+.mt24{margin-top:24px}
+.mt32{margin-top:32px}
+.section{padding-top:36px}
+.divider{height:1px;background:var(--line);margin:32px 0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .wheel-grid{grid-template-columns:repeat(2,1fr)}
+  .insight-grid,.brief-grid{grid-template-columns:1fr}
+  .profile-grid,.cap-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- ══════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-logo">Fellowship<br>of Mind</div>
+    <div class="sb-tagline">Member Intelligence Portal · v1.0</div>
+  </div>
+
+  <div class="sb-member">
+    <div class="sb-avatar">K</div>
+    <div>
+      <div class="sb-name">Ken Wilkins</div>
+      <div class="sb-role">Pilot Member · Puerto Rico</div>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-section">Dashboard</div>
+    <button class="sb-item on" onclick="show('dashboard',this)">
+      <span class="sb-icon">◈</span> Overview
+      <span class="sb-dot"></span>
+    </button>
+    <button class="sb-item" onclick="show('wheel',this)">
+      <span class="sb-icon">⊙</span> Life Wheel
+    </button>
+    <button class="sb-item" onclick="show('sessions',this)">
+      <span class="sb-icon">◎</span> Sessions
+      <span class="sb-dot amber"></span>
+    </button>
+    <button class="sb-item" onclick="show('agent',this)">
+      <span class="sb-icon">◈</span> My Agent (Atlas)
+    </button>
+
+    <div class="sb-section">Intelligence</div>
+    <button class="sb-item" onclick="show('brief',this)">
+      <span class="sb-icon">▦</span> Weekly Brief
+    </button>
+    <button class="sb-item" onclick="show('capital',this)">
+      <span class="sb-icon">◇</span> Capital Layer
+    </button>
+
+    <div class="sb-section">FOM Admin</div>
+    <button class="sb-item" onclick="show('members',this)">
+      <span class="sb-icon">⊞</span> All Members
+    </button>
+    <button class="sb-item" onclick="show('profile',this)">
+      <span class="sb-icon">◉</span> My Profile
+    </button>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="sb-agent" onclick="show('agent',document.querySelector('.sb-item:nth-child(4)'))">
+      <div class="sb-agent-icon">🤖</div>
+      <div>
+        <div class="sb-agent-name">Atlas is online</div>
+        <div class="sb-agent-status">Last active 2 hrs ago</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════ -->
+<main class="main">
+
+<!-- ────────── DASHBOARD ────────── -->
+<div id="dashboard" class="panel on">
+  <div class="topbar">
+    <span class="tb-title">Overview</span>
+    <span class="tb-sub">/ Week of May 18, 2026</span>
+    <div class="tb-right">
+      <span class="tb-date">Monday · Puerto Rico</span>
+      <span class="tb-badge">Active</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eye">✦ Fellowship of Mind — Member OS</div>
+    <div class="hero-title">Good morning,<br><em>Ken.</em></div>
+    <div class="hero-sub">Your agent has been running. Three wheel dimensions moved this week. One handoff flag for Deryl. Your next session is Wednesday.</div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-val" style="color:var(--gold)">7.2</div><div class="hs-label">Avg Wheel Score</div></div>
+      <div class="hs"><div class="hs-val" style="color:var(--sage)">+0.4</div><div class="hs-label">Week over Week</div></div>
+      <div class="hs"><div class="hs-val" style="color:var(--warrior)">6</div><div class="hs-label">Sessions Logged</div></div>
+      <div class="hs"><div class="hs-val" style="color:var(--blaze)">1</div><div class="hs-label">Open Action Items</div></div>
+      <div class="hs"><div class="hs-val" style="color:var(--purple)">Wk 3</div><div class="hs-label">In the Forge</div></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- Atlas Insight -->
+    <div class="section">
+      <div class="sec-eye">Atlas Intelligence</div>
+      <div class="sec-title">This week's <em>signal</em></div>
+      <div class="insight-grid">
+        <div class="ic" style="border-color:var(--teal)">
+          <div class="ic-eye" style="color:var(--teal)">🤖 Atlas · Daily Synthesis</div>
+          <div class="ic-text">"Your Inner Life score dropped 1.2 points this week while Career/Mission climbed to a new high. You're producing. The question is whether you're resourced."</div>
+          <div class="ic-meta">Generated Monday 6:44am · Based on session log + wheel data</div>
+          <div class="ic-action"><strong>Suggested action</strong> Wednesday session: open with Inner Life before agenda. What's actually being sacrificed for the mission right now?</div>
+        </div>
+        <div class="ic" style="border-color:var(--gold)">
+          <div class="ic-eye" style="color:var(--gold)">⚑ Handoff Flag → Deryl</div>
+          <div class="ic-text">"Ken mentioned the litigation twice in unrelated conversation this week. It's occupying more mental real estate than the wheel score shows."</div>
+          <div class="ic-meta">Flagged by Atlas · Sent to Optimus Tuesday 9:12am</div>
+          <div class="ic-action"><strong>Deryl's note</strong> Confirmed. Pulling litigation summary before Wednesday. Ken doesn't need to manage this mentally.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wheel Snapshot -->
+    <div class="section">
+      <div class="sec-eye">Life Wheel</div>
+      <div class="sec-title">Current <em>scores</em></div>
+      <div class="wheel-grid" id="wheelGrid"></div>
+    </div>
+
+    <!-- Recent Sessions -->
+    <div class="section">
+      <div class="sec-eye">Recent Sessions</div>
+      <div class="sec-title">Session <em>log</em></div>
+      <div class="session-list">
+        <div class="sl sl-head">
+          <div class="sl-cell">Date</div>
+          <div class="sl-cell">Session</div>
+          <div class="sl-cell">Type</div>
+          <div class="sl-cell">Score</div>
+        </div>
+        <div class="sl">
+          <div class="sl-cell sl-date">May 14</div>
+          <div class="sl-cell"><div class="sl-title">Wheel Baseline + Deep Dive</div><div class="sl-sub">Foundational assessment · 3hrs · Puerto Rico</div></div>
+          <div class="sl-cell"><span class="sl-tag pilot">Foundational</span></div>
+          <div class="sl-cell sl-score" style="color:var(--gold)">7.1</div>
+        </div>
+        <div class="sl">
+          <div class="sl-cell sl-date">May 12</div>
+          <div class="sl-cell"><div class="sl-title">Morning Walk + Voice Log</div><div class="sl-sub">Operational sync · Atlas processed</div></div>
+          <div class="sl-cell"><span class="sl-tag" style="background:var(--teal-d);border:1px solid var(--teal-l);color:var(--teal)">Voice Log</span></div>
+          <div class="sl-cell sl-score" style="color:var(--ink2)">—</div>
+        </div>
+        <div class="sl">
+          <div class="sl-cell sl-date">May 10</div>
+          <div class="sl-cell"><div class="sl-title">Financial Architecture Review</div><div class="sl-sub">Act 60 structure · Agudeza LLC alignment</div></div>
+          <div class="sl-cell"><span class="sl-tag" style="background:var(--warrior-d);border:1px solid var(--warrior-l);color:var(--warrior)">Strategy</span></div>
+          <div class="sl-cell sl-score" style="color:var(--warrior)">7.4</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ────────── LIFE WHEEL ────────── -->
+<div id="wheel" class="panel">
+  <div class="topbar">
+    <span class="tb-title">Life Wheel</span>
+    <span class="tb-sub">/ 8 Dimensions</span>
+    <div class="tb-right">
+      <span class="tb-badge amber">Log New Scores</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-eye">Wheel Assessment</div>
+    <div class="sec-title">Life <em>dimensions</em></div>
+    <div class="sec-intro">Each dimension scored 1–10. The gap between where you are and where you want to be is the work. Atlas tracks movement week over week.</div>
+
+    <div class="wheel-grid" id="wheelGrid2"></div>
+
+    <div class="section">
+      <div class="sec-eye">Log New Assessment</div>
+      <div class="sec-title">Update <em>scores</em></div>
+      <div class="log-form">
+        <div class="lf-title">📊 Wheel Score Entry — May 18, 2026</div>
+        <div id="sliders"></div>
+        <textarea class="lf-note" placeholder="Session notes — what's moving, what's stuck, what needs attention..."></textarea>
+        <div style="margin-top:14px;display:flex;gap:12px;align-items:center">
+          <button class="lf-submit">Save to Supabase</button>
+          <span style="font-size:10px;color:var(--ink3)">Scores sync to Ken's site + Atlas immediately</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── SESSIONS ────────── -->
+<div id="sessions" class="panel">
+  <div class="topbar">
+    <span class="tb-title">Sessions</span>
+    <span class="tb-sub">/ Full Log</span>
+    <div class="tb-right">
+      <span class="tb-badge">6 Total</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-eye">Session Archive</div>
+    <div class="sec-title">All <em>sessions</em></div>
+    <div class="session-list">
+      <div class="sl sl-head">
+        <div class="sl-cell">Date</div>
+        <div class="sl-cell">Session</div>
+        <div class="sl-cell">Type</div>
+        <div class="sl-cell">Score</div>
+      </div>
+      <div class="sl"><div class="sl-cell sl-date">May 14</div><div class="sl-cell"><div class="sl-title">Wheel Baseline + Deep Dive</div><div class="sl-sub">Foundational 3-hour session · Puerto Rico · All 8 dimensions assessed</div></div><div class="sl-cell"><span class="sl-tag pilot">Foundational</span></div><div class="sl-cell sl-score" style="color:var(--gold)">7.1</div></div>
+      <div class="sl"><div class="sl-cell sl-date">May 12</div><div class="sl-cell"><div class="sl-title">Morning Walk + Voice Log</div><div class="sl-sub">Atlas processed · 3 flags surfaced · Litigation mentioned twice</div></div><div class="sl-cell"><span class="sl-tag" style="background:var(--teal-d);border:1px solid var(--teal-l);color:var(--teal)">Voice Log</span></div><div class="sl-cell sl-score" style="color:var(--ink2)">—</div></div>
+      <div class="sl"><div class="sl-cell sl-date">May 10</div><div class="sl-cell"><div class="sl-title">Financial Architecture Review</div><div class="sl-sub">Act 60 · Agudeza LLC · Q3 structure</div></div><div class="sl-cell"><span class="sl-tag" style="background:var(--warrior-d);border:1px solid var(--warrior-l);color:var(--warrior)">Strategy</span></div><div class="sl-cell sl-score" style="color:var(--warrior)">7.4</div></div>
+      <div class="sl"><div class="sl-cell sl-date">May 7</div><div class="sl-cell"><div class="sl-title">End of Call Debrief</div><div class="sl-sub">Post-Jesse visit · Alignment confirmed · Next steps set</div></div><div class="sl-cell"><span class="sl-tag" style="background:var(--purple-d);border:1px solid var(--purple-l);color:var(--purple)">Debrief</span></div><div class="sl-cell sl-score" style="color:var(--purple)">6.8</div></div>
+      <div class="sl"><div class="sl-cell sl-date">May 5</div><div class="sl-cell"><div class="sl-title">Role & Structure Meeting</div><div class="sl-sub">$5k/month confirmed · Agudeza LLC · Deryl's scope defined</div></div><div class="sl-cell"><span class="sl-tag pilot">Foundational</span></div><div class="sl-cell sl-score" style="color:var(--gold)">7.6</div></div>
+      <div class="sl"><div class="sl-cell sl-date">Apr 28</div><div class="sl-cell"><div class="sl-title">Initial Alignment Call</div><div class="sl-sub">Puerto Rico opportunity · 4-year relationship deepened</div></div><div class="sl-cell"><span class="sl-tag pilot">Foundational</span></div><div class="sl-cell sl-score" style="color:var(--gold)">8.1</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── ATLAS AGENT ────────── -->
+<div id="agent" class="panel agent-panel">
+  <div class="topbar">
+    <span class="tb-title">Atlas</span>
+    <span class="tb-sub">/ Your Personal Agent</span>
+    <div class="tb-right">
+      <span class="tb-badge" style="background:var(--teal-d);border-color:var(--teal-l);color:var(--teal)">● Online</span>
+    </div>
+  </div>
+  <div class="chat-history">
+    <div class="chat-msg agent">
+      <div class="chat-avatar agent-av">🤖</div>
+      <div>
+        <div class="chat-name">Atlas</div>
+        <div class="chat-bubble">Good morning, Ken. Three things on my radar from this week:<br><br>1. Your Inner Life dimension dropped 1.2 points while Career/Mission climbed. You're running hot on output. Worth a check-in on what's getting quietly sacrificed.<br><br>2. Litigation came up twice in unrelated conversations. I flagged it to Deryl — he's pulling a summary before Wednesday so it's off your mental plate.<br><br>3. Your average wheel score is 7.2 — up 0.4 from last week. The work is showing.<br><br>What do you want to dig into?</div>
+      </div>
+    </div>
+    <div class="chat-msg user">
+      <div class="chat-avatar user-av">KW</div>
+      <div>
+        <div class="chat-name">Ken</div>
+        <div class="chat-bubble">What's been moving in my Financial dimension?</div>
+      </div>
+    </div>
+    <div class="chat-msg agent">
+      <div class="chat-avatar agent-av">🤖</div>
+      <div>
+        <div class="chat-name">Atlas</div>
+        <div class="chat-bubble">Financial has been your most consistent dimension — sitting at 8.4, up from 7.9 three weeks ago. The Act 60 structure is holding. The Agudeza LLC architecture is clean.<br><br>What's not yet reflected in the score is the Q3 capital deployment question. You've mentioned it but haven't moved on it. That gap between score and actual clarity is worth naming.<br><br>Want me to pull the notes from the May 10 session and surface the open questions?</div>
+      </div>
+    </div>
+  </div>
+  <div class="chat-input-bar">
+    <div style="flex:1">
+      <div class="chat-tools">
+        <button class="ct active">💬 Chat</button>
+        <button class="ct">📊 Log Wheel</button>
+        <button class="ct">🎙 Voice Note</button>
+        <button class="ct">📋 Session Summary</button>
+      </div>
+      <div style="display:flex;gap:10px">
+        <textarea class="chat-input" placeholder="Ask Atlas anything about your week, your wheel, your priorities..."></textarea>
+        <button class="chat-send">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── WEEKLY BRIEF ────────── -->
+<div id="brief" class="panel">
+  <div class="topbar">
+    <span class="tb-title">Weekly Brief</span>
+    <span class="tb-sub">/ May 12–18, 2026</span>
+    <div class="tb-right">
+      <span class="tb-date">Generated Sunday 8:00am</span>
+      <span class="tb-badge">Optimus → Deryl</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-eye">FOM Intelligence Brief</div>
+    <div class="sec-title">Week of <em>May 12</em></div>
+    <div class="sec-intro">Synthesized by Optimus from all Supabase activity. Delivered to Deryl every Sunday 8am. Handoff flags routed automatically from Atlas.</div>
+
+    <div class="handoff-alert">
+      <div class="ha-icon">⚑</div>
+      <div>
+        <div class="ha-title">1 Atlas → Optimus Handoff Flag</div>
+        <div class="ha-body">Ken mentioned litigation in 2 unrelated conversations this week. Mental real estate occupied. Deryl: pull litigation status before Wednesday session and handle proactively — don't let Ken carry this into the agenda.</div>
+      </div>
+    </div>
+
+    <div class="brief-grid mt16">
+      <div class="brief-card">
+        <div class="bc-eye">Wheel Trends</div>
+        <div class="bc-title">Dimension Movement This Week</div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--sage)"></div><div class="bc-text"><strong>Career/Mission ↑ 0.8</strong> — Ken's clearest dimension. Output high, direction sharp.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--sage)"></div><div class="bc-text"><strong>Financial ↑ 0.5</strong> — Act 60 structure holding. Q3 question still open.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--blaze)"></div><div class="bc-text"><strong>Inner Life ↓ 1.2</strong> — Sacrificed for output week. Flag for Wednesday opener.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--ink3)"></div><div class="bc-text"><strong>Relationships — flat</strong> — Caroline dynamic stable. No new flags.</div></div>
+      </div>
+      <div class="brief-card">
+        <div class="bc-eye">Session Activity</div>
+        <div class="bc-title">This Week's Sessions</div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--warrior)"></div><div class="bc-text"><strong>1 strategy session</strong> — Financial architecture. Notes in Supabase.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--teal)"></div><div class="bc-text"><strong>2 voice logs</strong> — Monday + Wednesday walk. Atlas processed both.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--gold)"></div><div class="bc-text"><strong>Next session</strong> — Wednesday May 20. Open with Inner Life.</div></div>
+      </div>
+      <div class="brief-card">
+        <div class="bc-eye">Strategic Recommendation</div>
+        <div class="bc-title">Optimus → Deryl</div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--gold)"></div><div class="bc-text"><strong>Wednesday priority</strong> — Inner Life first, not agenda first. The score drop is a signal. Hold the container.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--purple)"></div><div class="bc-text"><strong>This week you translated</strong> — the litigation pattern. That's Level 2 Translator work. Log it.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--sage)"></div><div class="bc-text"><strong>Blaze-Star check</strong> — You had 3 ops days this week. What did you architect?</div></div>
+      </div>
+      <div class="brief-card">
+        <div class="bc-eye">FOM Architecture</div>
+        <div class="bc-title">System Status</div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--sage)"></div><div class="bc-text"><strong>Supabase</strong> — Live. All tables healthy. Ken is row 1.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--sage)"></div><div class="bc-text"><strong>Atlas → Optimus pipeline</strong> — Handoff trigger active.</div></div>
+        <div class="bc-item"><div class="bc-dot" style="background:var(--blaze)"></div><div class="bc-text"><strong>Member 2 slot</strong> — Schema ready. Waiting for first Forge candidate.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── CAPITAL LAYER ────────── -->
+<div id="capital" class="panel">
+  <div class="topbar">
+    <span class="tb-title">Capital Layer</span>
+    <span class="tb-sub">/ Fellowship Intelligence</span>
+    <div class="tb-right">
+      <span class="tb-badge amber">In Development</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-eye">Fellowship Capital Alignment</div>
+    <div class="sec-title">Where <em>vision</em> meets capital</div>
+    <div class="sec-intro">Not a fund. A fellowship intelligence layer that surfaces alignment between member visions and capital interests — so the right people find the right projects through trusted context.</div>
+
+    <div class="cap-grid">
+      <div class="cap-card" style="border-top-color:var(--gold)">
+        <div class="cap-eye" style="color:var(--gold)">Layer 1</div>
+        <div class="cap-title">Member Vision Map</div>
+        <div class="cap-sub">Each member's project vision, capital capacity, and sector interests — mapped and searchable across the cohort.</div>
+        <span class="cap-tag" style="background:var(--gold-d);border:1px solid var(--gold-l);color:var(--gold)">Schema Ready</span>
+      </div>
+      <div class="cap-card" style="border-top-color:var(--warrior)">
+        <div class="cap-eye" style="color:var(--warrior)">Layer 2</div>
+        <div class="cap-title">Project Intelligence</div>
+        <div class="cap-sub">Projects seeking capital or talent surfaced to members whose interests and values align. Positive-sum only — filtered by philosophy.</div>
+        <span class="cap-tag" style="background:var(--warrior-d);border:1px solid var(--warrior-l);color:var(--warrior)">In Design</span>
+      </div>
+      <div class="cap-card" style="border-top-color:var(--teal)">
+        <div class="cap-eye" style="color:var(--teal)">Layer 3</div>
+        <div class="cap-title">Agent-Facilitated Intro</div>
+        <div class="cap-sub">Atlas and Optimus surface alignment opportunities. The agent makes the introduction — Deryl holds the context. No cold outreach. Trusted fellowship first.</div>
+        <span class="cap-tag" style="background:var(--teal-d);border:1px solid var(--teal-l);color:var(--teal)">Coming Q3 2026</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-eye">Philosophy Filter</div>
+      <div class="sec-title">The <em>guardrail</em></div>
+      <div class="insight-grid">
+        <div class="ic" style="border-color:var(--sage)">
+          <div class="ic-eye" style="color:var(--sage)">✓ Positive Sum Only</div>
+          <div class="ic-text">"Every project that moves through this layer must create more value than it extracts. No zero-sum plays. No extraction plays."</div>
+          <div class="ic-meta">Core FOM Capital Philosophy</div>
+        </div>
+        <div class="ic" style="border-color:var(--gold)">
+          <div class="ic-eye" style="color:var(--gold)">✓ Fellowship First</div>
+          <div class="ic-text">"Capital moves through relationships, not pitch decks. Every introduction is earned through trust built inside the fellowship — never manufactured."</div>
+          <div class="ic-meta">Deryl VanNostrand · FOM Architecture</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── MEMBERS ────────── -->
+<div id="members" class="panel">
+  <div class="topbar">
+    <span class="tb-title">All Members</span>
+    <span class="tb-sub">/ FOM Cohort</span>
+    <div class="tb-right">
+      <span class="tb-badge">1 Active · 14 Pending</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-eye">FOM Cohort</div>
+    <div class="sec-title">The <em>fellowship</em></div>
+    <div class="sec-intro">Each member gets their own agent, their own wheel, their own session history. Ken is row 1. The schema is built for 15. Adding member 2 is a row, not a rebuild.</div>
+    <div class="member-grid">
+      <div class="mg-row mg-head">
+        <div class="mg-cell">#</div>
+        <div class="mg-cell">Member</div>
+        <div class="mg-cell">Status</div>
+        <div class="mg-cell">Avg Score</div>
+        <div class="mg-cell">Agent</div>
+        <div class="mg-cell">Last Session</div>
+      </div>
+      <div class="mg-row">
+        <div class="mg-cell mg-num">1</div>
+        <div class="mg-cell"><div class="mg-av" style="background:linear-gradient(135deg,var(--gold),var(--blaze))">KW</div><div><div class="mg-name">Ken Wilkins</div><div class="mg-sub">Puerto Rico · Pilot</div></div></div>
+        <div class="mg-cell"><span class="status-pill pilot">Pilot</span></div>
+        <div class="mg-cell mg-score" style="color:var(--gold)">7.2</div>
+        <div class="mg-cell"><span class="status-pill" style="background:var(--teal-d);border:1px solid var(--teal-l);color:var(--teal)">Atlas ●</span></div>
+        <div class="mg-cell" style="color:var(--ink3);font-size:10px">May 14</div>
+      </div>
+      <div class="mg-row" style="opacity:.45">
+        <div class="mg-cell mg-num">2</div>
+        <div class="mg-cell"><div class="mg-av" style="background:var(--bg4);border:1px dashed var(--line2)">?</div><div><div class="mg-name">Forge Candidate</div><div class="mg-sub">Slot open · Q3 2026</div></div></div>
+        <div class="mg-cell"><span class="status-pill pending">Pending</span></div>
+        <div class="mg-cell mg-score" style="color:var(--ink3)">—</div>
+        <div class="mg-cell"><span class="status-pill pending">Pending</span></div>
+        <div class="mg-cell" style="color:var(--ink3);font-size:10px">—</div>
+      </div>
+      <div class="mg-row" style="opacity:.25">
+        <div class="mg-cell mg-num">3–15</div>
+        <div class="mg-cell" style="grid-column:span 5"><div style="font-size:11px;color:var(--ink3);font-style:italic">12 additional member slots · Schema ready · Agent template built from Ken proof-of-concept</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── PROFILE ────────── -->
+<div id="profile" class="panel">
+  <div class="topbar">
+    <span class="tb-title">My Profile</span>
+    <span class="tb-sub">/ Ken Wilkins</span>
+    <div class="tb-right">
+      <span class="tb-badge">Pilot Member</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="profile-grid">
+      <div class="pg-left">
+        <div class="profile-card">
+          <div class="pc-avatar">KW</div>
+          <div class="pc-name">Ken Wilkins</div>
+          <div class="pc-role">FOM Pilot · Puerto Rico</div>
+          <div class="genius-badge">⚡ Genius Profile TBD</div>
+          <div class="pc-stat"><span class="pc-stat-label">Entity</span><span class="pc-stat-val">Agudeza LLC</span></div>
+          <div class="pc-stat"><span class="pc-stat-label">Location</span><span class="pc-stat-val">Puerto Rico</span></div>
+          <div class="pc-stat"><span class="pc-stat-label">Member Since</span><span class="pc-stat-val">Apr 28, 2026</span></div>
+          <div class="pc-stat"><span class="pc-stat-label">Sessions</span><span class="pc-stat-val">6</span></div>
+          <div class="pc-stat"><span class="pc-stat-label">Avg Wheel</span><span class="pc-stat-val" style="color:var(--gold)">7.2 / 10</span></div>
+        </div>
+        <div class="profile-card">
+          <div class="bc-eye" style="margin-bottom:10px">Personal Agent</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <span style="font-size:24px">🤖</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--teal)">Atlas</div>
+              <div style="font-size:9px;color:var(--ink3)">Online · Last active 2hrs ago</div>
+            </div>
+          </div>
+          <div class="pc-stat"><span class="pc-stat-label">Sessions Logged</span><span class="pc-stat-val">6</span></div>
+          <div class="pc-stat"><span class="pc-stat-label">Flags Generated</span><span class="pc-stat-val">3</span></div>
+          <div class="pc-stat"><span class="pc-stat-label">Handoffs → Deryl</span><span class="pc-stat-val">1</span></div>
+        </div>
+      </div>
+      <div class="profile-detail">
+        <div class="bc-eye">Gene Keys Profile</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:4px">Ken Wilkins</div>
+        <div style="font-size:10px;color:var(--ink3);margin-bottom:16px">Birthday required to complete Gene Keys profile</div>
+        <div style="padding:16px;background:var(--gold-d);border:1px solid var(--gold-l);border-radius:4px;font-size:12px;color:var(--ink2);margin-bottom:20px">
+          ⚑ Ken's birthday has not been entered. Gene Keys activation sequence, Life's Work hex, and MMP Genius profile are pending. Add birthday to unlock full profile.
+        </div>
+
+        <div class="bc-eye" style="margin-top:20px">Operating Philosophy</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:12px">Ken's Frameworks</div>
+        <div class="bc-item" style="padding:10px 0;border-bottom:1px solid var(--line)"><div class="bc-dot" style="background:var(--gold);margin-top:5px"></div><div class="bc-text"><strong>Buy Back Your Time</strong> — Dan Martell. DRIP matrix active in all role decisions.</div></div>
+        <div class="bc-item" style="padding:10px 0;border-bottom:1px solid var(--line)"><div class="bc-dot" style="background:var(--warrior);margin-top:5px"></div><div class="bc-text"><strong>Millionaire Master Plan</strong> — Genius profile pending birthday input.</div></div>
+        <div class="bc-item" style="padding:10px 0;border-bottom:1px solid var(--line)"><div class="bc-dot" style="background:var(--purple);margin-top:5px"></div><div class="bc-text"><strong>Peaceful Warrior</strong> — Present moment awareness. Applied to training protocol.</div></div>
+        <div class="bc-item" style="padding:10px 0"><div class="bc-dot" style="background:var(--teal);margin-top:5px"></div><div class="bc-text"><strong>FOM Life Wheel</strong> — 8 dimensions. Baseline set May 14, 2026.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ── WHEEL DATA ──
+const wheelData = [
+  {dim:'Health & Vitality',     score:7,   color:'#2eff8c', trend:'+0.2', up:true},
+  {dim:'Relationships',         score:7.5, color:'#5a9ae0', trend:'+0.1', up:true},
+  {dim:'Inner Life & Spirit',   score:5.8, color:'#a096f0', trend:'-1.2', up:false},
+  {dim:'Experiences',           score:8,   color:'#d4a832', trend:'+0.3', up:true},
+  {dim:'Financial',             score:8.4, color:'#2eff8c', trend:'+0.5', up:true},
+  {dim:'Career / Mission',      score:8.8, color:'#f0622a', trend:'+0.8', up:true},
+  {dim:'Contribution & Legacy', score:6.5, color:'#ff8c28', trend:'flat', up:null},
+  {dim:'Fun / Play',            score:6.2, color:'#2eddc8', trend:'-0.3', up:false},
+];
+
+function buildWheel(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = wheelData.map(w => `
+    <div class="wc" style="border-top-color:${w.color}20;border-top-width:3px;border-top-style:solid">
+      <div class="wc-dim" style="color:${w.color}aa">${w.dim}</div>
+      <div class="wc-score" style="color:${w.color}">${w.score}</div>
+      <div class="wc-bar"><div class="wc-fill" style="width:${w.score*10}%;background:${w.color}"></div></div>
+      <div class="wc-trend ${w.up===true?'up':w.up===false?'down':''}">${w.up===true?'↑':w.up===false?'↓':'→'} ${w.trend}</div>
+    </div>
+  `).join('');
+}
+buildWheel('wheelGrid');
+buildWheel('wheelGrid2');
+
+// ── SLIDERS ──
+const sliderEl = document.getElementById('sliders');
+if (sliderEl) {
+  sliderEl.innerHTML = wheelData.map(w => `
+    <div class="lf-row" style="margin-bottom:12px">
+      <div class="lf-dim">${w.dim}</div>
+      <input type="range" class="lf-slider" min="1" max="10" step="0.5" value="${w.score}"
+        oninput="this.nextElementSibling.textContent=this.value"
+        style="accent-color:${w.color}">
+      <div class="lf-val" style="color:${w.color}">${w.score}</div>
+    </div>
+  `).join('');
+}
+
+// ── NAV ──
+function show(panelId, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.getElementById(panelId).classList.add('on');
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+  // rebuild wheels if navigating to those panels
+  if (panelId === 'wheel') setTimeout(()=>buildWheel('wheelGrid2'),50);
+}
+</script>
+</body>
+</html>
