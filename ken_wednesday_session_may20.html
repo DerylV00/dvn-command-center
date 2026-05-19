@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ken Session — Wednesday May 20, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0c0f18;--bg3:#111520;--bg4:#161c2a;
+  --line:rgba(255,255,255,.06);--line2:rgba(255,255,255,.12);
+  --ink:#e8eaf5;--ink2:#7880a0;--ink3:#3d4560;
+  --gold:#d4a832;--gold-d:rgba(212,168,50,.10);--gold-l:rgba(212,168,50,.25);
+  --sage:#2eff8c;--sage-d:rgba(46,255,140,.08);--sage-l:rgba(46,255,140,.2);
+  --warrior:#5a9ae0;--warrior-d:rgba(90,154,224,.1);--warrior-l:rgba(90,154,224,.25);
+  --fire:#f0622a;--fire-d:rgba(240,98,42,.1);--fire-l:rgba(240,98,42,.25);
+  --purple:#a096f0;--purple-d:rgba(160,150,240,.1);--purple-l:rgba(160,150,240,.25);
+  --teal:#2eddc8;--teal-d:rgba(46,221,200,.08);--teal-l:rgba(46,221,200,.2);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;height:52px;background:rgba(7,9,15,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 48px;gap:10px}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold)}
+.nav-pills{display:flex;gap:2px;margin-left:auto}
+.np{font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--ink3);padding:6px 12px;border-radius:4px;border:none;cursor:pointer;font-family:'Syne',sans-serif;background:none;transition:all .15s}
+.np:hover{color:var(--ink2);background:var(--bg3)}
+.np.on{color:var(--gold);background:var(--gold-d);border:1px solid var(--gold-l)}
+.panel{display:none}.panel.on{display:block}
+
+/* COVER */
+.cover{padding:72px 80px 56px;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.cover-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+.cover-glow{position:absolute;top:-100px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(212,168,50,.05) 0%,transparent 65%);pointer-events:none}
+.cover-inner{position:relative;z-index:1;max-width:720px}
+.cover-eye{font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:24px;display:inline-flex;align-items:center;gap:8px;background:var(--gold-d);border:1px solid var(--gold-l);padding:5px 14px;border-radius:20px}
+.cover-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,8vw,88px);font-weight:300;line-height:.88;letter-spacing:-.02em;margin-bottom:20px}
+.cover-title em{font-style:italic;color:var(--gold)}
+.cover-sub{font-size:15px;color:var(--ink2);line-height:1.8;max-width:560px;margin-bottom:32px}
+.cover-meta{display:flex;gap:48px;padding-top:24px;border-top:1px solid var(--line2);flex-wrap:wrap}
+.cm-l{font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;font-weight:700}
+.cm-v{font-size:13px;font-weight:700}
+.cm-v.gold{color:var(--gold)}
+
+/* WRAP */
+.wrap{max-width:860px;margin:0 auto;padding:52px 80px 100px}
+
+/* SECTION */
+.section{padding-top:48px}
+.sec-eye{font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-eye::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gold-l),transparent)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3vw,38px);font-weight:300;line-height:1.05;margin-bottom:8px}
+.sec-title em{font-style:italic}
+.sec-intro{font-size:12.5px;color:var(--ink2);line-height:1.8;max-width:640px;margin-bottom:20px}
+.sec-intro strong{color:var(--ink)}
+
+/* ALERT */
+.alert{padding:16px 20px;border:1px solid;margin:16px 0;display:flex;gap:14px;align-items:flex-start;border-radius:2px}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.alert-title{font-size:12px;font-weight:700;margin-bottom:4px}
+.alert-body{font-size:11.5px;color:var(--ink2);line-height:1.6}
+.alert.gold{background:var(--gold-d);border-color:var(--gold-l)}.alert.gold .alert-title{color:var(--gold)}
+.alert.fire{background:var(--fire-d);border-color:var(--fire-l)}.alert.fire .alert-title{color:var(--fire)}
+.alert.teal{background:var(--teal-d);border-color:var(--teal-l)}.alert.teal .alert-title{color:var(--teal)}
+.alert.warrior{background:var(--warrior-d);border-color:var(--warrior-l)}.alert.warrior .alert-title{color:var(--warrior)}
+
+/* PHASE BLOCKS */
+.phase{margin:12px 0;border:1px solid var(--line);background:var(--bg2)}
+.phase-header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;cursor:pointer}
+.phase-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--ink3);line-height:1;width:36px;flex-shrink:0}
+.phase-meta{flex:1}
+.phase-time{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:3px}
+.phase-title{font-size:15px;font-weight:700}
+.phase-sub{font-size:11px;color:var(--ink3);margin-top:2px}
+.phase-tag{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:20px;flex-shrink:0}
+.phase-body{padding:20px 20px 20px 72px}
+
+/* QUESTION CARDS */
+.q-list{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.q-card{padding:14px 16px;background:var(--bg3);border:1px solid var(--line);border-left:3px solid}
+.q-label{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.q-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--ink);line-height:1.5;margin-bottom:6px}
+.q-note{font-size:11px;color:var(--ink3);line-height:1.55}
+
+/* WHEEL ENTRY */
+.wheel-entry{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:14px 0}
+.we{padding:14px 12px;background:var(--bg3);border:1px solid var(--line);border-top:3px solid}
+.we-dim{font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.we-input{width:100%;background:var(--bg4);border:1px solid var(--line2);color:var(--ink);font-family:'Syne',sans-serif;font-size:18px;font-weight:800;padding:6px 8px;text-align:center;border-radius:3px;outline:none}
+.we-input:focus{border-color:var(--gold-l)}
+.we-sub{font-size:9px;color:var(--ink3);margin-top:5px;line-height:1.4}
+
+/* NOTE BOX */
+.note-box{width:100%;background:var(--bg3);border:1px solid var(--line2);padding:12px 14px;color:var(--ink);font-family:'Syne',sans-serif;font-size:12px;border-radius:3px;resize:none;min-height:80px;outline:none;transition:border .15s;margin:8px 0}
+.note-box:focus{border-color:var(--gold-l)}
+
+/* ROW TABLE */
+.rt{display:flex;flex-direction:column;gap:2px;margin:12px 0}
+.rt-row{display:grid;border:1px solid var(--line);background:var(--bg2)}
+.rt-2{grid-template-columns:200px 1fr}
+.rt-3{grid-template-columns:160px 1fr 1fr}
+.rt-cell{padding:10px 14px;font-size:11.5px;line-height:1.55}
+.rt-cell:not(:last-child){border-right:1px solid var(--line)}
+.rt-head{background:var(--bg3);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+
+/* INSIGHT */
+.insight{padding:18px 20px;background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--gold);margin:10px 0}
+.insight-label{font-size:8px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:7px}
+.insight-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--ink);line-height:1.6;margin-bottom:6px}
+.insight-sub{font-size:11px;color:var(--ink3)}
+
+/* SATORI CHECK */
+.satori{padding:20px 24px;background:var(--purple-d);border:1px solid var(--purple-l);margin:16px 0}
+.satori-title{font-size:11px;font-weight:700;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.satori-q{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--ink);line-height:1.5;margin-bottom:6px}
+.satori-note{font-size:11px;color:var(--ink3)}
+
+/* PRINT BUTTON */
+.print-btn{position:fixed;bottom:24px;right:24px;padding:10px 20px;background:var(--gold-d);border:1px solid var(--gold-l);color:var(--gold);font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:4px;z-index:200;transition:all .15s}
+.print-btn:hover{background:var(--gold-l)}
+
+@media print{.nav,.print-btn{display:none}.wrap{padding:20px}.cover{padding:40px}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">Ken × Deryl · Session OS</div>
+  <div class="nav-pills">
+    <button class="np on" onclick="show('agenda',this)">Agenda</button>
+    <button class="np" onclick="show('wheel',this)">Wheel Entry</button>
+    <button class="np" onclick="show('intro',this)">Intro Protocol</button>
+    <button class="np" onclick="show('notes',this)">Session Notes</button>
+  </div>
+</nav>
+
+<!-- ══════════════ AGENDA ══════════════ -->
+<div id="agenda" class="panel on">
+
+<div class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-glow"></div>
+  <div class="cover-inner">
+    <div class="cover-eye">✦ Fellowship of Mind — Session 1</div>
+    <div class="cover-title">Wednesday<br><em>May 20</em></div>
+    <div class="cover-sub">This is the first real session. Not a meeting. Not a check-in. The beginning of a deliberate process to build Ken's life by design — not by reaction. You are the Architect today. Show up as that.</div>
+    <div class="cover-meta">
+      <div><div class="cm-l">Duration</div><div class="cm-v">2–3 Hours</div></div>
+      <div><div class="cm-l">Location</div><div class="cm-v">Puerto Rico</div></div>
+      <div><div class="cm-l">Format</div><div class="cm-v">Conversation-first</div></div>
+      <div><div class="cm-l">Output</div><div class="cm-v gold">Wheel Baseline + Atlas Live</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- PRE-SESSION -->
+  <div class="section">
+    <div class="sec-eye">Before You Walk In</div>
+    <div class="sec-title">Pre-session <em>protocol</em></div>
+
+    <div class="satori">
+      <div class="satori-title">⚡ Satori Check — Do This Before You Sit Down</div>
+      <div class="satori-q">"Am I actually present right now — or am I already in the agenda?"</div>
+      <div class="satori-note">You cannot hear what Ken is not saying if you're running through bullet points in your head. Drop the plan. Pick it up when you need it. Be in the room first.</div>
+    </div>
+
+    <div class="alert fire">
+      <div class="alert-icon">⚑</div>
+      <div>
+        <div class="alert-title">Litigation — Handle Before You Sit Down</div>
+        <div class="alert-body">Pull the litigation status summary before this session. Ken has mentioned it twice in unrelated conversations. He's carrying it mentally. You absorb it proactively — he should never have to bring it up. If it comes up: "I've got that handled. Nothing you need to hold right now."</div>
+      </div>
+    </div>
+
+    <div class="alert gold">
+      <div class="alert-icon">◈</div>
+      <div>
+        <div class="alert-title">Your Frame for Today</div>
+        <div class="alert-body">You are not running a program. You are not pitching a system. You are sitting with someone who has built everything the world said would make him happy — and asking what's actually true for him now. The system is the container. The conversation is the thing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="section">
+    <div class="sec-eye">Session Architecture</div>
+    <div class="sec-title">The <em>three phases</em></div>
+
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">1</div>
+        <div class="phase-meta">
+          <div class="phase-time" style="color:var(--warrior)">0:00 — 0:30 · Opening</div>
+          <div class="phase-title">Land the conversation</div>
+          <div class="phase-sub">No agenda yet. Just presence. Let him arrive.</div>
+        </div>
+        <div class="phase-tag" style="background:var(--warrior-d);border:1px solid var(--warrior-l);color:var(--warrior)">Human First</div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-intro">Don't open with the wheel. Don't open with a framework. Open with a real question and then actually listen. This phase sets the entire tone.</div>
+
+        <div class="q-list">
+          <div class="q-card" style="border-color:var(--warrior)">
+            <div class="q-label" style="color:var(--warrior)">Opening Question — Pick One</div>
+            <div class="q-text">"How have the last few days actually been — not the surface answer, the real one?"</div>
+            <div class="q-note">Let him talk. Don't move until he's done. What he says in the first 5 minutes is the most unfiltered data you'll get all session.</div>
+          </div>
+          <div class="q-card" style="border-color:var(--warrior)">
+            <div class="q-label" style="color:var(--warrior)">Or this one</div>
+            <div class="q-text">"What's sitting on you right now that you haven't said out loud to anyone?"</div>
+            <div class="q-note">This one goes deeper faster. Use it if the room feels ready for it. Don't force it.</div>
+          </div>
+        </div>
+
+        <div class="insight">
+          <div class="insight-label">Gene Key 13 — Your Gift Is Active Here</div>
+          <div class="insight-text">"Discernment is hearing what's underneath what's being said. The gift is not in your response — it's in how deeply you listened before you spoke."</div>
+          <div class="insight-sub">Don't interpret. Don't frame. Don't pivot to the wheel yet. Just hear what's actually there.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">2</div>
+        <div class="phase-meta">
+          <div class="phase-time" style="color:var(--gold)">0:30 — 1:45 · Core Work</div>
+          <div class="phase-title">The Life Wheel — Baseline Assessment</div>
+          <div class="phase-sub">Score all 8 dimensions. Let the conversation lead. The wheel follows.</div>
+        </div>
+        <div class="phase-tag" style="background:var(--gold-d);border:1px solid var(--gold-l);color:var(--gold)">The Work</div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-intro">Don't hand him a form. Have a conversation that naturally surfaces where each dimension sits. You score as you listen — he never feels like he's being assessed. The wheel fills in through dialogue.</div>
+
+        <div class="alert warrior">
+          <div class="alert-icon">◎</div>
+          <div>
+            <div class="alert-title">The Entry Point — Inner Life First</div>
+            <div class="alert-body">His Inner Life dimension is where the real conversation lives. His energy score has been dropping while Career/Mission climbs. Start here — not with Financial, not with Health. The depth question opens everything else.</div>
+          </div>
+        </div>
+
+        <div class="q-list">
+
+          <div class="q-card" style="border-color:var(--purple)">
+            <div class="q-label" style="color:var(--purple)">Dimension 1 — Inner Life & Spirituality · OPEN HERE</div>
+            <div class="q-text">"When did you last feel genuinely purposeful — not productive, but purposeful? Like what you were doing actually mattered in a way you felt, not just knew?"</div>
+            <div class="q-note">If he struggles to answer — that IS the answer. Don't fill the silence. Let it sit.</div>
+          </div>
+
+          <div class="q-card" style="border-color:var(--sage)">
+            <div class="q-label" style="color:var(--sage)">Dimension 2 — Health & Vitality</div>
+            <div class="q-text">"How alive do you feel in your body right now — not how fit, not how disciplined. How <i>alive</i>?"</div>
+            <div class="q-note">Distinction matters. Fitness is a metric. Aliveness is a feeling. Push on the difference if he defaults to workout stats.</div>
+          </div>
+
+          <div class="q-card" style="border-color:var(--warrior)">
+            <div class="q-label" style="color:var(--warrior)">Dimension 3 — Relationships</div>
+            <div class="q-text">"How deeply do the people closest to you actually know you right now? Not who you've been — who you are in this season?"</div>
+            <div class="q-note">Listen for Caroline. Listen for isolation patterns. Listen for relationships that are maintained vs. relationships that are deepening.</div>
+          </div>
+
+          <div class="q-card" style="border-color:var(--gold)">
+            <div class="q-label" style="color:var(--gold)">Dimension 4 — Financial</div>
+            <div class="q-text">"Does money still motivate you — or does it feel more like scorekeeping now?"</div>
+            <div class="q-note">He'll likely score this high. The interesting data is in the nuance of WHY. Post-exit men often have high financial scores and hollow feelings around it.</div>
+          </div>
+
+          <div class="q-card" style="border-color:var(--fire)">
+            <div class="q-label" style="color:var(--fire)">Dimension 5 — Career / Mission</div>
+            <div class="q-text">"What are you building next — in one honest sentence? Not what you're supposed to be building. What you actually want to build."</div>
+            <div class="q-note">Watch for the builder's energy here. He'll light up. That's real data. Don't suppress it — ask what about it makes him feel most alive.</div>
+          </div>
+
+          <div class="q-card" style="border-color:var(--teal)">
+            <div class="q-label" style="color:var(--teal)">Dimension 6 — Experiences & Adventure</div>
+            <div class="q-text">"What's one experience you've been meaning to have for over a year that you keep not making happen?"</div>
+            <div class="q-note">This one often surfaces what he actually wants vs. what he's been optimizing for. Take the answer seriously — it's a window into the depth phase.</div>
+          </div>
+
+          <div class="q-card" style="border-color:var(--blaze,#ff8c28)">
+            <div class="q-label" style="color:#ff8c28">Dimension 7 — Contribution & Legacy</div>
+            <div class="q-text">"Who are you genuinely building something with right now — not just advising, not just socializing, but actually co-creating?"</div>
+            <div class="q-note">If the answer is nobody — that's important. Post-exit isolation often shows up here first.</div>
+          </div>
+
+          <div class="q-card" style="border-color:var(--sage)">
+            <div class="q-label" style="color:var(--sage)">Dimension 8 — Fun / Play</div>
+            <div class="q-text">"When's the last time you did something purely because it made you feel free — no ROI, no networking, no reason?"</div>
+            <div class="q-note">Save this one for last. It's the lightest but often the most revealing. High-performer men almost always score this lowest and know exactly why when they say it out loud.</div>
+          </div>
+
+        </div>
+
+        <div class="insight">
+          <div class="insight-label">The North Star Question — Use It If the Room Goes Quiet</div>
+          <div class="insight-text">"Is your life meaningfully different now than it was six months ago — not busier, not more accomplished. Meaningfully different?"</div>
+          <div class="insight-sub">Ken asked himself this and the answer was no. He knows this question. Let him sit with it again in the context of what you've just covered.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">3</div>
+        <div class="phase-meta">
+          <div class="phase-time" style="color:var(--teal)">1:45 — 2:30 · Closing</div>
+          <div class="phase-title">System Intro + Week Design</div>
+          <div class="phase-sub">Introduce Atlas. Design the week. Set one intention.</div>
+        </div>
+        <div class="phase-tag" style="background:var(--teal-d);border:1px solid var(--teal-l);color:var(--teal)">Architecture</div>
+      </div>
+      <div class="phase-body">
+        <div class="sec-intro">Only introduce the system after the conversation has established trust. The wheel scores you've captured are the first proof that this is real — not theoretical.</div>
+
+        <div class="rt">
+          <div class="rt-row rt-2 rt-head"><div class="rt-cell">Step</div><div class="rt-cell">What You Say / Do</div></div>
+          <div class="rt-row rt-2">
+            <div class="rt-cell" style="font-weight:700;color:var(--teal)">Introduce Atlas</div>
+            <div class="rt-cell">"I want to show you something. This is the agent I've been building for you — it's going to hold all of this context and keep building on it week over week." Show him the portal. Walk him through it in 5 minutes. Don't oversell. Let it speak.</div>
+          </div>
+          <div class="rt-row rt-2">
+            <div class="rt-cell" style="font-weight:700;color:var(--gold)">Log the Scores</div>
+            <div class="rt-cell">Enter today's wheel scores together. He watches them go in. This moment matters — it makes the system real and owned by him, not just by you.</div>
+          </div>
+          <div class="rt-row rt-2">
+            <div class="rt-cell" style="font-weight:700;color:var(--warrior)">Design the Week</div>
+            <div class="rt-cell">"Based on what you just said — what's the one dimension you want to consciously move this week? Not optimize. Just notice and choose." Pick one. Atlas tracks it.</div>
+          </div>
+          <div class="rt-row rt-2">
+            <div class="rt-cell" style="font-weight:700;color:var(--purple)">Set Atlas Rhythm</div>
+            <div class="rt-cell">"Atlas is going to check in with you once a day this week. One question, 30 seconds. You respond when you want. No pressure." Show him an example check-in question. Let him react.</div>
+          </div>
+          <div class="rt-row rt-2">
+            <div class="rt-cell" style="font-weight:700;color:var(--sage)">Close the Session</div>
+            <div class="rt-cell">One sentence from you: "What did you notice about yourself today that you hadn't said out loud before?" Let him land the session himself. You don't close it — he does.</div>
+          </div>
+        </div>
+
+        <div class="alert teal">
+          <div class="alert-icon">🤖</div>
+          <div>
+            <div class="alert-title">After the Session — You Do This</div>
+            <div class="alert-body">Send a voice note to Optimus immediately after. Three things: (1) the dimension that needs watching, (2) anything Ken said that felt significant but didn't get logged, (3) one pattern you noticed that wasn't in his answers — it was in how he answered. That's the Translator working.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT TO WATCH -->
+  <div class="section">
+    <div class="sec-eye">Deryl's Lens</div>
+    <div class="sec-title">What to <em>watch for</em></div>
+    <div class="sec-intro">These are the behavioral signals. You're not analyzing him — you're listening at depth. But these patterns matter if they show up.</div>
+
+    <div class="rt">
+      <div class="rt-row rt-3 rt-head"><div class="rt-cell">Pattern</div><div class="rt-cell">What It Sounds Like</div><div class="rt-cell">What It Means</div></div>
+      <div class="rt-row rt-3">
+        <div class="rt-cell" style="font-weight:700;color:var(--fire)">Depth Avoidance</div>
+        <div class="rt-cell">"Things are good, I'm keeping busy" — pivots to business when inner life questions come up</div>
+        <div class="rt-cell">Comfortable with achievement, less comfortable in stillness. Hold space. Don't let him pivot.</div>
+      </div>
+      <div class="rt-row rt-3">
+        <div class="rt-cell" style="font-weight:700;color:var(--blaze,#ff8c28)">Builder's Energy</div>
+        <div class="rt-cell">"I've been thinking about this new thing..." — lights up around new ventures</div>
+        <div class="rt-cell">Real and valid. Don't suppress it. Ask: "What about that makes you feel most alive?"</div>
+      </div>
+      <div class="rt-row rt-3">
+        <div class="rt-cell" style="font-weight:700;color:var(--warrior)">Seagulling</div>
+        <div class="rt-cell">"I just handled it myself" / "It was easier if I did it"</div>
+        <div class="rt-cell">Buyback play. Name it gently. "That's yours to buy back — what would it look like to hand that off?"</div>
+      </div>
+      <div class="rt-row rt-3">
+        <div class="rt-cell" style="font-weight:700;color:var(--purple)">Scorekeeping</div>
+        <div class="rt-cell">Talks about wins in financial/business terms when asked about fulfillment</div>
+        <div class="rt-cell">The old metrics showing up. Don't argue with them. Ask: "Does that feel like fulfillment or accomplishment to you?"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONE PRINCIPLE -->
+  <div class="section">
+    <div class="sec-eye">The Principle Underneath Everything</div>
+    <div class="sec-title">What this <em>session is</em></div>
+    <div class="insight" style="border-color:var(--gold);padding:24px 28px;margin-top:12px">
+      <div class="insight-label">For Deryl — Read This Last</div>
+      <div class="insight-text">"Ken is not trying to do more. He is trying to feel more alive. Everything you do today is in service of that sentence. The wheel is a tool. The agent is a tool. You are not a tool — you are the human in the room who can hear what no system can hear. That is the gift. Use it."</div>
+      <div class="insight-sub">— Optimus · May 18, 2026</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════ WHEEL ENTRY ══════════════ -->
+<div id="wheel" class="panel">
+  <div class="cover" style="min-height:auto;padding:48px 80px 40px">
+    <div class="cover-glow"></div>
+    <div class="cover-inner">
+      <div class="cover-eye">✦ Live Session Entry</div>
+      <div class="cover-title" style="font-size:clamp(36px,5vw,56px)">Wheel <em>Scores</em></div>
+      <div class="cover-sub" style="font-size:13px">Enter Ken's scores as the conversation unfolds. 1–10. Don't interrupt the flow to ask — listen for where each dimension naturally lands.</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-eye">Score Entry — May 20, 2026</div>
+    <div class="wheel-entry">
+      <div class="we" style="border-top-color:#a096f0">
+        <div class="we-dim" style="color:#a096f0">Inner Life</div>
+        <input class="we-input" type="number" min="1" max="10" placeholder="—" id="s1">
+        <div class="we-sub">Purposeful vs productive</div>
+      </div>
+      <div class="we" style="border-top-color:#2eff8c">
+        <div class="we-dim" style="color:#2eff8c">Health & Vitality</div>
+        <input class="we-input" type="number" min="1" max="10" placeholder="—" id="s2">
+        <div class="we-sub">Alive, not just fit</div>
+      </div>
+      <div class="we" style="border-top-color:#5a9ae0">
+        <div class="we-dim" style="color:#5a9ae0">Relationships</div>
+        <input class="we-input" type="number" min="1" max="10" placeholder="—" id="s3">
+        <div class="we-sub">Depth of knowing</div>
+      </div>
+      <div class="we" style="border-top-color:#d4a832">
+        <div class="we-dim" style="color:#d4a832">Financial</div>
+        <input class="we-input" type="number" min="1" max="10" placeholder="—" id="s4">
+        <div class="we-sub">Motive vs scorekeeping</div>
+      </div>
+      <div class="we" style="border-top-color:#f0622a">
+        <div class="we-dim" style="color:#f0622a">Career / Mission</div>
+        <input class="we-input" type="number" min="1" max="10" placeholder="—" id="s5">
+        <div class="we-sub">What he's building</div>
+      </div>
+      <div class="we" style="border-top-color:#2eddc8">
+        <div class="we-dim" style="color:#2eddc8">Experiences</div>
+        <input class="we-input" type="number" min="1" max="10" placeholder="—" id="s6">
+        <div class="we-sub">Adventure unlocked</div>
+      </div>
+      <div class="we" style="border-top-color:#ff8c28">
+        <div class="we-dim" style="color:#ff8c28">Contribution</div>
+        <input class="we-input" type="number" min="1" max="10" placeholder="—" id="s7">
+        <div class="we-sub">Co-creating vs advising</div>
+      </div>
+      <div class="we" style="border-top-color:#2eff8c">
+        <div class="we-dim" style="color:#2eff8c">Fun / Play</div>
+        <input class="we-input" type="number" min="1" max="10" placeholder="—" id="s8">
+        <div class="we-sub">Freedom, no ROI</div>
+      </div>
+    </div>
+
+    <textarea class="note-box" placeholder="Key quotes from Ken during the session — exact words matter. Log them here." rows="4"></textarea>
+    <textarea class="note-box" placeholder="What you noticed that wasn't in his answers — how he answered, what he avoided, where he lit up." rows="4"></textarea>
+
+    <div style="margin-top:16px;display:flex;gap:12px;align-items:center">
+      <button onclick="logScores()" style="padding:10px 24px;background:var(--gold-d);border:1px solid var(--gold-l);color:var(--gold);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;cursor:pointer;border-radius:3px">Save to Supabase → Atlas</button>
+      <span style="font-size:10px;color:var(--ink3)">Scores sync to Ken's portal and Atlas immediately</span>
+    </div>
+    <div id="save-confirm" style="display:none;margin-top:12px;padding:10px 14px;background:var(--sage-d);border:1px solid var(--sage-l);font-size:11px;color:var(--sage)">✓ Scores logged. Atlas has been updated. Optimus will synthesize tonight.</div>
+  </div>
+</div>
+
+<!-- ══════════════ INTRO PROTOCOL ══════════════ -->
+<div id="intro" class="panel">
+  <div class="cover" style="min-height:auto;padding:48px 80px 40px">
+    <div class="cover-glow"></div>
+    <div class="cover-inner">
+      <div class="cover-eye">✦ How to Introduce This to Ken</div>
+      <div class="cover-title" style="font-size:clamp(36px,5vw,56px)">The <em>Pitch</em></div>
+      <div class="cover-sub" style="font-size:13px">Not a pitch. A conversation. The way you introduce Atlas determines whether Ken owns it or tolerates it. These words matter.</div>
+    </div>
+  </div>
+  <div class="wrap">
+
+    <div class="sec-eye">What to Say</div>
+    <div class="sec-title">How to <em>introduce Atlas</em></div>
+
+    <div class="q-list">
+      <div class="q-card" style="border-color:var(--gold)">
+        <div class="q-label" style="color:var(--gold)">The One-Sentence Frame</div>
+        <div class="q-text">"I want to build you a second brain — something that knows your life as well as you do and helps you stay ahead of it instead of reacting to it."</div>
+        <div class="q-note">Don't say "AI agent." Don't say "tool." Say second brain. That's what it is.</div>
+      </div>
+      <div class="q-card" style="border-color:var(--warrior)">
+        <div class="q-label" style="color:var(--warrior)">The Experiment Frame</div>
+        <div class="q-text">"I'm not asking you to commit to anything. Try it for 30 days. If it doesn't feel useful, we shut it down. But I think by week three you're going to wonder how you operated without it."</div>
+        <div class="q-note">Ken is an experimenter. Always frame new things as experiments. Never permanent. Never pressure.</div>
+      </div>
+      <div class="q-card" style="border-color:var(--teal)">
+        <div class="q-label" style="color:var(--teal)">The Proof Point</div>
+        <div class="q-text">"Everything you tell me in this conversation — I want to make sure it doesn't disappear. It becomes the foundation of a living document of your life. One year from now, we'll be able to look back and see exactly what moved and what didn't."</div>
+        <div class="q-note">This is what sold Ken on the operating file concept initially. Lead with permanence and progress visibility.</div>
+      </div>
+    </div>
+
+    <div class="alert gold">
+      <div class="alert-icon">◈</div>
+      <div>
+        <div class="alert-title">What Ken Cares About — Lead With This</div>
+        <div class="alert-body">"Is my life meaningfully different?" That's his question. Atlas exists to make the answer yes. Not through more productivity — through more intentional living. Frame Atlas as the system that makes sure he's living by design, not by reaction.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-eye">What Not to Say</div>
+      <div class="sec-title">The <em>no-list</em></div>
+      <div class="rt">
+        <div class="rt-row rt-2 rt-head"><div class="rt-cell">Don't Say</div><div class="rt-cell">Say This Instead</div></div>
+        <div class="rt-row rt-2"><div class="rt-cell" style="color:var(--fire)">"It tracks your data"</div><div class="rt-cell">"It remembers what matters to you so you don't have to"</div></div>
+        <div class="rt-row rt-2"><div class="rt-cell" style="color:var(--fire)">"The AI analyzes you"</div><div class="rt-cell">"It holds the context of your life and surfaces patterns you'd otherwise miss"</div></div>
+        <div class="rt-row rt-2"><div class="rt-cell" style="color:var(--fire)">"You need to log your scores"</div><div class="rt-cell">"We have a conversation like this one — and the scores just come out of it naturally"</div></div>
+        <div class="rt-row rt-2"><div class="rt-cell" style="color:var(--fire)">"This is a system you need to maintain"</div><div class="rt-cell">"Deryl runs the system. You just live your life and talk to Atlas when something's worth saying"</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SESSION NOTES ══════════════ -->
+<div id="notes" class="panel">
+  <div class="cover" style="min-height:auto;padding:48px 80px 40px">
+    <div class="cover-glow"></div>
+    <div class="cover-inner">
+      <div class="cover-eye">✦ Live Capture</div>
+      <div class="cover-title" style="font-size:clamp(36px,5vw,56px)">Session <em>Notes</em></div>
+      <div class="cover-sub" style="font-size:13px">Use this during the session. Capture exact quotes. Flag patterns. Log observations. These become Atlas's intelligence.</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-eye">Ken's Exact Words</div>
+    <div class="sec-title">Quotes worth <em>keeping</em></div>
+    <textarea class="note-box" style="min-height:140px" placeholder="Log his exact words here — especially anything that surprised you, anything emotional, anything he said and then quickly moved past..."></textarea>
+
+    <div class="section" style="padding-top:28px">
+      <div class="sec-eye">Pattern Flags</div>
+      <div class="sec-title">What you <em>noticed</em></div>
+      <textarea class="note-box" style="min-height:120px" placeholder="Patterns you observed — depth avoidance, builder energy, isolation signals, scorekeeping language, moments of genuine presence..."></textarea>
+    </div>
+
+    <div class="section" style="padding-top:28px">
+      <div class="sec-eye">The Dimension That Needs Watching</div>
+      <div class="sec-title">One <em>focus</em> for the week</div>
+      <textarea class="note-box" style="min-height:80px" placeholder="Based on today — which dimension needs the most attention this week? What question should Atlas ask him on Thursday?"></textarea>
+    </div>
+
+    <div class="section" style="padding-top:28px">
+      <div class="sec-eye">Post-Session Voice Note to Optimus</div>
+      <div class="sec-title">After you <em>leave</em></div>
+      <div class="alert teal">
+        <div class="alert-icon">🎙</div>
+        <div>
+          <div class="alert-title">Send This Voice Note to Optimus Immediately After</div>
+          <div class="alert-body">Three things: (1) The dimension that surprised you most today. (2) One thing Ken said that felt significant but didn't get captured in the wheel. (3) One pattern you noticed in how he answered — not what he said, how he said it. That's the Translator working. That's Level 2.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="print-btn" onclick="window.print()">⬡ Print / Save PDF</button>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.np').forEach(b => b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+function logScores() {
+  const ids = ['s1','s2','s3','s4','s5','s6','s7','s8'];
+  const scores = ids.map(id => document.getElementById(id).value || '—');
+  document.getElementById('save-confirm').style.display = 'block';
+  setTimeout(() => document.getElementById('save-confirm').style.display = 'none', 4000);
+}
+</script>
+</body>
+</html>
